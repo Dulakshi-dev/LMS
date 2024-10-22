@@ -12,12 +12,8 @@ class Database{
     }
 
     public static function iud($query) {
-        $connection = self::getConnection(); // Ensure you have this method to get the connection
-        if (mysqli_query($connection, $query)) {
-            return true;
-        } else {
-            return mysqli_error($connection); // Return the error message
-        }
+        Database::setUpConnection();
+        Database::$connection->query($query);
     }
 
     public static function search($query){

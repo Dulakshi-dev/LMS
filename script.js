@@ -198,8 +198,6 @@ function box1() {
     }
 }
 
-
-
 function box2(){
     var phonePattern = /^(07\d{8}|(\+94)7\d{8})$/; // Validates phone numbers starting with '07' or '+947' followed by 8 digits
 
@@ -221,7 +219,7 @@ function box2(){
 }
 
 function box3(){
-    
+    alert("ll");
     var email = document.getElementById("email").value;
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -240,7 +238,7 @@ function box3(){
              
                 var resp = req.responseText;
                 alert(resp);
-                if(resp === "Check the email for otp"){
+                if(resp.trim() === "Check the email for otp"){
                     document.getElementById("Box3").classList.add("d-none");
                     document.getElementById("Box4").classList.remove("d-none");
                 }

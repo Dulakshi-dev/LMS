@@ -11,10 +11,6 @@ $lname = $_POST["lname"];
 $password = $_POST["password"];
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-                // // Insert the new member details into the database
-                // Database::iud("INSERT INTO `member`(`member_id`, `nic`, `fname`, `lname`, `mobile`, `address`, `email`, `password`) VALUES 
-                // ('$memID', '$nic', '$fname', '$lname', '$phoneNumber', '$address', '$email', '$hashedPassword')");
-                // echo("success");
                 $result = Database::iud("INSERT INTO `member`(`member_id`, `nic`, `fname`, `lname`, `mobile`, `address`, `email`, `password`) VALUES 
                 ('$memID', '$nic', '$fname', '$lname', '$phoneNumber', '$address', '$email', '$hashedPassword')");
                 

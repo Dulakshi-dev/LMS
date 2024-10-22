@@ -322,9 +322,11 @@ function register() {
         if (req.readyState == 4 && req.status == 200) {
             var resp = req.responseText.trim();
 
-            if (resp === "success") { 
-                alert(resp);
-                // showAlert("Success", "Successfully Registered", "success");
+            if (resp === "success") {
+                showAlert("Success", "Successfully Registered", "success").then(() => {
+                    // Redirect to member login page after the alert is closed
+                    window.location.href = "member-login.php";
+                });
             } else {
                 // Display error messages returned by the server
                 showAlert("Error", resp, "error");
@@ -384,7 +386,7 @@ tog.addEventListener("click",function(event){
 
 // showAlert function for alerts
 function showAlert(title, message, type) {
-    Swal.fire({
+    return Swal.fire({
         title: title,
         text: message,
         icon: type, // 'success', 'error', 'warning', 'info', 'question'

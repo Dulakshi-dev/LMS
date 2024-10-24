@@ -411,3 +411,30 @@ function dashboard_change_password(event){
         box2.style.display = "block";
     }
 }
+
+function loadUserData(id) { 
+   
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function() { 
+        if (req.readyState == 4 && req.status == 200) { 
+            var resp = req.responseText; 
+            var data = JSON.parse(resp); 
+             
+            document.getElementById("membership-id").value = data.id; 
+            document.getElementById("first-name").value = data.fname; 
+            document.getElementById("last-name").value = data.lname; 
+            document.getElementById("email").value = data.email; 
+            document.getElementById("phone").value = data.mobile; 
+            document.getElementById("address").value = data.lname; 
+            document.getElementById("nic").value = data.email; 
+            document.getElementById("phone").value = data.mobile; 
+             
+            
+   
+            document.getElementById("viewImg").src = profileImg; 
+        } 
+    }; 
+     
+    req.open("GET", "get-user-details.php?id=" + id, true); 
+    req.send(); 
+  } 

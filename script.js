@@ -438,3 +438,80 @@ function loadUserData(id) {
     req.open("GET", "get-user-details.php?id=" + id, true); 
     req.send(); 
   } 
+
+  function updateProfile() {
+
+    var membershipId = document.getElementById("membership-id").value; 
+    var firstName = document.getElementById("first-name").value; 
+    var lastName = document.getElementById("last-name").value; 
+    var email = document.getElementById("email").value; 
+    var phone = document.getElementById("phone").value; 
+    var address = document.getElementById("address").value; 
+    var nic = document.getElementById("nic").value; 
+
+    var form = new FormData(); 
+    form.append("membership-id", membershipId); 
+    form.append("first-name", firstName); 
+    form.append("last-name", lastName); 
+    form.append("email", email); 
+    form.append("phone", phone); 
+    form.append("address", address); 
+    form.append("nic", nic); 
+
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function() { 
+        if (req.readyState == 4 && req.status == 200) { 
+            var resp = req.responseText; 
+            if (resp.trim() === "success") { 
+                showAlert("Success", "Profile Updated Successfully!", "success").then(() => { 
+                    window.location.reload(); 
+                }); 
+            } else { 
+                showAlert("Error", resp, "error"); 
+            } 
+        } 
+    }; 
+    req.open("POST", "update-profile-process.php", true); 
+    req.send(form); 
+}
+
+
+function changepassword() {
+    var newPassword = document.getElementById("new-password").value;
+    var confirmPassword = document.getElementById("confirm-password").value;
+
+    // Password validation pattern: at least one uppercase letter, one lowercase letter, one digit, and minimum 5 characters
+    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,}$/;
+
+    // Check if new password and confirm password match
+    if (newPassword !== confirmPassword) {
+        showAlert("Error", "Passwords do not match!", "error");
+        return; // Stop further execution
+    }
+
+    // Validate new password against the pattern
+    if (!passwordPattern.test(newPassword)) {
+        showAlert("Error", "Password must contain at least one uppercase letter, one lowercase letter, one digit, and be at least 5 characters long.", "error");
+        return; // Stop further execution
+    }
+
+    var form = new FormData(); 
+    form.append("new-password", newPassword); 
+    form.append("confirm-password", confirmPassword); 
+
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function() { 
+        if (req.readyState == 4 && req.status == 200) {
+            var resp = req.responseText.trim();
+
+            if (resp === "success") {
+                showAlert("Success", "Password changed successfully", "success");
+            } else {
+                showAlert("Error", resp, "error");
+            }
+        }
+    };
+    
+    req.open("POST", "changepassword-process.php", true); 
+    req.send(form); 
+}

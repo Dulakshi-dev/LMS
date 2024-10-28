@@ -85,21 +85,6 @@
                                         <label for="nic">NIC Number</label>
                                         <input id="nic" class="form-control" type="text" name="">
                                     </div>
-                                    <div class="col-lg-6 col-sm-6 my-3 form-group">
-                                        <label for="dob">Date Of Birth</label>
-                                        <input id="dob" class="form-control" type="date" name="">
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-lg-6 col-sm-6 my-3 form-group">
-                                        <label for="district">District</label>
-                                        <input id="district" class="form-control" type="text" name="">
-                                    </div>
-                                    <div class="col my-3 form-group">
-                                        <label for="city">City</label>
-                                        <input id="city" class="form-control" type="text" name="">
-                                    </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end">

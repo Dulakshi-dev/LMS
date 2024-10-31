@@ -7,13 +7,18 @@ session_start();
 $username = $_POST["username"]; 
 $password = $_POST["password"]; 
 $rememberme = $_POST["rememberme"];
- 
+
+// $_SESSION['user_id'] = $username;       // Set user ID in session
+// $_SESSION['password'] = $password;    // Set username in session
+// $_SESSION['loggedin'] = true; 
+
 $result = Database::search("SELECT * FROM `member` WHERE `member_id`='".$username."' AND `password`='".$password."'"); 
     
 $num_of_rows = $result->num_rows; 
 if($num_of_rows == 1){ 
     $data = $result->fetch_assoc(); 
-    $_SESSION["member"] = $data; 
+    $_SESSION["user_id"] = $data["member_id"]; 
+  
 
     if ($rememberme == "true") {
 

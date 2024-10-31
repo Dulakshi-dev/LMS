@@ -1,3 +1,13 @@
+<?php 
+session_start();
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: member-login.php");
+    exit();
+}
+$user_id = $_SESSION["user_id"];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +25,8 @@
         }
     </style>
 </head>
-<body>
+<body onload="loadUserData('<?php echo $user_id; ?>');">
+
 
     <?php include "dash_header.php"; ?>
 
@@ -40,14 +51,16 @@
 
                         <div class="col-md-4 text-center">
                             <div class="m-4">
-                                <img class="rounded-circle" style="height: 200px; width: 200px;" src="img/use.jpg" alt="Profile Picture">
+                                <img class="rounded-circle" id="profileimg" style="height: 200px; width: 200px;" src="assets/profimg/user.jpg" alt="Profile Picture">
                             </div>
                             <div class="m-4">
-                                <input type="file" class="form-control" placeholder="Choose file">
+                        
+                                <input type="file" id="uploadimg" class="form-control" placeholder="Choose file" onchange="previewImage()">
+
                             </div>
                             <div class="m-4">
                                 <label for="membership-id">Membership ID</label>
-                                <input id="membership-id" type="text" class="form-control">
+                                <input id="membership-id" type="text" class="form-control" disabled>
                             </div>
                         </div>
 
@@ -64,10 +77,11 @@
                                     </div>
                                 </div>
 
+
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6 my-3 form-group">
                                         <label for="email">Email</label>
-                                        <input id="email" class="form-control" type="email" name="">
+                                        <input id="email" class="form-control" type="email" name="" disabled>
                                     </div>
                                     <div class="col my-3 form-group">
                                         <label for="phone">Phone</label>
@@ -77,19 +91,34 @@
 
                                 <div class="form-group my-3">
                                     <label for="address">Address</label>
-                                    <textarea id="address" class="form-control" name="" rows="3"></textarea>
+                                    <textarea id="address" class="form-control" name="" rows="2"></textarea>
                                 </div>
 
                                 <div class="row">
                                     <div class="col my-3 form-group">
                                         <label for="nic">NIC Number</label>
-                                        <input id="nic" class="form-control" type="text" name="">
+                                        <input id="nic" class="form-control" type="text" name="" disabled>
+                                    </div>
+                                    <div class="col-lg-6 col-sm-6 my-3 form-group">
+                                        <label for="dob">Date Of Birth</label>
+                                        <input id="dob" class="form-control" type="date" name="">
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-6 my-3 form-group">
+                                        <label for="district">District</label>
+                                        <input id="district" class="form-control" type="text" name="">
+                                    </div>
+                                    <div class="col my-3 form-group">
+                                        <label for="city">City</label>
+                                        <input id="city" class="form-control" type="text" name="">
                                     </div>
                                 </div>
 
                                 <div class="d-flex justify-content-end">
                                     <button class="btn btn-danger mx-4 mt-4" onclick="dashboard_change_password(event)">Reset Password</button>    
-                                    <button class="btn btn-primary mt-4 px-4">Save</button>
+                                    <button class="btn btn-primary mt-4 px-4" onclick="updateProfile();">Save</button>
                                 </div>
                             </form>
                         </div>
@@ -110,10 +139,12 @@
                             <div class="col-12 col-md-4 mb-2"><label for="confirm-password">Confirm Password</label></div>
                             <div class="col-12 col-md-8"><input id="confirm-password" class="form-control" type="password"></div>
                         </div>
+
+                        <div id="errormsg" class="text-danger">mnb</div>
                         
                         <div class="d-flex justify-content-end py-3 my-4">
-                            <button type="button" class="btn btn-primary px-5 mx-4">Back</button>
-                            <button type="submit" class="btn btn-danger px-5">Save</button>
+                            <button class="btn btn-primary px-5 mx-4">Back</button>
+                            <button class="btn btn-danger px-5" onclick="changepassword(event);">Save</button>
                         </div>
                     </form>
                 </div>
@@ -122,5 +153,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

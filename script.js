@@ -578,6 +578,28 @@ function changeUserStatus(id, status){
     req.open("GET", "get-product-details.php?id=" + id, true); 
     req.send(); 
   } 
+function loadUsers(page){ 
+   
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function(){ 
+        if(req.readyState == 4 && req.status== 200){ 
+            var resp = req.responseText; 
+            document.getElementById("content").innerHTML = resp; 
+        } 
+    }; 
+    req.open("GET","load-user-process.php?page="+page,true); 
+    req.send(); 
+  } 
+  
+
+
+
+
+
+
+
+
+
 
 
 

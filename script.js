@@ -407,8 +407,6 @@ function dashboard_change_password(event) {
 }
 
 function loadUserData(id) {
-
-
     var req = new XMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState == 4 && req.status == 200) {
@@ -433,8 +431,6 @@ function loadUserData(id) {
 
     req.open("GET", "get-member-details.php?id=" + id, true);
     req.send();
-
-
 }
 
 // Function to preview selected image
@@ -494,8 +490,6 @@ function updateProfile() {
 }
 
 
-
-
 function changepassword(event) {
     // Prevent the default form submission
     if (event) {
@@ -544,16 +538,46 @@ function changepassword(event) {
 }
 
 
+function changeUserStatus(id, status){ 
+    var req = new XMLHttpRequest(); 
+     
+   req.onreadystatechange = function(){ 
+       if(req.readyState == 4 && req.status== 200){ 
+           var resp = req.responseText; 
+           if(req.responseText.trim() === "success"){ 
+               window.location.reload(); 
+           }else{ 
+               alert(resp); 
+           } 
+       } 
+   }; 
+   req.open("GET","change-user-status-process.php?id="+id+"&s="+status,true); 
+   req.send(); 
+  } 
 
 
-
-
-
-
-
-
-
-
+  function loadUserUpdateData(id) { 
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function() { 
+        if(req.readyState == 4 && req.status == 200) { 
+            var resp = req.responseText; 
+            var data = JSON.parse(resp); 
+   
+            document.getElementById("").value = data.id; 
+            document.getElementById("").value = data.name; 
+            document.getElementById("").value = data.description; 
+            document.getElementById("").value = data.person_id; 
+            document.getElementById("").value = data.cat_id; 
+            document.getElementById("").value = data.brand_id; 
+            document.getElementById("").value = data.color_id; 
+            document.getElementById("").value = data.size_id; 
+           
+            new bootstrap.Modal(document.getElementById("updateProductModal")).show(); 
+        } 
+    }; 
+    req.open("GET", "get-product-details.php?id=" + id, true); 
+    req.send(); 
+  } 
 
 
 

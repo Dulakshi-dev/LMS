@@ -32,13 +32,13 @@
         <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
             <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
         </a>
-        <a href="user_profile.php" class="nav-link text-white py-2 border-bottom align-items-center">
+        <a href="user-profile.php" class="nav-link text-white py-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i>My Profile
         </a>
         <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
             <i class="fas fa-book mr-3"></i>Manage Books
         </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
+        <a href="user-management.php" class="nav-link text-white py-2 border-bottom align-items-center">
             <i class="fas fa-users mr-3"></i>Manage Users
         </a>
         <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">

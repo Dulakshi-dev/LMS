@@ -48,7 +48,7 @@
                 
                 <div class="form-group mt-3">
                     <label for="password">Password</label>
-                    <input class="form-control mt-2" placeholder="Enter Password" type="text" name="" id="password">
+                    <input class="form-control mt-2" placeholder="Enter Password" type="password" name="" id="password">
                     <span class="error text-danger" id="passwordError"></span>
                     
                 </div>

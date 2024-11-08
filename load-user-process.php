@@ -35,7 +35,7 @@
                         if ($row["status"] == '1') {
                         ?>
                             <div class="m-1">
-                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal"><i class="fa fa-edit" style="font-size: 10px"></i></button>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate(<?php echo $row['id']; ?>, 1);"><i class="fa fa-edit" style="font-size: 10px"></i></button>
                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
                             </div>
                             <div class="m-1">
@@ -47,7 +47,7 @@
                         } else {
                         ?>
                             <div class="m-1">
-                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal"><i class="fa fa-edit" style="font-size: 10px"></i></button>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate(<?php echo $row['id']; ?>, 1);"><i class="fa fa-edit" style="font-size: 10px"></i></button>
                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
                             </div>
                             <div class="m-1">
@@ -125,12 +125,12 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="nic">NIC</label>
-                                <input type="text" class="form-control" id="nic" placeholder="Enter NIC">
+                                <input type="text" class="form-control" id="NIC" placeholder="Enter NIC">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="userName">User's Name</label>
-                            <input type="text" class="form-control" id="userName" placeholder="Enter User's Name">
+                            <input type="text" class="form-control" id="username" placeholder="Enter User's Name">
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -147,7 +147,7 @@
                             <textarea class="form-control" id="address" rows="3" placeholder="Enter Address"></textarea>
                         </div>
                         <div class="form-group text-right">
-                            <button type="submit" class="btn btn-primary mt-3 px-4">Update User Details</button>
+                            <button type="submit" class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
                         </div>
                     </form>
                 

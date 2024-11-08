@@ -12,8 +12,8 @@ $password = $_POST["password"];
 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
                     
-                Database::iud("INSERT INTO `member`(`member_id`, `nic`, `fname`, `lname`, `mobile`, `address`, `email`, `password`) VALUES 
-                ('$memID', '$nic', '$fname', '$lname', '$phoneNumber', '$address', '$email', '$hashedPassword');");
+                Database::iud("INSERT INTO `member`(`member_id`, `nic`, `fname`, `lname`, `mobile`, `address`, `email`, `password`,`status`) VALUES 
+                ('$memID', '$nic', '$fname', '$lname', '$phoneNumber', '$address', '$email', '$hashedPassword','0');");
                 echo("success");     
        
 ?>

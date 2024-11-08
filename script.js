@@ -598,27 +598,52 @@ function loadUserDataUpdate(id) {
         if (req.readyState == 4 && req.status == 200) {
             var resp = req.responseText;
             var data = JSON.parse(resp);
-            
-            document.getElementById("membership-id").value = data.member_id;
-            document.getElementById("first-name").value = data.fname;
-            document.getElementById("last-name").value = data.lname;
+        
+            document.getElementById("membershipID").value = data.member_id;
+            document.getElementById("NIC").value = data.nic;
+            document.getElementById("username").value = data.fname + " " + data.lname; 
             document.getElementById("email").value = data.email;
-            document.getElementById("phone").value = data.mobile;
-            document.getElementById("address").value = data.address;
-            document.getElementById("nic").value = data.nic;
-
-            var profileImg = data.profile_img && data.profile_img.trim() !== "" ? data.profile_img : 'assets/profimg/user.jpg'; 
- 
-          document.getElementById("profileimg").src = profileImg; 
-
+            document.getElementById("phoneNumber").value = data.mobile;
+            document.getElementById("address").value = data.address; 
         }
     };
-
     req.open("GET", "get-member-details.php?id=" + id, true);
     req.send();
 }
 
-  
+function updateUserDetails() {
+   
+    var membershipId = document.getElementById("membershipID").value;
+    var nic = document.getElementById("NIC").value;
+    var username = document.getElementById("username").value;
+    var email = document.getElementById("email").value;
+    var phone = document.getElementById("phoneNumber").value;
+    var address = document.getElementById("address").value;
+    
+    // Create FormData and append all necessary fields
+    var form = new FormData();
+    form.append("membershipId", membershipId);
+    form.append("username", username);
+    form.append("email", email);
+    form.append("phone", phone);
+    form.append("address", address);
+    form.append("nic", nic);
+    
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            var resp = req.responseText.trim();
+            alert(resp);
+            if (resp === "success") {
+                window.location.reload();
+            } else {
+                alert(resp);
+            }
+        }
+    };
+    req.open("POST", "update-user-details-process.php", true);
+    req.send(form);
+}
 
 
 

@@ -14,7 +14,7 @@
 
     <div class="d-flex">
         <div class="nav-bar">
-            <?php include "dash_site_panel.php"; ?>
+            <?php include "dash_sidepanel.php"; ?>
         </div>
 
         <div class="form w-100">     

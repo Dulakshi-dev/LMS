@@ -592,7 +592,32 @@ function searchUsers(){
     req.send(form); 
 } 
    
+function loadUserDataUpdate(id) {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            var resp = req.responseText;
+            var data = JSON.parse(resp);
+            
+            document.getElementById("membership-id").value = data.member_id;
+            document.getElementById("first-name").value = data.fname;
+            document.getElementById("last-name").value = data.lname;
+            document.getElementById("email").value = data.email;
+            document.getElementById("phone").value = data.mobile;
+            document.getElementById("address").value = data.address;
+            document.getElementById("nic").value = data.nic;
+
+            var profileImg = data.profile_img && data.profile_img.trim() !== "" ? data.profile_img : 'assets/profimg/user.jpg'; 
  
+          document.getElementById("profileimg").src = profileImg; 
+
+        }
+    };
+
+    req.open("GET", "get-member-details.php?id=" + id, true);
+    req.send();
+}
+
   
 
 

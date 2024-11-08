@@ -18,15 +18,15 @@
             <div class="row m-4">
                 <!-- Search Inputs -->
                 <div class="col-md-3 mt-2">
-                    <input class="form-control" type="text" placeholder="Type Membership ID">
+                    <input id ="memberId" class="form-control" type="text" placeholder="Type Membership ID">
                 </div>
                 <div class="col-md-3 mt-2">
-                    <input class="form-control" type="text" placeholder="Type NIC">
+                    <input id="nic" class="form-control" type="text" placeholder="Type NIC">
                 </div>
                 <div class="col-md-6 mt-2">
                     <div class="d-flex">
-                        <input class="form-control" type="text" placeholder="Type User Name">
-                        <button class="btn btn-primary mx-3 px-3"><i class="fa fa-search"></i></button>
+                        <input id="userName" class="form-control" type="text" placeholder="Type User Name">
+                        <button class="btn btn-primary mx-3 px-3" onclick="searchUsers();"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>

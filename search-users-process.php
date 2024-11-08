@@ -11,16 +11,35 @@
             <th>Action</th>
         </tr>
     </thead>
-    <tbody>
-        <?php
-        include "connection.php";
-        $rs = Database::search("SELECT * FROM member");
-        $num = $rs->num_rows;
+    <tbody> 
+<?php 
+include "connection.php"; 
+$memberId =$_POST["memberId"]; 
+$nic =$_POST["nic"]; 
+$userName =$_POST["userName"]; 
 
-        for ($x = 0; $x < $num; $x++) {
-            $row = $rs->fetch_assoc();
-        ?>
-            <tr>
+$query = "SELECT * FROM `member` WHERE 1=1"; 
+
+if (!empty($memberId)) {
+    $query .= " AND `member_id` LIKE '%$memberId%'";
+}
+
+if (!empty($nic)) {
+    $query .= " AND `nic` LIKE '%$nic%'";
+}
+
+if (!empty($userName)) {
+    $query .= " AND `fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%'";
+}
+
+$rs = Database::search($query); 
+$num = $rs->num_rows; 
+ 
+if($num > 0){ 
+    for($x = 0; $x < $num; $x++){ 
+        $row = $rs->fetch_assoc(); 
+        ?>    
+             <tr>
                 <td><?php echo $row["member_id"]; ?></td>
                 <td><?php echo $row["nic"]; ?></td>
                 <td><?php echo $row["fname"] . " " . $row["lname"]; ?></td>
@@ -59,12 +78,16 @@
                         }
                         ?>
                 </td>
-            </tr>
-        <?php
-        }
-        ?>
-    </tbody>
+            </tr>   
+        <?php 
+    } 
+}else{ 
+    echo("User Not Found"); 
+} 
+?> 
+</tbody> 
 </table>
+
 
 <!-- Modal Mail-->
 <div class="modal fade" id="mailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

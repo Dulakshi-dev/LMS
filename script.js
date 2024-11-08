@@ -568,30 +568,31 @@ function changeUserStatus(id, status){
 } 
 
 
-//   function loadUserUpdateData(id) { 
-//     var req = new XMLHttpRequest(); 
-//     req.onreadystatechange = function() { 
-//         if(req.readyState == 4 && req.status == 200) { 
-//             var resp = req.responseText; 
-//             var data = JSON.parse(resp); 
+function searchUsers(){ 
    
-//             document.getElementById("").value = data.id; 
-//             document.getElementById("").value = data.name; 
-//             document.getElementById("").value = data.description; 
-//             document.getElementById("").value = data.person_id; 
-//             document.getElementById("").value = data.cat_id; 
-//             document.getElementById("").value = data.brand_id; 
-//             document.getElementById("").value = data.color_id; 
-//             document.getElementById("").value = data.size_id; 
-           
-//             new bootstrap.Modal(document.getElementById("updateProductModal")).show(); 
-//         } 
-//     }; 
-//     req.open("GET", "get-product-details.php?id=" + id, true); 
-//     req.send(); 
-//   } 
+    var memberId = document.getElementById("memberId"); 
+    var nic = document.getElementById("nic"); 
+    var userName = document.getElementById("userName"); 
+    
+   
+    var form = new FormData(); 
+    form.append("memberId",memberId.value); 
+    form.append("nic",nic.value); 
+    form.append("userName",userName.value); 
 
-
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function(){ 
+      
+        if(req.readyState == 4 && req.status == 200){ 
+          var resp = req.responseText; 
+          document.getElementById("content").innerHTML = resp; 
+        } 
+    } 
+    req.open("POST","search-users-process.php",true); 
+    req.send(form); 
+} 
+   
+ 
   
 
 

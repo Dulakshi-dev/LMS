@@ -35,9 +35,10 @@ CREATE TABLE `member` (
   `vcode` text,
   `profile_img` text,
   `status` int DEFAULT NULL,
+  `receipt` text,
   PRIMARY KEY (`id`),
   UNIQUE KEY `member_id_UNIQUE` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +47,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
+INSERT INTO `member` VALUES (5,'U-1111-2222','200180300633','Dulakshi','Gammanpila','0706789123','134, de Silva road, Panadura','dulakshigamma@gmail.com','Dcg$11029',NULL,'assets/profimg/672e1e804171a-download.jpeg',1,NULL),(8,'U-1111-2223','200180300612','Serini','Puwakgolla','0704567123','134, Ernest place, Moratuwa','dulakshigamma@gmail.com','$2y$10$C.Y3BQ7tXfIGeRZFBn9uieEFKduPIwmmSdSKNmeEN1DifV/oKVd7m',NULL,NULL,0,'assets/receipts/672f0e79c6852_download.jpeg');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,4 +118,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-08 11:25:33
+-- Dump completed on 2024-11-09 14:53:10

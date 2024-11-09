@@ -206,7 +206,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="nicNumber" class="my-2">Upload Receipt :</label>
-                                    <input type="file" class="form-control" id="reciept" placeholder="">
+                                    <input type="file" class="form-control" id="receipt" placeholder="">
                                     <div id="Receerror" class="text-danger"></div>
                                 </div>
                                 <div class="row mt-3">
@@ -280,7 +280,7 @@
     
                             <div>
                                 <input type="checkbox">
-                                <label for="">I agree the terms and conditions</label>
+                                <label for="" id="error">I agree the terms and conditions</label>
                             </div>
     
                             <div class="row text-center">

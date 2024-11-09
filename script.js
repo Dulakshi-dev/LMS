@@ -4,6 +4,7 @@ function isValidPassword(password) {
     var pattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,}$/;
     return pattern.test(password);
 }
+
 function staffLogin() {
 
     var username = document.getElementById('username').value.trim();
@@ -81,7 +82,6 @@ function memberLogin() {
         req.send(form);
     }
 }
-
 
 function forgotPassword() {
     var email = document.getElementById('email').value;
@@ -213,37 +213,36 @@ function box2() {
 }
 
 function box3() {
-    alert("ll");
+
     var email = document.getElementById("email").value;
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
+    var receipt = document.getElementById("receipt");
+   
     if (email === "") {
         document.getElementById("Emailerror").innerText = "Please enter email address";
     } else if (!emailPattern.test(email)) {
         document.getElementById("Emailerror").innerText = "Invalid Email";
-
+    }else if (receipt.files.length <= 0) {
+        document.getElementById("Emailerror").innerText = "Please Upload the Payment Receipt";
     } else {
+       
         document.getElementById("Emailerror").innerText = "";
         var req = new XMLHttpRequest();
         req.onreadystatechange = function () {
-
+            
             if (req.readyState == 4 && req.status == 200) {
-
+                
                 var resp = req.responseText;
                 alert(resp);
                 if (resp.trim() === "Check the email for otp") {
                     document.getElementById("Box3").classList.add("d-none");
                     document.getElementById("Box4").classList.remove("d-none");
                 }
-
             }
         }
 
         req.open("GET", "generate-otp.php?email=" + email, true);
         req.send();
-
-
     }
 }
 
@@ -282,6 +281,7 @@ function register() {
     var address = document.getElementById("address").value;
     var phoneNumber = document.getElementById("phoneNumber").value;
     var email = document.getElementById("email").value;
+    var receipt = document.getElementById("receipt");
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var password = document.getElementById("password").value;
@@ -297,7 +297,6 @@ function register() {
     } else if (password != cpassword) {
         document.getElementById("cperror").innerText = "Password does not match";
         document.getElementById("perror").innerText = "";
-
     } else {
         document.getElementById("cperror").innerText = "";
 
@@ -310,19 +309,17 @@ function register() {
         form.append("fname", fname);
         form.append("lname", lname);
         form.append("password", password);
-
+        form.append("receipt", receipt.files[0]);
+        
         var req = new XMLHttpRequest();
         req.onreadystatechange = function () {
             if (req.readyState == 4 && req.status == 200) {
                 var resp = req.responseText.trim();
-
                 if (resp === "success") {
                     showAlert("Success", "Successfully Registered", "success").then(() => {
-                        // Redirect to member login page after the alert is closed
                         window.location.href = "member-login.php";
                     });
                 } else {
-                    // Display error messages returned by the server
                     showAlert("Error", resp, "error");
                 }
             }
@@ -331,8 +328,6 @@ function register() {
         req.send(form);
     }
 }
-
-
 
 function back1() {
     document.getElementById("Box2").classList.add("d-none");
@@ -413,7 +408,6 @@ function loadUserData(id) {
             var resp = req.responseText;
             var data = JSON.parse(resp);
 
-
             document.getElementById("membership-id").value = data.member_id;
             document.getElementById("first-name").value = data.fname;
             document.getElementById("last-name").value = data.lname;
@@ -433,7 +427,6 @@ function loadUserData(id) {
     req.send();
 }
 
-// Function to preview selected image
 function previewImage() {
     var imgfile = document.getElementById("uploadimg");
     var profimg = document.getElementById("profileimg");
@@ -445,7 +438,6 @@ function previewImage() {
         console.log("Preview URL:", previewUrl); // For debugging
     }
 }
-
 
 function updateProfile() {
     var membershipId = document.getElementById("membership-id").value;
@@ -488,7 +480,6 @@ function updateProfile() {
     req.open("POST", "update-profile-process.php", true);
     req.send(form);
 }
-
 
 function changepassword(event) {
     // Prevent the default form submission
@@ -566,7 +557,6 @@ function changeUserStatus(id, status){
    req.open("GET","change-user-status-process.php?id="+id+"&s="+status,true); 
    req.send(); 
 } 
-
 
 function searchUsers(){ 
    

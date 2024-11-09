@@ -1,3 +1,13 @@
+<?php 
+session_start();
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: member-login.php");
+    exit();
+}
+$user_id = $_SESSION["user_id"];
+?>
+
 <table class="table">
     <thead class="thead-light text-center">
         <tr>
@@ -35,7 +45,7 @@
                         if ($row["status"] == '1') {
                         ?>
                             <div class="m-1">
-                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate(<?php echo $row['id']; ?>, 1);"><i class="fa fa-edit" style="font-size: 10px"></i></button>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate('<?php echo $user_id; ?>');"><i class="fa fa-edit" style="font-size: 10px"></i></button>
                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
                             </div>
                             <div class="m-1">
@@ -47,7 +57,7 @@
                         } else {
                         ?>
                             <div class="m-1">
-                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate(<?php echo $row['id']; ?>, 1);"><i class="fa fa-edit" style="font-size: 10px"></i></button>
+                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate('<?php echo $user_id; ?>');"><i class="fa fa-edit" style="font-size: 10px"></i></button>
                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
                             </div>
                             <div class="m-1">

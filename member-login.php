@@ -70,7 +70,7 @@
                     
                     <div class="form-group mt-3">
                         <label for="password">Password</label>
-                        <input class="form-control mt-2" placeholder="Enter your password" type="text" name="" id="password" value="<?php echo $password; ?>" >
+                        <input class="form-control mt-2" placeholder="Enter your password" type="password" name="" id="password" value="<?php echo $password; ?>" >
                         <span class="error text-danger" id="passwordError"></span>
                         
                     </div>

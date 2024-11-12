@@ -212,6 +212,8 @@ function box2() {
     }
 }
 
+
+
 function box3() {
 
     var email = document.getElementById("email").value;
@@ -233,10 +235,11 @@ function box3() {
             if (req.readyState == 4 && req.status == 200) {
                 
                 var resp = req.responseText;
-                alert(resp);
+                
                 if (resp.trim() === "Check the email for otp") {
                     document.getElementById("Box3").classList.add("d-none");
                     document.getElementById("Box4").classList.remove("d-none");
+
                 }
             }
         }
@@ -244,6 +247,31 @@ function box3() {
         req.open("GET", "generate-otp.php?email=" + email, true);
         req.send();
     }
+}
+
+
+function startOTPTimer() {
+    
+    let otpDuration = 60 * 1; // 5 minutes in seconds
+    let display = document.querySelector('#timer'); // Timer display element
+
+    let timer = otpDuration, minutes, seconds;
+    const countdownInterval = setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes + " min : " + seconds + " sec";
+
+        if (--timer < 0) {
+            clearInterval(countdownInterval);
+            display.textContent = "00 min 00 sec";
+            document.getElementById("otperror").innerText = "OTP Expired";
+
+        }
+    }, 1000);
 }
 
 function box4() {
@@ -267,6 +295,9 @@ function box4() {
 
                 document.getElementById("Box4").classList.add("d-none");
                 document.getElementById("Box5").classList.remove("d-none");
+               
+            }else{
+                document.getElementById("otperror").innerText = resp;
             }
         }
     }
@@ -274,7 +305,19 @@ function box4() {
     req.send(form);
 
 }
+function resendOtp(){
+    box3();
+    document.getElementById("otperror").innerText = "";
 
+    document.getElementById("otp1").value = "";
+    document.getElementById("otp2").value = "";
+    document.getElementById("otp3").value = "";
+    document.getElementById("otp4").value = "";
+    document.getElementById("otp5").value = "";
+    document.getElementById("otp6").value = "";
+    startOTPTimer();
+
+}
 function register() {
     var memId = document.getElementById("membershipID").value;
     var nic = document.getElementById("NICNumber").value;
@@ -286,19 +329,21 @@ function register() {
     var lname = document.getElementById("lname").value;
     var password = document.getElementById("password").value;
     var cpassword = document.getElementById("cpassword").value;
+    var checkbox = document.getElementById("agreeCheckbox");
 
     var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,}$/; // At least one uppercase letter, one lowercase letter, one digit, and minimum 5 characters
 
     if (password === "") {
-        document.getElementById("perror").innerText = "Please Enter the password";
+        document.getElementById("registerError").innerText = "Please Enter the password";
     }// Validate password
     else if (!passwordPattern.test(password)) {
-        document.getElementById("perror").innerText = "Invalid password. It must be at least 5 characters long, and include at least one uppercase letter, one lowercase letter, and one number.";
+        document.getElementById("registerError").innerText = "Invalid password. It must be at least 5 characters long, and include at least one uppercase letter, one lowercase letter, and one number.";
     } else if (password != cpassword) {
-        document.getElementById("cperror").innerText = "Password does not match";
-        document.getElementById("perror").innerText = "";
-    } else {
-        document.getElementById("cperror").innerText = "";
+        document.getElementById("registerError").innerText = "Password does not match";
+    } else if(!checkbox.checked){
+        document.getElementById("registerError").innerText = "You must agree to the terms and conditions to proceed";
+    }else {
+        document.getElementById("registerError").innerText = "";
 
         var form = new FormData();
         form.append("memID", memId);

@@ -214,7 +214,7 @@
                                         <button type="button" class="bt" id="backButton3" onclick = "back2();">BACK</button> <!-- Back button -->
                                     </div>
                                     <div class="col d-flex justify-content-end">
-                                        <button id="btn3" class="bt" onclick = "box3();">NEXT</button> <!-- Submit form button -->
+                                        <button id="btn3" class="bt" onclick = "box3(); startOTPTimer();">NEXT</button> <!-- Submit form button -->
                                     </div>
                                 </div>
                             </div>    
@@ -223,8 +223,8 @@
 
                     <div id="Box4" class="d-none">
                         <h5 class="mb-2">Enter OTP</h5>
-                        <p>We have sent an OTP to your mobile number <span class="phone-number">071xxxxxxx</span></p>
-                        <p><span class="otp-timer text-warning">OTP expires in <span id="timer">1m : 52s</span></span></p>
+                        <p>We have sent an OTP to your email address</p>
+                        <p><span class="otp-timer text-warning">OTP expires in <span id="timer">5 min : 00 sec</span></span></p>
     
                         
                             <div class="otp-inputs d-flex justify-content-between mb-4">
@@ -235,8 +235,9 @@
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp5">
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp6">
                             </div>
+                            <div id="otperror" class="text-danger"></div>
 
-                            <p class="resend-text">Don't receive? <a href="#" class="" id="resend-link">Resend OTP</a></p>
+                            <p class="resend-text">Don't receive? <a href="#" class="" id="resend-link" onclick = "resendOtp();">Resend OTP</a></p>
 
                             <div class="row">
                                 <div class="col">
@@ -269,19 +270,22 @@
                                 <div class="col-md-6">
                                     <label for="password" class="my-1">Password:</label>
                                     <input type="password" class="form-control" id="password" placeholder="Enter Password">
-                                    <div id="perror" class="text-danger"></div>
+                                    
                                 </div>
                                 <div class="col-md-6">
                                     <label for="cpassword" class="my-1">Confirm Password:</label>
                                     <input type="password" class="form-control" id="cpassword" placeholder="Confirm password">
-                                    <div id="cperror" class="text-danger"></div>
+                                    
                                 </div>
                             </div>
+
     
                             <div>
-                                <input type="checkbox">
-                                <label for="" id="error">I agree the terms and conditions</label>
+                                <input type="checkbox" id="agreeCheckbox">
+                                <label for="">I agree the terms and conditions</label>
                             </div>
+
+                            <div id="registerError" class="text-danger"></div>
     
                             <div class="row text-center">
                                 <div class="col text-white">

@@ -77,42 +77,41 @@ $user_id = $_SESSION["user_id"];
 </table>
 
 <!-- Modal Mail-->
-<div class="modal fade" id="mailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="d-flex justify-content-between align-items-center m-3">
-                <h3 class="mb-0">Send Email</h3>
-                <i class="fa fa-close text-black" style="cursor: pointer;" data-bs-dismiss="modal" aria-label="Close"></i>
-            </div>    
-            <div class="border border-2"></div>
-            <div class="row">
-                <div class="p-5">
-                    <form>
-                        <div class="form-group">
-                            <label for="From">From</label>
-                            <input type="text" class="form-control" id="From">
+<div class="modal fade" id="mailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="d-flex justify-content-between align-items-center m-3">
+                    <h3 class="mb-0">Send Email</h3>
+                    <i class="fa fa-close text-black" style="cursor: pointer;" data-bs-dismiss="modal" aria-label="Close"></i>
+                </div>    
+                <div class="border border-2"></div>
+                <div class="p-4">
+                    <form action="index.php" method="POST">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" class="form-control" id="name" name="name">
                         </div>
-                        <div class="form-group">
-                            <label for="To">To</label>
-                            <input type="text" class="form-control" id="To">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">User Email</label>
+                            <input type="email" class="form-control" id="email" name="email">
                         </div>
-                        <div class="form-group">
-                            <label for="Subject">Subject</label>
-                            <input type="text" class="form-control" id="Subject">
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" name="subject">
                         </div>
-                        <div class="form-group">
-                            <label for="Message">Message</label>
-                            <textarea class="form-control" id="Message" rows="3"></textarea>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Your Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="3"></textarea>
                         </div>
-                        <div class="form-group text-right">
-                            <button type="submit" class="btn btn-primary mt-3 px-4">Send</button>
+                        <div class="text-end">
+                        <button type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
+
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- Modal Update details-->
 <div class="modal fade" id="updateDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

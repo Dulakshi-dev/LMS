@@ -8,7 +8,8 @@ class Database{
 
         if (!isset(Database::$connection)) {
             Database::$connection = new mysqli("localhost", "root", "Dg$11029", "library_db", "3306");
-        }
+        }        
+        // Dg$11029
     }
 
     public static function iud($query) {

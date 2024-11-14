@@ -77,7 +77,7 @@ $user_id = $_SESSION["user_id"];
 </table>
 
 <!-- Modal Mail-->
-<div class="modal fade" id="mailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mailModalLabel" aria-hidden="true">
+<div class="modal fade" id="mailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="d-flex justify-content-between align-items-center m-3">
@@ -88,7 +88,7 @@ $user_id = $_SESSION["user_id"];
                 <div class="p-4">
                     <form action="index.php" method="POST">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Your Name</label>
+                            <label for="name" class="form-label">User Name</label>
                             <input type="text" class="form-control" id="name" name="name">
                         </div>
                         <div class="mb-3">
@@ -100,11 +100,12 @@ $user_id = $_SESSION["user_id"];
                             <input type="text" class="form-control" id="subject" name="subject">
                         </div>
                         <div class="mb-3">
-                            <label for="message" class="form-label">Your Message</label>
+                            <label for="message" class="form-label">Message</label>
                             <textarea class="form-control" id="message" name="message" rows="3"></textarea>
                         </div>
+                        <div id="error" class="text-danger"></div>
                         <div class="text-end">
-                        <button type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
+                        <button data-bs-dismiss="modal" type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
 
                         </div>
                     </form>

@@ -626,25 +626,6 @@ function searchUsers(){
     req.open("POST","search-users-process.php",true); 
     req.send(form); 
 } 
-   
-// function loadUserDataUpdate(id) {
-//     var req = new XMLHttpRequest();
-//     req.onreadystatechange = function () {
-//         if (req.readyState == 4 && req.status == 200) {
-//             var resp = req.responseText;
-//             var data = JSON.parse(resp);
-        
-//             document.getElementById("membershipID").value = data.member_id;
-//             document.getElementById("NIC").value = data.nic;
-//             document.getElementById("username").value = data.fname + " " + data.lname; 
-//             document.getElementById("email").value = data.email;
-//             document.getElementById("phoneNumber").value = data.mobile;
-//             document.getElementById("address").value = data.address; 
-//         }
-//     };
-//     req.open("GET", "get-member-details.php?id=" + id, true);
-//     req.send();
-// }
 
 function loadUserDataUpdate(id) {
     var req = new XMLHttpRequest();
@@ -706,7 +687,8 @@ function updateUserDetails() {
 }
 
 function sendEmail() {
-    var name = document.getElementById("name").value;
+    
+    //var name = document.getElementById("name").value;
     var email = document.getElementById("email").value;
     var subject = document.getElementById("subject").value;
     var message = document.getElementById("message").value;
@@ -714,9 +696,10 @@ function sendEmail() {
     var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email format check
 
     // Validation checks
-    if (name === "") {
-        document.getElementById("error").innerText = "Please enter your name";
-    } else if (!emailPattern.test(email)) {
+    // if (name === "") {
+    //     document.getElementById("error").innerText = "Please enter your name";
+    // } else
+    if (!emailPattern.test(email)) {
         document.getElementById("error").innerText = "Please enter a valid email address";
     } else if (subject === "") {
         document.getElementById("error").innerText = "Please enter a subject";
@@ -727,7 +710,7 @@ function sendEmail() {
 
         // Prepare form data for sending
         var formData = new FormData();
-        formData.append("name", name);
+        // formData.append("name", name);
         formData.append("email", email);
         formData.append("subject", subject);
         formData.append("message", message);
@@ -739,20 +722,14 @@ function sendEmail() {
                 var resp = req.responseText.trim();
                 if (resp === "success") {
                     alert("Email sent successfully!");
-                    // Optionally, clear form fields
-                    document.getElementById("name").value = "";
-                    document.getElementById("email").value = "";
-                    document.getElementById("subject").value = "";
-                    document.getElementById("message").value = "";
-                    // Hide modal
-                    var mailModal = new bootstrap.Modal(document.getElementById("mailModal"));
-                    mailModal.hide();
+                    
                 } else {
+                    alert("error");
                     document.getElementById("error").innerText = "Failed to send email. Please try again.";
                 }
             }
         };
-        req.open("POST", "sendmail.php", true);
+        req.open("POST", "sendmail-process.php", true);
         req.send(formData);
     }
 }

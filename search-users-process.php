@@ -133,8 +133,6 @@ if($num > 0){
             <div class="d-flex justify-content-between align-items-center m-3">
                 <h3 class="mb-0">Edit User Detail</h3>
                 <i class="fa fa-close text-black" style="cursor: pointer;" data-bs-dismiss="modal" aria-label="Close"></i>
-                    
-                
              </div>    
             <div class="border border-2"></div>
             <div class="p-3">

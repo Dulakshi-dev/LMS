@@ -87,8 +87,8 @@
                 <input type="text" class="form-control" placeholder="Type Book Name">
             </div>
             <div class="col-md-6 d-flex my-3">
-            <input type="text" class="form-control" placeholder="Type IBSM">
-            <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search"></i></button>
+                <input type="text" class="form-control" placeholder="Type IBSM">
+                <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </div>

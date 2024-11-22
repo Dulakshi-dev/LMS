@@ -734,6 +734,18 @@ function sendEmail() {
     }
 }
 
+function loadBooks(page){  
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function(){ 
+        if(req.readyState == 4 && req.status== 200){ 
+        
+            document.getElementById("content").innerHTML = req.responseText; 
+          
+        } 
+    }; 
+    req.open("GET","load-book-process.php?page="+page,true); 
+    req.send(); 
+} 
 
 
 

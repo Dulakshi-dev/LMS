@@ -292,7 +292,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'200180300611','Dulakshi','Gammanpila','0706789123','xb','dulakshigamma@gmail.com',NULL,'mk','',1,1),(2,'123456789V','John','Doe','0771234567','123 Main St','john@example.com',NULL,NULL,'assets/receipts/672f0e79c6852_download.jpeg',2,1);
+INSERT INTO `user` VALUES (1,'200180300611','Dulakshi','Gammanpila','0706789123','xb','dulakshigamma@gmail.com',NULL,'mk','',1,2),(2,'123456789V','John','Doe','0771234567','123 Main St','john@example.com',NULL,NULL,'assets/receipts/672f0e79c6852_download.jpeg',2,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -370,4 +370,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-27 10:42:31
+-- Dump completed on 2024-11-27 14:31:51

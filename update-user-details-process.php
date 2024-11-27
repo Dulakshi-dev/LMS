@@ -28,12 +28,12 @@ if (empty($firstName)) {
 } else if (empty($nic)) { 
     echo "Please enter the NIC number"; 
 } else { 
-    $rs = Database::search("SELECT * FROM member WHERE member_id='$memberId'"); 
+    $rs = Database::search("SELECT * FROM `login` WHERE user_id='$memberId'"); 
     $data = $rs->fetch_assoc();  
     $num = $rs->num_rows;
 
     if ($num > 0) {
-        Database::iud("UPDATE member SET `fname`='$firstName', `lname`='$lastName', `mobile`='$phone', `email`='$email', `address`='$address', `nic`='$nic' WHERE `member_id`='$memberId'"); 
+        Database::iud("UPDATE `user` SET `fname`='$firstName', `lname`='$lastName', `mobile`='$phone', `email`='$email', `address`='$address', `nic`='$nic' WHERE `id`='{$data['userId']}'"); 
         echo "success";
     } else {
         echo "User not found";

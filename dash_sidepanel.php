@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,11 +26,39 @@
 
     <div id="sidepanel" class=" bg-dark text-white" style="width: 250px; height: 100%;">
 
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
-            <img class="m-2" src="img/use.jpg" style="width: 20%; border-radius: 50%;"  alt=""></i>Librarian Name
-            <span></span>
+    <?php
+
+
+    if (isset($_SESSION["module"]) && !empty($_SESSION["module"])) {
+        
+        foreach ($_SESSION["module"] as $module) {
+
+        $file_name = strtolower(str_replace(' ', '-', $module)) . ".php";
+            
+        ?>
+        <a href="<?php echo $file_name ?>" class="nav-link text-white py-2 border-bottom align-items-center">
+        <i class="fas fa-tachometer-alt mr-3"></i>
+                <?php
+                echo  $module ;
+                
+                ?>
+            </a>
+        <?php
+            
+        }
+?>
+        <a href="user-profile.php" class="nav-link text-white py-2 border-bottom align-items-center">
+            <i class="fas fa-user mr-3"></i>My Profile
         </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
+        <?php
+        
+    } else {
+        echo "No modules available.";
+    }
+    ?>
+
+        
+        <!-- <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
             <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
         </a>
         <a href="user-profile.php" class="nav-link text-white py-2 border-bottom align-items-center">
@@ -58,7 +87,7 @@
         </a>
         <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
             <i class="fas fa-info-circle mr-3"></i>About Software
-        </a>
+        </a> -->
     </div>
 </body>
 </html>

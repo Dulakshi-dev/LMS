@@ -31,8 +31,8 @@ function staffLogin() {
                 var resp = req.responseText;
 
                 if (resp.trim() === "success") {
-                    alert("success");
-                    //window.location();
+                    
+                    window.location = "dashboard.php";
 
                 } else {
                     document.getElementById("errormsg").innerHTML = resp;
@@ -56,11 +56,10 @@ function memberLogin() {
     document.getElementById('passwordError').innerText = '';
 
     if (username === '') {
-        document.getElementById('usernameError').innerText = 'Username is required.';
+        document.getElementById('usernameError').innerText = 'User ID is required.';
     } else if (password === '') {
         document.getElementById('passwordError').innerText = 'Password is required.';
-    }
-    else {
+    }else {
         var form = new FormData();
         form.append("username", username);
         form.append("password", password);
@@ -77,9 +76,9 @@ function memberLogin() {
                     document.getElementById("errormsgdiv").classList.remove("d-none");
                 }
             }
-        }
-        req.open("POST", "member-login-process.php", true);
-        req.send(form);
+    }
+    req.open("POST", "member-login-process.php", true);
+    req.send(form);
     }
 }
 
@@ -134,7 +133,7 @@ function resetPassword() {
             if (req.readyState == 4 && req.status == 200) {
                 var resp = req.responseText;
                 alert(resp);
-                window.location = "member-login.php";
+                window.location = "staff-login.php";
             }
         }
         req.open("POST", "reset-password-process.php", true);
@@ -362,7 +361,7 @@ function register() {
                 var resp = req.responseText.trim();
                 if (resp === "success") {
                     showAlert("Success", "Successfully Registered", "success").then(() => {
-                        window.location.href = "member-login.php";
+                        window.location.href = "staff-login.php";
                     });
                 } else {
                     showAlert("Error", resp, "error");
@@ -453,7 +452,7 @@ function loadUserData(id) {
             var resp = req.responseText;
             var data = JSON.parse(resp);
 
-            document.getElementById("membership-id").value = data.member_id;
+            document.getElementById("membership-id").value = data.user_id;
             document.getElementById("first-name").value = data.fname;
             document.getElementById("last-name").value = data.lname;
             document.getElementById("email").value = data.email;
@@ -532,13 +531,12 @@ function changepassword(event) {
         event.preventDefault();
     }
 
-   
     var memberID = document.getElementById("membership-id").value;
     var newPassword = document.getElementById("new-password").value;
     var confirmPassword = document.getElementById("confirm-password").value;
 
     var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{5,}$/; // At least one uppercase letter, one lowercase letter, one digit, and minimum 5 characters
-   
+ 
 
     // Password validation
     if (newPassword == "") {
@@ -548,6 +546,7 @@ function changepassword(event) {
     } else if (newPassword != confirmPassword) {
         document.getElementById("errormsg").innerText = "Password does not match";
     } else {
+    
     
         document.getElementById("errormsg").innerText = "";
         var form = new FormData();
@@ -567,6 +566,7 @@ function changepassword(event) {
                 } 
             }
         };
+
 
         req.open("POST", "changepassword-process.php", true);
         req.send(form);
@@ -646,15 +646,17 @@ function searchBooks() {
 
 
 function loadUserDataUpdate(id) {
+    
     var req = new XMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState == 4 && req.status == 200) {
             var resp = req.responseText;
             var data = JSON.parse(resp);
             
-            document.getElementById("membershipID").value = data.member_id;
+            document.getElementById("membershipID").value = data.user_id;
             document.getElementById("NIC").value = data.nic;
             document.getElementById("username").value = data.fname + " " + data.lname; 
+            document.getElementById("email").value = data.email;
             document.getElementById("phoneNumber").value = data.mobile;
             document.getElementById("address").value = data.address; 
 
@@ -764,6 +766,27 @@ function loadBooks(page){
     req.open("GET","load-book-process.php?page="+page,true); 
     req.send(); 
 } 
+
+function searchBooks() {
+    var bookId = document.getElementById("bookId");
+    var title = document.getElementById("title");
+    var author = document.getElementById("author");
+
+    var form = new FormData();
+    form.append("bookId", bookId.value);
+    form.append("title", title.value);
+    form.append("author", author.value);
+
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            var resp = req.responseText;
+            document.getElementById("content").innerHTML = resp;
+        }
+    };
+    req.open("POST", "search-book-process.php", true);
+    req.send(form);
+}
 
 
 

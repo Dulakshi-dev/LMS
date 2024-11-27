@@ -18,10 +18,10 @@ $memberId =$_POST["member_id"];
 $nic =$_POST["nic"]; 
 $userName =$_POST["userName"]; 
 
-$query = "SELECT * FROM `member` WHERE 1=1"; 
+$query = "SELECT * FROM `user` INNER JOIN `login` ON `user`.`id`=`login`.`userId` WHERE 1=1"; 
 
 if (!empty($memberId)) {
-    $query .= " AND `member_id` LIKE '%$memberId%'";
+    $query .= " AND `user_id` LIKE '%$memberId%'";
 }
 
 if (!empty($nic)) {
@@ -40,13 +40,13 @@ if($num > 0){
         $row = $rs->fetch_assoc(); 
         ?>    
              <tr>
-                <td><?php echo $row["member_id"]; ?></td>
+                <td><?php echo $row["user_id"]; ?></td>
                 <td><?php echo $row["nic"]; ?></td>
                 <td><?php echo $row["fname"] . " " . $row["lname"]; ?></td>
                 <td><?php echo $row["address"]; ?></td>
                 <td><?php echo $row["mobile"]; ?></td>
                 <td><?php echo $row["email"]; ?></td>
-                <td><img src="<?php echo $row["profile_img"]; ?>" width="50" height="50"></td>
+                <td><img src="<?php echo $row["receipt"]; ?>" width="50" height="50"></td>
                 
 
                 <td>

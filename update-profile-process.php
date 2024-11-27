@@ -23,20 +23,20 @@ if (empty($firstName)) {
 } else if (empty($nic)) { 
     echo "Please enter the NIC number"; 
 } else { 
-    $rs = Database::search("SELECT * FROM member WHERE member_id='$memberId'"); 
+    $rs = Database::search("SELECT * FROM `login` WHERE `user_id`='$memberId'"); 
     $data = $rs->fetch_assoc();  
-    $imgPath = $data["profile_img"] ?? "assets/profimg/user.jpg";
+    // $imgPath = $data["profile_img"] ?? "assets/profimg/user.jpg";
 
-    if (isset($_FILES["img"]) && !empty($_FILES["img"]["name"])) { 
-        if (!empty($imgPath) && file_exists($imgPath) && $imgPath != "assets/profimg/user.jpg") { 
-            unlink($imgPath); 
-        }    
-        $imgPath = "assets/profimg/" . uniqid() . "-" . basename($_FILES["img"]["name"]);     
-        move_uploaded_file($_FILES["img"]["tmp_name"], $imgPath); 
-    } 
+    // if (isset($_FILES["img"]) && !empty($_FILES["img"]["name"])) { 
+    //     if (!empty($imgPath) && file_exists($imgPath) && $imgPath != "assets/profimg/user.jpg") { 
+    //         unlink($imgPath); 
+    //     }    
+    //     $imgPath = "assets/profimg/" . uniqid() . "-" . basename($_FILES["img"]["name"]);     
+    //     move_uploaded_file($_FILES["img"]["tmp_name"], $imgPath); 
+    // } 
 
     if ($data) {
-        Database::iud("UPDATE member SET `fname`='$firstName', `lname`='$lastName', `mobile`='$phone', `email`='$email', `address`='$address', `nic`='$nic',`profile_img`='$imgPath' WHERE `member_id`='$memberId'"); 
+        Database::iud("UPDATE `user` SET `fname`='$firstName', `lname`='$lastName', `mobile`='$phone', `email`='$email', `address`='$address', `nic`='$nic',`receipt`='$imgPath' WHERE `id`='{$data['userId']}'"); 
         echo "success";
     } else {
         echo "User not found";

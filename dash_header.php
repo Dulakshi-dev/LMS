@@ -1,3 +1,12 @@
+<?php
+
+
+    $fname = $_SESSION["staff"]["fname"];
+    $lname = $_SESSION["staff"]["lname"];
+    $role_name = $_SESSION["staff"]["role_name"];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,10 +44,26 @@
             </div>
             <div class="col d-flex justify-content-end">
                 <nav>
-                    <ul class="inline">
-                        <li class="list-inline-item"><a class="text-white text-decoration-none" href="#"><i class="fa fa-bell mr-3"></i></a></li>
-                        <li class="list-inline-item"><a id="prof" class="text-white text-decoration-none" href="#"><img src="img/use.jpg"  class="mr-2" alt="">Librarian Name</a></li>
-                    </ul>
+                <ul class="inline d-flex align-items-center">
+                    
+                    <li class="list-inline-item">
+                        <a class="text-white text-decoration-none" href="#">
+                            <i class="fa fa-bell mr-3"></i>
+                        </a>
+                    </li>
+                    
+                    <li class="list-inline-item d-flex align-items-center">
+                        <a id="prof" class="text-white text-decoration-none d-flex align-items-center" href="#">
+                            <img src="img/use.jpg" class="mr-2 rounded-circle" alt="" style="width: 40px; height: 40px;">
+                            <div class="text-left">
+                                <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
+                                <small><?php echo $role_name; ?></small>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+
                 </nav>
             </div>
         </div>

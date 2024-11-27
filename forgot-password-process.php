@@ -15,7 +15,7 @@ if(empty($email)){
     echo("Please enter your email address"); 
 }else{ 
 
-    $rs = Database::search("SELECT * FROM `member` WHERE `email`='$email'"); 
+    $rs = Database::search("SELECT * FROM `user` WHERE `email`='$email'"); 
     $num = $rs->num_rows; 
  
     if($num > 0){ 
@@ -24,7 +24,7 @@ if(empty($email)){
         $vcode = uniqid(); 
         $name = $row["fname"]." ".$row["lname"];
 
-        Database::iud("UPDATE `member` SET `vcode` = '$vcode' WHERE `id`='".$row["id"]."'"); 
+        Database::iud("UPDATE `user` SET `vcode` = '$vcode' WHERE `id`='".$row["id"]."'"); 
         $mail = new PHPMailer(true); 
         try { 
             $mail->isSMTP(); 

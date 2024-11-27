@@ -4,7 +4,8 @@
             <th>ISBN</th>
             <th>Cover Page</th>
             <th>Book Name</th>
-            <th>Description</th>
+            <th>Author</th>
+            <th>Published Year</th>
             <th>Category</th>
             <th>Qty</th>
             <th>Borrowed</th>
@@ -29,13 +30,14 @@
                 <td>Image</td>
                 <td><?php echo $row["title"]; ?></td>
                 <td><?php echo $row["author"]; ?></td>
+                <td><?php echo $row["pub_year"]; ?></td>
                 <td><?php echo $row["category_name"]; ?></td>
                 <td><?php echo $row["qty"]; ?></td>
                 <td><?php echo $row["qty"] - $row["available_qty"]; ?></td>
                 <td>
                 
                     <div class="m-1">
-                        <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#updateBookDetailsModal" onclick="loadUserDataUpdate('<?php echo $user_id; ?>');"><i class="fas fa-edit"></i></span>
+                        <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#updateBookDetailsModal"><i class="fas fa-edit"></i></span>
                         <span class="btn btn-danger my-1 btn-sm"><i class="fas fa-trash-alt"></i></span>
                     </div>
                 </td>

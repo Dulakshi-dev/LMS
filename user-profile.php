@@ -1,11 +1,13 @@
 <?php 
 session_start();
 
-if (!isset($_SESSION["user_id"])) {
-    header("Location: member-login.php");
+if (!isset($_SESSION["staff"])) {
+    header("Location: staff-login.php");
     exit();
 }
-$user_id = $_SESSION["user_id"];
+
+$user_id = $_SESSION["staff"]["user_id"];
+
 ?>
 
 <!DOCTYPE html>
@@ -140,7 +142,7 @@ $user_id = $_SESSION["user_id"];
                             <div class="col-12 col-md-8"><input id="confirm-password" class="form-control" type="password"></div>
                         </div>
 
-                        <div id="errormsg" class="text-danger">mnb</div>
+                        <div id="errormsg" class="text-danger"></div>
                         
                         <div class="d-flex justify-content-end py-3 my-4">
                             <button class="btn btn-primary px-5 mx-4">Back</button>

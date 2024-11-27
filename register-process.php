@@ -14,8 +14,8 @@ $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 $receiptPath = '';
 if (isset($_FILES['receipt']) && $_FILES['receipt']['error'] == UPLOAD_ERR_OK) {
     $receipt = $_FILES['receipt'];
-    $targetDir = "assets/receipts/"; // Directory to save receipts
-    $fileName = uniqid() . "_" . basename($receipt["name"]); // Create unique file name
+    $targetDir = "assets/receipts/";
+    $fileName = uniqid() . "_" . basename($receipt["name"]); 
     $targetFilePath = $targetDir . $fileName;
 
     if (!is_dir($targetDir)) {
@@ -30,8 +30,16 @@ if (isset($_FILES['receipt']) && $_FILES['receipt']['error'] == UPLOAD_ERR_OK) {
     }
 }
 
-Database::iud("INSERT INTO `member` (`member_id`, `nic`, `fname`, `lname`, `mobile`, `address`, `email`, `password`, `status`, `receipt`) VALUES 
-               ('$memID', '$nic', '$fname', '$lname', '$phoneNumber', '$address', '$email', '$hashedPassword', '0', '$receiptPath')");
+Database::iud("INSERT INTO `user` (`nic`, `fname`, `lname`, `mobile`, `address`, `email`, `status_id`, `receipt`,`role_id`) VALUES 
+               ('$nic', '$fname', '$lname', '$phoneNumber', '$address', '$email', '1', '$receiptPath','4')");
+
+$rs = Database::search("SELECT `id` FROM `user` WHERE `nic` = '$nic' AND `email`='$email'");
+$row = $rs->fetch_assoc(); 
+
+
+
+Database::iud("INSERT INTO `login` (`user_id`, `password`, `userId`) VALUES ('$memID', '$password', '{$row["id"]}');");
+
 
 echo "success";
 ?>

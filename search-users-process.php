@@ -51,7 +51,7 @@ if($num > 0){
 
                 <td>
                     <?php
-                        if ($row["status"] == '1') {
+                        if ($row["status_id"] == '1') {
                         ?>
                             <div class="m-1">
                                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate(<?php echo $row['id']; ?>, 1);"><i class="fa fa-edit" style="font-size: 10px"></i></button>

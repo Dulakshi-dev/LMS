@@ -15,22 +15,17 @@
 <?php
 include "connection.php";
 
-$bookId = $_POST["book_id"];
 $title = $_POST["title"];
-$author = $_POST["author"];
+$isbn = $_POST["isbn"];
 
-$query = "SELECT * FROM `books` WHERE 1=1";
-
-if (!empty($bookId)) {
-    $query .= " AND `book_id` LIKE '%$bookId%'";
-}
+$query = "SELECT * FROM `book` WHERE 1=1";
 
 if (!empty($title)) {
     $query .= " AND `title` LIKE '%$title%'";
 }
 
-if (!empty($author)) {
-    $query .= " AND `author` LIKE '%$author%'";
+if (!empty($isbn)) {
+    $query .= " AND `isbn` LIKE '%$isbn%'";
 }
 
 $rs = Database::search($query);

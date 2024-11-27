@@ -626,6 +626,24 @@ function searchUsers(){
     req.open("POST","search-users-process.php",true); 
     req.send(form); 
 } 
+function searchBooks() {
+    var title = document.getElementById("title");
+    var isbn = document.getElementById("isbn");
+
+    var form = new FormData();
+    form.append("title", title.value);
+    form.append("isbn", isbn.value);
+
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            document.getElementById("content").innerHTML = req.responseText;
+        }
+    };
+    req.open("POST", "search-books-process.php", true);
+    req.send(form);
+}
+
 
 function loadUserDataUpdate(id) {
     

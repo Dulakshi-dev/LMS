@@ -749,6 +749,27 @@ function loadBooks(page){
     req.send(); 
 } 
 
+function searchBooks() {
+    var bookId = document.getElementById("bookId");
+    var title = document.getElementById("title");
+    var author = document.getElementById("author");
+
+    var form = new FormData();
+    form.append("bookId", bookId.value);
+    form.append("title", title.value);
+    form.append("author", author.value);
+
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            var resp = req.responseText;
+            document.getElementById("content").innerHTML = resp;
+        }
+    };
+    req.open("POST", "search-book-process.php", true);
+    req.send(form);
+}
+
 
 
 

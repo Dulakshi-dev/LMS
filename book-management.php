@@ -1,11 +1,3 @@
-<?php
-session_start();
-
-if (!isset($_SESSION["staff"])) {
-    header("Location: staff-login.php");
-    exit();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,11 +18,11 @@ if (!isset($_SESSION["staff"])) {
         
             <div class="row">
                 <div class="col-md-6 my-3">
-                    <input id="bname" type="text" class="form-control" placeholder="Type Book Name">
+                    <input type="text" class="form-control" placeholder="Type Book Name">
                 </div>
                 <div class="col-md-6 d-flex my-3">
-                    <input id = "isbn" type="text" class="form-control" placeholder="Type IBSN">
-                    <button class="btn btn-primary ml-3 px-4" onclick="searchUsers();"><i class="fa fa-search"></i></button>
+                    <input type="text" class="form-control" placeholder="Type ISBN">
+                    <button class="btn btn-primary ml-3 px-4" onclick="searchBook();"><i class="fa fa-search"></i></button>
                 </div>
             </div>
    

@@ -48,8 +48,8 @@ $user_id = $_SESSION["staff"]["user_id"];
                 <div class="container-fluid fw-bold bg-white d-flex justify-content-center mt-5">
                     <div class="row m-4">
                         <div class="text-center border-bottom border-danger border-4">
-                            <h2 class="p-3">Update Details</h2>
-                        </div>
+                            <h2 class="p-3">Update Details</h2> 
+                        </div>  
 
                         <div class="col-md-4 text-center">
                             <div class="m-4">

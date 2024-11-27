@@ -23,6 +23,7 @@ class Database{
         $resultset = Database::$connection->query($query);
         return $resultset;
     }
+
 }
 
 ?>

@@ -6,7 +6,7 @@ $username = $_POST["username"];
 $password = $_POST["password"]; 
 $rememberme = isset($_POST["rememberme"]) ? $_POST["rememberme"] : "false";
 
-$result = Database::search("SELECT * FROM `member` WHERE `member_id` = '".$username."'"); 
+$result = Database::search("SELECT * FROM `z` WHERE `member_id` = '".$username."'"); 
 
 if ($result->num_rows == 1) { 
     $data = $result->fetch_assoc();

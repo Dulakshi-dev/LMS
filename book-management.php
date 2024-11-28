@@ -26,10 +26,10 @@ if (!isset($_SESSION["staff"])) {
         
             <div class="row">
                 <div class="col-md-6 my-3">
-                    <input type="text" class="form-control" placeholder="Type Book Name">
+                    <input id="bname" type="text" class="form-control" placeholder="Type Book Name">
                 </div>
                 <div class="col-md-6 d-flex my-3">
-                    <input type="text" class="form-control" placeholder="Type ISBN">
+                    <input id="isbn" type="text" class="form-control" placeholder="Type ISBN">
                     <button class="btn btn-primary ml-3 px-4" onclick="searchBook();"><i class="fa fa-search"></i></button>
                 </div>
             </div>

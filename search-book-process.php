@@ -1,10 +1,11 @@
 <table class="table">
     <thead class="thead-light text-center">
         <tr>
-            <th>ISBN</th>
+        <th>ISBN</th>
             <th>Cover Page</th>
             <th>Book Name</th>
-            <th>Description</th>
+            <th>Author</th>
+            <th>Published Year</th>
             <th>Category</th>
             <th>Qty</th>
             <th>Borrowed</th>
@@ -15,10 +16,10 @@
 <?php
 include "connection.php";
 
-$title = $_POST["title"];
+$title = $_POST["bname"];
 $isbn = $_POST["isbn"];
 
-$query = "SELECT * FROM `book` WHERE 1=1";
+$query = "SELECT * FROM `book_details` WHERE 1=1";
 
 if (!empty($title)) {
     $query .= " AND `title` LIKE '%$title%'";
@@ -37,16 +38,17 @@ if ($num > 0) {
         ?>
         <tr>
             <td><?php echo $row["isbn"]; ?></td>
-            <td><img src="<?php echo $row["cover_page"]; ?>" width="50" height="50"></td>
-            <td><?php echo $row["title"]; ?></td>
-            <td><?php echo $row["description"]; ?></td>
-            <td><?php echo $row["category"]; ?></td>
-            <td><?php echo $row["quantity"]; ?></td>
-            <td><?php echo $row["borrowed"]; ?></td>
+                <td>Image</td>
+                <td><?php echo $row["title"]; ?></td>
+                <td><?php echo $row["author"]; ?></td>
+                <td><?php echo $row["pub_year"]; ?></td>
+                <td><?php echo $row["category_name"]; ?></td>
+                <td><?php echo $row["qty"]; ?></td>
+                <td><?php echo $row["qty"] - $row["available_qty"]; ?></td>
             <td>
                 <div class="m-1">
-                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadBookDataUpdate(<?php echo $row['id']; ?>);"><i class="fa fa-edit" style="font-size: 10px"></i></button>
-                    <button class="btn btn-danger" onclick="deleteBook(<?php echo $row['id']; ?>);"><i class="fa fa-trash" style="font-size: 10px"></i></button>
+                    <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" ><i class="fa fa-edit" style="font-size: 10px"></i></button>
+                    <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
                 </div>
             </td>
         </tr>

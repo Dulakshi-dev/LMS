@@ -772,6 +772,67 @@ function loadBooks(page){
     req.send(); 
 } 
 
+function onMembershipCheckout() {
+
+    var form = new FormData(); 
+    form.append("membership_fee", true); 
+
+    var req = new XMLHttpRequest(); 
+    req.onreadystatechange = function() { 
+        if (req.readyState == 4 && req.status == 200) { 
+
+            var json = req.responseText; 
+            var resp = JSON.parse(json); 
+            alert(resp);
+            if (resp.status == "success") { 
+                alert("yes");
+                doCheckout(resp.payment, "membership-checkout-process.php"); 
+            } else { 
+                alert("no");
+                showAlert("Warning", resp.error, "warning"); 
+            } 
+        } 
+    }; 
+    req.open("POST", "membership-payment-process.php", true); 
+    req.send(form); 
+}
+
+function doCheckout(payment, url) {
+    payhere.onCompleted = function onCompleted(orderId) {
+        var form = new FormData();
+        form.append("payment", JSON.stringify(payment));
+
+        var req = new XMLHttpRequest();
+        req.onreadystatechange = function () {
+            if (req.readyState == 4 && req.status == 200) {
+
+                var json = req.responseText;
+                var resp = JSON.parse(json);
+
+
+                if (resp.status == "success") {
+                    alert("success");
+                   
+                } else {
+                    alert("error");
+                    showAlert("Error", resp.error, "error");
+                }
+            }
+        };
+        req.open("POST", url, true);
+        req.send(form);
+    };
+
+    payhere.onDismissed = function onDismissed() {
+        showAlert("Warning", "Payment dismissed", "warning");
+    };
+
+    payhere.onError = function onError(error) {
+        showAlert("Error", error, "error");
+    };
+
+    payhere.startPayment(payment);
+}
 
 
 

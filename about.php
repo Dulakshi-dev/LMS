@@ -4,8 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Library</title>
-    <link rel="stylesheet" href="about.css">
     <link rel="stylesheet" href="bootstrap.css">
+    <style>
+        body{
+    overflow-x: hidden;
+}
+.main {
+    background-image: url("img/about.png");
+    overflow-x: hidden;
+    height: 180vh;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position-y: -200px; 
+    text-align: justify;
+ 
+}
+
+@media (max-width: 600px) {
+    .main {
+      
+        height: 200vh; 
+        background-position-y: 0px;
+        background-position-x: -200px; 
+    }
+}
+
+.about{
+  
+    margin: 20px auto;
+    padding: 20px;
+    background-color: none;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    height: 200vh;
+}
+    </style>
 </head>
 <body>
     <?php

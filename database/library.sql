@@ -28,6 +28,7 @@ CREATE TABLE `book` (
   `title` varchar(45) NOT NULL,
   `author` varchar(45) NOT NULL,
   `pub_year` varchar(45) NOT NULL,
+  `description` varchar(200) DEFAULT NULL,
   `qty` int NOT NULL,
   `available_qty` int NOT NULL,
   `category_id` int NOT NULL,
@@ -37,7 +38,7 @@ CREATE TABLE `book` (
   KEY `fk_book_status1_idx` (`status_id`),
   CONSTRAINT `fk_book_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
   CONSTRAINT `fk_book_status1` FOREIGN KEY (`status_id`) REFERENCES `status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +47,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES (1,'111','Maths','Sarath','2001',10,10,1,1);
+INSERT INTO `book` VALUES (1,'333','maths','nimal','2023','okokokok',13,10,1,1),(2,'2222','Physics','Amal','2005',NULL,2,2,1,1);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,8 +65,10 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `title`,
  1 AS `author`,
  1 AS `pub_year`,
+ 1 AS `description`,
  1 AS `qty`,
  1 AS `available_qty`,
+ 1 AS `category_id`,
  1 AS `category_name`,
  1 AS `status`*/;
 SET character_set_client = @saved_cs_client;
@@ -292,7 +295,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'200180300611','Dulakshi','Gammanpila','0706789123','xb','dulakshigamma@gmail.com',NULL,'mk','',1,2),(2,'123456789V','John','Doe','0771234567','123 Main St','john@example.com',NULL,NULL,'assets/receipts/672f0e79c6852_download.jpeg',2,1);
+INSERT INTO `user` VALUES (1,'200180300612','Dulakshi','Gammanpila','0706789124','xb','dulakshigamma@gmail.com',NULL,'mk','',1,1),(2,'123456789V','John','Doe','0771234567','123 Main St','john@example.com',NULL,NULL,'assets/receipts/672f0e79c6852_download.jpeg',2,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -338,7 +341,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `book_details` AS select `book`.`book_id` AS `book_id`,`book`.`isbn` AS `isbn`,`book`.`title` AS `title`,`book`.`author` AS `author`,`book`.`pub_year` AS `pub_year`,`book`.`qty` AS `qty`,`book`.`available_qty` AS `available_qty`,`category`.`category_name` AS `category_name`,`status`.`status` AS `status` from ((`book` join `category` on((`book`.`category_id` = `category`.`category_id`))) join `status` on((`book`.`status_id` = `status`.`status_id`))) */;
+/*!50001 VIEW `book_details` AS select `book`.`book_id` AS `book_id`,`book`.`isbn` AS `isbn`,`book`.`title` AS `title`,`book`.`author` AS `author`,`book`.`pub_year` AS `pub_year`,`book`.`description` AS `description`,`book`.`qty` AS `qty`,`book`.`available_qty` AS `available_qty`,`category`.`category_id` AS `category_id`,`category`.`category_name` AS `category_name`,`status`.`status` AS `status` from ((`book` join `category` on((`book`.`category_id` = `category`.`category_id`))) join `status` on((`book`.`status_id` = `status`.`status_id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -370,4 +373,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-11-27 14:31:51
+-- Dump completed on 2024-12-02 22:21:19

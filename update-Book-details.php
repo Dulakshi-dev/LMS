@@ -1,15 +1,15 @@
 <?php
 include "connection.php";
-
+$book_id = $_POST["book_id"];
 $isbn = $_POST["isbn"];
 $title = $_POST["title"];
 $author = $_POST["author"];
 $pub_year = $_POST["pub_year"];
-$qty = $_POST["qty"];
+$qty = $_POST["quantity"];
+$des = $_POST["description"];
 $category_id = $_POST["category_id"];
-$status_id = $_POST["status_id"];
 
-// Input validation
+
 if (empty($isbn)) {
     echo "Please enter the ISBN.";
 } elseif (empty($title)) {
@@ -22,25 +22,24 @@ if (empty($isbn)) {
     echo "Please enter the quantity.";
 } elseif (empty($category_id)) {
     echo "Please select a category.";
-} elseif (empty($status_id)) {
-    echo "Please select a status.";
 } else {
     // Check if the book exists
-    $rs = Database::search("SELECT * FROM book WHERE isbn = '$isbn'");
+    $rs = Database::search("SELECT * FROM book WHERE book_id = '$book_id'");
     $num = $rs->num_rows;
 
     if ($num > 0) {
         // Update the book details
-        Database::iud("UPDATE book SET 
+        Database::iud("UPDATE book SET
+            `isbn` = '$isbn',
             `title` = '$title', 
             `author` = '$author', 
             `pub_year` = '$pub_year', 
             `qty` = '$qty', 
             `category_id` = '$category_id', 
-            `status_id` = '$status_id'
-            WHERE `isbn` = '$isbn'");
+             `description` = '$des'
+            WHERE `book_id` = '$book_id'");
         
-        echo "Book details updated successfully.";
+        echo "success";
     } else {
         echo "Book not found.";
     }

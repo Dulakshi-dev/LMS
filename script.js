@@ -834,10 +834,63 @@ function doCheckout(payment, url) {
     payhere.startPayment(payment);
 }
 
+function loadBookDataUpdate(id) {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            var resp = req.responseText;
+            var data = JSON.parse(resp);
 
+            document.getElementById("book_id").value = data.book_id;
+            document.getElementById("isbn_no").value = data.isbn;
+            document.getElementById("author").value = data.author;
+            document.getElementById("title").value = data.title;
+            document.getElementById("pub_year").value = data.pub_year;
+            document.getElementById("qty").value = data.qty;
+            document.getElementById("des").value = data.description;
+            alert(data.category_id);
+            document.getElementById("category").value = data.category_id;
+        }
+    };
+    req.open("GET", "get-book-details.php?id=" + id, true);
+    req.send();
+}
 
+function updateBookDetails() {
+    var book_id = document.getElementById("book_id").value;
+    var isbn = document.getElementById("isbn_no").value;
+    var title = document.getElementById("title").value;
+    var author = document.getElementById("author").value;
+    var category = document.getElementById("category").value;
+    var pubYear = document.getElementById("pub_year").value;
+    var quantity = document.getElementById("qty").value;
+    var description = document.getElementById("des").value;
 
+    var form = new FormData();
+    form.append("book_id", book_id);
+    form.append("isbn", isbn);
+    form.append("title", title);
+    form.append("author", author);
+    form.append("category_id", category);
+    form.append("pub_year", pubYear);
+    form.append("quantity", quantity);
+    form.append("description", description);
 
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function () {
+        if (req.readyState == 4 && req.status == 200) {
+            var resp = req.responseText.trim();
+            if (resp === "success") {
+                alert("Book details updated successfully!");
+                window.location.reload();
+            } else {
+                alert("Error: " + resp);
+            }
+       }
+    };
+    req.open("POST", "update-book-details.php", true);
+    req.send(form);
+}
 
 
 

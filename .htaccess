@@ -1,0 +1,8 @@
+
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Deny access to everything
+    RewriteRule ^ - [F,L]
+</IfModule>

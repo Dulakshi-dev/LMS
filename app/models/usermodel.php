@@ -3,12 +3,12 @@
 require_once __DIR__ . '../../../database/connection.php'; 
 
 class UserModel {
-    public function getAllUsers() {
+    public static function getAllUsers() {
         $rs = Database::search("SELECT * FROM `user_details`");
         return $rs;
     }
 
-    public function searchUsers($memberId, $nic, $userName) {
+    public static function searchUsers($memberId, $nic, $userName) {
         $sql = "SELECT * FROM `user_details` WHERE 1";
         if (!empty($memberId)) {
             $sql .= " AND `user_id` LIKE '%$memberId%'";
@@ -48,10 +48,10 @@ class UserModel {
     }
     
 
-    public function toggleUserStatus($user_id) {
-        $sql = "UPDATE `user` SET status_id = 3 - status_id WHERE id = ?";
-        $params = [$user_id];  
-        $rs = Database::iud($sql, $params);
+    public static function toggleUserStatus($id) {
+       
+        Database::iud("UPDATE `user` SET `status_id` = 3 - `status_id` WHERE `id` = '$id'");
+        return true;
     }
     
     public static function loadMailDetails($id) {

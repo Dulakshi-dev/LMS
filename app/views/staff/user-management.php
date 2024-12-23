@@ -80,19 +80,21 @@ $userController = new UserController();
                                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal" onclick="loadMailData('<?php echo $row['user_id']; ?>');"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
                                             </div>
                                             <div class="m-1">
-                                                <button class="btn btn-info" onclick="changeUserStatus(<?php echo $row['id']; ?>, 1);"><i class="fa fa-check" style="font-size: 10px"></i></button>
+                                                <button class="btn btn-info" onclick="changeUserStatus('<?php echo $row['id']; ?>');"><i class="fa fa-check" style="font-size: 10px"></i></button>
                                                 <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
                                             </div>
+                                 
+
 
                                         <?php
                                         } else {
                                         ?>
                                             <div class="m-1">
                                                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate();"><i class="fa fa-edit" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
+                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal" onclick="loadMailData('<?php echo $row['user_id']; ?>');"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
                                             </div>
                                             <div class="m-1">
-                                                <button class="btn btn-info" onclick="changeUserStatus(<?php echo $row['id']; ?>, 1);"><i class="fa fa-times" style="font-size: 10px"></i></button>
+                                                <button class="btn btn-info" onclick="changeUserStatus('<?php echo $row['id']; ?>');"><i class="fa fa-times" style="font-size: 10px"></i></button>
                                                 <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
                                             </div>
 
@@ -101,6 +103,7 @@ $userController = new UserController();
                                         ?>
                                     </td>
                                 </tr>
+
                         <?php }
                         }
                         ?>
@@ -174,7 +177,6 @@ $userController = new UserController();
                 </div>
                 <div class="border border-2"></div>
                 <div class="p-4">
-                    <form action="index.php" method="POST">
                         <div class="mb-3">
                             <label for="name" class="form-label">User Name</label>
                             <input type="text" class="form-control" id="name" name="name" value="">
@@ -193,10 +195,9 @@ $userController = new UserController();
                         </div>
                         <div id="error" class="text-danger"></div>
                         <div class="text-end">
-                            <button data-bs-dismiss="modal" type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
+                            <button type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
 
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -205,7 +206,6 @@ $userController = new UserController();
 
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("user.js"); ?>"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -9,10 +9,12 @@ class Config {
         "views" => ROOT_PATH . "\app\\views\\",
         "controllers" => ROOT_PATH . "\\app\\controllers\\",
         "models" => ROOT_PATH . "\\app\\models\\",
-        "images" => "/LMS - Copy/public/images/",
-        "js" => "/LMS - Copy/public/js/",
+        "images" => "/LMS/public/images/",
+        "js" => "/LMS/public/js/",
         "database" => ROOT_PATH . "\\database\\connection.php",
-        "index" => "/LMS - Copy/public/index.php",
+        "index" => "/LMS/public/index.php",
+        "services" => ROOT_PATH . "\\app\\services\\",
+        "mail" => ROOT_PATH ."\\app\\services\\mail\\",
     ];
 
     public static $database = [
@@ -53,7 +55,6 @@ class Config {
     public static function getdbPath()
     {
         return Config::$paths["database"];
-       
     }
 
     public static function redirect($url) {
@@ -62,6 +63,16 @@ class Config {
     }
     public static function indexPath() {
         return Config::$paths["index"];
+    }
+
+    public static function getServicePath(String $service)
+    {
+        return Config::$paths["services"] . $service;
+    }
+
+    public static function getMailPath(String $mail)
+    {
+        return Config::$paths["mail"] . $mail;
     }
 
 

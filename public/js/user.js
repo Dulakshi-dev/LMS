@@ -124,7 +124,7 @@ function sendEmail() {
             .then(response => response.json()) 
             .then(resp => {
                 if (resp.success) {
-                    alert("yes");
+                    alert("Mail sent");
                    
                 } else {
                     alert("Failed to load user data. Please try again.");
@@ -134,4 +134,26 @@ function sendEmail() {
                 console.error("Error fetching user data:", error);
             });
     }
+}
+
+
+function changeUserStatus(id) { 
+    var formData = new FormData();
+    formData.append("id", id);
+
+    fetch("index.php?action=changeStatus", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(resp => {
+        if (resp.success) {
+            location.reload();
+        } else {
+            alert("Failed to load user data. Please try again.");
+        }
+    })
+    .catch(error => {
+        console.error("Error fetching user data:", error);
+    });
 }

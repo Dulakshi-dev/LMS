@@ -1,4 +1,7 @@
 <?php
+
+use LDAP\Result;
+
 require_once __DIR__ . '/../../main.php';
 
 class UserController
@@ -15,15 +18,14 @@ class UserController
     {
         $users = [];
         // Retrieve all users from the model
-        $users  = $this->userModel->getAllUsers();
+        $users  = UserModel::getAllUsers();
         require_once Config::getViewPath("staff", 'user-management.php');
-
     }
 
     public function searchUsers()
     {
         $users = [];
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve input from the POST request
             $memberId = $_POST['memberId'] ?? null;
@@ -31,12 +33,11 @@ class UserController
             $userName = $_POST['userName'] ?? null;
 
             if (empty($memberId) && empty($nic) && empty($userName)) {
-                $users = $this->getAllUsers();
+                $users = UserModel::getAllUsers();
                 require_once Config::getViewPath("staff", 'user-management.php');
-
-            }else{
-                $users =  $this->userModel->searchUsers($memberId, $nic, $userName);
-            require_once Config::getViewPath("staff", 'user-management.php');
+            } else {
+                $users =  UserModel::searchUsers($memberId, $nic, $userName);
+                require_once Config::getViewPath("staff", 'user-management.php');
             }
         } else {
             return []; // Return an empty array or an appropriate error response
@@ -54,6 +55,7 @@ class UserController
                 $userData = $result->fetch_assoc();
                 echo json_encode([
                     "success" => true,
+                    "id" => $userData['id'],
                     "user_id" => $userData['user_id'],
                     "nic" => $userData['nic'],
                     "fname" => $userData['fname'],
@@ -108,7 +110,7 @@ class UserController
                 $mailData = $result->fetch_assoc();
                 echo json_encode([
                     "success" => true,
-                    "name" => $mailData['fname']." ".$mailData['lname'],
+                    "name" => $mailData['fname'] . " " . $mailData['lname'],
                     "email" => $mailData['email'],
 
                 ]);
@@ -122,28 +124,58 @@ class UserController
 
     public function sendMail()
     {
+        require_once Config::getServicePath('emailService.php');
+
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $name = $_POST['name'];
-            $email = $_POST['email'];
-            $subject = $_POST['subject'];
-            $message = $_POST['message'];
+            $email = $_POST["email"];
+            $subject = $_POST["subject"];
+            $msg = $_POST["message"];
 
-            $result = UserModel::loadMailDetails($name);
+            $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
+        <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
+            <p>Dear ' . $name . ',</p>
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+            <p>We are pleased to connect with you! Here’s some important information:</p>
+            <p>' . $msg . '</p>
+            <p>If you have any questions or issues, please reach out to us.</p>
+            <p>Call:[tel_num]</p>
 
-            if ($result) {
-                $mailData = $result->fetch_assoc();
-                echo json_encode([
-                    "success" => true,
-                    "name" => $mailData['fname']." ".$mailData['lname'],
-                    "email" => $mailData['email'],
+            <div style="margin-top: 20px;">
+                <p>Best regards,</p>
+                <p>Shelf Loom Team</p>
+            </div>
+        </div>';
 
-                ]);
+            $emailService = new EmailService();
+            $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+            if ($emailSent) {
+                echo json_encode(["success" => true, "message" => "Email sent successfully!"]);
             } else {
-                echo json_encode(["success" => false, "message" => "User not found."]);
+                echo json_encode(["success" => false, "message" => "Failed to send email."]);
             }
         } else {
-            echo json_encode(["success" => false, "message" => "Invalid request."]);
+            echo json_encode(["success" => false, "message" => "Invalid Request"]);
         }
     }
 
+    public function changeUserStatus(){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+
+            $result = UserModel::toggleUserStatus($id);
+            if($result){
+                echo json_encode(["success" => true, "message" => "User Status Changed"]);
+
+            }else{
+                echo json_encode(["success" => false, "message" => "User not found."]);
+
+            }
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
 }

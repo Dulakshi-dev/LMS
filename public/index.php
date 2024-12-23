@@ -25,14 +25,16 @@ $router->add('usermanagement', [$userController, 'getAllUsers']);
 $router->add('search', [$userController, 'searchUsers']);
 $router->add('loadUserData', [$userController, 'loadUserDetails']); 
 $router->add('updateUser', [$userController, 'UpdateUserDetails']);
+$router->add('loadMailData', [$userController, 'loadMailData']); 
+$router->add('sendMail', [$userController, 'sendMail']); 
+$router->add('changeStatus', [$userController, 'changeUserStatus']); 
 $router->add('bookmanagement', [$bookController, 'showBookManagement']);
 $router->add('addBook', [$bookController, 'showAddBook']);
 $router->add('addBookData', [$bookController, 'addBookData']);
 $router->add('viewBook', [$bookController, 'getAllBooks']);
 $router->add('loadBookData', [$bookController, 'loadBookDetails']);
 $router->add('updateBook', [$bookController, 'updateBookDetails']); 
-$router->add('loadMailData', [$userController, 'loadMailData']); 
-$router->add('sendMail', [$userController, 'sendMail']); 
+
 
 
 

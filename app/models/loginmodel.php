@@ -1,13 +1,7 @@
 <?php
+
 require_once config::getdbPath(); 
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
-
-require_once __DIR__ . "/../../mail/PHPMailer.php"; 
-require_once __DIR__ . "/../../mail/SMTP.php"; 
-require_once __DIR__ . "/../../mail/Exception.php";
 
 
 class LoginModel {
@@ -50,36 +44,36 @@ class LoginModel {
         }
     }
 
-    public static function getUserByEmail($email) {
-        $result = Database::search("SELECT * FROM `user` WHERE `email` = ?", [$email]);
-        return $result->fetch_assoc();
-    }
+    // public static function getUserByEmail($email) {
+    //     $result = Database::search("SELECT * FROM `user` WHERE `email` = ?", [$email]);
+    //     return $result->fetch_assoc();
+    // }
 
     // Update verification code for the user
-        public static function updateVerificationCode($userId, $vcode) {
-            try {
-                Database::iud("UPDATE `user` SET `vcode` = ? WHERE `id` = ?", [$vcode, $userId]);
-            } catch (Exception $e) {
-                error_log("Error updating verification code: " . $e->getMessage());
-            }
-        }
+        // public static function updateVerificationCode($userId, $vcode) {
+        //     try {
+        //         Database::iud("UPDATE `user` SET `vcode` = ? WHERE `id` = ?", [$vcode, $userId]);
+        //     } catch (Exception $e) {
+        //         error_log("Error updating verification code: " . $e->getMessage());
+        //     }
+        // }
             
 
     // Fetch user by verification code
-    public static function getUserByVerificationCode($vcode) {
-        $result = Database::search("SELECT * FROM `user` WHERE `vcode` = ?", [$vcode]);
-        return $result->fetch_assoc();
-    }
+    // public static function getUserByVerificationCode($vcode) {
+    //     $result = Database::search("SELECT * FROM `user` WHERE `vcode` = ?", [$vcode]);
+    //     return $result->fetch_assoc();
+    // }
 
     // Update user password
-    public static function updatePassword($userId, $password) {
-        Database::iud("UPDATE `login` SET `password` = ? WHERE `userId` = ?", [$password, $userId]);
-    }
+    // public static function updatePassword($userId, $password) {
+    //     Database::iud("UPDATE `login` SET `password` = ? WHERE `userId` = ?", [$password, $userId]);
+    // }
 
     // Clear verification code after successful reset
-    public static function clearVerificationCode($userId) {
-        Database::iud("UPDATE `user` SET `vcode` = NULL WHERE `id` = ?", [$userId]);
-    }
+    // public static function clearVerificationCode($userId) {
+    //     Database::iud("UPDATE `user` SET `vcode` = NULL WHERE `id` = ?", [$userId]);
+    // }
 
 }
 ?>

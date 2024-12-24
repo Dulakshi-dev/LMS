@@ -7,7 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-image: url("public/images/stafflog.jpg");
+            background-image: url('<?php echo Config::getImagePath("stafflog.jpg"); ?>');
+
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
@@ -16,9 +17,9 @@
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center my-5">
-        <div class="card p-4 shadow-lg bg-white" style="width: 100%; max-width: 800px;">
+        <div class="p-5 text-white rounded-5" style="width: 100%; max-width: 800px; background-color: rgba(0, 0, 0, 0.5);">
             <h3 class="text-center mb-4">Staff Registration</h3>
-            <form>
+            <form action="<?php echo Config::indexPath()?>?action=register" method="POST">
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name</label>
                     <input type="text" class="form-control rounded-pill" id="firstName" name="firstName" required>
@@ -53,6 +54,20 @@
                         <input class="form-check-input" type="radio" id="roleLibrarian" name="role" value="Librarian" required>
                         <label class="form-check-label" for="roleLibrarian">Librarian</label>
                     </div>
+                    
+
+                </div>
+                <div class="mb-3 row">
+                    <div class="col-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="text" class="form-control rounded-pill" id="password" name="password" required>
+                    </div>
+
+                    <div class="col-6">
+                    <label for="cpassword" class="form-label">Confirm Password</label>
+                    <input type="text" class="form-control rounded-pill" id="cpassword" name="cpassword" required>
+                    </div>
+          
                 </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary rounded-pill w-25">Submit</button>

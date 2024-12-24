@@ -30,7 +30,7 @@ $userController = new UserController();
         <div class="container-fluid">
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
-                    <form method="POST" action="<?php echo Config::indexPath() ?>?action=search">
+                    <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchUsers">
                         <input name="memberId" class="form-control" type="text" placeholder="Type Membership ID">
                 </div>
                 <div class="col-md-3 mt-2">

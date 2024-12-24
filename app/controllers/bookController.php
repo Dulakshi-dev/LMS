@@ -15,7 +15,7 @@ class BookController{
     {
         $books = [];
         // Retrieve all users from the model
-        $books  = $this->bookModel->getAllBooks();
+        $books  = BookModel::getAllBooks();
         require_once Config::getViewPath("staff", 'view-books.php');
 
     }
@@ -102,6 +102,30 @@ class BookController{
                 $error = "error";
 
             
+        }
+    }
+
+    public function searchBooks()
+    {
+        $books = [];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Retrieve input from the POST request
+            $title = $_POST['title'] ?? null;
+            $isbn = $_POST['isbn'] ?? null;
+
+            if (empty($title) && empty($isbn)) {
+                $books = BookModel::getAllBooks();
+                require_once Config::getViewPath("staff", 'view-books.php');
+
+            } else {
+                $books =  BookModel::searchBooks($title, $isbn);
+                require_once Config::getViewPath("staff", 'view-books.php');
+
+            }
+
+        } else {
+            return []; // Return an empty array or an appropriate error response
         }
     }
 

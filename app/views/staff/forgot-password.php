@@ -38,7 +38,7 @@
 
 <body>
     <?php
-    include "header.php";
+require_once Config::getViewPath("home", "header.view.php");
     ?>
 
     <div class="container">
@@ -47,11 +47,11 @@
                 <h1 class="text-center pb-3">Forgot Pasword</h1>
                 <span class="bg-danger text-dark text-center" id="doesnt"></span>
 
-                <form class="form-group" method="POST" action="index.php?route=forgot_password">
                     <label for="email">Enter your Email Address</label>
                     <input class="form-control mt-3" placeholder="Enter your Email" type="email" name="email" id="email">
-                    <button class="btn btn-primary mt-4 w-100" type="submit">Continue</button>
-                </form>
+                    <button class="btn btn-primary mt-4 w-100" onclick="ff();">Continue</button>
+                <div id="responseMessage"></div>
+
 
                
 
@@ -59,9 +59,10 @@
         </div>
     </div>
     <?php
-    include "footer.php";
+    require_once Config::getViewPath("home", "footer-noscroll.view.php");
     ?>
 
+<script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
 
 </body>
 

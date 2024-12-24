@@ -5,7 +5,7 @@ require_once __DIR__ . '../../../database/connection.php';
 class BookModel
 {
 
-    public function getAllBooks()
+    public static function getAllBooks()
     {
         $rs = Database::search("SELECT * FROM `book_details`");
         return $rs;
@@ -17,11 +17,24 @@ class BookModel
         return $rs;
     }
 
+    public static function searchBooks($title, $isbn) {
+        $sql = "SELECT * FROM `book_details` WHERE 1";
+        if (!empty($title)) {
+            $sql .= " AND `title` LIKE '%$title%'";
+        }
+        if (!empty($isbn)) {
+            $sql .= " AND `isbn` LIKE '%$isbn%'";
+        }
+
+        $rs = Database::search($sql);
+        return $rs;
+    }
+
 
     public static function updateBookDetails($book_id, $isbn, $title, $author, $category, $pubYear, $quantity, $description)
     {
 
-        Database::iud("UPDATE book SET
+        Database::ud("UPDATE book SET
             `isbn` = '$isbn',
             `title` = '$title', 
             `author` = '$author', 
@@ -34,7 +47,7 @@ class BookModel
     }
 
     public static function addBook($isbn, $author,$title,$category,$pub,$qty,$des){
-        Database::iud("INSERT INTO `book`(`isbn`,`title`,`author`,`pub_year`,`description`,`qty`,`available_qty`,`category_id`,`status_id`) VALUES ('$isbn', '$title', '$author', '$pub', '$des', '$qty', '$qty', '1', '1')");
+        Database::insert("INSERT INTO `book`(`isbn`,`title`,`author`,`pub_year`,`description`,`qty`,`available_qty`,`category_id`,`status_id`) VALUES ('$isbn', '$title', '$author', '$pub', '$des', '$qty', '$qty', '1', '1')");
         return true;
     }
 }

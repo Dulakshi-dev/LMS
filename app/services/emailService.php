@@ -19,13 +19,13 @@ class EmailService
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
             $mail->SMTPAuth = true;
-            $mail->Username = 'marosadilove@gmail.com'; 
-            $mail->Password = 'ffgjxvcvmfdowsnj'; // Use app password
+            $mail->Username = 'dulakshigamma@gmail.com'; 
+            $mail->Password = 'ovvrqsxjkwcqmqdv';//app password 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
             $mail->Port = 465; 
 
             // Recipients
-            $mail->setFrom('marosadilove@gmail.com', 'Malanka Tharula'); 
+            $mail->setFrom('dulakshigamma@gmail.com', 'Dulakshi Gammanpila'); 
             $mail->addAddress($recipientEmail); 
 
             // Content

@@ -22,7 +22,7 @@ $router->add('loginProcess', [$loginController, 'login']);
 $router->add('logout', [$loginController, 'logout']);
 $router->add('dashboard', [$loginController, 'showDashboard']);
 $router->add('usermanagement', [$userController, 'getAllUsers']);
-$router->add('search', [$userController, 'searchUsers']);
+$router->add('searchUsers', [$userController, 'searchUsers']);
 $router->add('loadUserData', [$userController, 'loadUserDetails']); 
 $router->add('updateUser', [$userController, 'UpdateUserDetails']);
 $router->add('loadMailData', [$userController, 'loadMailData']); 
@@ -34,6 +34,13 @@ $router->add('addBookData', [$bookController, 'addBookData']);
 $router->add('viewBook', [$bookController, 'getAllBooks']);
 $router->add('loadBookData', [$bookController, 'loadBookDetails']);
 $router->add('updateBook', [$bookController, 'updateBookDetails']); 
+$router->add('searchBooks', [$bookController, 'searchBooks']);
+$router->add('showregister', [$loginController, 'showregister']);
+$router->add('register', [$loginController, 'register']);
+$router->add('showforgotpw', [$loginController, 'showForgotPassword']);
+$router->add('forgotpassword', [$loginController, 'forgotPassword']);
+$router->add('showresetpw', [$loginController, 'showResetPassword']);
+$router->add('resetpassword', [$loginController, 'resetPassword']);
 
 
 

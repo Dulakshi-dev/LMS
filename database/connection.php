@@ -23,7 +23,20 @@ class Database {
         }
     }
    
-    public static function iud($q){
+    public static function insert($q) {
+        Database::setUpConnection();
+
+        $result = Database::$connection->query($q);
+        
+        if ($result) {
+            if (Database::$connection->insert_id) {
+                return Database::$connection->insert_id; 
+            }
+        }
+        return null; 
+    }
+
+        public static function ud($q){
 
         Database::setUpConnection();
         Database::$connection->query($q);

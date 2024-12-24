@@ -55,12 +55,15 @@ require_once Config::getViewPath("home", "header.view.php");
                         </div>
 
                         <div class="row">
-                            <div class="text-end ">
-                                <a href="forgot-password.php" class="text-decoration-none">Forgot Password?</a>
+                            <div class = "text-start col-6">
+                                <a href="<?php echo Config::indexPath() ?>?action=showregister" class="text-decoration-none">Create Account?</a>
+                            </div>
+                            <div class="text-end col-6">
+                                <a href="<?php echo Config::indexPath() ?>?action=showforgotpw" class="text-decoration-none">Forgot Password?</a>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Login</button>
                 </form>
             </div>
         </div>

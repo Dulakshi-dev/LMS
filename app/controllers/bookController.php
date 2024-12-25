@@ -94,7 +94,8 @@ class BookController{
             $result = BookModel::addBook($isbn, $author,$title,$category,$pub,$qty,$des); 
 
             if($result){
-                require_once Config::getViewPath("staff","book-management.php");
+                //require_once Config::getViewPath("staff","book-management.php");
+                header("Location: index.php?action=bookmanagement");
             }
 
             } else {

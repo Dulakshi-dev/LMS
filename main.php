@@ -15,6 +15,8 @@ class Config {
         "index" => "/LMS/public/index.php",
         "services" => ROOT_PATH . "\\app\\services\\",
         "mail" => ROOT_PATH ."\\app\\services\\mail\\",
+        "book_covers" => ROOT_PATH ."\\storage\\book_covers\\",
+        "profile_img" => ROOT_PATH ."\\storage\\profile_img\\",
     ];
 
     public static $database = [
@@ -75,7 +77,16 @@ class Config {
         return Config::$paths["mail"] . $mail;
     }
 
+    public static function getBookCoverPath()
+    {
+        return Config::$paths["book_covers"];
+    }
 
-   
+    public static function getProfileImagePath()
+    {
+        return Config::$paths["profile_img"];
+    }
+
+
 }
 

@@ -36,7 +36,7 @@ class UserModel {
     
     public static function UpdateUserDetails($user_id, $fname, $lname, $email, $phone, $address, $nic) {
       
-            Database::iud("UPDATE `user` SET 
+            Database::ud("UPDATE `user` SET 
                 `fname` = '$fname', 
                 `lname` = '$lname', 
                 `mobile` = '$phone',  
@@ -50,7 +50,7 @@ class UserModel {
 
     public static function toggleUserStatus($id) {
        
-        Database::iud("UPDATE `user` SET `status_id` = 3 - `status_id` WHERE `id` = '$id'");
+        Database::ud("UPDATE `user` SET `status_id` = 3 - `status_id` WHERE `id` = '$id'");
         return true;
     }
     

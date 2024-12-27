@@ -62,7 +62,8 @@ class UserController
                     "lname" => $userData['lname'],
                     "email" => $userData['email'],
                     "mobile" => $userData['mobile'],
-                    "address" => $userData['address']
+                    "address" => $userData['address'],
+                    "profile_img" =>$userData['profile_img']
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);

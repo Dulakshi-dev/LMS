@@ -16,7 +16,7 @@ $userController = new UserController();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
@@ -28,24 +28,26 @@ $userController = new UserController();
             <?php include "dash_sidepanel.php"; ?>
         </div>
         <div class="container-fluid">
-        <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBooks">
+            <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBooks">
 
-            <div class="row">
-
-                    <div class="col-md-6 my-3">
+                <div class="row">
+                <div class="col-md-4 my-3">
+                        <input id="bid" name="bid" type="text" class="form-control" placeholder="Type Book ID">
+                    </div>
+                    <div class="col-md-4 d-flex my-3">
                         <input id="bname" name="title" type="text" class="form-control" placeholder="Type Book Name">
                     </div>
-                    <div class="col-md-6 d-flex my-3">
+                    <div class="col-md-4 d-flex my-3">
                         <input id="isbn" name="isbn" type="text" class="form-control" placeholder="Type ISBN">
-                        <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-primary ml-3 px-4 ms-2"><i class="fa fa-search"></i></button>
                     </div>
-
-            </div>
+                </div>
             </form>
             <div class="px-1">
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
+                        <th>Book ID</th>
                             <th>ISBN</th>
                             <th>Cover Page</th>
                             <th>Book Name</th>
@@ -69,8 +71,12 @@ $userController = new UserController();
 
                         ?>
                                     <tr>
+                                    <td><?php echo $row["book_id"]; ?></td>
                                         <td><?php echo $row["isbn"]; ?></td>
-                                        <td>Image</td>
+                                        <td>
+                                        <img src="<?php echo Config::indexPath()?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
+
+                                        </td>
                                         <td><?php echo $row["title"]; ?></td>
                                         <td><?php echo $row["author"]; ?></td>
                                         <td><?php echo $row["pub_year"]; ?></td>
@@ -78,13 +84,14 @@ $userController = new UserController();
                                         <td><?php echo $row["qty"]; ?></td>
                                         <td><?php echo $row["qty"] - $row["available_qty"]; ?></td>
                                         <td>
-
                                             <div class="m-1">
                                                 <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#updateBookDetailsModal" onclick="loadBookDataUpdate('<?php echo $row['book_id']; ?>');"><i class="fas fa-edit"></i></span>
                                                 <span class="btn btn-danger my-1 btn-sm"><i class="fas fa-trash-alt"></i></span>
                                             </div>
                                         </td>
                                     </tr>
+
+
                         <?php
                                 }
                             }
@@ -174,7 +181,7 @@ $userController = new UserController();
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("book.js"); ?>"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

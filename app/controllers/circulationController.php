@@ -80,7 +80,7 @@ class CirculationController{
           
             $result = CirculationModel::issueBook($book_id, $member_id, $borrow_date, $due_date);
             if($result){
-                echo("issued");
+                header("Location: index.php?action=bookcirculation");
             }else{
                 echo("error");
 
@@ -90,6 +90,15 @@ class CirculationController{
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
+    }
+
+    public function getAllBorrowBooks()
+    {
+        $books = [];
+        // Retrieve all users from the model
+        $books  = CirculationModel::getAllBorrowData();
+        require_once Config::getViewPath("staff", 'view-issue-book.php');
+
     }
 
 }

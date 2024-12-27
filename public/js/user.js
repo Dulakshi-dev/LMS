@@ -1,9 +1,7 @@
 
 
 function loadUserDataUpdate(user_id) {
-    // Log the user ID for debugging
-    console.log("Loading user data for ID:", user_id);
-
+    
     // Create a FormData object and append the user ID
     var formData = new FormData();
     formData.append("user_id", user_id);

@@ -3,6 +3,7 @@ require_once "../main.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,15 +11,16 @@ require_once "../main.php";
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
-<?php include "dash_header.php"; ?>
+    <?php include "dash_header.php"; ?>
 
     <div class="d-flex">
-    <div class="nav-bar">
+        <div class="nav-bar">
             <?php include "dash_sidepanel.php"; ?>
         </div>
         <div class="container-fluid">
-        
+
             <div class="row">
                 <div class="col-md-6 my-3">
                     <input id="bname" type="text" class="form-control" placeholder="Type Book Name">
@@ -28,7 +30,7 @@ require_once "../main.php";
                     <button class="btn btn-primary ml-3 px-4" onclick="searchBook();"><i class="fa fa-search px-2"></i></button>
                 </div>
             </div>
-   
+
             <div class="px-1">
                 <table class="table">
                     <thead class="thead-light">
@@ -41,7 +43,7 @@ require_once "../main.php";
                             <th>Issue Date</th>
                             <th>Due Date</th>
                             <th>Action</th>
-                          
+
                         </tr>
                     </thead>
                     <tbody>
@@ -52,28 +54,28 @@ require_once "../main.php";
 
                             foreach ($books as $row) {
 
-                               
+
 
                         ?>
-                                    <tr>
-                                        <td><?php echo $row["borrow_id"]; ?></td>
-                                        <td><?php echo $row["book_id"]; ?></td>
-                                        <td><?php echo $row["title"]; ?></td>
-                                        <td><?php echo $row["member_id"]; ?></td>
-                                        <td><?php echo $row["fname"]." ".$row["lname"]; ?></td>
-                                        <td><?php echo $row["borrow_date"]; ?></td>
-                                        <td><?php echo $row["due_date"]; ?></td>
-                                        <td>
+                                <tr>
+                                    <td><?php echo $row["borrow_id"]; ?></td>
+                                    <td><?php echo $row["book_id"]; ?></td>
+                                    <td><?php echo $row["title"]; ?></td>
+                                    <td><?php echo $row["member_id"]; ?></td>
+                                    <td><?php echo $row["fname"] . " " . $row["lname"]; ?></td>
+                                    <td><?php echo $row["borrow_date"]; ?></td>
+                                    <td><?php echo $row["due_date"]; ?></td>
+                                    <td>
 
-                                            <div class="m-1">
-                                                <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#updateBookDetailsModal" onclick="loadBookDataUpdate('<?php echo $row['book_id']; ?>');"><i class="fas fa-edit"></i></span>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                        <div class="m-1">
+                                            <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#borrowBookAction"><i class="fas fa-edit"></i></span>
+                                        </div>
+                                    </td>
+                                </tr>
                         <?php
-                                }
                             }
-                        
+                        }
+
                         ?>
                     </tbody>
                 </table>
@@ -82,11 +84,40 @@ require_once "../main.php";
         </div>
     </div>
 
+    <div class="modal fade" id="borrowBookAction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-bottom border-1 border-danger">
+                    <h5 class="modal-title">Return Book Management</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3 row align-items-center">
+                            <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="returnDate" placeholder="Enter return date">
+                            </div>
+                        </div>
+                        <div class="mb-3 row align-items-center">
+                            <label for="amount" class="col-sm-4 col-form-label">Rs</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="amount" placeholder="Enter amount">
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">Return Book</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap and JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="path_to_your_js_file.js"></script> <!-- Add this if you have a separate JavaScript file -->
 
 </body>
-</html>
 
- 
+</html>

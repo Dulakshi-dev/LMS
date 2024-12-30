@@ -101,4 +101,25 @@ class CirculationController{
 
     }
 
+    public function searchBorrowBooks()
+    {
+        $books = [];
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Retrieve input from the POST request
+            $memberid = $_POST['memberid'] ?? null;
+            $bookid = $_POST['bookid'] ?? null;
+
+            if (empty($memberid) && empty($bookid)) {
+                $books = CirculationModel::getAllBorrowData();
+                require_once Config::getViewPath("staff", 'view-issue-book.php');
+            } else {
+                $books =  CirculationModel::searchBorrowBooks($memberid, $bookid);
+                require_once Config::getViewPath("staff", 'view-issue-book.php');
+            }
+        } else {
+            return []; // Return an empty array or an appropriate error response
+        }
+    }
+
 }

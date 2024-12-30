@@ -41,9 +41,21 @@ class CirculationModel
 
     public static function getAllBorrowData()
     {
-        $rs = Database::search("SELECT * FROM `borrow` INNER JOIN `book` ON `borrow`.`book_id` = `book`.`book_id` INNER JOIN `member` ON `borrow`.`member_id` = `member`.`member_id`");
+        $rs = Database::search("SELECT * FROM `borrow` INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`member_id`");
         return $rs;
     }
 
+    
+    public static function searchBorrowBooks($memberid , $bookid) {
+        $sql = "SELECT * FROM `borrow` INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`member_id` WHERE 1";
+        if (!empty($bookid)) {
+            $sql .= " AND `book_id` LIKE '%$bookid%'";
+        }
+        if (!empty($memberid)) {
+            $sql .= " AND `member_id` LIKE '%$memberid%'";
+        }
 
+        $rs = Database::search($sql);
+        return $rs;
+    }
 }

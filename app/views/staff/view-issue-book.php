@@ -20,16 +20,19 @@ require_once "../main.php";
             <?php include "dash_sidepanel.php"; ?>
         </div>
         <div class="container-fluid">
+        <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBorrowBooks">
 
             <div class="row">
                 <div class="col-md-6 my-3">
-                    <input id="bname" type="text" class="form-control" placeholder="Type Book Name">
+                    <input id="memberid" name="memberid" type="text" class="form-control" placeholder="Enter Member ID">
                 </div>
                 <div class="col-md-6 d-flex my-3">
-                    <input id="isbn" type="text" class="form-control mx-3" placeholder="Type ISBN">
-                    <button class="btn btn-primary ml-3 px-4" onclick="searchBook();"><i class="fa fa-search px-2"></i></button>
+                    <input id="bookid" name="bookid" type="text" class="form-control mx-3" placeholder="Enter Book ID">
+                    <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search px-2"></i></button>
                 </div>
             </div>
+            </form>
+
 
             <div class="px-1">
                 <table class="table">
@@ -53,8 +56,6 @@ require_once "../main.php";
                         } else {
 
                             foreach ($books as $row) {
-
-
 
                         ?>
                                 <tr>

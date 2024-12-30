@@ -56,6 +56,8 @@ $router->add('serveimage', [$bookController, 'serveBookCover']);
 $router->add('profile', [$profileController, 'showProfile']);
 $router->add('updateprofile', [$profileController, 'updateProfile']);
 $router->add('serveprofimage', [$profileController, 'serveProfileImage']);
+$router->add('searchBorrowBooks', [$circulationController, 'searchBorrowBooks']);
+
 
 
 

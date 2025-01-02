@@ -41,7 +41,7 @@ require_once Config::getViewPath("home", "header.view.php");
                 <h1 class="text-center pb-3">Reset Pasword</h1>
                 <span class="bg-danger text-dark text-center" id="doesnt"></span>
                 
-                <form class="form-group" method="POST" action="index.php?action=resetpassword">
+                <form class="form-group" method="POST" action="index.php?action=resetpassword" onsubmit="return resetpw()">
                     <div class="form-group mt-1">
                         <div class="bg-success-subtle p-1 rounded-2 text-center mb-1">
                             <p class="text-success">Please create a new password you don't use on any other site</p>

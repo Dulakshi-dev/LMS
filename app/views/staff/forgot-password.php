@@ -49,7 +49,7 @@ require_once Config::getViewPath("home", "header.view.php");
 
                     <label for="email">Enter your Email Address</label>
                     <input class="form-control mt-3" placeholder="Enter your Email" type="email" name="email" id="email">
-                    <button class="btn btn-primary mt-4 w-100" onclick="ff();">Continue</button>
+                    <button class="btn btn-primary mt-4 w-100" onclick="forgotpw();">Continue</button>
                 <div id="responseMessage"></div>
 
 

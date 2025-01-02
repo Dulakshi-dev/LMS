@@ -30,6 +30,7 @@ function staffRegistration() {
     var nic = document.getElementById('nic').value.trim();
     var role = document.querySelector('input[name="role"]:checked');
 
+
     if (username === '') {
         errorMsg.innerText = 'Username is required.';
         errorMsgDiv.style.display = 'block';
@@ -40,20 +41,22 @@ function staffRegistration() {
         return false;
     }
 
+//validate details
+
     return true;
 }
 
-z
-function ff() {
 
-    var email = document.getElementById("email");
+function forgotpw() {
+
+    var email = document.getElementById("email").value;
     var response = document.getElementById("responseMessage");
 
-    // Prepare form data
-    var formData = new FormData();
-    formData.append("email", email.value);
+    //validate email
 
-    // Send AJAX request
+    var formData = new FormData();
+    formData.append("email", email);
+
     fetch("index.php?action=forgotpassword", {
         method: "POST",
         body: formData,
@@ -69,3 +72,9 @@ function ff() {
         });
 };
 
+function resetpw(){
+
+    //validate new password
+    
+    return true;
+}

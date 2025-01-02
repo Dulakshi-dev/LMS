@@ -157,7 +157,7 @@ $userController = new UserController();
                         <textarea class="form-control" id="address" rows="3"></textarea>
                     </div>
                     <div class="text-right">
-                        <button type="button" class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
 
                     </div>
 
@@ -195,7 +195,7 @@ $userController = new UserController();
                         </div>
                         <div id="error" class="text-danger"></div>
                         <div class="text-end">
-                            <button type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
 
                         </div>
                 </div>

@@ -1,3 +1,4 @@
+
 function loadProfileData(id) {
     var formData = new FormData();
     formData.append("user_id", id);
@@ -6,7 +7,7 @@ function loadProfileData(id) {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
                 document.getElementById("staff_id").value = resp.user_id;
@@ -20,15 +21,15 @@ function loadProfileData(id) {
                 var profimg = resp.profile_img;
                 var profileImgElement = document.getElementById("profileimg");
 
-                if(profimg == ""){
+                if (profimg == "") {
                     profileImgElement.src = "index.php?action=serveprofimage&image=user.jpg";
 
-                }else{
+                } else {
                     profileImgElement.src = "index.php?action=serveprofimage&image=" + profimg;
 
                 }
 
-                
+
             } else {
                 alert("Failed to load user data. Please try again.");
             }
@@ -47,7 +48,7 @@ function updateProfileDetails() {
     var phone = document.getElementById("phone").value;
     var address = document.getElementById("address").value;
     var nic = document.getElementById("nic").value;
-    var profimg = document.getElementById("uploadprofimg").files[0]; 
+    var profimg = document.getElementById("uploadprofimg").files[0];
 
     var formData = new FormData();
     formData.append("staff_id", staff_id);
@@ -66,10 +67,10 @@ function updateProfileDetails() {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-location.reload();
+                location.reload();
             } else {
                 alert("Failed to update user data. Please try again.");
             }
@@ -79,3 +80,19 @@ location.reload();
         });
 }
 
+function dashboard_change_password(event) {
+
+    if (event) {
+        event.preventDefault();
+    }
+    const box1 = document.getElementById("box1");
+    const box2 = document.getElementById("box2");
+
+    if (box1.style.display === "none") {
+        box1.style.display = "block";
+        box2.style.display = "none";
+    } else {
+        box1.style.display = "none";
+        box2.style.display = "block";
+    }
+}

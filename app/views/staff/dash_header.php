@@ -1,13 +1,15 @@
 <?php
-
+require_once "../main.php";
 $fname = $_SESSION["user"]["fname"];
 $lname = $_SESSION["user"]["lname"];
 $role_name = $_SESSION["user"]["role_name"];
+$profile_img = $_SESSION["user"]["profile_img"];
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +19,7 @@ $role_name = $_SESSION["user"]["role_name"];
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        nav ul li a img{
+        nav ul li a img {
             height: 40px;
             width: 40px;
             border-radius: 50%;
@@ -33,34 +35,35 @@ $role_name = $_SESSION["user"]["role_name"];
         }
     </style>
 </head>
-<body id="body">
+
+<body id="body" onload="loadprofileimg('<?php echo addslashes($profile_img); ?>');">
     <header class="text-white">
         <div class="row bg-dark m-0 pt-2 align-items-center">
             <div class="col navbar navbar-expand-lg navbar-dark">
-                    <h4 class="mx-2">Librarian Panel<button id="tog" class="navbar-toggler ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <h4 class="mx-2">Librarian Panel<button id="tog" class="navbar-toggler ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button></h4>
             </div>
             <div class="col d-flex justify-content-end">
                 <nav>
-                <ul class="inline d-flex align-items-center">
-                    
-                    <li class="list-inline-item">
-                        <a class="text-white text-decoration-none" href="#">
-                            <i class="fa fa-bell mr-3"></i>
-                        </a>
-                    </li>
-                    
-                    <li class="list-inline-item d-flex align-items-center">
-                        <a id="prof" class="text-white text-decoration-none d-flex align-items-center" href="#">
-                            <img src="images/use.jpg" class="mr-2 rounded-circle" alt="" style="width: 40px; height: 40px;">
-                            <div class="text-left">
-                                <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
-                                <small><?php echo $role_name; ?></small>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+                    <ul class="inline d-flex align-items-center">
+
+                        <li class="list-inline-item">
+                            <a class="text-white text-decoration-none" href="#">
+                                <i class="fa fa-bell mr-3"></i>
+                            </a>
+                        </li>
+
+                        <li class="list-inline-item d-flex align-items-center">
+                            <a id="prof" class="text-white text-decoration-none d-flex align-items-center" href="#">
+                                <img src="" class="mr-2 rounded-circle" alt="" id="headerprofileimg" style="width: 40px; height: 40px;">
+                                <div class="text-left">
+                                    <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
+                                    <small><?php echo $role_name; ?></small>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
 
 
                 </nav>
@@ -81,6 +84,7 @@ $role_name = $_SESSION["user"]["role_name"];
             </div>
         </div>
     </header>
-    <script src="script.js"></script>
-</body>
+    <script src="<?php echo Config::getJsPath("test.js"); ?>"></script>
+    </body>
+
 </html>

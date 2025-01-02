@@ -43,7 +43,6 @@ function staffRegistration() {
     return true;
 }
 
-
 function ff() {
 
     var email = document.getElementById("email");
@@ -68,5 +67,4 @@ function ff() {
             console.error("Error:", error);
         });
 };
-
 

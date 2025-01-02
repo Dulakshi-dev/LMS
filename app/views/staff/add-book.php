@@ -19,7 +19,7 @@
             <div class="text-center border-bottom border-danger mb-4 pb-3">
                 <h2>Add Books</h2>
             </div>
-            <form action="<?php echo Config::indexPath() ?>?action=addBookData" method="POST" enctype="multipart/form-data">
+            <form action="<?php echo Config::indexPath() ?>?action=addBookData" method="POST" enctype="multipart/form-data" onsubmit="return addBook()">
 
                 <div class="row">
                     <div class="col-md-3 text-center">

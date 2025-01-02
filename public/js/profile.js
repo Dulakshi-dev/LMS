@@ -50,6 +50,8 @@ function updateProfileDetails() {
     var nic = document.getElementById("nic").value;
     var profimg = document.getElementById("uploadprofimg").files[0];
 
+    //validate details (no need of profile img and disabled feilds)
+
     var formData = new FormData();
     formData.append("staff_id", staff_id);
     formData.append("fname", fname);

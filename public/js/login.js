@@ -16,7 +16,7 @@ function staffLogin() {
         errorMsgDiv.style.display = 'block';
         return false;
     }
-
+//validate login details
     return true;
 }
 
@@ -43,6 +43,7 @@ function staffRegistration() {
     return true;
 }
 
+z
 function ff() {
 
     var email = document.getElementById("email");

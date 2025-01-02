@@ -7,18 +7,18 @@ class BookModel
 
     public static function getAllBooks()
     {
-        $rs = Database::search("SELECT * FROM `book_details`");
+        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id`;");
         return $rs;
     }
 
     public static function loadBookDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `book_details` WHERE `book_id` = '$id'");
+        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id` WHERE `book_id` = '$id'");
         return $rs;
     }
 
     public static function searchBooks($title, $isbn , $bookid) {
-        $sql = "SELECT * FROM `book_details` WHERE 1";
+        $sql = "SELECT * FROM `book` WHERE 1";
         if (!empty($bookid)) {
             $sql .= " AND `book_id` LIKE '%$bookid%'";
         }

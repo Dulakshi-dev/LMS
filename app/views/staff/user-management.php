@@ -179,11 +179,11 @@ $userController = new UserController();
                 <div class="p-4">
                         <div class="mb-3">
                             <label for="name" class="form-label">User Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="">
+                            <input type="text" class="form-control" id="name" name="name" value="" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">User Email</label>
-                            <input type="text" class="form-control" id="emailadd" name="emailadd" value="">
+                            <input type="text" class="form-control" id="emailadd" name="emailadd" value="" disabled>
                         </div>
                         <div class="mb-3">
                             <label for="subject" class="form-label">Subject</label>

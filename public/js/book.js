@@ -1,3 +1,10 @@
+function addBook(){
+
+    //validate book details
+    
+    return true;
+}
+
 function loadBookDataUpdate(book_id) {
     var formData = new FormData();
     formData.append("book_id", book_id);
@@ -34,6 +41,8 @@ function updateBookDetails() {
     var pubYear = document.getElementById("pub_year").value;
     var quantity = document.getElementById("qty").value;
     var description = document.getElementById("des").value;
+
+    //validate book details
 
     var formData = new FormData();
     formData.append("book_id", book_id);

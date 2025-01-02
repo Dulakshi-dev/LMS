@@ -1,6 +1,8 @@
 function loadBookData() {
     var book_id = document.getElementById("book_id").value;
 
+//validate book id - empty and format
+
     var formData = new FormData();
     formData.append("book_id", book_id);
     fetch("index.php?action=loadborrowbookdata", {
@@ -25,6 +27,8 @@ function loadBookData() {
 
 function loadMemberData() {
     var member_id = document.getElementById("member_id").value;
+
+    //validate member id - empty and format
 
     var formData = new FormData();
     formData.append("member_id", member_id);

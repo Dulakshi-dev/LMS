@@ -4,12 +4,12 @@ require_once __DIR__ . '../../../database/connection.php';
 
 class UserModel {
     public static function getAllUsers() {
-        $rs = Database::search("SELECT * FROM `user_details`");
+        $rs = Database::search("SELECT * FROM `user`JOIN `login` ON `user`.`id` = `login`.`userId` JOIN `role` ON `user`.`role_id` = `role`.`role_id`");
         return $rs;
     }
 
     public static function searchUsers($memberId, $nic, $userName) {
-        $sql = "SELECT * FROM `user_details` WHERE 1";
+        $sql = "SELECT * FROM `user` JOIN `login` ON `user`.`id` = `login`.`userId` WHERE 1";
         if (!empty($memberId)) {
             $sql .= " AND `user_id` LIKE '%$memberId%'";
         }
@@ -29,7 +29,7 @@ class UserModel {
     }
 
     public static function getUserbyID($user_id) {
-        $rs = Database::search("SELECT * FROM `user_details` WHERE `user_id` = '$user_id'");
+        $rs = Database::search("SELECT * FROM `user` JOIN `login` ON `user`.`id` = `login`.`userId` WHERE `user_id` = '$user_id'");
         return $rs->fetch_assoc();
     }
 

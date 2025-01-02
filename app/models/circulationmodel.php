@@ -16,7 +16,7 @@ class CirculationModel
 
     public static function getBookDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `book_details` WHERE `book_id` = '$id'");
+        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id` WHERE `book_id` = '$id'");
         return $rs;
     }
 

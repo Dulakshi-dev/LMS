@@ -37,6 +37,8 @@ function updateUserDetails() {
     var phone = document.getElementById("phoneNumber").value;
     var address = document.getElementById("address").value;
 
+    //validate details
+
     var formData = new FormData();
     formData.append("userId", userId);
     formData.append("username", username);

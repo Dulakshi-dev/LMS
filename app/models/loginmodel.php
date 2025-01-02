@@ -16,7 +16,9 @@ class LoginModel
 
     public static function validateLogin($username, $password)
     {
-        $query = "SELECT * FROM `user_details` WHERE `user_id` = '$username' AND `password` = '$password' ;";
+        $query = "SELECT * FROM `user`
+JOIN `login` ON `user`.`id` = `login`.`userId`
+JOIN `role` ON `user`.`role_id` = `role`.`role_id` WHERE `user_id` = '$username' AND `password` = '$password' ;";
         $result = Database::search($query);
 
         if ($result && $result->num_rows > 0) {
@@ -28,10 +30,7 @@ class LoginModel
 
     public static function getUserModules($role_id)
     {
-        $query = "SELECT `module_name` 
-                  FROM `module` 
-                  JOIN `role_has_module` ON `module`.`module_id` = `role_has_module`.`module_id` 
-                  WHERE `role_id` = '$role_id'";
+        $query = "SELECT `module_name`FROM `module` JOIN `role_has_module` ON `module`.`module_id` = `role_has_module`.`module_id` WHERE `role_id` = '$role_id'";
         $result = Database::search($query);
 
         if ($result && $result->num_rows > 0) {
@@ -69,7 +68,6 @@ class LoginModel
         if ($role == "Librarian") {
             Database::insert("INSERT INTO `user`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','1')");
             return true;
-            //handle security issues
         } else {
             $id = Database::insert("INSERT INTO `user`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','2')");
             $staffID = self::generateStaffID();

@@ -34,20 +34,17 @@ $role_name = $_SESSION["user"]["role_name"];
 
     <?php include "dash_header.php"; ?>
 
-    <div class="d-flex">
-
-        <div class="nav-bar">
+    <div class="d-flex bg-light">
+        <div class="nav-bar vh-100">
             <?php include "dash_sidepanel.php"; ?>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid mx-5 mb-5 bg-white">
             <div class="row">
-                <div class="form w-100">
-                    <nav class="navbar py-3 navbar-light bg-light">
-
-                        <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
-                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
-
-                    </nav>
+              <nav class="navbar p-4 navbar-light bg-light">
+                <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+              </nav>
+            </div>
                     <div id="box1">
                         <div class="container-fluid fw-bold bg-white d-flex justify-content-center">
                             <div class="row">

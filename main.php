@@ -86,7 +86,5 @@ class Config {
     {
         return Config::$paths["profile_img"];
     }
-
-
 }
 

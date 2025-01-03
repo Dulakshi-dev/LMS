@@ -91,7 +91,7 @@
                                         <input id="issueDate" name="borrow_date" class="form-control" type="date">
                                     </div>
                                     <div class="col-lg-6 my-3 form-group">
-                                        <label for="returnDate">By Whom To Return</label>
+                                        <label for="returnDate">Due Date</label>
                                         <input id="returnDate" name="due_date" class="form-control" type="date">
                                     </div>
                                 </div>

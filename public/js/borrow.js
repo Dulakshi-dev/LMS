@@ -50,3 +50,19 @@ function loadMemberData() {
             console.error("Error fetching book data:", error);
         });
 }
+
+function returnButtonClick(button) {
+
+    const dueDate = button.getAttribute("data-due-date");
+    
+    document.getElementById("dueDate").value = dueDate;
+}
+
+function loadFines() {
+    var dueDate = document.getElementById("dueDate").value;
+    var returnDate = document.getElementById("returnDate").value;
+
+
+//load fines
+
+}

@@ -46,7 +46,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
             $action = strtolower(str_replace(' ', '', $module));  // Remove spaces and convert to lowercase
 
         ?>
-            <a href="<?php echo Config::indexPath() ?>?action=<?php echo htmlspecialchars($action); ?>" class="nav-link text-white py-2 border-bottom align-items-center">
+            <a href="<?php echo Config::indexPath() ?>?action=<?php echo htmlspecialchars($action); ?>" class="nav-link p-2 text-white border-bottom align-items-center">
                 <i class="fas fa-tachometer-alt mr-3"></i>
                 <?php echo htmlspecialchars($module); ?>
             </a>
@@ -55,7 +55,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
         ?>
 
 
-        <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white py-2 border-bottom align-items-center">
+        <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i>My Profile
         </a>
         <?php

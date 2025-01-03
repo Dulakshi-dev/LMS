@@ -23,11 +23,17 @@ $userController = new UserController();
 <body>
     <?php include "dash_header.php"; ?>
 
-    <div class="d-flex">
-        <div class="nav-bar">
+    <div class="d-flex bg-light">
+        <div class="nav-bar vh-100">
             <?php include "dash_sidepanel.php"; ?>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid mx-5 mb-5 bg-white">
+            <div class="row">
+              <nav class="navbar p-4 navbar-light bg-light">
+                <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+              </nav>
+            </div>
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
                     <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchUsers">
@@ -117,7 +123,7 @@ $userController = new UserController();
     <!-- Modal Update details-->
     <div class="modal fade" id="updateDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content p-3">
                 <div class="d-flex justify-content-between align-items-center m-3">
                     <h3 class="mb-0">Edit User Detail</h3>
                     <i class="fa fa-close text-black" style="cursor: pointer;" data-bs-dismiss="modal" aria-label="Close"></i>

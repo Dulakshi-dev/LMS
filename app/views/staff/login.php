@@ -1,6 +1,7 @@
 <?php
-require_once "../main.php";
+require_once "../../../main.php";
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,19 +11,19 @@ require_once "../main.php";
     <title>Shelf Loom || Staff Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-image: url('<?php echo Config::getImagePath("stafflog.jpg"); ?>');
+        .login-form {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 30px;
+        border-radius: 10px;
+    
+        }
+
+        body{
+            background-image: url('../../../public/images/stafflog.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            overflow-x: hidden;
-        }
-
-        .login-form {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 10px;
         }
 </style>
 
@@ -35,10 +36,10 @@ require_once Config::getViewPath("home", "header.view.php");
 ?>
 
 
-    <div class="container-fluid login-container">
+    <div class="login-container my-5">
         <h1 class="text-dark text-center m-4">Hi! Welcome Back</h1>
         <div class="row p-3 justify-content-center align-items-center">
-            <div class="col-lg-4 col-md-6 text-white login-form">
+            <div class="col-lg-4 col-md-6 text-white login-form m-4">
                 <h1 class="text-center"> Staff Login</h1>
 
                 <?php
@@ -83,16 +84,16 @@ require_once Config::getViewPath("home", "header.view.php");
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 mt-3">Login</button>
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill mt-3">Login</button>
                 </form>
             </div>
         </div>
     </div>
 
     <?php
-require_once Config::getViewPath("home", "footer-noscroll.view.php");    ?>
+require_once Config::getViewPath("home", "footer.view.php");    ?>
 
-<script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
+<script src="<?php echo Config::getJsPath("../../../public/js/login.js"); ?>"></script>
 </body>
 
 </html>

@@ -1,23 +1,29 @@
 function staffLogin() {
+    let isValid = true;
     var username = document.getElementById('username').value.trim();
     var password = document.getElementById('password').value.trim();
-    var errorMsgDiv = document.getElementById('errormsgdiv');
-    var errorMsg = document.getElementById('errormsg');
+    var usernameError = document.getElementById('usernameError');
+    var passwordError = document.getElementById('passwordError');
 
-    errorMsg.innerText = '';
-    errorMsgDiv.style.display = 'none';
+    usernameError.innerText = '';
+    passwordError.innerText = '';
 
+    // Validate username
     if (username === '') {
-        errorMsg.innerText = 'Username is required.';
-        errorMsgDiv.style.display = 'block';
-        return false;
-    } else if (password === '') {
-        errorMsg.innerText = 'Password is required.';
-        errorMsgDiv.style.display = 'block';
-        return false;
+        usernameError.innerText = 'Username is required.';
+        isValid = false;
+    }
+
+    // Validate password
+    if (password === '') {
+        passwordError.innerText = 'Password is required.';
+        isValid = false;
+    } else if (password.length < 6) {
+        passwordError.innerText = 'Password must be at least 8 characters.';
+        isValid = false;
     }
 //validate login details
-    return true;
+    return isValid;
 }
 
 function staffRegistration() {
@@ -72,9 +78,36 @@ function forgotpw() {
         });
 };
 
-function resetpw(){
+function resetpw() {
+    let isValid = true;
 
-    //validate new password
-    
-    return true;
+    // Retrieve form inputs and error spans
+    var password = document.getElementById("pw").value.trim();
+    var confirmPassword = document.getElementById("cpw").value.trim();
+    var pwError = document.getElementById('PassError'); // Corrected to match the HTML ID
+    var cpwError = document.getElementById('ConError'); // Corrected to match the HTML ID
+
+    // Clear previous error messages
+    pwError.innerText = '';
+    cpwError.innerText = '';
+
+    // Validate password
+    if (password === "") {
+        pwError.textContent = "Password is required.";
+        isValid = false;
+    } else if (password.length < 8) {
+        pwError.textContent = "Password must be at least 8 characters.";
+        isValid = false;
+    }
+
+    // Validate confirm password
+    if (confirmPassword === "") {
+        cpwError.textContent = "Confirm password is required.";
+        isValid = false;
+    } else if (confirmPassword !== password) {
+        cpwError.textContent = "Passwords do not match.";
+        isValid = false;
+    }
+
+    return isValid; // Prevent form submission if validation fails
 }

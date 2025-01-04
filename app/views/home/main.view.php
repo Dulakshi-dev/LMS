@@ -1,220 +1,73 @@
-
-
 <!DOCTYPE html>
-
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    <link rel="stylesheet" href="bootstrap.css" />
-    <link rel="stylesheet" href="home.css" />
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home body</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Home</title>
-    <style>
-
-.hero {
-    background: url('images/home.jpg') no-repeat center center/cover;
-    height: 500px;
-  }
-  
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        
-        header {
-            color: #fff;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logoimg {
-            height: 50px;
-            margin-right: 10px;
-        }
-        
-        header nav ul {
-            list-style: none;
-            display: flex;
-            margin: 0;
-            padding: 0;
-            flex-wrap: wrap;
-            font-size: 20px;
-        }
-        
-        header nav ul li {
-            margin-left: 30px;
-            margin-top: 15px;
-            margin-bottom: 20px;
-        }
-        
-        header nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-
-        .link1{
-            font: bold ;
-            color: #fff;
-            
-        }
-
-        .link1:hover {
-            color: #ff0000;
-        }
-        
-        header #menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        footer {
-            /* background-color: rgb(31, 31, 31); */
-            padding-bottom: 5px;
-            padding-left: 20px;
-            padding-right: 20px;
-        
-            left: 0;
-            width: 100%;
-            background-color: #333;
-            color: white;
-            padding: 10px;
-            text-align: center;
-            
-        }
-        
-        footer .footer-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            color: #fff;
-        }
-        
-        footer p {
-            margin: 0;
-            flex: 1;
-            text-align: left;
-        }
-        
-        footer .top-button {
-            flex: 1;
-            text-align: center;
-        }
-        
-        
-        footer .top-button a {
-            /* background-color: #000000; */
-            color: #fff;
-            text-decoration: none;
-            border: #fff solid 3px;
-            border-radius: 5px;
-            padding: 8px 20px;  
-        }
-        
-        footer .top-button a:hover {
-            background-color: white;
-            color: #000000;
-        }
-        
-        footer .social-icons {
-            display: flex;
-            gap: 20px;
-            flex: 0;
-            justify-content: flex-end;
-        }
-        
-        footer .social-icons a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 24px;
-        }
-        
-        footer .social-icons a:hover {
-            color: #ff0000;
-        }
-        
-        .footer-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 5px; 
-        }
-        .footer-container::before,
-        .footer-container::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #fff;
-            border-width: 3px; 
-        }
-        .footer-container::before {
-            margin-right: 10px;
-        }
-        .footer-container::after {
-            margin-left: 10px;
-        }
-
-
-    </style>
 </head>
-<body>
-    <section class="hero">
-        <h1>Welcome to</h1>
+<body class="bg-light">
+
+    <section class="bg-dark text-white pt-5 px-3 mt-3" style="background: url('../../../public/images/home.jpg') no-repeat center center/cover; height: 550px;">
+        <h1 class="display-1 fw-bold">Welcome to</h1>
     </section>
 
-    <div class="our-goal-section">
-        <h2 class="ms-5 fw-bold">Our Goal</h2>
-        <div class="row our-goal-images">
-            <div class="col-5">
-                <p>At ShelfLoom, our goal is to create a user-friendly and efficient platform that simplifies library management and enhances the experience of accessing our vast collection of resources...</p>
+    <div class="container my-5">
+        <h2 class="text-danger fs-1 mb-4">Our Goal</h2>
+        <div class="row align-items-center mb-4">
+            <div class="col-md-6">
+                <p class="fs-5">At [Library Name], our goal is to create a user-friendly and efficient platform that simplifies library management and enhances the experience of accessing our vast collection of resources. Our system is designed to streamline the cataloging, borrowing, and returning of books, making it easier for library staff to manage inventory and for patrons to find the materials they need.</p>
             </div>
-            <img src="images/home-goal.jpg" alt="Test Image">
-
+            <div class="col-md-6 d-flex justify-content-end">
+                <img src="../../../public/images/home-goal.jpg" alt="Library Image 1" style="height: 700px;" class="img-fluid rounded">
+            </div>
         </div>
-
-        <div class="row our-goal-images"> 
-            <img src="images/home-goal2.jpg" alt="Library Image 2" class="col-5 rounded-5">
-            <div class="col-5">
-                <p>At ShelfLoom, our goal is to create a user-friendly and efficient platform...</p>
+        <div class="row align-items-center">
+            <div class="col-md-6 order-md-2">
+                <p class="fs-5">Whether you're searching for the latest bestseller, researching a topic, or simply exploring new genres, our library management system ensures a seamless and enjoyable experience for all users. Join us in fostering a love for reading and learning in our community.</p>
+            </div>
+            <div class="col-md-6 order-md-1">
+                <img src="../../../public/images/home-goal2.jpg" alt="Library Image 2" style="height: 700px;" class="img-fluid rounded">
             </div>
         </div>
     </div>
 
-    <section class="last-news-update">
-        <h2>Latest News and Updates</h2>
-        <div class="news-container d-lg-flex">
-            <div class="news-item col-12 col-lg-4">
-                <div class="news-date">NOV 16</div>
-                <img src="images/home-goal.jpg" alt="News Image 1">
-                <p>Text here</p>
-            </div>
-            <div class="news-item col-12 col-lg-4">
-                <div class="news-date">NOV 16</div>
-                <img src="images/home-goal.jpg" alt="News Image 2">
-                <p>Text here</p>
-            </div>
-            <div class="news-item col-12 col-lg-4">
-                <div class="news-date">NOV 16</div>
-                <img src="images/home-goal.jpg" alt="News Image 3">
-                <p>Text here</p>
+    <section class="bg-secondary text-white py-5">
+        <div class="container">
+            <h2 class="text-danger mb-4">Latest News and Updates</h2>
+            <div class="row gy-4">
+                <div class="col-md-4">
+                    <div class="card bg-dark text-white ">
+                        <img src="../../../public/images/home-goal.jpg" style="height: 500px;" class="" alt="News Image 1">
+                        <div class="card-body">
+                            <h5 class="card-title">NOV 16</h5>
+                            <p class="card-text">Text here</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-dark text-white">
+                        <img src="../../../public/images/home-goal.jpg" class="" style="height: 500px;" alt="News Image 2">
+                        <div class="card-body">
+                            <h5 class="card-title">NOV 16</h5>
+                            <p class="card-text">Text here</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-dark text-white">
+                        <img src="../../../public/images/home-goal.jpg" class="" style="height: 500px;" alt="News Image 3">
+                        <div class="card-body">
+                            <h5 class="card-title">NOV 16</h5>
+                            <p class="card-text">Text here</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+</html>

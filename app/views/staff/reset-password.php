@@ -9,7 +9,7 @@
 
     <style>
         body{
-            background-image: url('img/login_background.png');  
+            background-image: url('../../../public/images/login_background.png');  
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -24,10 +24,6 @@
         
     }
 
-    .msg{
-        background-color: rgb(60, 178, 33);
-        font-size: 15px;
-    }
     </style>
 </head>
 <body>
@@ -59,6 +55,6 @@
             </div>
         </div>
     </div>
-
+    <script src="<?php echo Config::getJsPath("../../../public/js/login.js"); ?>"></script>
 </body>
 </html>

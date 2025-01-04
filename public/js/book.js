@@ -1,36 +1,84 @@
-function addBook(){
+function addBook() {
 
     //validate book details
-    
+
     return true;
 }
 
-function loadBookDataUpdate(book_id) {
-    var formData = new FormData();
-    formData.append("book_id", book_id);
+function loadAllCategories(selectedCategoryId = null) {
+    return new Promise((resolve, reject) => {
+        fetch('index.php?action=getallcategories')
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    const categoryDropdown = document.getElementById('category');
+                    categoryDropdown.innerHTML = ''; 
 
-    fetch("index.php?action=loadBookData", {
-        method: "POST",
+                    resp.categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.category_id;
+                        option.textContent = category.category_name;
+
+                        if (selectedCategoryId && category.category_id == selectedCategoryId) {
+                            option.selected = true; 
+                        }
+
+                        categoryDropdown.appendChild(option);
+                    });
+
+                    if (selectedCategoryId) {
+                        categoryDropdown.value = selectedCategoryId;
+                    }
+
+                    resolve(true); 
+                } else {
+                    alert('Failed to load categories. Please try again.');
+                    reject('Failed to load categories');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching categories:', error);
+                reject(error);
+            });
+    });
+}
+
+function loadBookDataUpdate(book_id) {
+    const formData = new FormData();
+    formData.append('book_id', book_id);
+
+    fetch('index.php?action=loadBookData', {
+        method: 'POST',
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                document.getElementById("book_id").value = resp.book_id;
-                document.getElementById("isbn_no").value = resp.isbn;
-                document.getElementById("author").value = resp.author;
-                document.getElementById("title").value = resp.title;
-                document.getElementById("pub_year").value = resp.pub_year;
-                document.getElementById("qty").value = resp.qty;
-                document.getElementById("des").value = resp.description;
+                document.getElementById('book_id').value = resp.book_id;
+                document.getElementById('isbn_no').value = resp.isbn;
+                document.getElementById('author').value = resp.author;
+                document.getElementById('title').value = resp.title;
+                document.getElementById('pub_year').value = resp.pub_year;
+                document.getElementById('qty').value = resp.qty;
+                document.getElementById('des').value = resp.description;
+
+                
+                loadAllCategories(resp.category_id)
+                    .then(() => {
+                        // Categories are now loaded, and the correct category is pre-selected
+                    })
+                    .catch(error => {
+                        alert('Failed to load categories. Please try again.');
+                    });
             } else {
-                alert("Failed to load book data. Please try again.");
+                alert('Failed to load book data. Please try again.');
             }
         })
         .catch(error => {
-            console.error("Error fetching book data:", error);
+            console.error('Error fetching book data:', error);
         });
 }
+
 
 function updateBookDetails() {
     var book_id = document.getElementById("book_id").value;
@@ -59,7 +107,7 @@ function updateBookDetails() {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
                 location.reload();

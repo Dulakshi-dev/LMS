@@ -5,11 +5,21 @@ require_once __DIR__ . '../../../database/connection.php';
 class BookModel
 {
 
-    public static function getAllBooks()
+    public static function getAllBooks($page)
     {
-        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id`;");
-        return $rs;
+        $rs = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN status ON book.status_id = status.status_id;");
+        $num = $rs->num_rows;
+        $resultsPerPage = 1;
+        $pageResults = ($page - 1) * $resultsPerPage;
+
+        $rs2 = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN status ON book.status_id = status.status_id LIMIT $resultsPerPage OFFSET 
+$pageResults");
+        return [
+            'total' => $num,
+            'results' => $rs2
+        ];
     }
+
 
     public static function loadBookDetails($id)
     {
@@ -17,7 +27,23 @@ class BookModel
         return $rs;
     }
 
-    public static function searchBooks($title, $isbn , $bookid) {
+    public static function getAllCategories()
+    {
+        $query = "SELECT category_id, category_name FROM category";
+        $result = Database::search($query);
+
+        $categories = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $categories[] = $row;
+            }
+        }
+
+        return $categories;
+    }
+
+    public static function searchBooks($title, $isbn, $bookid)
+    {
         $sql = "SELECT * FROM `book` WHERE 1";
         if (!empty($bookid)) {
             $sql .= " AND `book_id` LIKE '%$bookid%'";
@@ -49,7 +75,8 @@ class BookModel
         return true;
     }
 
-    public static function addBook($isbn, $author,$title,$category,$pub,$qty,$des,$coverpage){
+    public static function addBook($isbn, $author, $title, $category, $pub, $qty, $des, $coverpage)
+    {
         $book_id = self::generateID();
         Database::insert("INSERT INTO `book`(`book_id`,`isbn`,`title`,`author`,`pub_year`,`description`,`cover_page`,`qty`,`available_qty`,`category_id`,`status_id`) VALUES ('$book_id','$isbn', '$title', '$author', '$pub', '$des','$coverpage', '$qty', '$qty', '1', '1')");
 
@@ -75,4 +102,3 @@ class BookModel
         return $newBookID;
     }
 }
-

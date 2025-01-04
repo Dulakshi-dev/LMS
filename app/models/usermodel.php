@@ -3,10 +3,21 @@
 require_once __DIR__ . '../../../database/connection.php'; 
 
 class UserModel {
-    public static function getAllUsers() {
+    public static function getAllUsers($page)
+    {
         $rs = Database::search("SELECT * FROM `user`JOIN `login` ON `user`.`id` = `login`.`userId` JOIN `role` ON `user`.`role_id` = `role`.`role_id`");
-        return $rs;
+        $num = $rs->num_rows;
+        $resultsPerPage = 1;
+        $pageResults = ($page - 1) * $resultsPerPage;
+
+        $rs2 = Database::search("SELECT * FROM `user`JOIN `login` ON `user`.`id` = `login`.`userId` JOIN `role` ON `user`.`role_id` = `role`.`role_id` LIMIT $resultsPerPage OFFSET $pageResults");
+        return [
+            'total' => $num,
+            'results' => $rs2
+        ];
     }
+
+    
 
     public static function searchUsers($memberId, $nic, $userName) {
         $sql = "SELECT * FROM `user` JOIN `login` ON `user`.`id` = `login`.`userId` WHERE 1";

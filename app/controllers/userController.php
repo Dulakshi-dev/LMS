@@ -16,10 +16,40 @@ class UserController
 
     public function getAllUsers()
     {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
+        $data = UserModel::getAllUsers($page);
+
+        $totalUsers = $data['total']; 
+        $usersResult = $data['results']; 
+
         $users = [];
-        // Retrieve all users from the model
-        $users  = UserModel::getAllUsers();
+        while ($row = $usersResult->fetch_assoc()) {
+            $users[] = $row;
+        }
+
+        $resultsPerPage = 1;
+        $totalPages = ceil($totalUsers / $resultsPerPage); 
+
         require_once Config::getViewPath("staff", 'user-management.php');
+    }
+
+    public function getAllBooks()
+    {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
+        $data = BookModel::getAllBooks($page);
+
+        $totalBooks = $data['total']; 
+        $booksResult = $data['results']; 
+
+        $books = [];
+        while ($row = $booksResult->fetch_assoc()) {
+            $books[] = $row;
+        }
+
+        $resultsPerPage = 1;
+        $totalPages = ceil($totalBooks / $resultsPerPage); 
+
+        require_once Config::getViewPath("staff", 'view-books.php');
     }
 
     public function searchUsers()
@@ -33,7 +63,7 @@ class UserController
             $userName = $_POST['userName'] ?? null;
 
             if (empty($memberId) && empty($nic) && empty($userName)) {
-                $users = UserModel::getAllUsers();
+                $users = UserModel::getAllUsers(1);
                 require_once Config::getViewPath("staff", 'user-management.php');
             } else {
                 $users =  UserModel::searchUsers($memberId, $nic, $userName);

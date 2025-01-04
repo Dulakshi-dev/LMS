@@ -31,7 +31,7 @@ $userController = new UserController();
             <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBooks">
 
                 <div class="row">
-                <div class="col-md-4 my-3">
+                    <div class="col-md-4 my-3">
                         <input id="bid" name="bid" type="text" class="form-control" placeholder="Type Book ID">
                     </div>
                     <div class="col-md-4 d-flex my-3">
@@ -47,7 +47,7 @@ $userController = new UserController();
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
-                        <th>Book ID</th>
+                            <th>Book ID</th>
                             <th>ISBN</th>
                             <th>Cover Page</th>
                             <th>Book Name</th>
@@ -71,10 +71,10 @@ $userController = new UserController();
 
                         ?>
                                     <tr>
-                                    <td><?php echo $row["book_id"]; ?></td>
+                                        <td><?php echo $row["book_id"]; ?></td>
                                         <td><?php echo $row["isbn"]; ?></td>
                                         <td>
-                                        <img src="<?php echo Config::indexPath()?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
+                                            <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
 
                                         </td>
                                         <td><?php echo $row["title"]; ?></td>
@@ -85,7 +85,7 @@ $userController = new UserController();
                                         <td><?php echo $row["qty"] - $row["available_qty"]; ?></td>
                                         <td>
                                             <div class="m-1">
-                                                <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#updateBookDetailsModal" onclick="loadBookDataUpdate('<?php echo $row['book_id']; ?>');"><i class="fas fa-edit"></i></span>
+                                                <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#updateBookDetailsModal" onclick="loadBookDataUpdate('<?php echo $row['book_id']; ?>'); loadAllCategories();"><i class="fas fa-edit"></i></span>
                                                 <span class="btn btn-danger my-1 btn-sm"><i class="fas fa-trash-alt"></i></span>
                                             </div>
                                         </td>
@@ -101,8 +101,35 @@ $userController = new UserController();
                 </table>
 
             </div>
+            <nav aria-label="Page navigation example" class="" >
+                <ul class="pagination d-flex justify-content-center">
+                    <!-- Previous Button -->
+                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewBook&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <!-- Page Numbers -->
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                            <a class="page-link" href="<?= Config::indexPath() ?>?action=viewBook&page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Next Button -->
+                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewBook&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
         </div>
     </div>
+
+
 
     <div class="modal fade" id="updateBookDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -138,20 +165,9 @@ $userController = new UserController();
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="category" class="form-label">Book Category</label>
                                 <select class="form-select" id="category">
-                                    <option value="">Select Category</option>
-                                    <?php
-                                    $rs = Database::search("SELECT * FROM `category`");
-                                    $n = $rs->num_rows;
+                                    <option value="">...</option>
 
-                                    for ($x = 0; $x < $n; $x++) {
-                                        $d = $rs->fetch_assoc();
-                                    ?>
-                                        <option value="<?php echo $d['category_id']; ?>"><?php echo $d['category_name']; ?></option>
-                                    <?php
-                                    }
-                                    ?>
                                 </select>
-
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="pub_year" class="form-label">Published Year</label>

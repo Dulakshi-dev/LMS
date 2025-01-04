@@ -40,13 +40,33 @@ require_once Config::getViewPath("home", "header.view.php");
         <div class="row p-3 justify-content-center align-items-center">
             <div class="col-lg-4 col-md-6 text-white login-form">
                 <h1 class="text-center"> Staff Login</h1>
+
+                <?php
+
+                            $username = "";
+                            $password = "";
+
+                            if (isset($_COOKIE["username"])) {
+                                $username = $_COOKIE["username"];
+                            }
+
+                            if (isset($_COOKIE["password"])) {
+                                $password = $_COOKIE["password"];
+                            }
+                    ?>
+
                 <form id="loginForm" action="<?php echo Config::indexPath()?>?action=loginProcess" method="POST" onsubmit="return staffLogin()">
 
                         <label for="username">Username:</label><br>
-                        <input class="form-control mt-2" type="text" name="username" id="username" placeholder="Enter Staff ID"><br><br>
+                        <input class="form-control mt-2" type="text" name="username" id="username" placeholder="Enter Staff ID" value="<?php echo $username; ?>"><br><br>
 
                         <label for="password">Password:</label><br>
-                        <input class="form-control mt-2" type="password" name="password" id="password" placeholder="Enter Password"><br><br>
+                        <input class="form-control mt-2" type="password" name="password" id="password" placeholder="Enter Password" value="<?php echo $password; ?>"><br><br>
+                       
+                        <div class="col">
+                            <input type="checkbox" name="rememberme" id="rememberme">
+                            <label for="rememberme">Remember me</label>
+                        </div>
 
                         <div class="mt-1 bg-danger-subtle p-1 rounded-3" id="errormsgdiv">
                             <p id="errormsg" class="text-danger text-center mt-1">

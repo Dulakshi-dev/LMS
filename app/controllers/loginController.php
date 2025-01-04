@@ -23,20 +23,31 @@ class LoginController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = $_POST['username'];
             $password = $_POST['password'];
-
+            $rememberme = isset($_POST['rememberme']) ? true : false;
+    
             $userDetails = LoginModel::validateLogin($username, $password);
-
+    
             if ($userDetails) {
                 $_SESSION["user"] = $userDetails;
                 self::loadModules($_SESSION['user']['role_id']);
+    
+                if ($rememberme) {
+                    setcookie("username", $username, time() + (60 * 60 * 24 * 365), "/");
+                    setcookie("password", $password, time() + (60 * 60 * 24 * 365), "/");
+                } else {
+                    setcookie("username", "", time() - 3600, "/");
+                    setcookie("password", "", time() - 3600, "/");
+                }
                 header("Location: index.php?action=dashboard");
+                exit;
             } else {
-
                 $error = "Invalid username or password.";
                 header("Location: index.php");
+                exit; 
             }
         }
     }
+    
 
     public static function loadModules($role)
     {

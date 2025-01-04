@@ -51,12 +51,14 @@ $router->add('showissuebook', [$circulationController, 'showIssueBook']);
 $router->add('loadborrowbookdata', [$circulationController, 'loadBookDetails']);
 $router->add('loadborrowmemberdata', [$circulationController, 'loadMemberDetails']);
 $router->add('issuebook', [$circulationController, 'issueBook']);
-$router->add('showviewissuebook', [$circulationController, 'getAllBorrowBooks']);
+$router->add('viewissuebook', [$circulationController, 'getAllBorrowBooks']);
 $router->add('serveimage', [$bookController, 'serveBookCover']);
 $router->add('profile', [$profileController, 'showProfile']);
 $router->add('updateprofile', [$profileController, 'updateProfile']);
 $router->add('serveprofimage', [$profileController, 'serveProfileImage']);
 $router->add('searchBorrowBooks', [$circulationController, 'searchBorrowBooks']);
+$router->add('getallcategories', [$bookController, 'getAllCategories']);
+
 
 
 

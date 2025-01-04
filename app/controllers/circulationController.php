@@ -135,13 +135,24 @@ class CirculationController{
         }
     }
 
+
     public function getAllBorrowBooks()
     {
-        $books = [];
-        // Retrieve all users from the model
-        $books  = CirculationModel::getAllBorrowData();
-        require_once Config::getViewPath("staff", 'view-issue-book.php');
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
+        $data = CirculationModel::getAllBorrowData($page);
 
+        $totalBooks = $data['total']; 
+        $booksResult = $data['results']; 
+
+        $books = [];
+        while ($row = $booksResult->fetch_assoc()) {
+            $books[] = $row;
+        }
+
+        $resultsPerPage = 1;
+        $totalPages = ceil($totalBooks / $resultsPerPage); 
+
+        require_once Config::getViewPath("staff", 'view-issue-book.php');
     }
 
     public function searchBorrowBooks()
@@ -154,7 +165,7 @@ class CirculationController{
             $bookid = $_POST['bookid'] ?? null;
 
             if (empty($memberid) && empty($bookid)) {
-                $books = CirculationModel::getAllBorrowData();
+                $books = CirculationModel::getAllBorrowData(1);
                 require_once Config::getViewPath("staff", 'view-issue-book.php');
             } else {
                 $books =  CirculationModel::searchBorrowBooks($memberid, $bookid);

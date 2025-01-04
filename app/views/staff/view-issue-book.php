@@ -20,18 +20,18 @@ require_once "../main.php";
             <?php include "dash_sidepanel.php"; ?>
         </div>
         <div class="container-fluid">
-        <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBorrowBooks">
+            <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBorrowBooks">
 
-            <div class="row">
-                <div class="col-md-6 my-3">
-                    <input id="memberid" name="memberid" type="text" class="form-control" placeholder="Enter Member ID">
+                <div class="row">
+                    <div class="col-md-6 my-3">
+                        <input id="memberid" name="memberid" type="text" class="form-control" placeholder="Enter Member ID">
+                    </div>
+                    <div class="col-md-6 d-flex my-3">
+                        <input id="bookid" name="bookid" type="text" class="form-control mx-3" placeholder="Enter Book ID">
+                        <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search px-2"></i></button>
+                    </div>
                 </div>
-                <div class="col-md-6 d-flex my-3">
-                    <input id="bookid" name="bookid" type="text" class="form-control mx-3" placeholder="Enter Book ID">
-                    <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search px-2"></i></button>
-                </div>
-            </div>
-        </form>
+            </form>
 
 
             <div class="px-1">
@@ -69,8 +69,8 @@ require_once "../main.php";
                                     <td>
 
                                         <div class="m-1">
-                                        <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
-                                        <i class="fas fa-edit"></i></span>
+                                            <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
+                                                <i class="fas fa-edit"></i></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -83,7 +83,32 @@ require_once "../main.php";
                 </table>
 
             </div>
+            <nav aria-label="Page navigation example" class="">
+                <ul class="pagination d-flex justify-content-center">
+                    <!-- Previous Button -->
+                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewissuebook&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <!-- Page Numbers -->
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                            <a class="page-link" href="<?= Config::indexPath() ?>?action=viewissuebook&page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Next Button -->
+                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewissuebook&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+
     </div>
 
     <div class="modal fade" id="borrowBookAction" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -96,7 +121,7 @@ require_once "../main.php";
                 </div>
                 <div class="modal-body">
                     <form>
-                         <div class="mb-3 row align-items-center">
+                        <div class="mb-3 row align-items-center">
                             <label for="dueDate" class="col-sm-4 col-form-label">Due Date</label>
                             <div class="col-sm-8">
                                 <input type="date" class="form-control" id="dueDate" placeholder="Enter return date">

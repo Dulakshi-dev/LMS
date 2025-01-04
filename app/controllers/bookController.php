@@ -14,9 +14,20 @@ class BookController
 
     public function getAllBooks()
     {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
+        $data = BookModel::getAllBooks($page);
+
+        $totalBooks = $data['total']; 
+        $booksResult = $data['results']; 
+
         $books = [];
-        // Retrieve all users from the model
-        $books  = BookModel::getAllBooks();
+        while ($row = $booksResult->fetch_assoc()) {
+            $books[] = $row;
+        }
+
+        $resultsPerPage = 1;
+        $totalPages = ceil($totalBooks / $resultsPerPage); 
+
         require_once Config::getViewPath("staff", 'view-books.php');
     }
 
@@ -47,13 +58,32 @@ class BookController
                     "title" => $bookData['title'],
                     "pub_year" => $bookData['pub_year'],
                     "qty" => $bookData['qty'],
-                    "description" => $bookData['description']
+                    "description" => $bookData['description'],
+                    "category_id" => $bookData['category_id']
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+
+    public static function getAllCategories()
+    {
+        $categories = BookModel::getAllCategories();
+
+        if ($categories) {
+            echo json_encode([
+                'success' => true,
+                'categories' => $categories,
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'No categories found',
+            ]);
         }
     }
 
@@ -92,15 +122,13 @@ class BookController
             $qty = $_POST['qty'];
             $des = $_POST['des'];
             $fileName = '';
-    
-            // Handle file upload
+
             if (isset($_FILES['coverpage']) && $_FILES['coverpage']['error'] === UPLOAD_ERR_OK) {
                 $receipt = $_FILES['coverpage'];
                 $targetDir = Config::getBookCoverPath();  // Ensure this directory exists
                 $fileName = uniqid() . "_" . basename($receipt["name"]);
                 $targetFilePath = $targetDir . $fileName;
-    
-                // Move the uploaded file
+
                 if (move_uploaded_file($receipt["tmp_name"], $targetFilePath)) {
                     echo "File uploaded successfully to: $targetFilePath<br>";
                 } else {
@@ -110,10 +138,9 @@ class BookController
             } else {
                 echo "No file uploaded or upload error.<br>";
             }
-    
-            // Add book data to the database with only the file name
+
             $result = BookModel::addBook($isbn, $author, $title, $category, $pub, $qty, $des, $fileName);
-    
+
             if ($result) {
                 header("Location: index.php?action=bookmanagement");
             } else {
@@ -123,25 +150,26 @@ class BookController
             echo "Invalid request method.";
         }
     }
-    
-    
-    public function serveBookCover() {
+
+
+    public function serveBookCover()
+    {
         $imageName = $_GET['image'] ?? '';
-        
+
         $basePath = Config::getBookCoverPath();;
         $filePath = realpath($basePath . basename($imageName));
-    
+
         if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
             header('Content-Type: ' . mime_content_type($filePath));
             readfile($filePath);
             exit;
         }
-    
+
         http_response_code(404);
         echo "Image not found.";
         exit;
     }
-    
+
 
     public function searchBooks()
     {
@@ -154,7 +182,7 @@ class BookController
             $isbn = $_POST['isbn'] ?? null;
 
             if (empty($title) && empty($isbn) && empty($bookid)) {
-                $books = BookModel::getAllBooks();
+                $books = BookModel::getAllBooks(1);
                 require_once Config::getViewPath("staff", 'view-books.php');
             } else {
                 $books =  BookModel::searchBooks($title, $isbn, $bookid);

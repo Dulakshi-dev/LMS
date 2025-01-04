@@ -116,6 +116,31 @@ $userController = new UserController();
                     </tbody>
                 </table>
             </div>
+
+            <nav aria-label="Page navigation example" class="" >
+                <ul class="pagination d-flex justify-content-center">
+                    <!-- Previous Button -->
+                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= Config::indexPath() ?>?action=usermanagement&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <!-- Page Numbers -->
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                            <a class="page-link" href="<?= Config::indexPath() ?>?action=usermanagement&page=<?= $i ?>"><?= $i ?></a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Next Button -->
+                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                        <a class="page-link" href="<?= Config::indexPath() ?>?action=usermanagement&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 

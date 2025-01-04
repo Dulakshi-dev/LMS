@@ -83,6 +83,7 @@ $profile_img = $_SESSION["user"]["profile_img"];
                 </div>
             </div>
         </div>
+         
     </header>
     <script src="<?php echo Config::getJsPath("test.js"); ?>"></script>
     </body>

@@ -31,7 +31,7 @@ require_once "../main.php";
                     <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search px-2"></i></button>
                 </div>
             </div>
-            </form>
+        </form>
 
 
             <div class="px-1">
@@ -69,7 +69,8 @@ require_once "../main.php";
                                     <td>
 
                                         <div class="m-1">
-                                            <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#borrowBookAction"><i class="fas fa-edit"></i></span>
+                                        <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
+                                        <i class="fas fa-edit"></i></span>
                                         </div>
                                     </td>
                                 </tr>
@@ -90,15 +91,21 @@ require_once "../main.php";
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header border-bottom border-1 border-danger">
-                    <h5 class="modal-title">Return Book Management</h5>
+                    <h5 class="modal-title">Return Book</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
+                         <div class="mb-3 row align-items-center">
+                            <label for="dueDate" class="col-sm-4 col-form-label">Due Date</label>
+                            <div class="col-sm-8">
+                                <input type="date" class="form-control" id="dueDate" placeholder="Enter return date">
+                            </div>
+                        </div>
                         <div class="mb-3 row align-items-center">
                             <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
                             <div class="col-sm-8">
-                                <input type="date" class="form-control" id="returnDate" placeholder="Enter return date">
+                                <input type="date" class="form-control" id="returnDate" placeholder="Enter return date" onchange=loadFines();>
                             </div>
                         </div>
                         <div class="mb-3 row align-items-center">
@@ -117,6 +124,8 @@ require_once "../main.php";
     </div>
 
     <!-- Bootstrap and JavaScript -->
+    <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

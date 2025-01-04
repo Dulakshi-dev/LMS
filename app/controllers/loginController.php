@@ -29,11 +29,11 @@ class LoginController
             if ($userDetails) {
                 $_SESSION["user"] = $userDetails;
                 self::loadModules($_SESSION['user']['role_id']);
-                require_once Config::getViewPath("staff", 'dashboard.php');
+                header("Location: index.php?action=dashboard");
             } else {
 
                 $error = "Invalid username or password.";
-                require_once Config::getViewPath("staff", 'login.php');
+                header("Location: index.php");
             }
         }
     }
@@ -89,7 +89,6 @@ class LoginController
                 header("Location: index.php");
                 exit();
             } else {
-
                 $error = "Unsuccessful Registration";
             }
         }

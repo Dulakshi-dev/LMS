@@ -1,235 +1,97 @@
 <?php
-
 // Required !
-require_once "../main.php";
+require_once "../../../main.php";
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-<style>
-     @import url('https://fonts.goog1eapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
-body{
-    overflow-x: hidden;
-}
-
-.contact{
-    position: relative;
-    min-height: 100vh;
-    padding: 50px 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    background: url('images/contactbg.png') no-repeat center center/cover;
-    background-size: cover;
-}
-
-.contact .content h1{
-    font-size: 50px;
-    font-weight: 500;
-    color: #000;
-} */
-.contact .content p{
-    
-    font-weight: 300;
-    color: #fff;
-}
-.container{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    padding: 20px;
-}
-.container .contactInfo{
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    padding: 0 15px;
-    right: 4cm;
-    backdrop-filter: blur(10px);
-    margin-right: 50px;
-    border-radius: 20px;
-}
-.container .contactInfo .box{
-    position: relative;
-    padding: 20px 0;
-    display: flex;
-    padding-right: 40px;
-}
-.container .contactInfo .box .icon{
-    min-width: 60px;
-    height: 60px;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    font-size: 22px;
-}
-.container .contactInfo .box .text{
-    display: flex;
-    margin-left: 20px;
-    font-size: 20px;
-    color: #000;
-    flex-direction: column;
-    font-weight: 300;
-}
-.container .contactInfo .box .text h3{
-    font-weight: 650;
-    color: #000;
-}
-.contactForm{
-    width: 40%;
-    padding: 40px;
-    background: #fff;
-    padding: 15px;
-    backdrop-filter: blur(10px);
-    margin-left: 50px;
-    border-radius: 20px;
-}
-.contactForm h2{
-    font-size: 30px;
-    color: #333;
-    font-weight: 500;
-}
-.contactForm .inputBox{
-    position: relative;
-    width: 100%;
-    margin-top: 10px;
-}
-.contactForm .inputBox input,
-.contactForm .inputBox textarea
-{
-    width: 100%;
-    padding: 5px 0;
-    font-size: 16px;
-    margin: 10px 0;
-    border: none;
-    border-bottom: 2px solid #333;
-    outline: none;
-    resize: none;
-}
-.contactForm .inputBox span{
-    position: absolute;
-    left: 0;
-    padding: 5px 0;
-    font-size: 16px;
-    margin: 10px 0;
-    pointer-events: none;
-    transition: 0.5s;
-    color: #666;
-}
-.contactForm .inputBox input:focus ~ span,
-.contactForm .inputBox input:valid ~ span,
-.contactForm .inputBox textarea:focus ~ span,
-.contactForm .inputBox textarea:valid ~ span
-{
-    color: #e91e63;
-    font-size: 12px;
-    transform: translateY(-20px);
-}
-.contactForm .inputBox input[type="submit"]{
-    width: 100px;
-    background: #00bcd4;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    font-size: 18px;
-}
-
-@media (max-width: 991px)
-{
-    .contact{
-        padding: 50px;
-    }
-    .container{
-        flex-direction: column;
-    }
-    .container .contactInfo{
-        margin-bottom: 40px;
-    }
-    .container .contactInfo, 
-    .contactForm{
-        width: 100%;
-    }
-}
-</style>
+</head>
 
 <body>
 
-<?php
-include "header.php";
-?>
+<?php include "../home/header.view.php"; ?>
 
-<section class="contact">
-        <div class="content">
+    <section class="contact py-5" style="background: url('../../../public/images/contactbg.png') no-repeat center center/cover;">
+        <div class="container text-center text-white">
             <h1>Contact Us</h1>
-            <p></p>
+            <p>If you have any questions or inquiries, feel free to reach out to us.</p>
         </div>
-        
-        <div class="container">
 
-            <div class="contactInfo">
-                <div class="box">
-                    <div class="icon"><i class="fa fa-map-marker" aria-hidden="true"></i></div>
-                    <div class="text">
-                        <h3>Address</h3>
-                        <p>432/1, Nidahasmawatha, Yanthampalawa,Kurunegala</p>
+        <div class="container d-flex flex-column flex-md-row justify-content-between py-5">
+            <!-- Contact Information -->
+            <div class="col-md-4">
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="icon bg-light p-3 rounded-circle">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5>Address</h5>
+                            <p>432/1, Nidahasmawatha, Yanthampalawa, Kurunegala</p>
+                        </div>
                     </div>
                 </div>
-                <div class="box">
-                    <div class="icon"><i class="fa fa-phone" aria-hidden="true"></i></div>
-                    <div class="text">
-                        <h3>Phone</h3>
-                        <p>0702319145</p>
+                <div class="card shadow-sm mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="icon bg-light p-3 rounded-circle">
+                            <i class="fa fa-phone" aria-hidden="true"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5>Phone</h5>
+                            <p>0702319145</p>
+                        </div>
                     </div>
                 </div>
-                <div class="box">
-                    <div class="icon"><i class="fa fa-envelope" aria-hidden="true"></i></div>
-                    <div class="text">
-                        <h3>Email</h3>
-                        <p>yehanwickramasinghe@yahoo.com</p>
+                <div class="card shadow-sm">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="icon bg-light p-3 rounded-circle">
+                            <i class="fa fa-envelope" aria-hidden="true"></i>
+                        </div>
+                        <div class="ms-3">
+                            <h5>Email</h5>
+                            <p>yehanwickramasinghe@yahoo.com</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-            <div class="contactForm ">
-                <form>
+
+            <!-- Contact Form -->
+            <div class="col-md-6 position-relative p-4">
+                <div class="card shadow-sm bg-light opacity-75 position-absolute top-0 start-0 w-100 h-100">
+                    <!-- Contact form background with opacity and positioning for blur effect -->
+                </div>
+                <div class="card-body position-relative">
                     <h2>Send Message</h2>
-                    <div class="inputBox">
-                        <input type="text" name="" required="required">
-                        <span>Full Name</span>
-                    </div>
-                    <div class="inputBox">
-                        <input type="text" name="" required="required">
-                        <span>Email</span>
-                    </div>
-                    <div class="inputBox">
-                        <textarea required="required"></textarea>
-                        <span>Type Your Message...</span>
-                    </div>
-                    <div class="inputBox">
-                        <input type="submit" name="" value="Send">
-                    </div>
-                </form>
+                    <form>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Type Your Message</label>
+                            <textarea class="form-control" id="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
             </div>
-           
         </div>
     </section>
 
-    <?php
-        include "footer.php";
-    ?>
-</body>
+    <?php include "../home/footer.view.php"; ?>
 
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
 
 </html>

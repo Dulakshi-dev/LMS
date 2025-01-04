@@ -28,14 +28,14 @@
                 <div class="col-12 col-md-4 mb-4">
                 <div class="boxs">
                 <div class="d-flex justify-content-end p-3">
-                    <button class="btn btn-light">Issue Books</button>
+                    <button class="btn btn-light rounded-pill">Issue Books</button>
                 </div>
             </div>
                 </div>
                 <div class="col-12 col-md-4 mb-4">
                 <div class="boxs">
                 <div class="d-flex justify-content-end p-3">
-                    <button class="btn btn-light">Issue Books</button>
+                    <button class="btn btn-light rounded-pill">Issue Books</button>
                 </div>
             </div>
                 </div>
@@ -44,7 +44,7 @@
         <div class="d-flex justify-content-center">
         <div class="boxs">
                 <div class="d-flex justify-content-end p-3">
-                    <button class="btn btn-light">Issue Books</button>
+                    <button class="btn btn-light rounded-pill">Issue Books</button>
                 </div>
             </div>
         </div>

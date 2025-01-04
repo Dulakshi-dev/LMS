@@ -31,9 +31,7 @@
     </style>
 </head>
 <body>
-    <?php
-require_once Config::getViewPath("home", "header.view.php");
-?>
+
 
 <div class="container">
         <div class="row  p-5  mt-5 justify-content-center">
@@ -62,8 +60,5 @@ require_once Config::getViewPath("home", "header.view.php");
         </div>
     </div>
 
-    <?php
-    require_once Config::getViewPath("home", "footer-noscroll.view.php");
-    ?>
 </body>
 </html>

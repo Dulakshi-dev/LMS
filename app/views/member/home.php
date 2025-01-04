@@ -21,3 +21,4 @@ require_once Config::getViewPath("home", "header.view.php");
 require_once Config::getViewPath("home", "main.view.php");
 // Footer
 require_once Config::getViewPath("home", "footer.view.php");
+?>

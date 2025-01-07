@@ -98,3 +98,14 @@ function dashboard_change_password(event) {
         box2.style.display = "block";
     }
 }
+
+function showProfilePreview() {
+    var file = document.getElementById('uploadprofimg').files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profileimg').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}

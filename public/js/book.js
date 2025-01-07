@@ -119,3 +119,13 @@ function updateBookDetails() {
             console.error("Error fetching user data:", error);
         });
 }
+function showImagePreview() {
+    var file = document.getElementById('coverpage').files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('book').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}

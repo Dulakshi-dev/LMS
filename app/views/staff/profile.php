@@ -58,7 +58,7 @@ $role_name = $_SESSION["user"]["role_name"];
                                             <img class="rounded-circle" id="profileimg" style="height: 200px; width: 200px;" src="" alt="Profile Picture">
                                         </div>
                                         <div class="m-4">
-                                            <input type="file" id="uploadprofimg" name="uploadprofimg" class="form-control">
+                                            <input type="file" id="uploadprofimg" name="uploadprofimg" class="form-control" onchange="showProfilePreview()">
                                         </div>
                                         <div class="m-4">
                                             <label for="staff_id">Staff ID</label>

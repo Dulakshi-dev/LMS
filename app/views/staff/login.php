@@ -1,5 +1,5 @@
 <?php
-require_once "../../../main.php";
+require_once "../main.php";
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ require_once "../../../main.php";
         }
 
         body{
-            background-image: url('../../../public/images/stafflog.jpg'); 
+            background-image: url('<?php echo Config::getImagePath("stafflog.jpg"); ?>');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -93,7 +93,7 @@ require_once Config::getViewPath("home", "header.view.php");
     <?php
 require_once Config::getViewPath("home", "footer.view.php");    ?>
 
-<script src="<?php echo Config::getJsPath("../../../public/js/login.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
 </body>
 
 </html>

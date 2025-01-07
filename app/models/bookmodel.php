@@ -9,7 +9,7 @@ class BookModel
     {
         $rs = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN status ON book.status_id = status.status_id;");
         $num = $rs->num_rows;
-        $resultsPerPage = 1;
+        $resultsPerPage = 10;
         $pageResults = ($page - 1) * $resultsPerPage;
 
         $rs2 = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN status ON book.status_id = status.status_id LIMIT $resultsPerPage OFFSET 
@@ -19,7 +19,6 @@ $pageResults");
             'results' => $rs2
         ];
     }
-
 
     public static function loadBookDetails($id)
     {
@@ -58,7 +57,6 @@ $pageResults");
         $rs = Database::search($sql);
         return $rs;
     }
-
 
     public static function updateBookDetails($book_id, $isbn, $title, $author, $category, $pubYear, $quantity, $description)
     {

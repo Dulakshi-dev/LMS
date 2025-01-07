@@ -64,8 +64,6 @@ $profile_img = $_SESSION["user"]["profile_img"];
                             </a>
                         </li>
                     </ul>
-
-
                 </nav>
             </div>
         </div>

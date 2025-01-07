@@ -47,13 +47,14 @@ class UserModel {
     
     public static function UpdateUserDetails($user_id, $fname, $lname, $email, $phone, $address, $nic) {
       
-            Database::ud("UPDATE `user` SET 
+            Database::ud("UPDATE `user` INNER JOIN `login` ON `user`.`id` = `login`.`userId` SET 
                 `fname` = '$fname', 
                 `lname` = '$lname', 
                 `mobile` = '$phone',  
                 `address` = '$address', 
-                `nic` = '$nic' 
-                WHERE `email` = '$email'");
+                `nic` = '$nic',
+                `email` = '$email' 
+                WHERE `user_id` = '$user_id'");
                 return true;
        
     }

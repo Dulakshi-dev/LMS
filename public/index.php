@@ -8,6 +8,8 @@ require_once Config::getControllerPath("userController.php");
 require_once Config::getControllerPath("bookController.php");
 require_once Config::getControllerPath("circulationController.php");
 require_once Config::getControllerPath("profileController.php");
+require_once Config::getControllerPath("memberController.php");
+
 
 
 // Initialize the Router
@@ -19,6 +21,8 @@ $userController = new UserController();
 $bookController = new BookController();
 $circulationController = new CirculationController();
 $profileController = new ProfileController();
+$memberController = new MemberController();
+
 
 
 // Define the routes and map them to controller methods
@@ -26,7 +30,7 @@ $router->add('login', [$loginController, 'showLogin']);
 $router->add('loginProcess', [$loginController, 'login']);
 $router->add('logout', [$loginController, 'logout']);
 $router->add('dashboard', [$loginController, 'showDashboard']);
-$router->add('usermanagement', [$userController, 'getAllUsers']);
+$router->add('staffmanagement', [$userController, 'getAllUsers']);
 $router->add('searchUsers', [$userController, 'searchUsers']);
 $router->add('loadUserData', [$userController, 'loadUserDetails']); 
 $router->add('updateUser', [$userController, 'UpdateUserDetails']);
@@ -58,6 +62,12 @@ $router->add('updateprofile', [$profileController, 'updateProfile']);
 $router->add('serveprofimage', [$profileController, 'serveProfileImage']);
 $router->add('searchBorrowBooks', [$circulationController, 'searchBorrowBooks']);
 $router->add('getallcategories', [$bookController, 'getAllCategories']);
+$router->add('membermanagement', [$memberController, 'getAllMembers']);
+$router->add('loadMemberData', [$memberController, 'loadMemberDetails']); 
+$router->add('updateMember', [$memberController, 'UpdateMemberDetails']);
+$router->add('loadMemberMailData', [$memberController, 'loadMailData']); 
+
+
 
 
 

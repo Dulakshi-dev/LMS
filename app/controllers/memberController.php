@@ -4,20 +4,20 @@ use LDAP\Result;
 
 require_once __DIR__ . '/../../main.php';
 
-class UserController
+class MemberController
 {
-    private $userModel;
+    private $memberModel;
 
     public function __construct()
     {
-        require_once Config::getModelPath('usermodel.php');
-        $this->userModel = new UserModel();
+        require_once Config::getModelPath('membermodel.php');
+        $this->memberModel = new MemberModel();
     }
 
-    public function getAllUsers()
+    public function getAllMembers()
     {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-        $data = UserModel::getAllUsers($page);
+        $data = MemberModel::getAllMembers($page);
 
         $totalUsers = $data['total']; 
         $usersResult = $data['results']; 
@@ -30,28 +30,10 @@ class UserController
         $resultsPerPage = 1;
         $totalPages = ceil($totalUsers / $resultsPerPage); 
 
-        require_once Config::getViewPath("staff", 'user-management.php');
+        require_once Config::getViewPath("staff", 'member-management.php');
     }
 
-    // public function getAllBooks()
-    // {
-    //     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-    //     $data = BookModel::getAllBooks($page);
-
-    //     $totalBooks = $data['total']; 
-    //     $booksResult = $data['results']; 
-
-    //     $books = [];
-    //     while ($row = $booksResult->fetch_assoc()) {
-    //         $books[] = $row;
-    //     }
-
-    //     $resultsPerPage = 1;
-    //     $totalPages = ceil($totalBooks / $resultsPerPage); 
-
-    //     require_once Config::getViewPath("staff", 'view-books.php');
-    // }
-
+  
     public function searchUsers()
     {
         $users = [];
@@ -63,30 +45,30 @@ class UserController
             $userName = $_POST['userName'] ?? null;
 
             if (empty($memberId) && empty($nic) && empty($userName)) {
-                $users = UserModel::getAllUsers(1);
-                require_once Config::getViewPath("staff", 'user-management.php');
+                $users = MemberModel::getAllMembers(1);
+                require_once Config::getViewPath("staff", 'member-management.php');
             } else {
-                $users =  UserModel::searchUsers($memberId, $nic, $userName);
-                require_once Config::getViewPath("staff", 'user-management.php');
+                $users =  MemberModel::searchMembers($memberId, $nic, $userName);
+                require_once Config::getViewPath("staff", 'member-management.php');
             }
         } else {
             return []; // Return an empty array or an appropriate error response
         }
     }
 
-    public function loadUserDetails()
+    public function loadMemberDetails()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user_id = $_POST['user_id'];
+            $member_id = $_POST['member_id'];
 
-            $result = UserModel::loadUserDetails($user_id);
+            $result = MemberModel::loadMemberDetails($member_id);
 
             if ($result) {
                 $userData = $result->fetch_assoc();
                 echo json_encode([
                     "success" => true,
                     "id" => $userData['id'],
-                    "user_id" => $userData['user_id'],
+                    "member_id" => $userData['member_id'],
                     "nic" => $userData['nic'],
                     "fname" => $userData['fname'],
                     "lname" => $userData['lname'],
@@ -103,11 +85,11 @@ class UserController
         }
     }
 
-    public function updateUserDetails()
+    public function UpdateMemberDetails()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user_id = $_POST['userId'];
-            $full_name = $_POST['username'];
+            $member_id = $_POST['userId'];
+            $full_name = $_POST['name'];
             $email = $_POST["email"];
             $phone = $_POST["phone"];
             $address = $_POST["address"];
@@ -118,7 +100,7 @@ class UserController
             $firstName = isset($name_parts[0]) ? $name_parts[0] : '';
             $lastName = isset($name_parts[1]) ? $name_parts[1] : '';
 
-            $result = UserModel::UpdateUserDetails($user_id, $firstName, $lastName, $email, $phone, $address, $nic);
+            $result = MemberModel::UpdateMemberDetails($member_id, $firstName, $lastName, $email, $phone, $address, $nic);
 
             if ($result) {
                 echo json_encode(["success" => true, "message" => "User updated successfully."]);
@@ -133,9 +115,9 @@ class UserController
     public function loadMailData()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user_id = $_POST['user_id'];
+            $member_id = $_POST['member_id'];
 
-            $result = UserModel::loadMailDetails($user_id);
+            $result = memberModel::loadMailDetails($member_id);
 
             if ($result) {
                 $mailData = $result->fetch_assoc();
@@ -196,7 +178,7 @@ class UserController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
 
-            $result = UserModel::toggleUserStatus($id);
+            $result = MemberModel::toggleMemberStatus($id);
             if($result){
                 echo json_encode(["success" => true, "message" => "User Status Changed"]);
 

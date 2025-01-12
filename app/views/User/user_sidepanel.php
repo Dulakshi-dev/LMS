@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bootstrap Side Panel</title>
+  <title>Sidebar</title>
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
     rel="stylesheet"
@@ -14,9 +14,12 @@
   />
 </head>
 <body>
+  
   <div class="d-flex">
-    <div class="bg-light vh-100 p-3">
-      <div class="list-group">
+    <!-- Sidebar -->
+    <div class="d-flex flex-column bg-light vh-100 p-3">
+      <!-- Menu Items -->
+      <div class="list-group flex-grow-1">
         <a href="#" class="list-group-item list-group-item-action active">
           <i class="fas fa-home m-2"></i> Dashboard
         </a>
@@ -36,9 +39,26 @@
           <i class="fas fa-info-circle m-2"></i> About Software
         </a>
       </div>
+
+      <!-- User Section -->
+      <div class="mt-auto text-center">
+        <div class="d-flex align-items-center">
+        <img
+      src="../../../public/images/user.jpg"
+      alt="User"
+      class="rounded-circle me-2"
+      style="height: 40px; width: 40px;"
+    />
+          <p class="mb-0">User Name</p>
+        </div>
+        <div class="d-flex"><a href="#" class="btn btn-outline-dark btn-sm mt-4 w-50 d-flex align-items-center">
+          <i class="fas fa-sign-out-alt mx-2"></i>
+          Log Out
+        </a></div>
+        
+      </div>
     </div>
-
-
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>

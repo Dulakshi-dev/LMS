@@ -16,7 +16,6 @@
 <body class="bg-light">
   <div class="d-flex flex-column bg-white m-5">
 
-    <!-- Main Content -->
     <div class="container my-4">
       <div class="row">
         <div class="col-12 text-center border-bottom border-danger border-4 mb-4">
@@ -25,10 +24,9 @@
       </div>
 
       <div class="row">
-        <!-- Profile Image Section -->
         <div class="col-md-3 text-center p-4">
           <div class="mb-4">
-            <img class="rounded-circle" id="profileimg" style="height: 500px; width: 500px;" src="" alt="Profile Picture">
+            <img id="profileimg" style="height: 280px; width: 280px;" src="../../../public/images/contact.jpg" alt="Profile Picture">
           </div>
           <div class="mb-4">
             <input type="file" id="uploadprofimg" name="uploadprofimg" class="form-control" onchange="showProfilePreview()">
@@ -39,10 +37,8 @@
           </div>
         </div>
 
-        <!-- Form Section -->
         <div class="col-md-9 p-4">
           <form>
-            <!-- Name Section -->
             <div class="row">
               <div class="col-lg-6 col-sm-6 mb-3">
                 <label for="fname">First Name</label>
@@ -54,7 +50,6 @@
               </div>
             </div>
 
-            <!-- Email and Phone Section -->
             <div class="row">
               <div class="col-lg-6 col-sm-6 mb-3">
                 <label for="email">Email</label>
@@ -66,13 +61,11 @@
               </div>
             </div>
 
-            <!-- Address Section -->
             <div class="mb-3">
               <label for="address">Address</label>
               <textarea id="address" name="address" class="form-control" rows="2"></textarea>
             </div>
 
-            <!-- NIC and DOB Section -->
             <div class="row">
               <div class="col-lg-6 col-sm-6 mb-3">
                 <label for="nic">NIC Number</label>
@@ -84,7 +77,6 @@
               </div>
             </div>
 
-            <!-- District and City Section -->
             <div class="row">
               <div class="col-lg-6 col-sm-6 mb-3">
                 <label for="district">District</label>
@@ -96,7 +88,6 @@
               </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="d-flex justify-content-end">
               <button type="button" class="btn btn-danger mx-2" onclick="dashboard_change_password(event)">Reset Password</button>
               <button type="button" class="btn btn-primary" onclick="updateProfileDetails()">Save</button>

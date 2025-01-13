@@ -4,19 +4,23 @@ require_once "database/connection.php";
 
 // Contains all the global config
 class Config {
+
+    public const baseURL = "/library/LMS/";
+
+    public const sourcePath = __DIR__;
     // All the application paths
     public static $paths = [
-        "views" => ROOT_PATH . "\app\\views\\",
-        "controllers" => ROOT_PATH . "\\app\\controllers\\",
-        "models" => ROOT_PATH . "\\app\\models\\",
-        "images" => "/LMS/public/images/",
-        "js" => "/LMS/public/js/",
-        "database" => ROOT_PATH . "\\database\\connection.php",
+        "views" => Config::sourcePath . "\app\\views\\",
+        "controllers" => Config::sourcePath . "\\app\\controllers\\",
+        "models" => Config::sourcePath . "\\app\\models\\",
+        "images" => Config::baseURL . "/public/images/",
+        "js" => Config::baseURL . "/public/js/",
+        "database" => Config::sourcePath . "\\database\\connection.php",
         "index" => "/LMS/public/index.php",
-        "services" => ROOT_PATH . "\\app\\services\\",
-        "mail" => ROOT_PATH ."\\app\\services\\mail\\",
-        "book_covers" => ROOT_PATH ."\\storage\\book_covers\\",
-        "profile_img" => ROOT_PATH ."\\storage\\profile_img\\",
+        "services" => Config::sourcePath . "\\app\\services\\",
+        "mail" => Config::sourcePath ."\\app\\services\\mail\\",
+        "book_covers" => Config::sourcePath ."\\storage\\book_covers\\",
+        "profile_img" => Config::sourcePath ."\\storage\\profile_img\\",
     ];
 
     public static $database = [

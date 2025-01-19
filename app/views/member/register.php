@@ -101,9 +101,7 @@
 </head>
 <body>
 
-    <?php
-        include "header.php";
-    ?>
+<?php include "../home/header.view.php"; ?>
     <!-- Important Notes Section -->
     <div class="text-white p-5 mt-3 Important">
         <h5 class="text-danger font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h5>
@@ -308,9 +306,7 @@
         </div>
     </div>
     
-     <?php
-        include "footer.php";
-    ?>
+    <?php include "../home/footer.view.php"; ?>
     
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

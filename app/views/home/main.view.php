@@ -14,7 +14,7 @@
     </section>
 
     <div class="container my-5">
-        <h2 class="text-danger fs-1 mb-4">Our Goal</h2>
+        <h2 class="fs-1 mb-4" style="color: red;">Our Goal</h2>
         <div class="row align-items-center mb-4">
             <div class="col-md-6">
                 <p class="fs-5">At [Library Name], our goal is to create a user-friendly and efficient platform that simplifies library management and enhances the experience of accessing our vast collection of resources. Our system is designed to streamline the cataloging, borrowing, and returning of books, making it easier for library staff to manage inventory and for patrons to find the materials they need.</p>
@@ -33,11 +33,11 @@
         </div>
     </div>
 
-    <section class="bg-secondary text-white py-5">
-        <div class="container">
-            <h2 class="text-danger mb-4">Latest News and Updates</h2>
-            <div class="row gy-4">
-                <div class="col-md-4">
+    <section class="bg-secondary text-white pb-4">
+        <div class="container-fluid py-5">
+            <h2 class="text-white mb-4">Latest News and Updates</h2>
+            <div class="row p-4">
+                <div class="col-md-4 mb-4">
                     <div class="card bg-dark text-white ">
                         <img src="../../../public/images/home-goal.jpg" style="height: 500px;" class="" alt="News Image 1">
                         <div class="card-body">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-4">
                     <div class="card bg-dark text-white">
                         <img src="../../../public/images/home-goal.jpg" class="" style="height: 500px;" alt="News Image 2">
                         <div class="card-body">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-4">
                     <div class="card bg-dark text-white">
                         <img src="../../../public/images/home-goal.jpg" class="" style="height: 500px;" alt="News Image 3">
                         <div class="card-body">

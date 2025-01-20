@@ -169,11 +169,11 @@ $userController = new UserController();
                             <input type="text" class="form-control" id="NIC" value="">
                         </div>
                     </div>
-                    <div>
+                    <div class="my-2">
                         <label for="userName">User's Name</label>
                         <input type="text" class="form-control" id="username" value="">
                     </div>
-                    <div class="row">
+                    <div class="row my-2">
                         <div class="col-md-6">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" value="">
@@ -183,16 +183,13 @@ $userController = new UserController();
                             <input type="tel" class="form-control" id="phoneNumber" value="">
                         </div>
                     </div>
-                    <div>
+                    <div class="my-2">
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" rows="3"></textarea>
                     </div>
-                    <div class="text-right">
+                    <div class="d-flex justify-content-end">
                         <button type="button" data-bs-dismiss="modal" class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
-
                     </div>
-
-
                 </div>
             </div>
         </div>

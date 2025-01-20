@@ -23,14 +23,14 @@ $userController = new UserController();
 <body>
     <?php include "dash_header.php"; ?>
 
-    <div class="d-flex">
-        <div class="nav-bar">
+    <div class="d-flex bg-light">
+        <div class="nav-bar vh-100">
             <?php include "dash_sidepanel.php"; ?>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid bg-white m-5">
             <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBooks">
 
-                <div class="row">
+                <div class="row m-3">
                     <div class="col-md-4 my-3">
                         <input id="bid" name="bid" type="text" class="form-control" placeholder="Type Book ID">
                     </div>
@@ -43,6 +43,7 @@ $userController = new UserController();
                     </div>
                 </div>
             </form>
+            <div class="border border-secondary mb-4"></div>
             <div class="px-1">
                 <table class="table">
                     <thead class="thead-light">

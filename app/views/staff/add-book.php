@@ -15,12 +15,12 @@
 
 <body onload="loadAllCategories()">
     <?php include "dash_header.php"; ?>
-    <div class="d-flex">
+    <div class="d-flex bg-light">
         <div class="nav-bar">
             <?php include "dash_sidepanel.php"; ?>
         </div>
-        <div class="box-0 container">
-            <div class="bg-white border rounded shadow p-4">
+        <div class="box-0 container m-5">
+            <div class="bg-white ">
                 <div class="text-center border-bottom border-danger mb-4 pb-3">
                     <h2>Add Books</h2>
                 </div>

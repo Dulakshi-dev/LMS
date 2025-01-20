@@ -129,7 +129,7 @@ $role_name = $_SESSION["user"]["role_name"];
                                 <div id="errormsg" class="text-danger"></div>
 
                                 <div class="d-flex justify-content-end py-3 my-4">
-                                    <button class="btn btn-primary px-5 mx-4">Back</button>
+                                    <button class="btn btn-primary px-5 mx-4" onclick="dashboard_change_password(event)">Back</button>
                                     <button class="btn btn-danger px-5">Save</button>
                                 </div>
                             </form>

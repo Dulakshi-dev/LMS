@@ -7,17 +7,16 @@ class MemberModel {
     {
         $rs = Database::search("SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`");
         $num = $rs->num_rows;
-        $resultsPerPage = 1;
+        $resultsPerPage = 10;
         $pageResults = ($page - 1) * $resultsPerPage;
 
-        $rs2 = Database::search("SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` JOIN `status` ON `member`.`status_status_id`= `status`.`status_id` LIMIT $resultsPerPage OFFSET $pageResults");
+        $rs2 = Database::search("SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` JOIN `status` ON `member`.`status_id`= `status`.`status_id` LIMIT $resultsPerPage OFFSET $pageResults");
         return [
             'total' => $num,
             'results' => $rs2
         ];
     }
 
-    
 
     public static function searchMembers($memberId, $nic, $userName) {
         $sql = "SELECT * FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";

@@ -16,43 +16,39 @@ class MemberController
 
     public function getAllMembers()
     {
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $data = MemberModel::getAllMembers($page);
 
-        $totalUsers = $data['total']; 
-        $usersResult = $data['results']; 
+        $totalUsers = $data['total'];
+        $usersResult = $data['results'];
 
         $users = [];
         while ($row = $usersResult->fetch_assoc()) {
             $users[] = $row;
         }
 
-        $resultsPerPage = 1;
-        $totalPages = ceil($totalUsers / $resultsPerPage); 
+        $resultsPerPage = 10;
+        $totalPages = ceil($totalUsers / $resultsPerPage);
 
         require_once Config::getViewPath("staff", 'member-management.php');
     }
 
-  
+
     public function searchUsers()
     {
         $users = [];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve input from the POST request
-            $memberId = $_POST['memberId'] ?? null;
-            $nic = $_POST['nic'] ?? null;
-            $userName = $_POST['userName'] ?? null;
+            // Retrieve and sanitize input from the POST request
+            $memberId = trim($_POST['memberId'] ?? '');
+            $nic = trim($_POST['nic'] ?? '');
+            $userName = trim($_POST['userName'] ?? '');
 
             if (empty($memberId) && empty($nic) && empty($userName)) {
-                $users = MemberModel::getAllMembers(1);
-                require_once Config::getViewPath("staff", 'member-management.php');
+                header("Location: index.php?action=staffmanagement");
             } else {
-                $users =  MemberModel::searchMembers($memberId, $nic, $userName);
-                require_once Config::getViewPath("staff", 'member-management.php');
+                $users = MemberModel::searchMembers($memberId, $nic, $userName);
             }
-        } else {
-            return []; // Return an empty array or an appropriate error response
         }
     }
 
@@ -75,7 +71,7 @@ class MemberController
                     "email" => $userData['email'],
                     "mobile" => $userData['mobile'],
                     "address" => $userData['address'],
-                    "profile_img" =>$userData['profile_img']
+                    "profile_img" => $userData['profile_img']
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);
@@ -174,20 +170,18 @@ class MemberController
         }
     }
 
-    public function changeUserStatus(){
+    public function changeMemnerStatus()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
 
             $result = MemberModel::toggleMemberStatus($id);
-            if($result){
+            if ($result) {
                 echo json_encode(["success" => true, "message" => "User Status Changed"]);
-
-            }else{
+            } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);
-
             }
-
-        }else{
+        } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
     }

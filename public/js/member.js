@@ -136,12 +136,12 @@ function sendEmail() {
     }
 }
 
-
 function changeUserStatus(id) { 
     var formData = new FormData();
     formData.append("id", id);
+    alert(id);
 
-    fetch("index.php?action=changeStatus", {
+    fetch("index.php?action=changeMemberStatus", {
         method: "POST",
         body: formData,
     })

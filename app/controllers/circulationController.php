@@ -149,7 +149,7 @@ class CirculationController{
             $books[] = $row;
         }
 
-        $resultsPerPage = 1;
+        $resultsPerPage = 10;
         $totalPages = ceil($totalBooks / $resultsPerPage); 
 
         require_once Config::getViewPath("staff", 'view-issue-book.php');

@@ -7,7 +7,7 @@ class UserModel {
     {
         $rs = Database::search("SELECT * FROM `user`JOIN `login` ON `user`.`id` = `login`.`userId` JOIN `role` ON `user`.`role_id` = `role`.`role_id`");
         $num = $rs->num_rows;
-        $resultsPerPage = 1;
+        $resultsPerPage = 10;
         $pageResults = ($page - 1) * $resultsPerPage;
 
         $rs2 = Database::search("SELECT * FROM `user`JOIN `login` ON `user`.`id` = `login`.`userId` JOIN `role` ON `user`.`role_id` = `role`.`role_id` LIMIT $resultsPerPage OFFSET $pageResults");
@@ -16,8 +16,6 @@ class UserModel {
             'results' => $rs2
         ];
     }
-
-    
 
     public static function searchUsers($memberId, $nic, $userName) {
         $sql = "SELECT * FROM `user` JOIN `login` ON `user`.`id` = `login`.`userId` WHERE 1";

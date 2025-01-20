@@ -43,7 +43,7 @@ class CirculationModel
     {
         $rs = Database::search("SELECT * FROM `borrow` INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` INNER JOIN `member_login` ON `borrow`.`borrow_member_id` = `member_login`.`member_id` INNER JOIN `member` ON `member_login`.`memberId` = `member`.`id`;");
         $num = $rs->num_rows;
-        $resultsPerPage = 1;
+        $resultsPerPage = 10;
         $pageResults = ($page - 1) * $resultsPerPage;
 
         $rs2 = Database::search("SELECT * FROM `borrow` INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` INNER JOIN `member_login` ON `borrow`.`borrow_member_id` = `member_login`.`member_id` INNER JOIN `member` ON `member_login`.`memberId` = `member`.`id` LIMIT $resultsPerPage OFFSET 

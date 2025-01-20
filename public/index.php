@@ -66,6 +66,7 @@ $router->add('membermanagement', [$memberController, 'getAllMembers']);
 $router->add('loadMemberData', [$memberController, 'loadMemberDetails']); 
 $router->add('updateMember', [$memberController, 'UpdateMemberDetails']);
 $router->add('loadMemberMailData', [$memberController, 'loadMailData']); 
+$router->add('changeMemberStatus', [$memberController, 'changeMemberStatus']); 
 
 
 

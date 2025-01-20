@@ -33,46 +33,35 @@ class UserController
         require_once Config::getViewPath("staff", 'user-management.php');
     }
 
-    // public function getAllBooks()
-    // {
-    //     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-    //     $data = BookModel::getAllBooks($page);
-
-    //     $totalBooks = $data['total']; 
-    //     $booksResult = $data['results']; 
-
-    //     $books = [];
-    //     while ($row = $booksResult->fetch_assoc()) {
-    //         $books[] = $row;
-    //     }
-
-    //     $resultsPerPage = 1;
-    //     $totalPages = ceil($totalBooks / $resultsPerPage); 
-
-    //     require_once Config::getViewPath("staff", 'view-books.php');
-    // }
-
     public function searchUsers()
     {
-        $users = [];
-
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Retrieve input from the POST request
             $memberId = $_POST['memberId'] ?? null;
             $nic = $_POST['nic'] ?? null;
             $userName = $_POST['userName'] ?? null;
-
+    
             if (empty($memberId) && empty($nic) && empty($userName)) {
-                $users = UserModel::getAllUsers(1);
-                require_once Config::getViewPath("staff", 'user-management.php');
+                // No search fields filled, get all users
+                $usersData = UserModel::getAllUsers($page);
             } else {
-                $users =  UserModel::searchUsers($memberId, $nic, $userName);
-                require_once Config::getViewPath("staff", 'user-management.php');
+                // Search users based on input fields
+                $usersData = UserModel::searchUsers($memberId, $nic, $userName, $page);
             }
+    
+            $users = $usersData['results']; // Extract the list of users
+            $total = $usersData['total'];   // Total number of results
+    
+            require_once Config::getViewPath("staff", 'user-management.php');
         } else {
-            return []; // Return an empty array or an appropriate error response
+            // For non-POST requests, redirect or handle gracefully
+            header("Location: " . Config::indexPath() . "?action=userManagement");
+            exit();
         }
     }
+    
 
     public function loadUserDetails()
     {

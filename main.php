@@ -5,7 +5,7 @@ require_once "database/connection.php";
 // Contains all the global config
 class Config {
 
-    public const baseURL = "/library/LMS/";
+    public const baseURL = "/LMS/";
 
     public const sourcePath = __DIR__;
     // All the application paths

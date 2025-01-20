@@ -8,10 +8,15 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-image: url('<?php echo Config::getImagePath("stafflog.jpg"); ?>');
+            background-image: url('../../../public/images/stafflog.jpg');
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
+        }
+
+        span {
+            color: red;
+            font-size: 0.9em;
         }
     </style>
 </head>
@@ -20,33 +25,40 @@
     <div class="container d-flex justify-content-center align-items-center my-5">
         <div class="p-5 text-white rounded-5" style="width: 100%; max-width: 800px; background-color: rgba(0, 0, 0, 0.5);">
             <h3 class="text-center mb-4">Staff Registration</h3>
-            <form action="<?php echo Config::indexPath() ?>?action=register" method="POST">
+            <form id="registrationForm" action="<?php echo Config::indexPath() ?>?action=register" method="POST" novalidate>
                 <div class="mb-3">
                     <label for="firstName" class="form-label">First Name</label>
                     <input type="text" class="form-control rounded-pill" id="firstName" name="firstName" required>
+                    <span id="firstNameError"></span>
                 </div>
                 <div class="mb-3">
                     <label for="lastName" class="form-label">Last Name</label>
                     <input type="text" class="form-control rounded-pill" id="lastName" name="lastName" required>
+                    <span id="lastNameError"></span>
                 </div>
                 <div class="mb-3">
                     <label for="address" class="form-label">Address</label>
                     <input type="text" class="form-control rounded-pill" id="address" name="address" required>
+                    <span id="addressError"></span>
                 </div>
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone No</label>
                     <input type="tel" class="form-control rounded-pill" id="phone" name="phone" required>
+                    <span id="phoneError"></span>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control rounded-pill" id="email" name="email" required>
+                    <span id="emailError"></span>
                 </div>
                 <div class="mb-3">
                     <label for="nic" class="form-label">NIC</label>
                     <input type="text" class="form-control rounded-pill" id="nic" name="nic" required>
+                    <span id="nicError"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Select Role</label>
+                    <span id="roleError"></span>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" id="roleLibraryStaff" name="role" value="Library Staff" required>
                         <label class="form-check-label" for="roleLibraryStaff">Library Staff</label>
@@ -59,14 +71,14 @@
                 <div class="mb-3 row">
                     <div class="col-6">
                         <label for="password" class="form-label">Password</label>
-                        <input type="text" class="form-control rounded-pill" id="password" name="password" required>
+                        <input type="password" class="form-control rounded-pill" id="password" name="password" required>
+                        <span id="passwordError"></span>
                     </div>
-
                     <div class="col-6">
                         <label for="cpassword" class="form-label">Confirm Password</label>
-                        <input type="text" class="form-control rounded-pill" id="cpassword" name="cpassword" required>
+                        <input type="password" class="form-control rounded-pill" id="cpassword" name="cpassword" required>
+                        <span id="cpasswordError"></span>
                     </div>
-
                 </div>
                 <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-primary rounded-pill w-25">Submit</button>
@@ -74,6 +86,7 @@
             </form>
         </div>
     </div>
+    <script src="<?php echo Config::getJsPath("staff-reg.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

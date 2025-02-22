@@ -194,7 +194,7 @@
             </div>
             <div class="p-3 d-flex justify-content-between align-items-center">
               <div class="text-start">
-                <div class="book-title">James</div>
+                <div class="book-title">hello</div>
                 <div>Percival Everett</div>
               </div>
               <button class="btn success btn-sm view-details" 

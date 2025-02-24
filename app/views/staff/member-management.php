@@ -1,5 +1,5 @@
 <?php
-require_once "../main.php";
+require_once "../../main.php";
 
 
 require_once Config::getControllerPath("membercontroller.php");

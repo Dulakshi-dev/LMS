@@ -1,7 +1,4 @@
-<?php
-// Required !
-require_once "../../../main.php";
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,9 +12,11 @@ require_once "../../../main.php";
 
 <body>
 
-<?php include "../home/header.view.php"; ?>
+<?php 
+require_once Config::getViewPath("home", "header.view.php");
+?>
 
-    <section class="contact py-5" style="background: url('../../../public/images/contactbg.png') no-repeat center center/cover;">
+    <section class="contact py-5" style="background: url('<?php echo Config::getImagePath("contactbg.png"); ?>') no-repeat center center/cover;">
         <div class="container text-center text-white">
             <h1>Contact Us</h1>
             <p>If you have any questions or inquiries, feel free to reach out to us.</p>
@@ -88,7 +87,9 @@ require_once "../../../main.php";
         </div>
     </section>
 
-    <?php include "../home/footer.view.php"; ?>
+    <?php 
+    require_once Config::getViewPath("home", "footer.view.php");
+ ?>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>

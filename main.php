@@ -16,7 +16,8 @@ class Config {
         "images" => Config::baseURL . "/public/images/",
         "js" => Config::baseURL . "/public/js/",
         "database" => Config::sourcePath . "\\database\\connection.php",
-        "index" => "/LMS/public/index.php",
+        "index" => "/LMS/public/staff/index.php",
+        "index_member" => "/LMS/public/member/index.php",
         "services" => Config::sourcePath . "\\app\\services\\",
         "mail" => Config::sourcePath ."\\app\\services\\mail\\",
         "book_covers" => Config::sourcePath ."\\storage\\book_covers\\",
@@ -26,7 +27,7 @@ class Config {
     public static $database = [
         "host" => "localhost", 
         "username" => "root", 
-        "password" => "",
+        "password" => "Dg$11029",
         "dbname" => "library_db",
         "port" => "3306"
     ];
@@ -69,6 +70,10 @@ class Config {
     }
     public static function indexPath() {
         return Config::$paths["index"];
+    }
+
+    public static function indexPathMember() {
+        return Config::$paths["index_member"];
     }
 
     public static function getServicePath(String $service)

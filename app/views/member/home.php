@@ -1,7 +1,7 @@
 <?php
 
 // Required !
-require_once "../../../main.php";
+require_once "../../main.php";
 ?>
 
 <!DOCTYPE html>

@@ -31,15 +31,15 @@ class BookController
         require_once Config::getViewPath("staff", 'view-books.php');
     }
 
-    public function showBookManagement()
-    {
-        require_once Config::getViewPath("staff", 'book-management.php');
-    }
+    // public function showBookManagement()
+    // {
+    //     require_once Config::getViewPath("staff", 'book-management.php');
+    // }
 
-    public function showAddBook()
-    {
-        require_once Config::getViewPath("staff", 'add-book.php');
-    }
+    // public function showAddBook()
+    // {
+    //     require_once Config::getViewPath("staff", 'add-book.php');
+    // }
 
     public function loadBookDetails()
     {

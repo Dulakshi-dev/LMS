@@ -11,15 +11,15 @@ class CirculationController{
         $this->circulationModel = new CirculationModel();
     }
 
-    public function showCirculationManagement()
-    {
-        require_once Config::getViewPath("staff","circulation-management.php");
-    }
+    // public function showCirculationManagement()
+    // {
+    //     require_once Config::getViewPath("staff","circulation-management.php");
+    // }
 
-    public function showIssueBook()
-    {
-        require_once Config::getViewPath("staff","issue-book.php");
-    }
+    // public function showIssueBook()
+    // {
+    //     require_once Config::getViewPath("staff","issue-book.php");
+    // }
 
     public function loadBookDetails()
     {

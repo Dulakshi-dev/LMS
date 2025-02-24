@@ -13,10 +13,10 @@ class LoginController
         $this->loginModel = new LoginModel();
     }
 
-    public static function showLogin()
-    {
-        require_once Config::getViewPath("staff", 'login.php');
-    }
+    // public static function showLogin()
+    // {
+    //     require_once Config::getViewPath("staff", 'login.php');
+    // }
 
     public static function login()
     {
@@ -61,26 +61,26 @@ class LoginController
         }
     }
 
-    public static function showDashboard()
-    {
-        require_once Config::getViewPath("staff", 'dashboard.php');
-    }
+    // public static function showDashboard()
+    // {
+    //     require_once Config::getViewPath("staff", 'dashboard.php');
+    // }
 
-    public static function showRegister()
-    {
-        require_once Config::getViewPath("staff", 'staff-register.php');
-    }
+    // public static function showRegister()
+    // {
+    //     require_once Config::getViewPath("staff", 'staff-register.php');
+    // }
 
-    public static function showForgotPassword()
-    {
-        require_once Config::getViewPath("staff", 'forgot-password.php');
-    }
+    // public static function showForgotPassword()
+    // {
+    //     require_once Config::getViewPath("staff", 'forgot-password.php');
+    // }
 
-    public static function showResetPassword()
-    {
-        $vcode = $_GET['vcode'];
-        require_once Config::getViewPath("staff", 'reset-password.php');
-    }
+    // public static function showResetPassword()
+    // {
+    //     $vcode = $_GET['vcode'];
+    //     require_once Config::getViewPath("staff", 'reset-password.php');
+    // }
 
     public static function register()
     {

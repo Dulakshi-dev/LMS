@@ -1,5 +1,5 @@
 <?php
-require_once "../main.php";
+require_once "../../main.php";
 $fname = $_SESSION["user"]["fname"];
 $lname = $_SESSION["user"]["lname"];
 $role_name = $_SESSION["user"]["role_name"];

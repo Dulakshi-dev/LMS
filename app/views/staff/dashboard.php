@@ -24,9 +24,7 @@ if (!isset($_SESSION["user"])) {
             <?php include "dash_sidepanel.php"; ?>
         </div>
 
-        <div class="form w-100">
-<a href="../../app/views/user/dash_u-board.php">hello</a>
-
+        
         </div>
     </div>
 

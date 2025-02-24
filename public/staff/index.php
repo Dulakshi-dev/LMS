@@ -90,13 +90,6 @@ $router->add('profile', function () {
 });
 
 
-
-
-
-
-
-
-
 // Get the action from the URL
 $action = $_GET['action'] ?? 'login';
 

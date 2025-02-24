@@ -4,14 +4,16 @@
 require_once '../../router.php';
 require_once '../../main.php';
 
-require_once Config::getControllerPath("memberLoginController.php");
+require_once Config::getControllerPath("authController.php");
 
 
 // Initialize the Router
 $router = new Router();
 
 // Create controller instances
-$memberLoginController = new MemberLoginController();
+$authController = new authController();
+
+$router->add('memberlogin', [$authController, 'login']);
 
 
 $router->add('home', function () {
@@ -36,6 +38,10 @@ $router->add('lmshome', function () {
 
 $router->add('login', function () {
     include Config::getViewPath("member", "login.php");
+});
+
+$router->add('dashboard', function () {
+    include Config::getViewPath("member", "dashboard.php");
 });
 
 // Get the action from the URL

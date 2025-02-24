@@ -12,12 +12,6 @@ class ProfileController
         $this->profileModel = new UserModel();
     }
 
-    // public function showProfile()
-    // {
-
-    //     require_once Config::getViewPath("staff", 'profile.php');
-    // }
-
     public function serveProfileImage() {
         $imageName = $_GET['image'] ?? '';
         $userID = 

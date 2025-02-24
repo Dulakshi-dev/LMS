@@ -23,7 +23,7 @@
           class="me-2"
           style="height: 40px;"
         />
-        <span>SHELF ROOM</span>
+        <span>SHELF LOOM</span>
       </a>
 
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">

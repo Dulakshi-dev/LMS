@@ -37,6 +37,10 @@
     .card {
       background-color: #fff;
     }
+    .error {
+      color: red;
+      font-size: 0.875rem;
+    }
   </style>
 </head>
 <body class="bg-light">
@@ -129,29 +133,33 @@
         </div>
 
         <!-- Form -->
-        <form>
+        <form id="emailForm" onsubmit="return validateForm()">
           <!-- From -->
           <div class="mb-3">
             <label for="emailFrom" class="form-label">From</label>
             <input type="email" class="form-control" id="emailFrom" placeholder="Enter your email">
+            <span id="fromError" class="error"></span>
           </div>
 
           <!-- To -->
           <div class="mb-3">
             <label for="emailTo" class="form-label">To</label>
             <input type="email" class="form-control" id="emailTo" placeholder="Enter recipient's email">
+            <span id="toError" class="error"></span>
           </div>
 
           <!-- Subject -->
           <div class="mb-3">
             <label for="emailSubject" class="form-label">Subject</label>
             <input type="text" class="form-control" id="emailSubject" placeholder="Enter email subject">
+            <span id="subjectError" class="error"></span>
           </div>
 
           <!-- Message -->
           <div class="mb-3">
             <label for="emailMessage" class="form-label">Message</label>
             <textarea class="form-control" id="emailMessage" rows="4" placeholder="Type your message"></textarea>
+            <span id="messageError" class="error"></span>
           </div>
 
           <!-- Send Button -->
@@ -174,6 +182,45 @@
     document.querySelector('.btn-close').addEventListener('click', () => {
       document.querySelector('.box').style.display = 'none';
     });
+
+    function validateForm() {
+      let isValid = true;
+
+      // Clear previous error messages
+      document.querySelectorAll('.error').forEach(error => {
+        error.textContent = '';
+      });
+
+      // From email validation
+      const emailFrom = document.getElementById('emailFrom').value;
+      if (!emailFrom) {
+        document.getElementById('fromError').textContent = 'From email is required.';
+        isValid = false;
+      }
+
+      // To email validation
+      const emailTo = document.getElementById('emailTo').value;
+      if (!emailTo) {
+        document.getElementById('toError').textContent = 'To email is required.';
+        isValid = false;
+      }
+
+      // Subject validation
+      const emailSubject = document.getElementById('emailSubject').value;
+      if (!emailSubject) {
+        document.getElementById('subjectError').textContent = 'Subject is required.';
+        isValid = false;
+      }
+
+      // Message validation
+      const emailMessage = document.getElementById('emailMessage').value;
+      if (!emailMessage) {
+        document.getElementById('messageError').textContent = 'Message is required.';
+        isValid = false;
+      }
+
+      return isValid;
+    }
   </script>
 
   <!-- Bootstrap JS -->

@@ -347,6 +347,175 @@ require_once "../main.php";
           </div>
 
         </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">James</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">hello</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">James</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">James</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">James</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">James</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">James</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-6">
+          <div class="book-card">
+            <div class="book-image">
+              <img src="../../../public/images/about.png" alt="Book Cover">
+            </div>
+            <div class="p-3 d-flex justify-content-between align-items-center">
+              <div class="text-start">
+                <div class="book-title">James</div>
+                <div>Percival Everett</div>
+              </div>
+              <button class="btn success btn-sm view-details" 
+                      data-title="James"
+                      data-author="Percival Everett"
+                      data-id="0000001A"
+                      data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
+                      data-rating="4.8">
+                View Details
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

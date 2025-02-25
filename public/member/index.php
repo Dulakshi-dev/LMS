@@ -5,6 +5,8 @@ require_once '../../router.php';
 require_once '../../main.php';
 
 require_once Config::getControllerPath("authController.php");
+require_once Config::getControllerPath("memberBookController.php");
+
 
 
 // Initialize the Router
@@ -12,8 +14,10 @@ $router = new Router();
 
 // Create controller instances
 $authController = new authController();
+$memberBookController = new memberBookController();
 
 $router->add('memberlogin', [$authController, 'login']);
+$router->add('loadbooks', [$memberBookController, 'getAllBooks']);
 
 
 $router->add('home', function () {

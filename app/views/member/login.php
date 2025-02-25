@@ -57,7 +57,7 @@
                     <form action="<?php echo Config::indexPathMember() ?>?action=memberlogin" method="POST">
                         <div class="form-group">
                             <label for="username">User Name</label>
-                            <input class="form-control mt-2" placeholder="eg:M-XXXXXX" type="text" name="memid" id="memid" value="<?php echo $username; ?>">
+                            <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memid" value="<?php echo $username; ?>">
                             <span class="error text-danger" id="usernameError"></span>
 
                         </div>

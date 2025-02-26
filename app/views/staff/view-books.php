@@ -55,6 +55,7 @@ $userController = new UserController();
                             <th>Author</th>
                             <th>Published Year</th>
                             <th>Category</th>
+                            <th>Language</th>
                             <th>Qty</th>
                             <th>Borrowed</th>
                             <th>Action</th>
@@ -82,6 +83,7 @@ $userController = new UserController();
                                         <td><?php echo $row["author"]; ?></td>
                                         <td><?php echo $row["pub_year"]; ?></td>
                                         <td><?php echo $row["category_name"]; ?></td>
+                                        <td><?php echo $row["language_name"]; ?></td>
                                         <td><?php echo $row["qty"]; ?></td>
                                         <td><?php echo $row["qty"] - $row["available_qty"]; ?></td>
                                         <td>
@@ -171,11 +173,19 @@ $userController = new UserController();
                                 </select>
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
+                                <label for="language" class="form-label">Language</label>
+                                <select class="form-select" id="language">
+                                    <option value="">...</option>
+
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                        <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="pub_year" class="form-label">Published Year</label>
                                 <input id="pub_year" class="form-control" type="text" placeholder="Enter Publisher" />
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="qty" class="form-label">Quantity</label>
                                 <input id="qty" class="form-control" type="number" />

@@ -46,7 +46,7 @@ require_once "../../main.php";
   </style>
 </head>
 
-<body>
+<body onload="<?php echo Config::indexPathMember() ?>?action=loadbooks">
 
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
@@ -83,9 +83,9 @@ require_once "../../main.php";
                   <button class="btn success btn-sm view-details"
                     data-title="<?php echo $row["title"]; ?>"
                     data-author="<?php echo $row["author"]; ?>"
-                    data-id="0000001A"
-                    data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
-                    data-rating="4.8">
+                    data-id="<?php echo $row["book_id"]; ?>"
+                    data-description="<?php echo $row["description"]; ?>"
+                    >
                     View Details
                   </button>
                 </div>
@@ -139,9 +139,9 @@ require_once "../../main.php";
                 <button class="btn success btn-sm view-details"
                   data-title="<?php echo $row["title"]; ?>"
                   data-author="<?php echo $row["author"]; ?>"
-                  data-id="0000001A"
-                  data-description="James by Percival Everett is a compelling novel exploring themes of identity, community, and resilience."
-                  data-rating="4.8">
+                  data-id="<?php echo $row["book_id"]; ?>"
+                  data-description="<?php echo $row["description"]; ?>"
+                  >
                   View Details
                 </button>
               </div>
@@ -168,7 +168,7 @@ require_once "../../main.php";
         <p id="book-author"></p>
         <p><strong>ID:</strong> <span id="book-id"></span></p>
         <p><strong>Description:</strong> <span id="book-description"></span></p>
-        <p><strong>Rating:</strong> <span id="book-rating"></span></p>
+        
       </div>
     </div>
   </div>
@@ -188,7 +188,6 @@ require_once "../../main.php";
         document.getElementById('book-author').textContent = author;
         document.getElementById('book-id').textContent = id;
         document.getElementById('book-description').textContent = description;
-        document.getElementById('book-rating').textContent = rating;
 
         const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
         offcanvas.show();

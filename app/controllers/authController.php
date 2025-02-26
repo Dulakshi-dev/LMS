@@ -23,7 +23,7 @@ class authController
             $userDetails = AuthModel::validateLogin($memid, $password);
     
             if ($userDetails) {
-                $_SESSION["user"] = $userDetails;
+                $_SESSION["member"] = $userDetails;
     
                 if ($rememberme) {
                     setcookie("memberID", $memid, time() + (60 * 60 * 24 * 365), "/");

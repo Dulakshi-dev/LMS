@@ -5,7 +5,9 @@ require_once '../../router.php';
 require_once '../../main.php';
 
 require_once Config::getControllerPath("authController.php");
-require_once Config::getControllerPath("memberBookController.php");
+require_once Config::getControllerPath("memberDashboardController.php");
+require_once Config::getControllerPath("memberProfileController.php");
+
 
 
 
@@ -14,10 +16,20 @@ $router = new Router();
 
 // Create controller instances
 $authController = new authController();
-$memberBookController = new memberBookController();
+$memberDashboardController = new memberBookController();
+$memberProfileController = new memberProfileController();
+
 
 $router->add('memberlogin', [$authController, 'login']);
-$router->add('loadbooks', [$memberBookController, 'getAllBooks']);
+$router->add('loadbooks', [$memberDashboardController, 'getAllBooks']);
+$router->add('loadMemberData', [$memberProfileController, 'loadMemberDetails']); 
+$router->add('updateprofile', [$memberProfileController, 'updateProfile']); 
+$router->add('serveprofimage', [$memberProfileController, 'serveProfileImage']);
+$router->add('validatecurrentpw', [$memberProfileController, 'validateCurrentPassword']); 
+$router->add('savenewpw', [$memberProfileController, 'resetPassword']); 
+
+
+
 
 
 $router->add('home', function () {
@@ -46,6 +58,10 @@ $router->add('login', function () {
 
 $router->add('dashboard', function () {
     include Config::getViewPath("member", "dashboard.php");
+});
+
+$router->add('profile', function () {
+    include Config::getViewPath("member", "profile.php");
 });
 
 // Get the action from the URL

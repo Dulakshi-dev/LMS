@@ -1,15 +1,44 @@
 <?php
 require_once __DIR__ . '/../../main.php';
 
-class ProfileController
+class MemberProfileController
 {
 
     private $profileModel;
 
     public function __construct()
     {
-        require_once Config::getModelPath('profilemodel.php');
-        $this->profileModel = new ProfileModel();
+        require_once Config::getModelPath('memberprofilemodel.php');
+        $this->profileModel = new MemberProfileModel();
+    }
+
+    public function loadMemberDetails()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $member_id = $_POST['member_id'];
+
+            $result = MemberProfileModel::loadMemberDetails($member_id);
+
+            if ($result) {
+                $userData = $result->fetch_assoc();
+                echo json_encode([
+                    "success" => true,
+                    "id" => $userData['id'],
+                    "member_id" => $userData['member_id'],
+                    "nic" => $userData['nic'],
+                    "fname" => $userData['fname'],
+                    "lname" => $userData['lname'],
+                    "email" => $userData['email'],
+                    "mobile" => $userData['mobile'],
+                    "address" => $userData['address'],
+                    "profile_img" =>$userData['profile_img']
+                ]);
+            } else {
+                echo json_encode(["success" => false, "message" => "User not found."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
     }
 
     public function serveProfileImage() {
@@ -32,6 +61,7 @@ class ProfileController
     
     public function updateProfile()
     {
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
             $nic = $_POST['nic'];
@@ -48,15 +78,15 @@ class ProfileController
                 $fileName = uniqid() . "_" . basename($receipt["name"]);
                 $targetFilePath = $targetDir . $fileName;
     
-              $currentImage = ProfileModel::getUserCurrentProfileImage($nic); 
+              $currentImage = MemberProfileModel::getMemberCurrentProfileImage($nic); 
     
                 if ($currentImage && file_exists($targetDir . $currentImage)) {
                     unlink($targetDir . $currentImage);
                 }
     
                 if (move_uploaded_file($receipt["tmp_name"], $targetFilePath)) {
-                    $result = ProfileModel::updateUserDetails($nic, $fname, $lname, $address, $mobile, $fileName);
-                    $_SESSION["user"]["profile_img"] = $fileName;
+                    $result = MemberProfileModel::updateMemberDetails($nic, $fname, $lname, $address, $mobile, $fileName);
+                    $_SESSION["member"]["profile_img"] = $fileName;
     
                     if ($result) {
                         echo json_encode(["success" => true, "message" => "User updated successfully."]);
@@ -67,7 +97,7 @@ class ProfileController
                     echo json_encode(["success" => false, "message" => "Error moving uploaded file."]);
                 }
             } else {
-                $result = ProfileModel::updateUserDetailsWithoutImage($nic, $fname, $lname, $address, $mobile);
+                $result = MemberProfileModel::updateMemberDetailsWithoutImage($nic, $fname, $lname, $address, $mobile);
     
                 if ($result) {
                     echo json_encode(["success" => true, "message" => "User updated successfully."]);
@@ -84,9 +114,9 @@ class ProfileController
     {
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user_id = $_POST['user_id'];
+            $member_id = $_POST['member_id'];
             $newpassword = $_POST['newpassword'];
-            $result = ProfileModel::resetPassword($user_id, $newpassword);
+            $result = MemberProfileModel::resetPassword($member_id, $newpassword);
             
             if ($result) {
                 echo json_encode(["success" => true, "message" => "Password Updated"]);
@@ -103,9 +133,9 @@ class ProfileController
     {
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $user_id = $_POST['user_id'];
+            $member_id = $_POST['member_id'];
             $currentpassword = $_POST['currentpassword'];
-            $result = ProfileModel::validateCurrentPassword($user_id,$currentpassword);
+            $result = MemberProfileModel::validateCurrentPassword($member_id,$currentpassword);
             
             if ($result) {
                 echo json_encode(["success" => true, "message" => "Correct Password"]);

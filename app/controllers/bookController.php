@@ -49,7 +49,9 @@ class BookController
                     "pub_year" => $bookData['pub_year'],
                     "qty" => $bookData['qty'],
                     "description" => $bookData['description'],
-                    "category_id" => $bookData['category_id']
+                    "category_id" => $bookData['category_id'],
+                    "language_id" => $bookData['language_id']
+
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);
@@ -77,6 +79,23 @@ class BookController
         }
     }
 
+    public static function getLanguages()
+    {
+        $languages = BookModel::getLanguages();
+
+        if ($languages) {
+            echo json_encode([
+                'success' => true,
+                'languages' => $languages,
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'No languages found',
+            ]);
+        }
+    }
+
     public function updateBookDetails()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -84,12 +103,13 @@ class BookController
             $isbn = $_POST['isbn'];
             $title = $_POST["title"];
             $author = $_POST["author"];
-            $category = $_POST["category_id"];
+            $category = (int)$_POST["category_id"];
+            $language = (int)$_POST["language_id"];
             $pubYear = $_POST["pub_year"];
             $quantity = $_POST["quantity"];
             $description = $_POST["description"];
 
-            $result = BookModel::updateBookDetails($book_id, $isbn, $title, $author, $category, $pubYear, $quantity, $description);
+            $result = BookModel::updateBookDetails($book_id, $isbn, $title, $author, $category,$language, $pubYear, $quantity, $description);
 
             if ($result) {
                 echo json_encode(["success" => true, "message" => "User updated successfully."]);
@@ -103,11 +123,14 @@ class BookController
 
     public function addBookData()
     {
+        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $isbn = $_POST['isbn'];
             $author = $_POST['author'];
             $title = $_POST['title'];
-            $category = $_POST['category'];
+            $category = (int) $_POST['category']; 
+            $language = (int) $_POST['language'];
             $pub = $_POST['pub'];
             $qty = $_POST['qty'];
             $des = $_POST['des'];
@@ -129,7 +152,7 @@ class BookController
                 echo "No file uploaded or upload error.<br>";
             }
 
-            $result = BookModel::addBook($isbn, $author, $title, $category, $pub, $qty, $des, $fileName);
+            $result = BookModel::addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $fileName);
 
             if ($result) {
                 header("Location: index.php?action=bookmanagement");

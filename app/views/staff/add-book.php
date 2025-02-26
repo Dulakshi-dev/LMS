@@ -13,7 +13,7 @@
     </style>
 </head>
 
-<body onload="loadAllCategories()">
+<body onload="loadAllCategories(); loadLanguages();">
     <?php include "dash_header.php"; ?>
     <div class="d-flex bg-light">
         <div class="nav-bar">
@@ -52,16 +52,23 @@
                             <div class="row">
                                 <div class="col-lg-6 col-sm-12 mb-3">
                                     <label for="category" class="form-label">Book Category</label>
-                                    <select class="form-select" id="category">
+                                    <select class="form-select" id="category" name="category">
                                         <option value="">No Categories</option>
                                     </select>
                                 </div>
                                 <div class="col-lg-6 col-sm-12 mb-3">
-                                    <label for="pub" class="form-label">Published Year</label>
-                                    <input id="pub" name="pub" class="form-control" type="text" placeholder="Enter Publisher">
+                                    <label for="language" class="form-label">Language</label>
+                                    <select class="form-select" id="language" name="language">
+                                    <option value="">No languages</option>
+                                        
+                                    </select>
                                 </div>
                             </div>
                             <div class="row">
+                            <div class="col-lg-6 col-sm-12 mb-3">
+                                    <label for="pub" class="form-label">Published Year</label>
+                                    <input id="pub" name="pub" class="form-control" type="text" placeholder="Enter Publisher">
+                                </div>
                                 <div class="col-lg-6 col-sm-12 mb-3">
                                     <label for="qty" class="form-label">Quantity</label>
                                     <input id="qty" name="qty" class="form-control" type="number">

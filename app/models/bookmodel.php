@@ -7,12 +7,12 @@ class BookModel
 
     public static function getAllBooks($page)
     {
-        $rs = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN status ON book.status_id = status.status_id;");
+        $rs = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN `status` ON book.status_id = status.status_id INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id`");
         $num = $rs->num_rows;
         $resultsPerPage = 10;
         $pageResults = ($page - 1) * $resultsPerPage;
 
-        $rs2 = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN status ON book.status_id = status.status_id LIMIT $resultsPerPage OFFSET 
+        $rs2 = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN `status` ON book.status_id = status.status_id INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` LIMIT $resultsPerPage OFFSET 
 $pageResults");
         return [
             'total' => $num,
@@ -22,7 +22,7 @@ $pageResults");
 
     public static function loadBookDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id` WHERE `book_id` = '$id'");
+        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id`INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` WHERE `book_id` = '$id'");
         return $rs;
     }
 
@@ -39,6 +39,21 @@ $pageResults");
         }
 
         return $categories;
+    }
+
+    public static function getLanguages()
+    {
+        $query = "SELECT `language_id`, `language_name` FROM `language`";
+        $result = Database::search($query);
+
+        $languages = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $languages[] = $row;
+            }
+        }
+
+        return $languages;
     }
 
     public static function searchBooks($title, $isbn, $bookid)
@@ -58,7 +73,7 @@ $pageResults");
         return $rs;
     }
 
-    public static function updateBookDetails($book_id, $isbn, $title, $author, $category, $pubYear, $quantity, $description)
+    public static function updateBookDetails($book_id, $isbn, $title, $author, $category, $language, $pubYear, $quantity, $description)
     {
 
         Database::ud("UPDATE book SET
@@ -68,15 +83,16 @@ $pageResults");
             `pub_year` = '$pubYear', 
             `qty` = '$quantity', 
             `category_id` = '$category', 
+            `language_id` = '$language', 
              `description` = '$description'
             WHERE `book_id` = '$book_id'");
         return true;
     }
 
-    public static function addBook($isbn, $author, $title, $category, $pub, $qty, $des, $coverpage)
+    public static function addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $coverpage)
     {
         $book_id = self::generateID();
-        Database::insert("INSERT INTO `book`(`book_id`,`isbn`,`title`,`author`,`pub_year`,`description`,`cover_page`,`qty`,`available_qty`,`category_id`,`status_id`) VALUES ('$book_id','$isbn', '$title', '$author', '$pub', '$des','$coverpage', '$qty', '$qty', '1', '1')");
+        Database::insert("INSERT INTO `book`(`book_id`,`isbn`,`title`,`author`,`pub_year`,`description`,`cover_page`,`qty`,`available_qty`,`category_id`,`language_id`,`status_id`) VALUES ('$book_id','$isbn', '$title', '$author', '$pub', '$des','$coverpage', '$qty', '$qty', '$category','$language','1')");
 
         return true;
     }

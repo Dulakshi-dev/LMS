@@ -23,7 +23,7 @@
         <a href="<?php echo Config::indexPathMember() ?>?action=loadbooks" class="list-group-item list-group-item-action active">
           <i class="fas fa-home m-2"></i> Dashboard
         </a>
-        <a href="#" class="list-group-item list-group-item-action">
+        <a href="<?php echo Config::indexPathMember() ?>?action=profile" class="list-group-item list-group-item-action">
           <i class="fas fa-user m-2"></i> My Profile
         </a>
         <a href="#" class="list-group-item list-group-item-action">

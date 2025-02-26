@@ -1,16 +1,17 @@
 
 function loadProfileData(id) {
-    var formData = new FormData();
-    formData.append("user_id", id);
 
-    fetch("index.php?action=loadUserData", {
+    var formData = new FormData();
+    formData.append("member_id", id);
+
+    fetch("index.php?action=loadMemberData", {
         method: "POST",
         body: formData,
     })
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                document.getElementById("staff_id").value = resp.user_id;
+                document.getElementById("member_id").value = resp.member_id;
                 document.getElementById("fname").value = resp.fname;
                 document.getElementById("lname").value = resp.lname;
                 document.getElementById("email").value = resp.email;
@@ -41,7 +42,7 @@ function loadProfileData(id) {
 
 
 function updateProfileDetails() {
-    var staff_id = document.getElementById("staff_id").value;
+    var member_id = document.getElementById("member_id").value;
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var email = document.getElementById("email").value;
@@ -53,7 +54,7 @@ function updateProfileDetails() {
     //validate details (no need of profile img and disabled feilds)
 
     var formData = new FormData();
-    formData.append("staff_id", staff_id);
+    formData.append("member_id", member_id);
     formData.append("fname", fname);
     formData.append("lname", lname);
     formData.append("email", email);
@@ -82,35 +83,28 @@ function updateProfileDetails() {
         });
 }
 
-
-
 function showProfilePreview() {
     var file = document.getElementById('uploadprofimg').files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             document.getElementById('profileimg').src = e.target.result;
         };
         reader.readAsDataURL(file);
     }
 }
 
-function goToChangePassword(event) {
-    event.preventDefault(); // Prevent any default behavior (if inside a form)
-    
-    // Ensure box1 is hidden and box2 is shown
+function goToChangePassword() {
     document.getElementById("box1").classList.add("d-none");
-    document.getElementById("box2").style.display = "block";
     document.getElementById("box2").classList.remove("d-none");
-    
 }
 
-function validateCurrentPassword(user_id) {
+function validateCurrentPassword(member_id) {
     const password = document.getElementById("currentpassword").value.trim();
     const errorMsg = document.getElementById("errormsgcurrent");
 
     var formData = new FormData();
-    formData.append("user_id", user_id);
+    formData.append("member_id", member_id);
     formData.append("currentpassword", password);
 
 
@@ -140,7 +134,7 @@ function validateCurrentPassword(user_id) {
 }
 
 
-function saveNewPassword(user_id) {
+function saveNewPassword(member_id) {
     const newPassword = document.getElementById("new-password").value.trim();
     const confirmPassword = document.getElementById("confirm-password").value.trim();
 
@@ -152,7 +146,7 @@ function saveNewPassword(user_id) {
     } else {
 
         var formData = new FormData();
-        formData.append("user_id", user_id);
+        formData.append("member_id", member_id);
         formData.append("newpassword", newPassword);
 
         fetch("index.php?action=savenewpw", {

@@ -1,5 +1,10 @@
+<?php
+$member_id = $_SESSION["member"]["member_id"];
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,19 +16,25 @@
     .modal-header {
       border-bottom: 1px solid #ddd;
     }
+
     .btn-close {
       font-size: 1.5rem;
     }
+
     .btn-send {
-      background-color: #4c00ff; /* Blue color for the send button */
+      background-color: #4c00ff;
+      /* Blue color for the send button */
       color: #fff;
     }
+
     .btn-send:hover {
       background-color: #3a00cc;
     }
+
     .entries {
       margin-top: 100px;
     }
+
     .box {
       display: none;
       position: fixed;
@@ -34,91 +45,101 @@
       background-color: rgba(0, 0, 0, 0.5);
       z-index: 1000;
     }
+
     .card {
       background-color: #fff;
     }
+
     .error {
       color: red;
       font-size: 0.875rem;
     }
   </style>
 </head>
+
 <body class="bg-light">
-  <div class="container bg-white mt-4 p-4 rounded shadow-sm vh-100">
-    <!-- Header -->
-    <div class="d-flex justify-content-end align-items-center mb-4">
-      <a href="#" class="page-link">
-        <i class="fa fa-home"></i> Home
-      </a>
+  <?php require_once Config::getViewPath("member", "header.php"); ?>
+
+  <div class="d-flex">
+    <!-- Side Panel -->
+    <div class="nav-bar">
+      <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
     </div>
-
-    <!-- Search Bar -->
-    <div class="input-group mb-5">
-      <input type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
-      <input type="text" class="form-control mx-2" placeholder="Type Book Name" aria-label="Book Name">
-      <input type="text" class="form-control" placeholder="Type Category" aria-label="Category">
-      <button class="btn btn-primary ms-2">
-        <i class="fa fa-search"></i> Search
-      </button>
-    </div>
-
-    <!-- Table -->
-    <table class="table table-bordered text-center">
-      <thead class="table-light">
-        <tr>
-          <th>Book ID</th>
-          <th>Book</th>
-          <th>Book Name</th>
-          <th>Issued Date</th>
-          <th>Date Due</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>001</td>
-          <td><img src="../../../public/images/about.png" style="width: 100px;" alt="Book Cover"></td>
-          <td>Quicksilver</td>
-          <td>2025-01-01</td>
-          <td>2025-01-15</td>
-          <td>
-            <button class="btn btn-warning notify-btn">
-              <i class="fa fa-envelope"></i> Notify
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td>002</td>
-          <td><img src="../../../public/images/about.png" style="width: 100px;" alt="Book Cover"></td>
-          <td>Inferno</td>
-          <td>2025-01-10</td>
-          <td>2025-01-25</td>
-          <td>
-            <button class="btn btn-warning notify-btn">
-              <i class="fa fa-envelope"></i> Notify
-            </button>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="6">No more books found.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- Pagination -->
-    <div class="d-flex justify-content-between align-items-center entries">
-      <div>
-        Showing 1 to 20 of 40 entries
+    <div class="container bg-white mt-4 p-4 rounded shadow-sm vh-100">
+      <!-- Header -->
+      <div class="d-flex justify-content-end align-items-center mb-4">
+        <a href="#" class="page-link">
+          <i class="fa fa-home"></i> Home
+        </a>
       </div>
-      <nav aria-label="Page navigation">
-        <ul class="pagination mb-0">
-          <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-      </nav>
+
+      <!-- Search Bar -->
+      <div class="input-group mb-5">
+        <input type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
+        <input type="text" class="form-control mx-2" placeholder="Type Book Name" aria-label="Book Name">
+        <input type="text" class="form-control" placeholder="Type Category" aria-label="Category">
+        <button class="btn btn-primary ms-2">
+          <i class="fa fa-search"></i> Search
+        </button>
+      </div>
+
+      <!-- Table -->
+      <table class="table table-bordered text-center">
+        <thead class="table-light">
+          <tr>
+            <th>Borrow ID</th>
+            <th>Book ID</th>
+            <th>Book</th>
+            <th>Book Name</th>
+            <th>Issued Date</th>
+            <th>Date Due</th>
+            <th>Date Returned</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          if (empty($books)) {
+            echo "<tr><td colspan='8'>No Books found</td></tr>";
+          } else {
+            foreach ($books as $row) {
+          ?>
+              <tr>
+                <td><?php echo $row["borrow_id"]; ?></td>
+                <td><?php echo $row["book_id"]; ?></td>
+                <td>
+                  <img src="<?php echo $row["cover_page"]; ?>" style="width: 100px;" alt="Book Cover">
+                </td>
+                <td><?php echo $row["title"]; ?></td>
+                <td><?php echo $row["borrow_date"]; ?></td>
+                <td><?php echo $row["due_date"]; ?></td>
+                <td><?php echo $row["return_date"]; ?></td>
+                <td>
+                  <button class="btn btn-warning notify-btn">
+                    <i class="fa fa-envelope"></i> Notify
+                  </button>
+                </td>
+              </tr>
+          <?php
+            }
+          }
+          ?>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-between align-items-center entries">
+
+        <nav aria-label="Page navigation">
+          <ul class="pagination mb-0">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
 
@@ -226,4 +247,5 @@
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

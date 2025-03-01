@@ -166,5 +166,27 @@ class CirculationController{
         }
     }
 
+    public function returnBook()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $borrow_id = $_POST['borrowId'];
+            $book_id = $_POST['bookId'];
+            $return_date = $_POST['returnDate'];
+
+          
+            $result = CirculationModel::returnBook($borrow_id, $return_date, $book_id);
+            if($result){
+                header("Location: index.php?action=viewissuebooks");
+            }else{
+                echo("error");
+
+            }
+  
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+
 }
 

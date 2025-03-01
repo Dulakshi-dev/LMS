@@ -50,7 +50,7 @@ require_once "../../main.php";
 
                         <div class="col-12 col-md-5 ml-4 text-right pt-3 box rounded">
                             <div class="d-flex justify-content-end m-1">
-                                <button class="btn btn-light"><a class="text-decoration-none" href="<?php echo Config::indexPath() ?>?action=viewissuebook">View Issued Books</a></button>
+                                <button class="btn btn-light"><a class="text-decoration-none" href="<?php echo Config::indexPath() ?>?action=viewissuebooks">View Issued Books</a></button>
                             </div>
                         </div>
                     </div>

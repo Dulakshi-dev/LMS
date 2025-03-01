@@ -60,6 +60,7 @@ require_once "../../main.php";
                         } else {
 
                             foreach ($books as $row) {
+                                $return_date = $row["return_date"]; 
 
                         ?>
                                 <tr>
@@ -70,12 +71,25 @@ require_once "../../main.php";
                                     <td><?php echo $row["fname"] . " " . $row["lname"]; ?></td>
                                     <td><?php echo $row["borrow_date"]; ?></td>
                                     <td><?php echo $row["due_date"]; ?></td>
+                                    
                                     <td>
-
-                                        <div class="m-1">
-                                            <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
+                                        <?php
+                                        if($return_date == NULL){
+                                            ?>
+                                            <div class="m-1">
+                                            <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" data-borrow-id="<?php echo $row["borrow_id"]; ?>" data-book-id="<?php echo $row["book_id"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
                                                 <i class="fas fa-edit"></i></span>
-                                        </div>
+                                            </div>
+                                            <?php
+                                        }else{
+                                            ?>
+                                            <p class="text-danger">Book Returned</p>
+                                            <?php
+
+                                        }
+                                        ?>
+
+                                        
                                     </td>
                                 </tr>
                         <?php
@@ -124,27 +138,31 @@ require_once "../../main.php";
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="<?php echo Config::indexPath()?>?action=returnbook" method="POST">
+                        <input type="text" class="d-block" id="borrowId" name="borrowId">
+                        <input type="text" class="d-block" id="bookId" name="bookId">
+
+
                         <div class="mb-3 row align-items-center">
                             <label for="dueDate" class="col-sm-4 col-form-label">Due Date</label>
-                            <div class="col-sm-8">
-                                <input type="date" class="form-control" id="dueDate" placeholder="Enter return date">
+                            <div class="col-sm-8" >
+                                <input type="date" class="form-control" id="dueDate" placeholder="Enter due date">
                             </div>
                         </div>
                         <div class="mb-3 row align-items-center">
                             <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
                             <div class="col-sm-8">
-                                <input type="date" class="form-control" id="returnDate" placeholder="Enter return date" onchange=loadFines();>
+                                <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Enter return date" onchange="generateFine();">
                             </div>
                         </div>
                         <div class="mb-3 row align-items-center">
-                            <label for="amount" class="col-sm-4 col-form-label">Rs</label>
+                            <label for="amount" class="col-sm-4 col-form-label">Fines(Rs)</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="amount" placeholder="Enter amount">
+                                <input type="text" class="form-control" id="amount">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Return Book</button>
+                            <button type="submit" class="btn btn-primary" >Return Book</button>
                         </div>
                     </form>
                 </div>

@@ -23,13 +23,9 @@ function loadProfileData(id) {
 
                 if (profimg == "") {
                     profileImgElement.src = "index.php?action=serveprofimage&image=user.jpg";
-
                 } else {
                     profileImgElement.src = "index.php?action=serveprofimage&image=" + profimg;
-
                 }
-
-
             } else {
                 alert("Failed to load user data. Please try again.");
             }

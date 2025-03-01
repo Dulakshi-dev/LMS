@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '../../../database/connection.php';
 
-class MemberBookModel
+class MemberDashboardModel
 {
 
     public static function getAllBooks($page)

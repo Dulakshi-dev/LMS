@@ -90,7 +90,7 @@
                                 <p>Not registered yet?</p>
                             </div>
                             <div class="col d-flex justify-content-end">
-                                <a href="register.php" class="text-decoration-none create-account">Create an account</a>
+                                <a href="<?php echo Config::indexPathMember() ?>?action=register" class="text-decoration-none create-account">Create an account</a>
                             </div>
                         </div>
                     </form>

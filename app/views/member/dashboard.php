@@ -46,7 +46,7 @@ require_once "../../main.php";
   </style>
 </head>
 
-<body onload="<?php echo Config::indexPathMember() ?>?action=loadbooks">
+<body>
 
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
@@ -93,9 +93,7 @@ require_once "../../main.php";
             </div>
             <?php
             }
-        
           }
-
           ?>
 
         </div>
@@ -172,7 +170,7 @@ require_once "../../main.php";
       </div>
     </div>
   </div>
-
+  <script src="<?php echo Config::getJsPath("memberDashboard.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
   <script>

@@ -39,6 +39,19 @@ class CirculationModel
         return true;
     }
 
+    public static function returnBook($borrow_id, $return_date, $book_id)
+    {
+        Database::ud("UPDATE `borrow` SET `return_date` = '$return_date' WHERE `borrow_id` = '$borrow_id'");
+     
+        $result= Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
+        $data = $result->fetch_assoc();
+        $available_qty = $data["available_qty"];
+        
+        Database::ud("UPDATE `book` SET `available_qty` = $available_qty + 1 WHERE `book_id` = '$book_id'");
+
+        return true;
+    }
+
     public static function getAllBorrowData($page)
     {
         $rs = Database::search("SELECT * FROM `borrow` INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` INNER JOIN `member_login` ON `borrow`.`borrow_member_id` = `member_login`.`member_id` INNER JOIN `member` ON `member_login`.`memberId` = `member`.`id`;");

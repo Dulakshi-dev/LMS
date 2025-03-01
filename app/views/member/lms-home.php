@@ -22,6 +22,7 @@
                         <div class="mt-4">
                             <button class="btn btn-dark rounded-5 px-4" onclick="window.location.href='<?php echo Config::indexPathMember() ?>?action=register'">Register</button>
                             <button class="btn btn-secondary ms-3 rounded-5 px-4" onclick="window.location.href='<?php echo Config::indexPathMember() ?>?action=login'">Login</button>
+
                         </div>
                     </div>
                 </div>
@@ -105,6 +106,10 @@
 
 
     <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
+    
+    <script src="https://www.payhere.lk/lib/payhere.js"></script>
+
+    <script src="<?php echo Config::getJsPath("memberRegister.js"); ?>"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

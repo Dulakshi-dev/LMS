@@ -1,21 +1,22 @@
 <?php
 require_once __DIR__ . '/../../main.php';
 
-class MemberDashboardController
+class BorrowHistoryController
 {
 
-    private $memberDashboardModel;
+    private $borrowHistoryModel;
 
     public function __construct()
     {
-        require_once Config::getModelPath('memberdashboardmodel.php');
-        $this->memberDashboardModel = new MemberDashboardModel();
+        require_once Config::getModelPath('borrowhistorymodel.php');
+        $this->borrowHistoryModel = new BorrowHistoryModel();
     }
 
-    public function getAllBooks()
+    public function loadBorrowBooks()
     {
+        $member_id = $_GET['member_id'] ?? '';
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-        $data = MemberDashboardModel::getAllBooks($page);
+        $data = BorrowHistoryModel::getBorrowBooks($page, $member_id);
 
         $totalBooks = $data['total']; 
         $booksResult = $data['results']; 
@@ -27,7 +28,7 @@ class MemberDashboardController
 
         $resultsPerPage = 10;
         $totalPages = ceil($totalBooks / $resultsPerPage); 
-        require_once Config::getViewPath("member", 'dashboard.php');
-
+        require_once Config::getViewPath("member", 'borrow-history.php');
     }
+
 }

@@ -27,7 +27,7 @@
           <div class="mb-3 row align-items-center">
             <label for="amount" class="col-sm-4 col-form-label">Rs</label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="amount" placeholder="Enter amount">
+              <input type="text" class="form-control" id="amount" placeholder="Enter amount" onchange="generateFine();">
               <span class="text-danger" id="amountError"></span>
             </div>
           </div>

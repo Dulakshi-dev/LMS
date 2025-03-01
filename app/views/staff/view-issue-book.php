@@ -13,10 +13,10 @@ require_once "../../main.php";
 </head>
 
 <body>
-     
+
     <?php include "dash_header.php"; ?>
-    
-    
+
+
 
     <div class="d-flex bg-light">
         <div class="nav-bar vh-100">
@@ -60,7 +60,7 @@ require_once "../../main.php";
                         } else {
 
                             foreach ($books as $row) {
-                                $return_date = $row["return_date"]; 
+                                $return_date = $row["return_date"];
 
                         ?>
                                 <tr>
@@ -71,25 +71,25 @@ require_once "../../main.php";
                                     <td><?php echo $row["fname"] . " " . $row["lname"]; ?></td>
                                     <td><?php echo $row["borrow_date"]; ?></td>
                                     <td><?php echo $row["due_date"]; ?></td>
-                                    
+
                                     <td>
                                         <?php
-                                        if($return_date == NULL){
-                                            ?>
+                                        if ($return_date == NULL) {
+                                        ?>
                                             <div class="m-1">
-                                            <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" data-borrow-id="<?php echo $row["borrow_id"]; ?>" data-book-id="<?php echo $row["book_id"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
-                                                <i class="fas fa-edit"></i></span>
+                                                <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" data-borrow-id="<?php echo $row["borrow_id"]; ?>" data-book-id="<?php echo $row["book_id"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
+                                                    <i class="fas fa-edit"></i></span>
                                             </div>
-                                            <?php
-                                        }else{
-                                            ?>
+                                        <?php
+                                        } else {
+                                        ?>
                                             <p class="text-danger">Book Returned</p>
-                                            <?php
+                                        <?php
 
                                         }
                                         ?>
 
-                                        
+
                                     </td>
                                 </tr>
                         <?php
@@ -138,40 +138,139 @@ require_once "../../main.php";
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?php echo Config::indexPath()?>?action=returnbook" method="POST">
-                        <input type="text" class="d-block" id="borrowId" name="borrowId">
-                        <input type="text" class="d-block" id="bookId" name="bookId">
+                    <form action="<?php echo Config::indexPath() ?>?action=returnbook" method="POST" id="returnBookForm">
+                        <!-- Borrow ID and Book ID -->
+                        <input type="text" class="d-block" id="borrowId" name="borrowId" placeholder="Enter Borrow ID">
+                        <span class="text-danger" id="borrowIdError"></span>
 
+                        <input type="text" class="d-block" id="bookId" name="bookId" placeholder="Enter Book ID">
+                        <span class="text-danger" id="bookIdError"></span>
 
+                        <!-- Due Date -->
                         <div class="mb-3 row align-items-center">
                             <label for="dueDate" class="col-sm-4 col-form-label">Due Date</label>
-                            <div class="col-sm-8" >
+                            <div class="col-sm-8">
                                 <input type="date" class="form-control" id="dueDate" placeholder="Enter due date">
                             </div>
                         </div>
+
+                        <!-- Return Date -->
                         <div class="mb-3 row align-items-center">
                             <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
                             <div class="col-sm-8">
                                 <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Enter return date" onchange="generateFine();">
+                                <span class="text-danger" id="returnDateError"></span>
                             </div>
                         </div>
+
+                        <!-- Fine Calculation -->
                         <div class="mb-3 row align-items-center">
-                            <label for="amount" class="col-sm-4 col-form-label">Fines(Rs)</label>
+                            <label for="amount" class="col-sm-4 col-form-label">Fines (Rs)</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="amount">
+                                <input type="text" class="form-control" id="amount" readonly>
                             </div>
                         </div>
+
+                        <!-- Submit Button -->
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary" >Return Book</button>
+                            <button type="submit" class="btn btn-primary">Return Book</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        // Validate Borrow ID
+        function validateBorrowId() {
+            const borrowId = document.getElementById('borrowId').value.trim();
+            const errorSpan = document.getElementById('borrowIdError');
+            const regex = /^[a-zA-Z0-9]+$/; // Alphanumeric only
 
+            if (!borrowId) {
+                errorSpan.textContent = "Borrow ID is required.";
+                return false;
+            } else if (!regex.test(borrowId)) {
+                errorSpan.textContent = "Borrow ID must be alphanumeric.";
+                return false;
+            } else {
+                errorSpan.textContent = "";
+                return true;
+            }
+        }
+
+        // Validate Book ID
+        function validateBookId() {
+            const bookId = document.getElementById('bookId').value.trim();
+            const errorSpan = document.getElementById('bookIdError');
+            const regex = /^[a-zA-Z0-9]+$/;
+
+            if (!bookId) {
+                errorSpan.textContent = "Book ID is required.";
+                return false;
+            } else if (!regex.test(bookId)) {
+                errorSpan.textContent = "Book ID must be alphanumeric.";
+                return false;
+            } else {
+                errorSpan.textContent = "";
+                return true;
+            }
+        }
+
+        // Validate Return Date
+        function validateReturnDate() {
+            const dueDate = new Date(document.getElementById('dueDate').value);
+            const returnDate = new Date(document.getElementById('returnDate').value);
+            const errorSpan = document.getElementById('returnDateError');
+
+            if (isNaN(dueDate) || isNaN(returnDate)) {
+                errorSpan.textContent = "Both due date and return date are required.";
+                return false;
+            } else if (returnDate < dueDate) {
+                errorSpan.textContent = "Return date cannot be before the due date.";
+                return false;
+            } else {
+                errorSpan.textContent = "";
+                return true;
+            }
+        }
+
+        // Calculate Fine
+        function generateFine() {
+            const dueDate = new Date(document.getElementById('dueDate').value);
+            const returnDate = new Date(document.getElementById('returnDate').value);
+            const fineAmount = document.getElementById('amount');
+
+            if (!validateReturnDate()) return;
+
+            // Fine: Rs. 10 per late day
+            if (returnDate > dueDate) {
+                const daysLate = Math.ceil((returnDate - dueDate) / (1000 * 60 * 60 * 24));
+                fineAmount.value = daysLate * 10;
+            } else {
+                fineAmount.value = "0";
+            }
+        }
+
+        // Validate Form Before Submission
+        document.getElementById('returnBookForm').addEventListener('submit', function(event) {
+            const isBorrowIdValid = validateBorrowId();
+            const isBookIdValid = validateBookId();
+            const isReturnDateValid = validateReturnDate();
+
+            if (!isBorrowIdValid || !isBookIdValid || !isReturnDateValid) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('borrowId').addEventListener('blur', validateBorrowId);
+        document.getElementById('bookId').addEventListener('blur', validateBookId);
+        document.getElementById('returnDate').addEventListener('blur', validateReturnDate);
+    </script>
     <!-- Bootstrap and JavaScript -->
-    <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script>
+    <!-- Bootstrap and JavaScript
+    <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 

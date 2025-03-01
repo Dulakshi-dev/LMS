@@ -65,10 +65,10 @@ require_once "../../main.php";
 
         <div class="row g-5">
           <?php
-          if (empty($books)) {
+          if (empty($recbooks)) {
             echo "<tr><td colspan='7'>No Books found</td></tr>";
           } else {
-            foreach ($books as $row) {
+            foreach ($recbooks as $row) {
               ?>
               <div class="col-md-3 col-sm-6">
               <div class="book-card">

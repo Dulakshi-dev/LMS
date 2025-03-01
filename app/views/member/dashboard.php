@@ -65,10 +65,10 @@ require_once "../../main.php";
 
         <div class="row g-5">
           <?php
-          if (empty($recbooks)) {
+          if (empty($booksrec)) {
             echo "<tr><td colspan='7'>No Books found</td></tr>";
           } else {
-            foreach ($recbooks as $row) {
+            foreach ($booksrec as $row) {
               ?>
               <div class="col-md-3 col-sm-6">
               <div class="book-card">
@@ -95,7 +95,6 @@ require_once "../../main.php";
             }
           }
           ?>
-
         </div>
       </div>
     </div>
@@ -166,6 +165,7 @@ require_once "../../main.php";
         <p id="book-author"></p>
         <p><strong>ID:</strong> <span id="book-id"></span></p>
         <p><strong>Description:</strong> <span id="book-description"></span></p>
+        <button onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo urlencode($row['book_id']); ?>'">Reserve</button>
         
       </div>
     </div>

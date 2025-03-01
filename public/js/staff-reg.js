@@ -41,10 +41,10 @@ document.getElementById("registrationForm").addEventListener("submit", function 
         isValid = false;
     }
 
-    // Validate NIC
+    // Validate NIC (Old and New Format)
     const nic = document.getElementById("nic").value.trim();
-    if (nic === "") {
-        document.getElementById("nicError").textContent = "NIC is required.";
+    if (!/^(?:\d{9}[VX]|\d{12})$/.test(nic)) {
+        document.getElementById("nicError").textContent = "NIC must be in the correct format (9 digits + V/X or 12 digits).";
         isValid = false;
     }
 
@@ -58,8 +58,9 @@ document.getElementById("registrationForm").addEventListener("submit", function 
     // Validate Password
     const password = document.getElementById("password").value.trim();
     const cpassword = document.getElementById("cpassword").value.trim();
-    if (password.length < 6) {
-        document.getElementById("passwordError").textContent = "Password must be at least 6 characters.";
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password)) {
+        document.getElementById("passwordError").textContent =
+            "Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.";
         isValid = false;
     } else if (password !== cpassword) {
         document.getElementById("cpasswordError").textContent = "Passwords do not match.";

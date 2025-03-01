@@ -34,11 +34,14 @@ CREATE TABLE `book` (
   `available_qty` int NOT NULL,
   `category_id` int NOT NULL,
   `status_id` int NOT NULL,
+  `language_id` int NOT NULL,
   PRIMARY KEY (`book_id`),
   UNIQUE KEY `book_id_UNIQUE` (`book_id`),
   KEY `fk_book_category1_idx` (`category_id`),
   KEY `fk_book_status1_idx` (`status_id`),
+  KEY `fk_book_language1_idx` (`language_id`),
   CONSTRAINT `fk_book_category1` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`),
+  CONSTRAINT `fk_book_language1` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`),
   CONSTRAINT `fk_book_status1` FOREIGN KEY (`status_id`) REFERENCES `status` (`status_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,7 +52,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES ('B-000001','978-624-5314-08-9','Sherlock Holmes','Chandana Mendis','2006','Detective','676e30ae3d4b7_mkmk.jpg',20,17,2,1),('B-000002','0-307-26543-9','The Road','Cormac Mc Carthy','2006','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','677b7b30d2365_book3.jpg',20,20,1,1);
+INSERT INTO `book` VALUES ('B-000001','978-624-5314-08-9','Sherlock Holmes','Chandana Mendis','2006','Detective','676e30ae3d4b7_mkmk.jpg',20,19,1,1,1),('B-000002','0-307-26543-9','The Road','Cormac Mc Carthy','2006','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','677b7b30d2365_book3.jpg',20,20,1,1,2);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,6 +67,7 @@ CREATE TABLE `borrow` (
   `borrow_id` int NOT NULL AUTO_INCREMENT,
   `borrow_date` date NOT NULL,
   `due_date` date NOT NULL,
+  `return_date` date DEFAULT NULL,
   `borrow_book_id` varchar(12) NOT NULL,
   `borrow_member_id` varchar(12) NOT NULL,
   PRIMARY KEY (`borrow_id`),
@@ -71,7 +75,7 @@ CREATE TABLE `borrow` (
   KEY `fk_borrow_member_login1_idx` (`borrow_member_id`),
   CONSTRAINT `fk_borrow_book1` FOREIGN KEY (`borrow_book_id`) REFERENCES `book` (`book_id`),
   CONSTRAINT `fk_borrow_member_login1` FOREIGN KEY (`borrow_member_id`) REFERENCES `member_login` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +84,7 @@ CREATE TABLE `borrow` (
 
 LOCK TABLES `borrow` WRITE;
 /*!40000 ALTER TABLE `borrow` DISABLE KEYS */;
-INSERT INTO `borrow` VALUES (10,'2025-01-07','2025-01-21','B-000001','M-000001');
+INSERT INTO `borrow` VALUES (10,'2025-01-07','2025-01-21','2025-02-06','B-000001','M-000001'),(11,'2025-02-27','2025-02-27',NULL,'B-000002','M-000001');
 /*!40000 ALTER TABLE `borrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,6 +113,30 @@ INSERT INTO `category` VALUES (1,'Fiction'),(2,'Non fiction'),(3,'Kids'),(4,'Aca
 UNLOCK TABLES;
 
 --
+-- Table structure for table `language`
+--
+
+DROP TABLE IF EXISTS `language`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `language` (
+  `language_id` int NOT NULL AUTO_INCREMENT,
+  `language_name` varchar(45) NOT NULL,
+  PRIMARY KEY (`language_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `language`
+--
+
+LOCK TABLES `language` WRITE;
+/*!40000 ALTER TABLE `language` DISABLE KEYS */;
+INSERT INTO `language` VALUES (1,'Sihnala'),(2,'English'),(3,'Tamil'),(4,'Other');
+/*!40000 ALTER TABLE `language` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `login`
 --
 
@@ -132,7 +160,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (6,'S-000001','Dg$11029',14),(16,'S-000002','1111111',24);
+INSERT INTO `login` VALUES (6,'S-000001','Dcg$11029',14),(16,'S-000002','1111111',24);
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -157,7 +185,7 @@ CREATE TABLE `member` (
   PRIMARY KEY (`id`),
   KEY `fk_member_status1_idx` (`status_id`),
   CONSTRAINT `fk_member_status1` FOREIGN KEY (`status_id`) REFERENCES `status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -166,7 +194,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'200180300611','Dulakshi','Gammanpila','0701234567','dkk','dulakshigamma@gmail.com',NULL,NULL,1);
+INSERT INTO `member` VALUES (1,'200180300611','Dulakshi','Gammanpila','0701234567','dkk','dulakshigamma@gmail.com',NULL,'67bf419274046_download.jpeg',1),(3,'200180300612','Saman','Perera','0711234567','Moratuwa','dulakshigamma@gmail.com',NULL,NULL,1),(4,'200180300612','Saman','Perera','0711234567','Moratuwa','dulakshigamma@gmail.com',NULL,NULL,1),(5,'200178377654','dddddddddddd','cccc','dd','dfd','dulakshigamma@gmail.com',NULL,NULL,1);
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,14 +206,15 @@ DROP TABLE IF EXISTS `member_login`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `member_login` (
+  `member_login_id` int NOT NULL AUTO_INCREMENT,
   `member_id` varchar(12) NOT NULL,
   `password` varchar(255) NOT NULL,
   `memberId` int NOT NULL,
-  PRIMARY KEY (`member_id`),
+  PRIMARY KEY (`member_login_id`),
   UNIQUE KEY `member_id_UNIQUE` (`member_id`),
   KEY `fk_member_login_member1_idx` (`memberId`),
   CONSTRAINT `fk_member_login_member1` FOREIGN KEY (`memberId`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -194,7 +223,7 @@ CREATE TABLE `member_login` (
 
 LOCK TABLES `member_login` WRITE;
 /*!40000 ALTER TABLE `member_login` DISABLE KEYS */;
-INSERT INTO `member_login` VALUES ('M-000001','Dg$11029',1);
+INSERT INTO `member_login` VALUES (1,'M-000001','Dg$11029',1),(3,'M-000002','Saman@123',3),(4,'M-000003','Saman@123',4),(5,'M-000004','asd',5);
 /*!40000 ALTER TABLE `member_login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -331,7 +360,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (14,'200180300612','Dulakshi','Gammanpila','0701234567','No 12, main road, Kandy','dulakshigamma@gmail.com',NULL,'67866b0f10485_download.jpeg',2,1),(24,'200180300666','Dulakshi','Test2','0704567188','mm','dulakshigamma@gmail.com',NULL,NULL,2,1);
+INSERT INTO `user` VALUES (14,'200180300612','Dulakshi','Gammanpila','0701234555','No 12, main road, Kandy','dulakshigamma@gmail.com',NULL,'67866b0f10485_download.jpeg',2,1),(24,'200180300666','Dulakshi','Test2','0704567188','mm','dulakshigamma@gmail.com',NULL,NULL,2,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,4 +377,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-20 18:51:35
+-- Dump completed on 2025-03-01 18:17:29

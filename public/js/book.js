@@ -1,10 +1,81 @@
-function addBook() {
+function validateForm() {
+    let isValid = true;
+    let currentYear = new Date().getFullYear();
 
-    //validate book details
+    // Clear previous errors
+    document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
 
-    return true;
+    // ISBN validation (10 or 13 digits)
+    let isbn = document.getElementById("isbn").value.trim();
+    if (!/^\d{10}$|^\d{13}$/.test(isbn)) {
+        document.getElementById("isbn-error").innerText = "ISBN must be 10 or 13 digits.";
+        isValid = false;
+    }
+
+    // Author Name validation (only letters, spaces, hyphens, apostrophes)
+    let author = document.getElementById("author").value.trim();
+    if (!/^[A-Za-z\s'-]+$/.test(author) || author === "") {
+        document.getElementById("author-error").innerText = "Enter a valid author name.";
+        isValid = false;
+    }
+
+    // Title validation (required)
+    let title = document.getElementById("title").value.trim();
+    if (title === "") {
+        document.getElementById("title-error").innerText = "Title is required.";
+        isValid = false;
+    }
+
+    // Category validation (required)
+    let category = document.getElementById("category").value;
+    if (category === "") {
+        document.getElementById("category-error").innerText = "Select a category.";
+        isValid = false;
+    }
+
+    // Language validation (required)
+    let language = document.getElementById("language").value;
+    if (language === "") {
+        document.getElementById("language-error").innerText = "Select a language.";
+        isValid = false;
+    }
+
+    // Published Year validation (4-digit year between 1500 and current year)
+    let pub = document.getElementById("pub").value.trim();
+    if (!/^\d{4}$/.test(pub) || pub < 1500 || pub > currentYear) {
+        document.getElementById("pub-error").innerText = "Enter a valid year.";
+        isValid = false;
+    }
+
+    // Quantity validation (must be positive number)
+    let qty = document.getElementById("qty").value.trim();
+    if (isNaN(qty) || qty <= 0) {
+        document.getElementById("qty-error").innerText = "Enter a valid quantity.";
+        isValid = false;
+    }
+
+    // Description validation (min 10 characters)
+    let des = document.getElementById("des").value.trim();
+    if (des.length < 10) {
+        document.getElementById("des-error").innerText = "enter Description.";
+        isValid = false;
+    }
+
+    // Cover page validation (must be an image file)
+    let coverpage = document.getElementById("coverpage").files[0];
+    if (!coverpage) {
+        document.getElementById("coverpage-error").innerText = "Please upload a cover page.";
+        isValid = false;
+    } else {
+        let allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!allowedTypes.includes(coverpage.type)) {
+            document.getElementById("coverpage-error").innerText = "Only JPG, PNG, or GIF files are allowed.";
+            isValid = false;
+        }
+    }
+
+    return isValid;
 }
-
 function loadAllCategories(selectedCategoryId = null) {
     return new Promise((resolve, reject) => {
         fetch('index.php?action=getallcategories')
@@ -43,43 +114,7 @@ function loadAllCategories(selectedCategoryId = null) {
     });
 }
 
-function loadAllCategories(selectedCategoryId = null) {
-    return new Promise((resolve, reject) => {
-        fetch('index.php?action=getallcategories')
-            .then(response => response.json())
-            .then(resp => {
-                if (resp.success) {
-                    const categoryDropdown = document.getElementById('category');
-                    categoryDropdown.innerHTML = '';
 
-                    resp.categories.forEach(category => {
-                        const option = document.createElement('option');
-                        option.value = category.category_id;
-                        option.textContent = category.category_name;
-
-                        if (selectedCategoryId && category.category_id == selectedCategoryId) {
-                            option.selected = true;
-                        }
-
-                        categoryDropdown.appendChild(option);
-                    });
-
-                    if (selectedCategoryId) {
-                        categoryDropdown.value = selectedCategoryId;
-                    }
-
-                    resolve(true);
-                } else {
-                    alert('Failed to load categories. Please try again.');
-                    reject('Failed to load categories');
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching categories:', error);
-                reject(error);
-            });
-    });
-}
 
 function loadLanguages(selectedLanguageId = null) {
 

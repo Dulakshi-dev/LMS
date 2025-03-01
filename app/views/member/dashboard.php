@@ -35,12 +35,12 @@ require_once "../../main.php";
       margin: 10px 0 5px;
     }
 
-    .success {
+    .succes {
       color: rgba(21, 83, 28, 1);
       background: rgba(185, 247, 192, 1);
     }
 
-    .success:hover {
+    .succes:hover {
       background: rgb(69, 161, 80);
     }
   </style>
@@ -80,7 +80,7 @@ require_once "../../main.php";
                     <div class="book-title"><?php echo $row["title"]; ?></div>
                     <div><?php echo $row["author"]; ?></div>
                   </div>
-                  <button class="btn success btn-sm view-details"
+                  <button class="btn succes btn-sm view-details"
                     data-title="<?php echo $row["title"]; ?>"
                     data-author="<?php echo $row["author"]; ?>"
                     data-id="<?php echo $row["book_id"]; ?>"

@@ -12,33 +12,14 @@ class ReservationController
         $this->reservationModel = new ReservationModel();
     }
 
-    public function reserveBook()
+    public function getAllReservations()
     {
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $book_id = $_GET['book_id'];
-                $member_id = $_SESSION["member"]["member_id"];
-
-                $result = ReservationModel::reserveBook($book_id, $member_id);
-    
-                if ($result) {
-                    header("Location: index.php?action=loadbooks");
-                
-    
-                } else {
-                    echo json_encode(["success" => false, "message" => "Reservation failed"]);
-                }  
-            }else{
-                
-                echo json_encode(["success" => false, "message" => "Invalid Request"]);
-
-            }
-    }
-
-    public function loadReservedBooks()
-    {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
         $member_id = $_SESSION["member"]["member_id"];
-        $data = ReservationModel::getReservedBooks($member_id);
 
+        $data = ReservationModel::getAllReservations($member_id, $page);
+
+        $totalBooks = $data['total']; 
         $booksResult = $data['results']; 
 
         $books = [];
@@ -46,6 +27,9 @@ class ReservationController
             $books[] = $row;
         }
 
-        require_once Config::getViewPath("member", 'reserved-books.php');
+        $resultsPerPage = 10;
+        $totalPages = ceil($totalBooks / $resultsPerPage); 
+
+        require_once Config::getViewPath("staff", 'reservation-management.php');
     }
 }

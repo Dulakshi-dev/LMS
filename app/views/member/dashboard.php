@@ -166,6 +166,8 @@ require_once "../../main.php";
         <p><strong>ID:</strong> <span id="book-id"></span></p>
         <p><strong>Description:</strong> <span id="book-description"></span></p>
         <button onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo urlencode($row['book_id']); ?>'">Reserve</button>
+        <button onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=save&book_id=<?php echo urlencode($row['book_id']); ?>'">Save</button>
+
         
       </div>
     </div>

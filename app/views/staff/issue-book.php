@@ -1,3 +1,8 @@
+<?php
+$book_id = isset($_POST['book_id']) ? htmlspecialchars($_POST['book_id']) : '';
+$member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) : '';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,13 +53,13 @@
                                     <div class="row my-4 gap-5">
                                         <div class="col-lg-5 form-group">
                                             <label for="book_id">Books ID</label>
-                                            <input id="book_id" name="book_id" class="form-control" type="text" onchange="loadBookData();">
+                                            <input id="book_id" name="book_id" class="form-control" type="text" value="<?php echo $book_id; ?>" onchange="loadBookData();">
                                             <span id="book_id_error" class="text-danger"></span>
                                         </div>
 
                                         <div class="col-lg-5 form-group">
-                                            <label for="member_id">Membership ID</label>
-                                            <input id="member_id" name="member_id" class="form-control" type="text" onchange="loadMemberData();">
+                                            <label for="member_id">Member ID</label>
+                                            <input id="member_id" name="member_id" class="form-control" type="text" value="<?php echo $member_id; ?>" onchange="loadMemberData();">
                                             <span id="member_id_error" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -119,6 +124,21 @@
             </div>
         </div>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+    // Check if book_id and member_id are not empty before calling functions
+    if (document.getElementById("book_id").value.trim() !== "") {
+        loadBookData();
+    }
+    if (document.getElementById("member_id").value.trim() !== "") {
+        loadMemberData();
+    }
+});
+
+    </script>
+
+
+
     <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script>
 
 </body>

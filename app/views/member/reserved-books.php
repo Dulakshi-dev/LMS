@@ -59,10 +59,9 @@
           ?>
               <tr>
                 <td><?php echo $row["reservation_id"]; ?></td>
-
                 <td><?php echo $row["book_id"]; ?></td>
                 <td>
-                  <img src="<?php echo $row["cover_page"]; ?>" style="width: 100px;" alt="Book Cover">
+                <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
                 </td>
                 <td><?php echo $row["title"]; ?></td>
                 <td><?php echo $row["reservation_date"]; ?></td>

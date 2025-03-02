@@ -27,7 +27,7 @@ class Config {
     public static $database = [
         "host" => "localhost", 
         "username" => "root", 
-        "password" => "",
+        "password" => "Dg$11029",
         "dbname" => "library_db",
         "port" => "3306"
     ];
@@ -50,13 +50,11 @@ class Config {
     public static function getImagePath(String $image)
     {
         return Config::$paths["images"] . $image;
-       
     }
 
     public static function getjsPath(String $js)
     {
         return Config::$paths["js"] . $js;
-       
     }
 
     public static function getdbPath()

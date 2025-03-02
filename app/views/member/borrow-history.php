@@ -94,7 +94,6 @@ $member_id = $_SESSION["member"]["member_id"];
             <th>Issued Date</th>
             <th>Date Due</th>
             <th>Date Returned</th>
-            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -108,17 +107,13 @@ $member_id = $_SESSION["member"]["member_id"];
                 <td><?php echo $row["borrow_id"]; ?></td>
                 <td><?php echo $row["book_id"]; ?></td>
                 <td>
-                  <img src="<?php echo $row["cover_page"]; ?>" style="width: 100px;" alt="Book Cover">
+                <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
                 </td>
                 <td><?php echo $row["title"]; ?></td>
                 <td><?php echo $row["borrow_date"]; ?></td>
                 <td><?php echo $row["due_date"]; ?></td>
                 <td><?php echo $row["return_date"]; ?></td>
-                <td>
-                  <button class="btn btn-warning notify-btn">
-                    <i class="fa fa-envelope"></i> Notify
-                  </button>
-                </td>
+                
               </tr>
           <?php
             }

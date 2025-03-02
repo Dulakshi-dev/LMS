@@ -8,7 +8,9 @@ require_once Config::getControllerPath("authController.php");
 require_once Config::getControllerPath("memberDashboardController.php");
 require_once Config::getControllerPath("memberProfileController.php");
 require_once Config::getControllerPath("borrowHistoryController.php");
-require_once Config::getControllerPath("reservationController.php");
+require_once Config::getControllerPath("memberReservationController.php");
+require_once Config::getControllerPath("myLibraryController.php");
+
 
 // Initialize the Router
 $router = new Router();
@@ -18,7 +20,9 @@ $authController = new authController();
 $memberDashboardController = new MemberDashboardController();
 $memberProfileController = new memberProfileController();
 $borrowHistoryController = new BorrowHistoryController();
-$reservationController = new ReservationController();
+$memberReservationController = new MemberReservationController();
+$myLibraryController = new MyLibraryController();
+
 
 $router->add('memberlogin', [$authController, 'login']);
 $router->add('loadbooks', [$memberDashboardController, 'getAllBooks']);
@@ -33,8 +37,9 @@ $router->add('sendotp', [$authController, 'sendOTP']);
 $router->add('verifyotp', [$authController, 'verifyOTP']); 
 $router->add('showPayment', [$authController, 'proceedPayment']); 
 $router->add('registerMember', [$authController, 'registerMember']); 
-$router->add('reserve', [$reservationController, 'reserveBook']); 
-$router->add('reservedbooks', [$reservationController, 'loadReservedBooks']); 
+$router->add('reserve', [$memberReservationController, 'reserveBook']); 
+$router->add('reservedbooks', [$memberReservationController, 'loadReservedBooks']); 
+$router->add('save', [$myLibraryController, 'reserveBook']); 
 
 
 $router->add('home', function () {

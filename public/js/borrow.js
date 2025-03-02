@@ -1,3 +1,5 @@
+
+
 function loadBookData() {
     var book_id = document.getElementById("book_id").value;
 

@@ -9,6 +9,7 @@ require_once Config::getControllerPath("bookController.php");
 require_once Config::getControllerPath("circulationController.php");
 require_once Config::getControllerPath("profileController.php");
 require_once Config::getControllerPath("memberController.php");
+require_once Config::getControllerPath("reservationController.php");
 
 
 
@@ -22,6 +23,8 @@ $bookController = new BookController();
 $circulationController = new CirculationController();
 $profileController = new ProfileController();
 $memberController = new MemberController();
+$reservationController = new ReservationController();
+
 
 
 
@@ -61,6 +64,8 @@ $router->add('loadMemberData', [$memberController, 'loadMemberDetails']);
 $router->add('updateMember', [$memberController, 'UpdateMemberDetails']);
 $router->add('loadMemberMailData', [$memberController, 'loadMailData']); 
 $router->add('changeMemberStatus', [$memberController, 'changeMemberStatus']); 
+$router->add('reservationmanagement', [$reservationController, 'getAllReservations']);
+
 
 $router->add('login', function () {
     include Config::getViewPath("staff", "login.php");

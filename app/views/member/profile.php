@@ -34,7 +34,7 @@ $member_id = $_SESSION["member"]["member_id"];
         <div class="row">
           <div class="col-md-3 text-center p-4">
             <div class="mb-4">
-              <img id="profileimg" style="height: 280px; width: 280px;" src="" alt="Profile Picture">
+              <img id="profileimg" style="height: 250px; width: 250px; border-radius: 50%;" src="" alt="Profile Picture">
             </div>
             <div class="mb-4">
               <input type="file" id="uploadprofimg" name="uploadprofimg" class="form-control" onchange="showProfilePreview()">

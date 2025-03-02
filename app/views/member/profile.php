@@ -71,13 +71,11 @@ $member_id = $_SESSION["member"]["member_id"];
                   <input id="phone" name="phone" class="form-control" type="text">
                   <span class="text-danger" id="phoneerror"></span>
                 </div>
-
-
               </div>
               <div class="col-lg-12 col-sm-12 mb-3">
                 <label for="email">Email</label>
                 <input id="email" name="email" class="form-control" type="email" disabled>
-                <span></span>
+                <span id="emailerror" class="text-danger"></span>
               </div>
               <div class="mb-3">
                 <label for="address">Address</label>
@@ -90,6 +88,7 @@ $member_id = $_SESSION["member"]["member_id"];
                 <button type="button" class="btn btn-primary px-5" onclick="updateProfileDetails()">Save</button>
               </div>
             </form>
+
           </div>
         </div>
       </div>

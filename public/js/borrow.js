@@ -88,3 +88,45 @@ function generateFine() {
     return fine;
 
 }
+function validateForm() {
+    // Clear any previous error messages
+    document.getElementById("book_id_error").innerText = "";
+    document.getElementById("member_id_error").innerText = "";
+    document.getElementById("issueDate_error").innerText = "";
+    document.getElementById("returnDate_error").innerText = "";
+
+    // Get the values from the form fields
+    var book_id = document.getElementById("book_id").value;
+    var member_id = document.getElementById("member_id").value;
+    var issueDate = document.getElementById("issueDate").value;
+    var returnDate = document.getElementById("returnDate").value;
+
+    var isValid = true;
+
+    // Book ID validation
+    if (book_id.trim() === "") {
+        document.getElementById("book_id_error").innerText = "Book ID is required.";
+        isValid = false;
+    }
+
+    // Member ID validation
+    if (member_id.trim() === "") {
+        document.getElementById("member_id_error").innerText = "Membership ID is required.";
+        isValid = false;
+    }
+
+    // Issue Date validation
+    if (issueDate.trim() === "") {
+        document.getElementById("issueDate_error").innerText = "Issue date is required.";
+        isValid = false;
+    }
+
+    // Return Date validation
+    if (returnDate.trim() === "") {
+        document.getElementById("returnDate_error").innerText = "Due date is required.";
+        isValid = false;
+    }
+
+    // Return false if validation fails
+    return isValid;
+}

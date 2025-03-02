@@ -104,7 +104,7 @@ $userController = new UserController();
                 </table>
 
             </div>
-            <nav aria-label="Page navigation example" class="" >
+            <nav aria-label="Page navigation example" class="">
                 <ul class="pagination d-flex justify-content-center">
                     <!-- Previous Button -->
                     <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
@@ -147,58 +147,64 @@ $userController = new UserController();
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="book_id" class="form-label">Book ID</label>
                                 <input id="book_id" class="form-control" type="text" disabled />
+                                <span id="book_id_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>
                                 <input id="isbn_no" class="form-control" type="text" placeholder="Enter ISBN" />
+                                <span id="isbn_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
-
                                 <label for="title" class="form-label">Book Title</label>
                                 <input id="title" class="form-control" type="text" placeholder="Enter Book Title" />
+                                <span id="title_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="author" class="form-label">Author Name</label>
                             <input id="author" class="form-control" type="text" placeholder="Enter Author Name" />
+                            <span id="author_error" class="text-danger"></span> <!-- Error message span -->
                         </div>
                         <div class="row">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="category" class="form-label">Book Category</label>
                                 <select class="form-select" id="category">
                                     <option value="">...</option>
-
                                 </select>
+                                <span id="category_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="language" class="form-label">Language</label>
                                 <select class="form-select" id="language">
                                     <option value="">...</option>
-
                                 </select>
+                                <span id="language_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
-                            
                         </div>
                         <div class="row">
-                        <div class="col-lg-6 col-sm-12 mb-3">
+                            <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="pub_year" class="form-label">Published Year</label>
                                 <input id="pub_year" class="form-control" type="text" placeholder="Enter Publisher" />
+                                <span id="pub_year_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="qty" class="form-label">Quantity</label>
                                 <input id="qty" class="form-control" type="number" />
+                                <span id="qty_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="des" class="form-label">Description</label>
                             <textarea id="des" class="form-control" rows="3" placeholder="Enter Book Description"></textarea>
+                            <span id="des_error" class="text-danger"></span> <!-- Error message span -->
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-primary" onclick="updateBookDetails();">Update Book Details</button>
                         </div>
                     </form>
+
                 </div>
             </div>
 

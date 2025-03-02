@@ -54,11 +54,11 @@ $role_name = $_SESSION["user"]["role_name"];
                         <div class="row">
                             <div class="col-md-4 text-center">
                                 <div class="m-4">
-
                                     <img class="rounded-circle" id="profileimg" style="height: 200px; width: 200px;" src="" alt="Profile Picture">
                                 </div>
                                 <div class="m-4">
                                     <input type="file" id="uploadprofimg" name="uploadprofimg" class="form-control" onchange="showProfilePreview()">
+                                    <span id="uploadprofimg_error" class="text-danger"></span>
                                 </div>
                                 <div class="m-4">
                                     <label for="staff_id">Staff ID</label>
@@ -70,22 +70,24 @@ $role_name = $_SESSION["user"]["role_name"];
                                     <div class="col-lg-6 col-sm-6 form-group">
                                         <label for="fname">First Name</label>
                                         <input id="fname" name="fname" class="form-control" type="text">
+                                        <span id="fname_error" class="text-danger"></span>
                                     </div>
                                     <div class="col form-group">
                                         <label for="last-name">Last Name</label>
                                         <input id="lname" name="lname" class="form-control" type="text">
+                                        <span id="lname_error" class="text-danger"></span>
                                     </div>
                                 </div>
-
 
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-6 my-3 form-group">
                                         <label for="nic">NIC</label>
-                                        <input id="nic" name="nic" class="form-control" type="email" disabled>
+                                        <input id="nic" name="nic" class="form-control" type="text" disabled>
                                     </div>
                                     <div class="col my-3 form-group">
                                         <label for="phone">Mobile</label>
                                         <input id="phone" name="phone" class="form-control" type="text">
+                                        <span id="phone_error" class="text-danger"></span>
                                     </div>
                                 </div>
 
@@ -99,14 +101,16 @@ $role_name = $_SESSION["user"]["role_name"];
                                 <div class="form-group my-3">
                                     <label for="address">Address</label>
                                     <textarea id="address" class="form-control" name="address" rows="2"></textarea>
+                                    <span id="address_error" class="text-danger"></span>
                                 </div>
 
                                 <div class="d-flex justify-content-end">
                                     <button class="btn btn-danger mx-4 mt-4" onclick="goToChangePassword(event)">Reset Password</button>
-                                    <button class="btn btn-primary mt-4 px-4" onclick="updateProfileDetails()">Save</button>
+                                    <button class="btn btn-primary mt-4 px-4" onclick="updateProfileDetails(event)">Save</button>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -142,6 +146,7 @@ $role_name = $_SESSION["user"]["role_name"];
                             <div class="col-12 col-md-4 mb-2"><label for="new-password">New Password</label></div>
                             <div class="col-12 col-md-8">
                                 <input id="new-password" class="form-control" type="password">
+                                <span id="new-password-error" class="text-danger"></span> <!-- Error message for new password -->
                             </div>
                         </div>
 
@@ -149,16 +154,16 @@ $role_name = $_SESSION["user"]["role_name"];
                             <div class="col-12 col-md-4 mb-2"><label for="confirm-password">Confirm Password</label></div>
                             <div class="col-12 col-md-8">
                                 <input id="confirm-password" class="form-control" type="password">
+                                <span id="confirm-password-error" class="text-danger"></span> <!-- Error message for confirm password -->
                             </div>
                         </div>
-
-                        <div id="errormsg-new" class="text-danger mt-2"></div>
 
                         <div class="d-flex justify-content-end py-3 my-4">
                             <button type="button" class="btn btn-primary px-5 mx-4" onclick="goBackToCurrent()">Back</button>
                             <button type="button" class="btn btn-danger px-5" onclick="saveNewPassword('<?php echo $user_id; ?>')">Save</button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>

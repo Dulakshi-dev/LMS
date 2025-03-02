@@ -36,31 +36,63 @@ function loadProfileData(id) {
 }
 
 
-function updateProfileDetails() {
-    var staff_id = document.getElementById("staff_id").value;
+function updateProfileDetails(event) {
+    event.preventDefault();  // Prevent form submission
+
+    // Clear any previous error messages
+    document.getElementById("fname_error").innerText = "";
+    document.getElementById("lname_error").innerText = "";
+    document.getElementById("phone_error").innerText = "";
+    document.getElementById("address_error").innerText = "";
+
+    // Get the values from the form fields
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
-    var email = document.getElementById("email").value;
     var phone = document.getElementById("phone").value;
     var address = document.getElementById("address").value;
-    var nic = document.getElementById("nic").value;
-    var profimg = document.getElementById("uploadprofimg").files[0];
 
-    //validate details (no need of profile img and disabled feilds)
+    var isValid = true;
 
+    // Validate First Name
+    if (fname.trim() === "") {
+        document.getElementById("fname_error").innerText = "First Name is required.";
+        isValid = false;
+    }
+
+    // Validate Last Name
+    if (lname.trim() === "") {
+        document.getElementById("lname_error").innerText = "Last Name is required.";
+        isValid = false;
+    }
+
+    // Validate Mobile Number
+    if (phone.trim() === "") {
+        document.getElementById("phone_error").innerText = "Mobile number is required.";
+        isValid = false;
+    }
+
+    // Validate Address
+    if (address.trim() === "") {
+        document.getElementById("address_error").innerText = "Address is required.";
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return;  // Stop form submission if validation fails
+    }
+
+    // Create FormData object
     var formData = new FormData();
-    formData.append("staff_id", staff_id);
     formData.append("fname", fname);
     formData.append("lname", lname);
-    formData.append("email", email);
     formData.append("mobile", phone);
     formData.append("address", address);
-    formData.append("nic", nic);
 
     if (profimg) {
         formData.append("profimg", profimg);
     }
 
+    // Send the form data to the server
     fetch("index.php?action=updateprofile", {
         method: "POST",
         body: formData,
@@ -77,6 +109,8 @@ function updateProfileDetails() {
             console.error("Error fetching user data:", error);
         });
 }
+
+
 
 
 
@@ -140,13 +174,26 @@ function saveNewPassword(user_id) {
     const newPassword = document.getElementById("new-password").value.trim();
     const confirmPassword = document.getElementById("confirm-password").value.trim();
 
+    // Clear previous error messages
+    document.getElementById("new-password-error").textContent = '';
+    document.getElementById("confirm-password-error").textContent = '';
 
+    let isValid = true;
+
+    // Validate new password length
     if (newPassword.length < 8 || newPassword.length > 15) {
-        document.getElementById("errormsg-new").textContent = "Password must be 8-15 characters.";
-    } else if (newPassword !== confirmPassword) {
-        document.getElementById("errormsg-new").textContent = "Passwords do not match.";
-    } else {
+        document.getElementById("new-password-error").textContent = "Password must be 8-15 characters.";
+        isValid = false;
+    }
 
+    // Check if passwords match
+    if (newPassword !== confirmPassword) {
+        document.getElementById("confirm-password-error").textContent = "Passwords do not match.";
+        isValid = false;
+    }
+
+    // If the form is valid, proceed with saving the password
+    if (isValid) {
         var formData = new FormData();
         formData.append("user_id", user_id);
         formData.append("newpassword", newPassword);
@@ -160,9 +207,8 @@ function saveNewPassword(user_id) {
                 if (resp.success) {
                     alert("Password changed successfully!");
                     location.reload();
-
                 } else {
-                    errorMsg.textContent = "error";
+                    alert("Error changing password. Please try again.");
                 }
             })
             .catch(error => {
@@ -170,6 +216,7 @@ function saveNewPassword(user_id) {
             });
     }
 }
+
 
 function goBack() {
     document.getElementById("box2").classList.add("d-none");

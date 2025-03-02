@@ -29,10 +29,10 @@ $userController = new UserController();
         </div>
         <div class="container-fluid mx-5 mb-5 bg-white">
             <div class="row">
-              <nav class="navbar p-4 navbar-light bg-light">
-                <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
-                <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
-              </nav>
+                <nav class="navbar p-4 navbar-light bg-light">
+                    <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                    <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+                </nav>
             </div>
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
@@ -89,7 +89,7 @@ $userController = new UserController();
                                                 <button class="btn btn-info" onclick="changeUserStatus('<?php echo $row['id']; ?>');"><i class="fa fa-check" style="font-size: 10px"></i></button>
                                                 <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
                                             </div>
-                                 
+
 
 
                                         <?php
@@ -117,7 +117,7 @@ $userController = new UserController();
                 </table>
             </div>
 
-            <nav aria-label="Page navigation example" class="" >
+            <nav aria-label="Page navigation example" class="">
                 <ul class="pagination d-flex justify-content-center">
                     <!-- Previous Button -->
                     <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
@@ -157,8 +157,6 @@ $userController = new UserController();
                 </div>
                 <div class="border border-2"></div>
                 <div class="p-3">
-
-
                     <div class="row">
                         <div class="col-md-6">
                             <label for="membershipID">Membership ID</label>
@@ -167,30 +165,36 @@ $userController = new UserController();
                         <div class="col-md-6">
                             <label for="nic">NIC</label>
                             <input type="text" class="form-control" id="NIC" value="">
+                            <span id="nicError" class="text-danger"></span> <!-- NIC Error -->
                         </div>
                     </div>
                     <div class="my-2">
                         <label for="userName">User's Name</label>
                         <input type="text" class="form-control" id="username" value="">
+                        <span id="usernameError" class="text-danger"></span> <!-- Username Error -->
                     </div>
                     <div class="row my-2">
                         <div class="col-md-6">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" value="">
+                            <span id="emailError" class="text-danger"></span> <!-- Email Error -->
                         </div>
                         <div class="col-md-6">
                             <label for="phoneNumber">Phone Number</label>
                             <input type="tel" class="form-control" id="phoneNumber" value="">
+                            <span id="phoneError" class="text-danger"></span> <!-- Phone Error -->
                         </div>
                     </div>
                     <div class="my-2">
                         <label for="address">Address</label>
                         <textarea class="form-control" id="address" rows="3"></textarea>
+                        <span id="addressError" class="text-danger"></span> <!-- Address Error -->
                     </div>
                     <div class="d-flex justify-content-end">
                         <button type="button" data-bs-dismiss="modal" class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -205,28 +209,29 @@ $userController = new UserController();
                 </div>
                 <div class="border border-2"></div>
                 <div class="p-4">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">User Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">User Email</label>
-                            <input type="text" class="form-control" id="emailadd" name="emailadd" value="" disabled>
-                        </div>
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" name="subject">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" name="message" rows="3"></textarea>
-                        </div>
-                        <div id="error" class="text-danger"></div>
-                        <div class="text-end">
-                            <button type="button" data-bs-dismiss="modal" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
-
-                        </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">User Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">User Email</label>
+                        <input type="text" class="form-control" id="emailadd" name="emailadd" value="" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject">
+                        <span id="subjectError" class="text-danger"></span> <!-- Subject error message -->
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                        <span id="messageError" class="text-danger"></span> <!-- Message error message -->
+                    </div>
+                    <div class="text-end">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -235,6 +240,6 @@ $userController = new UserController();
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("user.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+</body>
 
 </html>

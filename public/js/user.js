@@ -31,14 +31,65 @@ function loadUserDataUpdate(user_id) {
 
 function updateUserDetails() {
     var userId = document.getElementById("userID").value;
-    var nic = document.getElementById("NIC").value;
-    var username = document.getElementById("username").value;
-    var email = document.getElementById("email").value;
-    var phone = document.getElementById("phoneNumber").value;
-    var address = document.getElementById("address").value;
+    var nic = document.getElementById("NIC").value.trim();
+    var username = document.getElementById("username").value.trim();
+    var email = document.getElementById("email").value.trim();
+    var phone = document.getElementById("phoneNumber").value.trim();
+    var address = document.getElementById("address").value.trim();
 
-    //validate details
+    // Error elements
+    var nicError = document.getElementById("nicError");
+    var usernameError = document.getElementById("usernameError");
+    var emailError = document.getElementById("emailError");
+    var phoneError = document.getElementById("phoneError");
+    var addressError = document.getElementById("addressError");
 
+    // Clear previous error messages
+    nicError.innerText = "";
+    usernameError.innerText = "";
+    emailError.innerText = "";
+    phoneError.innerText = "";
+    addressError.innerText = "";
+
+    var isValid = true;
+
+    // NIC Validation (Assuming it should be 10 or 12 characters)
+    if (nic === "" || !(nic.length === 10 || nic.length === 12)) {
+        nicError.innerText = "NIC must be 10 or 12 characters long";
+        isValid = false;
+    }
+
+    // Username validation
+    if (username === "") {
+        usernameError.innerText = "Please enter a username";
+        isValid = false;
+    }
+
+    // Email validation
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format check
+    if (!emailPattern.test(email)) {
+        emailError.innerText = "Please enter a valid email address";
+        isValid = false;
+    }
+
+    // Phone number validation (Assuming it should be 10 digits)
+    var phonePattern = /^\d{10}$/;
+    if (!phonePattern.test(phone)) {
+        phoneError.innerText = "Phone number must be 10 digits";
+        isValid = false;
+    }
+
+    // Address validation
+    if (address === "") {
+        addressError.innerText = "Please enter an address";
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return; // Stop execution if validation fails
+    }
+
+    // Prepare form data for sending
     var formData = new FormData();
     formData.append("userId", userId);
     formData.append("username", username);
@@ -51,18 +102,19 @@ function updateUserDetails() {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
-        .then(resp => {
-            if (resp.success) {
-                location.reload();
-            } else {
-                alert("Failed to update user data. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching user data:", error);
-        });
+    .then(response => response.json()) 
+    .then(resp => {
+        if (resp.success) {
+            location.reload();
+        } else {
+            alert("Failed to update user data. Please try again.");
+        }
+    })
+    .catch(error => {
+        console.error("Error updating user data:", error);
+    });
 }
+
 
 function loadMailData(user_id) {
 
@@ -89,51 +141,53 @@ function loadMailData(user_id) {
 }
 
 function sendEmail() {
+    var subject = document.getElementById("subject").value.trim();
+    var message = document.getElementById("message").value.trim();
     
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("emailadd").value;
-    var subject = document.getElementById("subject").value;
-    var message = document.getElementById("message").value;
+    var subjectError = document.getElementById("subjectError");
+    var messageError = document.getElementById("messageError");
 
-    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email format check
+    // Clear previous error messages
+    subjectError.innerText = "";
+    messageError.innerText = "";
 
-    if (name === "") {
-        document.getElementById("error").innerText = "Please enter your name";
-    } else
-    if (!emailPattern.test(email)) {
-        document.getElementById("error").innerText = "Please enter a valid email address";
-    } else if (subject === "") {
-        document.getElementById("error").innerText = "Please enter a subject";
-    } else if (message === "") {
-        document.getElementById("error").innerText = "Please enter your message";
-    } else {
-        document.getElementById("error").innerText = ""; // Clear error messages
+    var isValid = true;
 
-        // Prepare form data for sending
-        var formData = new FormData();
-        formData.append("name", name);
-        formData.append("email", email);
-        formData.append("subject", subject);
-        formData.append("message", message);
-
-        // Create XMLHttpRequest to send data to server
-        fetch("index.php?action=sendMail", {
-            method: "POST",
-            body: formData,
-        })
-            .then(response => response.json()) 
-            .then(resp => {
-                if (resp.success) {
-                    alert("Mail sent");
-                   
-                } else {
-                    alert("Failed to load user data. Please try again.");
-                }
-            })
-            .catch(error => {
-                console.error("Error fetching user data:", error);
-            });
+    if (subject === "") {
+        subjectError.innerText = "Please enter a subject";
+        isValid = false;
     }
+
+    if (message === "") {
+        messageError.innerText = "Please enter your message";
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return; // Stop execution if validation fails
+    }
+
+    // Prepare form data for sending
+    var formData = new FormData();
+    formData.append("subject", subject);
+    formData.append("message", message);
+
+    // Create XMLHttpRequest to send data to server
+    fetch("index.php?action=sendMail", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json()) 
+    .then(resp => {
+        if (resp.success) {
+            alert("Mail sent successfully!");
+        } else {
+            alert("Failed to send mail. Please try again.");
+        }
+    })
+    .catch(error => {
+        console.error("Error sending mail:", error);
+    });
 }
 
 

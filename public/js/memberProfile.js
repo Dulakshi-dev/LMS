@@ -42,34 +42,80 @@ function loadProfileData(id) {
 
 
 function updateProfileDetails() {
-    var member_id = document.getElementById("member_id").value;
+    // Get form values
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
-    var email = document.getElementById("email").value;
+    var nic = document.getElementById("nic").value;
     var phone = document.getElementById("phone").value;
     var address = document.getElementById("address").value;
-    var nic = document.getElementById("nic").value;
-    var profimg = document.getElementById("uploadprofimg").files[0];
+    var email = document.getElementById("email").value;
+    
+    // Initialize error flag
+    var valid = true;
 
-    //validate details (no need of profile img and disabled feilds)
+    // Reset previous errors
+    document.getElementById("fnameerror").innerText = "";
+    document.getElementById("lnameerror").innerText = "";
+    document.getElementById("nicerror").innerText = "";
+    document.getElementById("phoneerror").innerText = "";
+    document.getElementById("addresserror").innerText = "";
+    document.getElementById("emailerror").innerText = "";
 
-    var formData = new FormData();
-    formData.append("member_id", member_id);
-    formData.append("fname", fname);
-    formData.append("lname", lname);
-    formData.append("email", email);
-    formData.append("mobile", phone);
-    formData.append("address", address);
-    formData.append("nic", nic);
-
-    if (profimg) {
-        formData.append("profimg", profimg);
+    // Validate First Name
+    if (fname.trim() === "") {
+        document.getElementById("fnameerror").innerText = "First name is required.";
+        valid = false;
     }
 
-    fetch("index.php?action=updateprofile", {
-        method: "POST",
-        body: formData,
-    })
+    // Validate Last Name
+    if (lname.trim() === "") {
+        document.getElementById("lnameerror").innerText = "Last name is required.";
+        valid = false;
+    }
+
+    // Validate NIC (old and new format)
+    if (nic.trim() === "") {
+        document.getElementById("nicerror").innerText = "NIC is required.";
+        valid = false;
+    } else {
+        // Check if the NIC is in the old or new format
+        // Old NIC format: 9 digits followed by 'V' or 'v' (e.g., 123456789V)
+        // New NIC format: 12 digits (e.g., 2000-01-01-1234)
+        var oldNicPattern = /^\d{9}[Vv]$/;
+        var newNicPattern = /^\d{4}-\d{2}-\d{2}-\d{4}$/;
+
+        if (!oldNicPattern.test(nic) && !newNicPattern.test(nic)) {
+            document.getElementById("nicerror").innerText = "Please enter a valid NIC (Old format: 123456789V, New format: 2000-01-01-1234).";
+            valid = false;
+        }
+    }
+
+    // Validate Mobile
+    if (phone.trim() === "" || !/^\d{10}$/.test(phone)) {
+        document.getElementById("phoneerror").innerText = "Valid phone number is required (10 digits).";
+        valid = false;
+    }
+
+    // Validate Address
+    if (address.trim() === "") {
+        document.getElementById("addresserror").innerText = "Address is required.";
+        valid = false;
+    }
+
+    // If all validations pass, submit the form
+    if (valid) {
+        var formData = new FormData();
+        formData.append("fname", fname);
+        formData.append("lname", lname);
+        formData.append("nic", nic);
+        formData.append("phone", phone);
+        formData.append("address", address);
+        formData.append("email", email);
+
+        fetch("index.php?action=updateprofile", {
+            method: "POST",
+            body: formData,
+        })
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
@@ -81,18 +127,9 @@ function updateProfileDetails() {
         .catch(error => {
             console.error("Error fetching user data:", error);
         });
-}
-
-function showProfilePreview() {
-    var file = document.getElementById('uploadprofimg').files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('profileimg').src = e.target.result;
-        };
-        reader.readAsDataURL(file);
     }
 }
+
 
 function goToChangePassword() {
     document.getElementById("box1").classList.add("d-none");

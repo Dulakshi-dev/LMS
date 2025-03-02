@@ -39,24 +39,25 @@
                             <h2 class="p-2">Issue Book</h2>
                         </div>
                         <div class="row">
-                           
+
 
                             <!-- Update Form -->
                             <div>
-                                <form class="mx-4 px-4" action="<?php echo Config::indexPath() ?>?action=issuebook" method="POST">
+                                <form class="mx-4 px-4" action="<?php echo Config::indexPath() ?>?action=issuebook" method="POST" onsubmit="return validateForm();">
                                     <!-- Name -->
                                     <div class="row my-4 gap-5">
                                         <div class="col-lg-5 form-group">
                                             <label for="book_id">Books ID</label>
                                             <input id="book_id" name="book_id" class="form-control" type="text" onchange="loadBookData();">
+                                            <span id="book_id_error" class="text-danger"></span>
                                         </div>
-                                        
+
                                         <div class="col-lg-5 form-group">
                                             <label for="member_id">Membership ID</label>
                                             <input id="member_id" name="member_id" class="form-control" type="text" onchange="loadMemberData();">
+                                            <span id="member_id_error" class="text-danger"></span>
                                         </div>
                                     </div>
-
 
                                     <!-- Address -->
                                     <div class="row my-3 gap-5">
@@ -78,16 +79,13 @@
                                             <label for="memName">Member Name</label>
                                             <input id="memName" class="form-control" type="text" disabled>
                                         </div>
-                                       
                                     </div>
 
                                     <div class="row">
-                                    <div class="col-lg-5 form-group">
+                                        <div class="col-lg-5 form-group">
                                             <label for="author">Author</label>
                                             <input id="author" class="form-control" type="text" disabled>
                                         </div>
-                                        
-                                       
                                     </div>
 
                                     <!-- NIC and DOB -->
@@ -95,10 +93,12 @@
                                         <div class="col-lg-5 my-3 form-group">
                                             <label for="issueDate">Date Issued</label>
                                             <input id="issueDate" name="borrow_date" class="form-control" type="date">
+                                            <span id="issueDate_error" class="text-danger"></span>
                                         </div>
                                         <div class="col-lg-5 my-3 form-group">
                                             <label for="returnDate">Due Date</label>
                                             <input id="returnDate" name="due_date" class="form-control" type="date">
+                                            <span id="returnDate_error" class="text-danger"></span>
                                         </div>
                                     </div>
 
@@ -111,6 +111,7 @@
                                         <button class="btn btn-primary px-4" type="submit">Issue Book</button>
                                     </div>
                                 </form>
+
                             </div>
                         </div>
                     </div>

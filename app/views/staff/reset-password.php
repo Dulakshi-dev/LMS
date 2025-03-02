@@ -28,8 +28,6 @@
 </head>
 
 <body>
-
-
     <div class="container">
         <div class="row  p-5  mt-5 justify-content-center">
             <div class="col-md-6 text-white login-form ">
@@ -96,7 +94,7 @@ function resetpw() {
     return true;
 }
 </script>
-    <script src="<?php echo Config::getJsPath("../../../public/js/login.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
 </body>
 
 </html>

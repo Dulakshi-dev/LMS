@@ -36,8 +36,8 @@ $member_id = $_SESSION["member"]["member_id"];
         <a href="<?php echo Config::indexPathMember() ?>?action=loadissuebooks&member_id=<?php echo $member_id ?>" class="list-group-item list-group-item-action">
           <i class="fas fa-list-alt m-2"></i> Borrow History
         </a>
-        <a href="#" class="list-group-item list-group-item-action">
-          <i class="fas fa-eye m-2"></i> Archived Books
+        <a href="<?php echo Config::indexPathMember() ?>?action=reservedbooks" class="list-group-item list-group-item-action">
+          <i class="fas fa-eye m-2"></i> Reserved Books
         </a>
         <a href="#" class="list-group-item list-group-item-action">
           <i class="fas fa-info-circle m-2"></i> About Software

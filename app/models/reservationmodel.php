@@ -18,4 +18,22 @@ class ReservationModel
 
         return true;
     }
+
+    public static function getReservedBooks($member_id)
+    {
+
+        $rs = Database::search("SELECT * FROM `reservation` INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id` INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id` WHERE `reservation_member_id` = '$member_id' AND `reservation`.`status_id` = '1';");
+        $num = $rs->num_rows;
+        return [
+            'total' => $num,
+            'results' => $rs
+        ];
+    }
+
+    public static function deactivateExpiredReservations() {
+        $rs = Database::ud("UPDATE reservation SET status_id = '3' WHERE expiration_date < CURDATE() AND `status_id` = '1'");
+        return true;
+    }
+
+
 }

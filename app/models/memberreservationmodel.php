@@ -31,9 +31,23 @@ class MemberReservationModel
     }
 
     public static function deactivateExpiredReservations() {
-        Database::ud("UPDATE reservation SET status_id = '3' WHERE `expiration_date` < CURDATE() AND `status_id` = '1'");
+        // Get all expired reservations (status = 1 means reserved)
+        $result = Database::search("SELECT `reservation_book_id` FROM `reservation` WHERE `expiration_date` < CURDATE() AND `status_id` = '1'");
+        
+        // Update expired reservations to status 3 (expired)
+        Database::ud("UPDATE `reservation` SET `status_id` = '3' WHERE `expiration_date` < CURDATE() AND `status_id` = '1'");
+        
+        // Loop through each expired reservation and update book quantity
+        while ($row = $result->fetch_assoc()) {
+            $book_id = $row['reservation_book_id'];
+            
+            // Increase book quantity for the expired reservation
+            Database::ud("UPDATE `book` SET `available_qty` = `available_qty` + 1 WHERE `book_id` = '$book_id'");
+        }
+    
         return true;
     }
+    
 
 
 }

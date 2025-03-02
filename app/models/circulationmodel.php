@@ -26,15 +26,24 @@ class CirculationModel
         return $rs;
     }
 
+
     public static function issueBook($book_id, $member_id, $borrow_date, $due_date)
     {
-        Database::insert("INSERT INTO `borrow`(`borrow_date`,`due_date`,`borrow_book_id`,`borrow_member_id`) VALUES('$borrow_date','$due_date','$book_id','$member_id')");
-     
-        $result= Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
-        $data = $result->fetch_assoc();
-        $available_qty = $data["available_qty"];
-        
-        Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
+        $result = Database::search("SELECT * FROM `reservation` WHERE `reservation_book_id` = '$book_id' AND reservation_member_id='$member_id'");
+        $num = $result->num_rows;
+
+        if ($num > 0) {
+            Database::insert("INSERT INTO `borrow`(`borrow_date`,`due_date`,`borrow_book_id`,`borrow_member_id`) VALUES('$borrow_date','$due_date','$book_id','$member_id')");
+            Database::ud("UPDATE `reservation` SET `status_id` = '2' WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id`='$member_id'");
+        } else {
+
+            Database::insert("INSERT INTO `borrow`(`borrow_date`,`due_date`,`borrow_book_id`,`borrow_member_id`) VALUES('$borrow_date','$due_date','$book_id','$member_id')");
+
+            $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
+            $data = $result->fetch_assoc();
+            $available_qty = $data["available_qty"];
+            Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
+        }
 
         return true;
     }
@@ -42,11 +51,11 @@ class CirculationModel
     public static function returnBook($borrow_id, $return_date, $book_id)
     {
         Database::ud("UPDATE `borrow` SET `return_date` = '$return_date' WHERE `borrow_id` = '$borrow_id'");
-     
-        $result= Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
+
+        $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
         $data = $result->fetch_assoc();
         $available_qty = $data["available_qty"];
-        
+
         Database::ud("UPDATE `book` SET `available_qty` = $available_qty + 1 WHERE `book_id` = '$book_id'");
 
         return true;
@@ -68,8 +77,9 @@ $pageResults");
     }
 
 
-    
-    public static function searchBorrowBooks($memberid , $bookid) {
+
+    public static function searchBorrowBooks($memberid, $bookid)
+    {
         $sql = "SELECT * FROM `borrow` INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` INNER JOIN `member_login` ON `borrow`.`borrow_member_id` = `member_login`.`member_id` INNER JOIN `member` ON `member_login`.`memberId` = `member`.`id` WHERE 1";
         if (!empty($bookid)) {
             $sql .= " AND `book_id` LIKE '%$bookid%'";

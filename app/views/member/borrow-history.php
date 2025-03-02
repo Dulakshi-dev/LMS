@@ -18,17 +18,7 @@ $member_id = $_SESSION["member"]["member_id"];
     }
 
     .btn-close {
-      font-size: 1.5rem;
-    }
-
-    .btn-send {
-      background-color: #4c00ff;
-      /* Blue color for the send button */
-      color: #fff;
-    }
-
-    .btn-send:hover {
-      background-color: #3a00cc;
+      font-size: 1.2rem;
     }
 
     .entries {
@@ -180,7 +170,7 @@ $member_id = $_SESSION["member"]["member_id"];
 
           <!-- Send Button -->
           <div class="text-end">
-            <button type="submit" class="btn btn-send">Send</button>
+            <button type="submit" class="btn btn-primary">Send</button>
           </div>
         </form>
       </div>

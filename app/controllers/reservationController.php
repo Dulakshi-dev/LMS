@@ -33,4 +33,19 @@ class ReservationController
 
             }
     }
+
+    public function loadReservedBooks()
+    {
+        $member_id = $_SESSION["member"]["member_id"];
+        $data = ReservationModel::getReservedBooks($member_id);
+
+        $booksResult = $data['results']; 
+
+        $books = [];
+        while ($row = $booksResult->fetch_assoc()) {
+            $books[] = $row;
+        }
+
+        require_once Config::getViewPath("member", 'reserved-books.php');
+    }
 }

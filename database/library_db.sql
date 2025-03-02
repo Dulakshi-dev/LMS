@@ -52,7 +52,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES ('B-000001','978-624-5314-08-9','Sherlock Holmes','Chandana Mendis','2006','Detective','676e30ae3d4b7_mkmk.jpg',20,19,1,1,1),('B-000002','0-307-26543-9','The Road','Cormac Mc Carthy','2006','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','677b7b30d2365_book3.jpg',20,20,1,1,2);
+INSERT INTO `book` VALUES ('B-000001','978-624-5314-08-9','Sherlock Holmes','Chandana Mendis','2006','Detective','676e30ae3d4b7_mkmk.jpg',20,14,1,1,1),('B-000002','0-307-26543-9','The Road','Cormac Mc Carthy','2006','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','677b7b30d2365_book3.jpg',20,20,1,1,1),('B-000003','111-111-1111-11-1','aa','mkmm','2001','sdsdsdsdsd','ssdsd.png',10,10,1,1,3);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +84,7 @@ CREATE TABLE `borrow` (
 
 LOCK TABLES `borrow` WRITE;
 /*!40000 ALTER TABLE `borrow` DISABLE KEYS */;
-INSERT INTO `borrow` VALUES (10,'2025-01-07','2025-01-21','2025-02-06','B-000001','M-000001'),(11,'2025-02-27','2025-02-27',NULL,'B-000002','M-000001');
+INSERT INTO `borrow` VALUES (10,'2025-01-07','2025-01-21','2025-02-06','B-000001','M-000001'),(11,'2025-02-27','2025-02-27',NULL,'B-000003','M-000001');
 /*!40000 ALTER TABLE `borrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -238,7 +238,7 @@ CREATE TABLE `module` (
   `module_id` int NOT NULL AUTO_INCREMENT,
   `module_name` varchar(45) NOT NULL,
   PRIMARY KEY (`module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -247,8 +247,67 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,'Staff Management'),(2,'Book Management'),(3,'Book Circulation'),(4,'Member Management');
+INSERT INTO `module` VALUES (1,'Staff Management'),(2,'Book Management'),(3,'Book Circulation'),(4,'Member Management'),(5,'Reservation Management');
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reservation`
+--
+
+DROP TABLE IF EXISTS `reservation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservation` (
+  `reservation_id` int NOT NULL AUTO_INCREMENT,
+  `reservation_date` date NOT NULL,
+  `expiration_date` date NOT NULL,
+  `status` varchar(10) NOT NULL,
+  `reservation_book_id` varchar(12) NOT NULL,
+  `reservation_member_id` varchar(12) NOT NULL,
+  `status_id` int NOT NULL,
+  PRIMARY KEY (`reservation_id`),
+  KEY `fk_resevation_book1_idx` (`reservation_book_id`),
+  KEY `fk_reservation_member_login1_idx` (`reservation_member_id`),
+  KEY `fk_reservation_reservation_status1_idx` (`status_id`),
+  CONSTRAINT `fk_reservation_member_login1` FOREIGN KEY (`reservation_member_id`) REFERENCES `member_login` (`member_id`),
+  CONSTRAINT `fk_reservation_reservation_status1` FOREIGN KEY (`status_id`) REFERENCES `reservation_status` (`status_id`),
+  CONSTRAINT `fk_resevation_book1` FOREIGN KEY (`reservation_book_id`) REFERENCES `book` (`book_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservation`
+--
+
+LOCK TABLES `reservation` WRITE;
+/*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
+INSERT INTO `reservation` VALUES (5,'2025-03-01','2025-03-01','','B-000001','M-000001',1),(6,'2025-03-01','2025-03-01','','B-000001','M-000001',1),(7,'2025-03-01','2025-03-02','','B-000001','M-000001',1),(8,'2025-03-01','2025-03-08','','B-000001','M-000001',1);
+/*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reservation_status`
+--
+
+DROP TABLE IF EXISTS `reservation_status`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservation_status` (
+  `status_id` int NOT NULL AUTO_INCREMENT,
+  `status` varchar(45) NOT NULL,
+  PRIMARY KEY (`status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservation_status`
+--
+
+LOCK TABLES `reservation_status` WRITE;
+/*!40000 ALTER TABLE `reservation_status` DISABLE KEYS */;
+INSERT INTO `reservation_status` VALUES (1,'Reserved'),(2,'Borrowed'),(3,'Expired');
+/*!40000 ALTER TABLE `reservation_status` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -377,4 +436,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-01 18:17:29
+-- Dump completed on 2025-03-02 15:58:24

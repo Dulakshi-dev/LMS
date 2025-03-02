@@ -21,7 +21,7 @@ $member_id = $_SESSION["member"]["member_id"];
 
   <div class="d-flex">
     <!-- Sidebar -->
-    <div class="d-flex flex-column bg-light vh-100 p-3">
+    <div class="d-flex flex-column bg-light vh-100 p-3" style="width: 300px;">
       <!-- Menu Items -->
       <div class="list-group flex-grow-1">
         <a href="<?php echo Config::indexPathMember() ?>?action=loadbooks" class="list-group-item list-group-item-action active">

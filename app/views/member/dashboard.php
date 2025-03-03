@@ -146,12 +146,14 @@ require_once "../../main.php";
     </div>
     <div class="offcanvas-body">
       <div class="book-details">
-        <div class="">
-        <img src="" alt="">
+        <div class="bg-white rounded m-3 d-flex flex-column align-items-center justify-content-center"
+          style="width: 160px; height: 250px;">
+          <img src="" alt="" >
+          <p class="text-warning mt-2 text-center"><strong>ID:</strong> <span id="book-id"></span></p>
         </div>
+
         <h5 class="my-2 text-warning" id="book-title"></h5>
         <p id="book-author"></p>
-        <p><strong>ID:</strong> <span id="book-id"></span></p>
         <p><strong>Description:</strong> <span id="book-description"></span></p>
         <button id="reserve-btn" class="btn btn-primary">Reserve</button>
         <button id="save-btn" class="btn btn-success mx-2">Save</button>
@@ -165,38 +167,37 @@ require_once "../../main.php";
 
   <script>
     document.querySelectorAll('.view-details').forEach(button => {
-  button.addEventListener('click', function() {
-    const title = this.getAttribute('data-title');
-    const author = this.getAttribute('data-author');
-    const id = this.getAttribute('data-id');
-    const description = this.getAttribute('data-description');
-    const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
-    const memberId = '<?php echo $_SESSION["member"]["member_id"]; ?>';
+      button.addEventListener('click', function() {
+        const title = this.getAttribute('data-title');
+        const author = this.getAttribute('data-author');
+        const id = this.getAttribute('data-id');
+        const description = this.getAttribute('data-description');
+        const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
+        const memberId = '<?php echo $_SESSION["member"]["member_id"]; ?>';
 
-    document.getElementById('book-title').textContent = title;
-    document.getElementById('book-author').textContent = author;
-    document.getElementById('book-id').textContent = id;
-    document.getElementById('book-description').textContent = description;
+        document.getElementById('book-title').textContent = title;
+        document.getElementById('book-author').textContent = author;
+        document.getElementById('book-id').textContent = id;
+        document.getElementById('book-description').textContent = description;
 
-    const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
-    offcanvasImage.setAttribute('src', coverImage);
-    offcanvasImage.style.width = "150px";
-    offcanvasImage.style.height = "200px";
-    offcanvasImage.style.objectFit = "cover";
+        const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
+        offcanvasImage.setAttribute('src', coverImage);
+        offcanvasImage.style.width = "150px";
+        offcanvasImage.style.height = "200px";
+        offcanvasImage.style.objectFit = "cover";
 
-    document.getElementById('reserve-btn').onclick = function() {
-      window.location.href = `<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=${id}&member_id=${memberId}`;
-    };
+        document.getElementById('reserve-btn').onclick = function() {
+          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=${id}&member_id=${memberId}`;
+        };
 
-    document.getElementById('save-btn').onclick = function() {
-      window.location.href = `<?php echo Config::indexPathMember(); ?>?action=save&book_id=${id}&member_id=${memberId}`;
-    };
+        document.getElementById('save-btn').onclick = function() {
+          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=save&book_id=${id}&member_id=${memberId}`;
+        };
 
-    const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
-    offcanvas.show();
-  });
-});
-
+        const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
+        offcanvas.show();
+      });
+    });
   </script>
 </body>
 

@@ -144,11 +144,18 @@ require_once "../../main.php";
       <h5 id="bookDetailsCanvasLabel">Book Details</h5>
       <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
+
+
     <div class="offcanvas-body">
+      <div class="d-flex justify-content-end ">
+        <a href="">
+        <i class="fa fa-bookmark text-white fs-4"></i>
+        </a>
+      </div>
       <div class="book-details">
         <div class="bg-white rounded m-3 d-flex flex-column align-items-center justify-content-center"
           style="width: 160px; height: 250px;">
-          <img src="" alt="" >
+          <img src="" alt="">
           <p class="text-warning mt-2 text-center"><strong>ID:</strong> <span id="book-id"></span></p>
         </div>
 

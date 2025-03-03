@@ -70,15 +70,14 @@
             } else {
                 foreach ($books as $row) {
             ?>
-                    <div class="row my-4 border rounded d-flex align-items-center">
+                    <div class="row m-4 border rounded d-flex align-items-center">
                         <!-- Book Image -->
                         <div class="col-md-4 mb-4 mb-md-0 p-2 d-flex justify-content-center align-items-center">
                             <div class="book-card text-center position-relative d-flex flex-column align-items-center">
                                 <!-- Bookmark Icon -->
-                                <span class="position-absolute top-0 end-0 mx-1">
+                                <a href="" class="position-absolute top-0 end-0 mx-1">
                                     <i class="fa fa-bookmark text-warning fs-5"></i>
-                                </span>
-
+                                </a>
                                 <img class="book-cover img-fluid" src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
 
                                 <h2 class="book-title mt-3"><?php echo $row["title"]; ?></h2>

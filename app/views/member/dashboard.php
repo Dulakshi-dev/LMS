@@ -79,7 +79,9 @@ require_once "../../main.php";
                           data-title="<?php echo $row["title"]; ?>"
                           data-author="<?php echo $row["author"]; ?>"
                           data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>">
+                          data-description="<?php echo $row["description"]; ?>"
+                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
+
                           View Details
                         </button>
                       </div>
@@ -186,7 +188,17 @@ require_once "../../main.php";
         document.getElementById('book-author').textContent = author;
         document.getElementById('book-id').textContent = id;
         document.getElementById('book-description').textContent = description;
-        document.getElementById('book-availability').textContent = availability; // Update availability
+        document.getElementById('book-availability').textContent = availability;
+
+        if (availability === "Not Available") {
+          document.getElementById('reserve-btn').classList.add("d-none");
+          document.getElementById('book-availability').style.color = "#F08080";
+        } else {
+          document.getElementById('reserve-btn').classList.remove("d-none");
+          document.getElementById('book-availability').style.color = "#98FF98";
+
+        }
+
 
         const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
         offcanvasImage.setAttribute('src', coverImage);

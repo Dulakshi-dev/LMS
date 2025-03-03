@@ -69,29 +69,28 @@ require_once "../../main.php";
             echo "<tr><td colspan='7'>No Books found</td></tr>";
           } else {
             foreach ($booksrec as $row) {
-              ?>
+          ?>
               <div class="col-md-3 col-sm-6">
-              <div class="book-card">
-                <div class="book-image">
-                  <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-                </div>
-                <div class="p-3 d-flex justify-content-between align-items-center">
-                  <div class="x text-start">
-                    <div class="book-title"><?php echo $row["title"]; ?></div>
-                    <div><?php echo $row["author"]; ?></div>
+                <div class="book-card">
+                  <div class="book-image">
+                    <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
                   </div>
-                  <button class="btn succes btn-sm view-details"
-                    data-title="<?php echo $row["title"]; ?>"
-                    data-author="<?php echo $row["author"]; ?>"
-                    data-id="<?php echo $row["book_id"]; ?>"
-                    data-description="<?php echo $row["description"]; ?>"
-                    >
-                    View Details
-                  </button>
+                  <div class="p-3 d-flex justify-content-between align-items-center">
+                    <div class="x text-start">
+                      <div class="book-title"><?php echo $row["title"]; ?></div>
+                      <div><?php echo $row["author"]; ?></div>
+                    </div>
+                    <button class="btn succes btn-sm view-details"
+                      data-title="<?php echo $row["title"]; ?>"
+                      data-author="<?php echo $row["author"]; ?>"
+                      data-id="<?php echo $row["book_id"]; ?>"
+                      data-description="<?php echo $row["description"]; ?>">
+                      View Details
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-            <?php
+          <?php
             }
           }
           ?>
@@ -116,34 +115,33 @@ require_once "../../main.php";
         </div>
 
         <div class="row g-5">
-        <?php
+          <?php
           if (empty($books)) {
             echo "<tr><td colspan='7'>No Books found</td></tr>";
           } else {
             foreach ($books as $row) {
-              ?>
+          ?>
 
               <div class="col-md-4 col-sm-6">
-            <div class="book-card">
-              <div class="book-image">
-                <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-              </div>
-              <div class="p-3 d-flex justify-content-between align-items-center">
-                <div class="text-start">
-                  <div class="book-title"><?php echo $row["title"]; ?></div>
-                  <div><?php echo $row["author"]; ?></div>
+                <div class="book-card">
+                  <div class="book-image">
+                    <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
+                  </div>
+                  <div class="p-3 d-flex justify-content-between align-items-center">
+                    <div class="text-start">
+                      <div class="book-title"><?php echo $row["title"]; ?></div>
+                      <div><?php echo $row["author"]; ?></div>
+                    </div>
+                    <button class="btn success btn-sm view-details"
+                      data-title="<?php echo $row["title"]; ?>"
+                      data-author="<?php echo $row["author"]; ?>"
+                      data-id="<?php echo $row["book_id"]; ?>"
+                      data-description="<?php echo $row["description"]; ?>">
+                      View Details
+                    </button>
+                  </div>
                 </div>
-                <button class="btn success btn-sm view-details"
-                  data-title="<?php echo $row["title"]; ?>"
-                  data-author="<?php echo $row["author"]; ?>"
-                  data-id="<?php echo $row["book_id"]; ?>"
-                  data-description="<?php echo $row["description"]; ?>"
-                  >
-                  View Details
-                </button>
               </div>
-            </div>
-          </div>
           <?php
             }
           }
@@ -165,10 +163,9 @@ require_once "../../main.php";
         <p id="book-author"></p>
         <p><strong>ID:</strong> <span id="book-id"></span></p>
         <p><strong>Description:</strong> <span id="book-description"></span></p>
-        <button onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo urlencode($row['book_id']); ?>'">Reserve</button>
-        <button onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=save&book_id=<?php echo urlencode($row['book_id']); ?>'">Save</button>
+        <button id="reserve-btn" class="btn btn-primary">Reserve</button>
+        <button id="save-btn" class="btn btn-success">Save</button>
 
-        
       </div>
     </div>
   </div>
@@ -183,11 +180,19 @@ require_once "../../main.php";
         const id = this.getAttribute('data-id');
         const description = this.getAttribute('data-description');
         const rating = this.getAttribute('data-rating');
+        const memberId = '<?php echo $_SESSION["member"]["member_id"]; ?>';
 
         document.getElementById('book-title').textContent = title;
         document.getElementById('book-author').textContent = author;
         document.getElementById('book-id').textContent = id;
         document.getElementById('book-description').textContent = description;
+        document.getElementById('reserve-btn').onclick = function() {
+          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=${id}&member_id=${memberId}`;
+        };
+
+        document.getElementById('save-btn').onclick = function() {
+          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=save&book_id=${id}&member_id=${memberId}`;
+        };
 
         const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
         offcanvas.show();

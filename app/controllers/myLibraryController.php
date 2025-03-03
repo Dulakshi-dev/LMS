@@ -34,7 +34,7 @@ class MyLibraryController
             }
     }
 
-    public function loadSavededBooks()
+    public function loadSavedBooks()
     {
         $member_id = $_SESSION["member"]["member_id"];
         $data = MyLibraryModel::getSavedBooks($member_id);

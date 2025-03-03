@@ -111,77 +111,49 @@
     </div>
 
     <script>
-
-document.getElementById("enrollmentForm").addEventListener("submit", function(e) {
-    e.preventDefault(); // Prevent form submission
-
-    // Get the enrollment key value
-    const enrollmentKey = document.getElementById("enrollmentKey").value.trim();
-    const errorSpan = document.getElementById("enrollmentKeyError");
-
-    // Clear previous error message
-    errorSpan.textContent = "";
-
-    // Enrollment key validation (must be at least 6 characters and alphanumeric)
-    if (!/^[a-zA-Z0-9]{6,}$/.test(enrollmentKey)) {
-        errorSpan.textContent = "Enrollment key must be at least 6 characters and contain only letters and numbers.";
-        return;
-    }
-
-    alert("Enrollment Key Verified Successfully!");
-});
-
         document.getElementById("registrationForm").addEventListener("submit", function(e) {
             e.preventDefault();
 
-            // Clear previous error messages
             document.querySelectorAll("span").forEach(span => span.textContent = "");
 
             let isValid = true;
 
-            // Validate First Name
             const firstName = document.getElementById("firstName").value.trim();
             if (firstName === "") {
                 document.getElementById("firstNameError").textContent = "First Name is required.";
                 isValid = false;
             }
 
-            // Validate Last Name
             const lastName = document.getElementById("lastName").value.trim();
             if (lastName === "") {
                 document.getElementById("lastNameError").textContent = "Last Name is required.";
                 isValid = false;
             }
 
-            // Validate Address
             const address = document.getElementById("address").value.trim();
             if (address === "") {
                 document.getElementById("addressError").textContent = "Address is required.";
                 isValid = false;
             }
 
-            // Validate Phone
             const phone = document.getElementById("phone").value.trim();
             if (!/^\d{10}$/.test(phone)) {
                 document.getElementById("phoneError").textContent = "Phone number must be 10 digits.";
                 isValid = false;
             }
 
-            // Validate Email
             const email = document.getElementById("email").value.trim();
             if (!/^\S+@\S+\.\S+$/.test(email)) {
                 document.getElementById("emailError").textContent = "Invalid email format.";
                 isValid = false;
             }
 
-            // Validate NIC (Old and New Format)
             const nic = document.getElementById("nic").value.trim();
             if (!/^(?:\d{9}[VX]|\d{12})$/.test(nic)) {
                 document.getElementById("nicError").textContent = "NIC must be in the correct format (9 digits + V/X or 12 digits).";
                 isValid = false;
             }
 
-            // Validate Role
             const roleSelected = document.querySelector('input[name="role"]:checked');
             if (!roleSelected) {
                 document.getElementById("roleError").textContent = "Please select a role.";
@@ -189,9 +161,14 @@ document.getElementById("enrollmentForm").addEventListener("submit", function(e)
             }
 
             if (isValid) {
-                // Hide box-1 and show box-2
-                document.querySelector(".box-1").style.display = "none";
-                document.querySelector(".box-2").style.display = "block";
+                if (roleSelected.value === "Librarian") {
+                    // Show the enrollment form for Librarian
+                    document.querySelector(".box-1").style.display = "none";
+                    document.querySelector(".box-2").style.display = "block";
+                } else {
+                    // If Library Staff is selected, submit the form
+                    this.submit();
+                }
             }
         });
     </script>

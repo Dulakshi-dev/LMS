@@ -36,7 +36,6 @@
                 <img src="<?php echo Config::getImagePath("home-goal.jpg"); ?>" alt="Library Image 1" style="height: 500px;" class="img-fluid rounded">
             </div>
         </div>
-        <div class="border-bottom border-danger border-4"></div>
         <div class="row align-items-center mt-4">
             <div class="col-md-6 order-md-2">
                 <p class="fs-5">Whether you're searching for the latest bestseller, researching a topic, or simply exploring new genres, our library management system ensures a seamless and enjoyable experience for all users. Join us in fostering a love for reading and learning in our community.</p>

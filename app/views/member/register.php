@@ -115,7 +115,7 @@
     ?>
     <!-- Important Notes Section -->
     <div class="text-white p-5 mt-3 Important">
-        <h5 class="text-danger font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h5>
+        <h5 class="text-danger fs-3 font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h5>
         <ol class="pl-4">
             <li>Visit the Library:</li>
             <li>Pay the Membership Fee:

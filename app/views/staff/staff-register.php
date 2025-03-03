@@ -25,7 +25,7 @@
         }
 
         .box-2 {
-            display: noe;
+            display: none;
         }
     </style>
 </head>

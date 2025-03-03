@@ -41,6 +41,7 @@ $router->add('reserve', [$memberReservationController, 'reserveBook']);
 $router->add('reservedbooks', [$memberReservationController, 'loadReservedBooks']); 
 $router->add('save', [$myLibraryController, 'saveBook']); 
 $router->add('savedbooks', [$myLibraryController, 'loadSavedBooks']); 
+$router->add('unsave', [$myLibraryController, 'unSaveBook']); 
 
 
 $router->add('home', function () {

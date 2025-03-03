@@ -8,17 +8,13 @@ class MyLibraryModel
     {
         $rs = Database::search("SELECT * FROM `member_saved_books` WHERE `saved_member_id` ='$member_id' AND `saved_book_id` = '$book_id'");
 
-        if ($rs->num_rows > 0 ) {
-            return false; 
+        if ($rs->num_rows > 0) {
+            return false;
         }
         Database::insert("INSERT INTO `member_saved_books` (`saved_member_id`,`saved_book_id`) VALUES ('$member_id', '$book_id')");
 
         return true;
     }
-
-
-
-
 
     public static function getSavedBooks($member_id)
     {
@@ -31,6 +27,10 @@ class MyLibraryModel
         ];
     }
 
+    public static function unSaveBook($book_id, $member_id)
+    {
 
-
+        Database::ud("DELETE FROM `member_saved_books` WHERE `saved_member_id` = '$member_id' AND `saved_book_id` = '$book_id'");
+        return true;
+    }
 }

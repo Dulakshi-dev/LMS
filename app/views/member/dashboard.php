@@ -122,9 +122,11 @@ require_once "../../main.php";
                           data-title="<?php echo $row["title"]; ?>"
                           data-author="<?php echo $row["author"]; ?>"
                           data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>">
+                          data-description="<?php echo $row["description"]; ?>"
+                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
                           View Details
                         </button>
+
                       </div>
                     </div>
                   </div>
@@ -139,7 +141,7 @@ require_once "../../main.php";
     </div>
   </div>
 
-  <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="bookDetailsCanvas" aria-labelledby="bookDetailsCanvasLabel" style="width: 300px;">
+  <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="bookDetailsCanvas" aria-labelledby="bookDetailsCanvasLabel" style="width: 320px;">
     <div class="offcanvas-header">
       <h5 id="bookDetailsCanvasLabel">Book Details</h5>
       <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -148,9 +150,10 @@ require_once "../../main.php";
 
     <div class="offcanvas-body">
       <div class="d-flex justify-content-end ">
-        <a href="">
-        <i class="fa fa-bookmark text-white fs-4"></i>
-        </a>
+        <button style="background: none; border: none; padding: 0; cursor: pointer;">
+          <i id="save-btn" class="fa fa-bookmark text-white fs-4"></i>
+        </button>
+
       </div>
       <div class="book-details">
         <div class="bg-white rounded m-3 d-flex flex-column align-items-center justify-content-center"
@@ -158,19 +161,16 @@ require_once "../../main.php";
           <img src="" alt="">
           <p class="text-warning mt-2 text-center"><strong>ID:</strong> <span id="book-id"></span></p>
         </div>
-
         <h5 class="my-2 text-warning" id="book-title"></h5>
         <p id="book-author"></p>
-        <p><strong>Description:</strong> <span id="book-description"></span></p>
+        <p style="text-align: justify;"><strong>Description:</strong> <span id="book-description"></span></p>
         <button id="reserve-btn" class="btn btn-primary">Reserve</button>
-        <button id="save-btn" class="btn btn-success mx-2">Save</button>
-
+        <p> <span id="book-availability"></span></p>
       </div>
     </div>
   </div>
   <script src="<?php echo Config::getJsPath("memberDashboard.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
 
   <script>
     document.querySelectorAll('.view-details').forEach(button => {
@@ -180,26 +180,19 @@ require_once "../../main.php";
         const id = this.getAttribute('data-id');
         const description = this.getAttribute('data-description');
         const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
-        const memberId = '<?php echo $_SESSION["member"]["member_id"]; ?>';
+        const availability = this.getAttribute('data-availability'); // Get availability status
 
         document.getElementById('book-title').textContent = title;
         document.getElementById('book-author').textContent = author;
         document.getElementById('book-id').textContent = id;
         document.getElementById('book-description').textContent = description;
+        document.getElementById('book-availability').textContent = availability; // Update availability
 
         const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
         offcanvasImage.setAttribute('src', coverImage);
         offcanvasImage.style.width = "150px";
         offcanvasImage.style.height = "200px";
         offcanvasImage.style.objectFit = "cover";
-
-        document.getElementById('reserve-btn').onclick = function() {
-          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=${id}&member_id=${memberId}`;
-        };
-
-        document.getElementById('save-btn').onclick = function() {
-          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=save&book_id=${id}&member_id=${memberId}`;
-        };
 
         const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
         offcanvas.show();

@@ -75,7 +75,7 @@
                         <div class="col-md-4 mb-4 mb-md-0 p-2 d-flex justify-content-center align-items-center">
                             <div class="book-card text-center position-relative d-flex flex-column align-items-center">
                                 <!-- Bookmark Icon -->
-                                <a href="" class="position-absolute top-0 end-0 mx-1">
+                                <a href="index.php?action=unsave&book_id=<?php echo $row["book_id"];?>" class="position-absolute top-0 end-0 mx-1">
                                     <i class="fa fa-bookmark text-warning fs-5"></i>
                                 </a>
                                 <img class="book-cover img-fluid" src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
@@ -89,8 +89,7 @@
                             <p class="col-10 text-justify mt-3">
                                 <?php echo $row["description"]; ?>
                             </p>
-
-
+                            <button>reserve</button>
                         </div>
                     </div>
             <?php

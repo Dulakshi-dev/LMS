@@ -28,19 +28,19 @@
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item px-4">
-            <a class="nav-link" href="#">Home</a>
+            <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=home">Home</a>
           </li>
           <li class="nav-item px-4">
-            <a class="nav-link" href="#">Opening Hours</a>
+            <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
           </li>
           <li class="nav-item px-4">
-            <a class="nav-link" href="#">Contact</a>
+            <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=contact">Contact</a>
           </li>
           <li class="nav-item px-4">
-            <a class="nav-link" href="#">About</a>
+            <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=about">About</a>
           </li>
           <li class="nav-item px-4">
-            <a class="nav-link" href="#">LMS</a>
+            <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=lmshome">LMS</a>
           </li>
         </ul>
       </div>

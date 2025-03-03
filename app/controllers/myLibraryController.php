@@ -48,4 +48,26 @@ class MyLibraryController
 
         require_once Config::getViewPath("member", 'my-library.php');
     }
+
+    public function unSaveBook()
+    {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                $book_id = $_GET['book_id'];
+                $member_id = $_SESSION["member"]["member_id"];
+
+                $result = MyLibraryModel::unSaveBook($book_id, $member_id);
+    
+                if ($result) {
+                    
+                    header("Location: index.php?action=savedbooks");
+            
+                } else {
+                    echo json_encode(["success" => false, "message" => "Error"]);
+                }  
+            }else{
+                
+                echo json_encode(["success" => false, "message" => "Invalid Request"]);
+
+            }
+    }
 }

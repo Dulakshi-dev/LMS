@@ -37,7 +37,7 @@
     </div>
     <div class="row justify-content-center mt-5">
         <!-- Card 1 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card">
                 <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 1">
                 <div class="card-body">
@@ -47,7 +47,7 @@
             </div>
         </div>
         <!-- Card 2 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card">
                 <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 2">
                 <div class="card-body">
@@ -57,7 +57,7 @@
             </div>
         </div>
         <!-- Card 3 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card">
                 <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 3">
                 <div class="card-body">
@@ -67,7 +67,7 @@
             </div>
         </div>
         <!-- Card 4 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card">
                 <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 4">
                 <div class="card-body">
@@ -77,7 +77,7 @@
             </div>
         </div>
         <!-- Card 5 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
             <div class="card">
                 <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 5">
                 <div class="card-body">
@@ -87,7 +87,25 @@
             </div>
         </div>
         <!-- Card 6 -->
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 6">
+                <div class="card-body">
+                    <h5 class="card-title">Book Title 6</h5>
+                    <p class="card-text">Quick description of the book goes here.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 6">
+                <div class="card-body">
+                    <h5 class="card-title">Book Title 6</h5>
+                    <p class="card-text">Quick description of the book goes here.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
             <div class="card">
                 <img src="<?php echo Config::getImagePath("contact.jpg"); ?>" class="card-img-top" alt="Book 6">
                 <div class="card-body">

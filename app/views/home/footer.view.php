@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-<footer class="bg-dark text-light m-0 py-3" style="position: fixed; bottom: 0; width: 100%;">
+<footer class="bg-dark text-light m-0 py-3">
         <div class="container">
             <div class="row align-items-center d-flex justify-content-between">
                 <p class="col-lg-3 d-none d-lg-block mb-0" style="font-size: 13px;">

@@ -54,19 +54,17 @@
                         $password = $_COOKIE["password"];
                     }
                     ?>
-                    <form action="<?php echo Config::indexPathMember() ?>?action=memberlogin" method="POST">
+                    <form id="loginForm" action="<?php echo Config::indexPathMember() ?>?action=memberlogin" method="POST">
                         <div class="form-group">
                             <label for="username">User Name</label>
                             <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memid" value="<?php echo $username; ?>">
                             <span class="error text-danger" id="usernameError"></span>
-
                         </div>
 
                         <div class="form-group mt-3">
                             <label for="password">Password</label>
                             <input class="form-control mt-2" placeholder="Enter your password" type="password" name="password" id="password" value="<?php echo $password; ?>">
                             <span class="error text-danger" id="passwordError"></span>
-
                         </div>
 
                         <div class="row mt-2">
@@ -77,10 +75,6 @@
                             <div class="col d-flex justify-content-end">
                                 <a href="forgot-password.php" class="text-decoration-none forgot-password">Forgot Password?</a>
                             </div>
-                        </div>
-
-                        <div class="mt-1 bg-danger-subtle p-1 rounded-3 d-none" id="errormsgdiv">
-                            <p id="errormsg" class="text-danger text-center mt-1"></p>
                         </div>
 
                         <button type="submit" class="btn btn-primary w-100 my-4">Login</button>
@@ -95,6 +89,7 @@
                         </div>
                     </form>
 
+
                 </div>
             </div>
             <div class="d-lg-block col-12 col-lg-3 offset-3">
@@ -106,7 +101,45 @@
     <?php
     require_once Config::getViewPath("home", "footer-noscroll.view.php");
     ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById("loginForm");
+            const usernameInput = document.getElementById("memid");
+            const passwordInput = document.getElementById("password");
+            const usernameError = document.getElementById("usernameError");
+            const passwordError = document.getElementById("passwordError");
 
+            function validateUsername() {
+                const usernamePattern = /^M-\d{6}$/;
+                if (!usernameInput.value.match(usernamePattern)) {
+                    usernameError.textContent = "Please enter a valid username (e.g., M-123456)";
+                    return false;
+                }
+                usernameError.textContent = "";
+                return true;
+            }
+
+            function validatePassword() {
+                if (passwordInput.value.trim() === "") {
+                    passwordError.textContent = "Password is required.";
+                    return false;
+                }
+                passwordError.textContent = "";
+                return true;
+            }
+
+            form.addEventListener("submit", function(e) {
+                let isValid = true;
+
+                if (!validateUsername() || !validatePassword()) {
+                    e.preventDefault();
+                }
+            });
+
+            usernameInput.addEventListener("input", validateUsername);
+            passwordInput.addEventListener("input", validatePassword);
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

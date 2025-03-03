@@ -12,28 +12,28 @@ require_once "../../main.php";
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .login-form {
-        background: rgba(0, 0, 0, 0.8);
-        padding: 30px;
-        border-radius: 10px;
-    
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+
         }
 
-        body{
+        body {
             background-image: url('<?php echo Config::getImagePath("stafflog.jpg"); ?>');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }
-</style>
+    </style>
 
     </style>
 </head>
 
 <body class="x">
     <?php
-require_once Config::getViewPath("home", "header.view.php");
-?>
+    require_once Config::getViewPath("home", "header.view.php");
+    ?>
 
 
     <div class="login-container my-5">
@@ -44,54 +44,60 @@ require_once Config::getViewPath("home", "header.view.php");
 
                 <?php
 
-                            $username = "";
-                            $password = "";
+                $username = "";
+                $password = "";
 
-                            if (isset($_COOKIE["username"])) {
-                                $username = $_COOKIE["username"];
-                            }
+                if (isset($_COOKIE["username"])) {
+                    $username = $_COOKIE["username"];
+                }
 
-                            if (isset($_COOKIE["password"])) {
-                                $password = $_COOKIE["password"];
-                            }
-                    ?>
+                if (isset($_COOKIE["password"])) {
+                    $password = $_COOKIE["password"];
+                }
+                ?>
 
-                <form id="loginForm" action="<?php echo Config::indexPath()?>?action=loginProcess" method="POST" onsubmit="return staffLogin()">
+                <form id="loginForm" action="<?php echo Config::indexPath() ?>?action=loginProcess" method="POST" onsubmit="return staffLogin()">
+                    <div>
+                        <label for="username">Username:</label>
+                        <input class="form-control mt-2" type="text" name="username" id="username" placeholder="Enter Staff ID" value="<?php echo $username; ?>">
+                        <span class="error text-danger" id="usernameError"></span>
+                    </div>
 
-                        <label for="username">Username:</label><br>
-                        <input class="form-control mt-2" type="text" name="username" id="username" placeholder="Enter Staff ID" value="<?php echo $username; ?>"><br><br>
+                    <div class="mt-3">
+                        <label for="password" class="mt-3">Password:</label>
+                        <input class="form-control mt-2" type="password" name="password" id="password" placeholder="Enter Password" value="<?php echo $password; ?>">
+                        <span class="error text-danger" id="passwordError"></span>
+                    </div>
 
-                        <label for="password">Password:</label><br>
-                        <input class="form-control mt-2" type="password" name="password" id="password" placeholder="Enter Password" value="<?php echo $password; ?>"><br><br>
-                       
-                        <div class="col">
-                            <input type="checkbox" name="rememberme" id="rememberme">
-                            <label for="rememberme">Remember me</label>
+
+                    <div class="col mt-3">
+                        <input type="checkbox" name="rememberme" id="rememberme">
+                        <label for="rememberme">Remember me</label>
+                    </div>
+
+                    <div class="mt-1 bg-danger-subtle p-1 rounded-3 d-none" id="errormsgdiv">
+                        <p id="errormsg" class="text-danger text-center mt-1">
+                            <?php if (isset($error)) echo $error; ?>
+                        </p>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="text-start col-6">
+                            <a href="<?php echo Config::indexPath() ?>?action=showregister" class="text-decoration-none">Create Account?</a>
                         </div>
-
-                        <div class="mt-1 bg-danger-subtle p-1 rounded-3" id="errormsgdiv">
-                            <p id="errormsg" class="text-danger text-center mt-1">
-                                <?php if (isset($error)) echo $error; ?>
-                            </p>
+                        <div class="text-end col-6">
+                            <a href="<?php echo Config::indexPath() ?>?action=showforgotpw" class="text-decoration-none">Forgot Password?</a>
                         </div>
+                    </div>
 
-                        <div class="row">
-                            <div class = "text-start col-6">
-                                <a href="<?php echo Config::indexPath() ?>?action=showregister" class="text-decoration-none">Create Account?</a>
-                            </div>
-                            <div class="text-end col-6">
-                                <a href="<?php echo Config::indexPath() ?>?action=showforgotpw" class="text-decoration-none">Forgot Password?</a>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100 rounded-pill mt-3">Login</button>
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill mt-3">Login</button>
                 </form>
             </div>
         </div>
     </div>
 
     <?php
-require_once Config::getViewPath("home", "footer.view.php");    ?>
+    require_once Config::getViewPath("home", "footer.view.php");    ?>
 
     <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
 </body>

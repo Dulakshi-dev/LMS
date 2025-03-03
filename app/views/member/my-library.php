@@ -39,63 +39,69 @@
 </head>
 
 <body>
+    <?php require_once Config::getViewPath("member", "header.php"); ?>
 
-    <div class="container pt-4">
-        <!-- Home Link -->
-        <div class="d-flex justify-content-end align-items-center mb-4">
-            <a href="#" class="page-link">
-                <i class="fa fa-home"></i> Home
-            </a>
+    <div class="d-flex">
+        <div class="nav-bar">
+            <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
         </div>
 
-        <!-- Search Bar -->
-        <div class="input-group mb-5">
-            <input type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
-            <input type="text" class="form-control mx-3" placeholder="Type Book Name" aria-label="Book Name">
-            <input type="text" class="form-control" placeholder="Type Category" aria-label="Category">
-            <button class="btn btn-primary ms-2">
-                <i class="fa fa-search"></i> Search
-            </button>
-        </div>
-
-        <!-- Book Information -->
-        <div class="row my-5 border rounded">
-            <!-- Book Image -->
-            <div class="col-md-4 mb-4 mb-md-0 p-4 d-flex justify-content-center align-items-center">
-                <div class="book-card text-center position-relative d-flex flex-column align-items-center">
-                    <!-- Bookmark Icon -->
-                    <span class="position-absolute top-0 end-0 mx-1">
-                        <i class="fa fa-bookmark text-warning fs-5"></i>
-                    </span>
-
-                    <img src="../../../public/images/about.png" alt="James by Percival Everett" class="book-cover img-fluid">
-                    <h2 class="book-title mt-3">James</h2>
-                    <p class="book-author text-muted">Percival Everett</p>
-                </div>
+        <div class="container pt-4">
+            <!-- Home Link -->
+            <div class="d-flex justify-content-end align-items-center mb-4">
+                <a href="#" class="page-link">
+                    <i class="fa fa-home"></i> Home
+                </a>
             </div>
 
-
-
-            <!-- Book Details -->
-            <div class="col-md-8 p-5">
-                <h2 class="text-danger">ID 0000001A</h2>
-                <p>
-                    "James" by Percival Everett, the 2012 Barnes & Noble Book of the Year and National Book Award winner,
-                    is a reimagining of Mark Twain's Adventures of Huckleberry Finn.
-                    The story shifts the focus to Jim, the enslaved, literate individual who has used intelligence to service.
-                    The novel explores his journey to Illinois to free his family,
-                    offering a profound critique of systemic racism and expanding on Jim's character in a deeply moving narrative.
-                </p>
-
-                <!-- Star Rating -->
-                <div class="d-flex fs-4 pt-4">
-                    <span class="fa fa-star" data-value="1"></span>
-                    <span class="fa fa-star" data-value="2"></span>
-                    <span class="fa fa-star" data-value="3"></span>
-                    <span class="fa fa-star" data-value="4"></span>
-                    <span class="fa fa-star" data-value="5"></span>
-                </div>
+            <!-- Search Bar -->
+            <div class="input-group mb-5">
+                <input type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
+                <input type="text" class="form-control mx-3" placeholder="Type Book Name" aria-label="Book Name">
+                <input type="text" class="form-control" placeholder="Type Category" aria-label="Category">
+                <button class="btn btn-primary ms-2">
+                    <i class="fa fa-search"></i> Search
+                </button>
             </div>
+
+            <?php
+            if (empty($books)) {
+                echo "<tr><td colspan='7'>No Books found</td></tr>";
+            } else {
+                foreach ($books as $row) {
+            ?>
+                    <div class="row my-5 border rounded">
+                        <!-- Book Image -->
+                        <div class="col-md-4 mb-4 mb-md-0 p-4 d-flex justify-content-center align-items-center">
+                            <div class="book-card text-center position-relative d-flex flex-column align-items-center">
+                                <!-- Bookmark Icon -->
+                                <span class="position-absolute top-0 end-0 mx-1">
+                                    <i class="fa fa-bookmark text-warning fs-5"></i>
+                                </span>
+
+                                <img class="book-cover img-fluid" src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
+
+                                <h2 class="book-title mt-3"><?php echo $row["title"]; ?></h2>
+                                <p class="book-author text-muted"><?php echo $row["author"]; ?></p>
+                            </div>
+                        </div>
+                        <div class="col-md-8 p-5">
+                            <h2 class="text-danger">Book ID <?php echo $row["book_id"]; ?></h2>
+                            <p>
+                                <?php echo $row["description"]; ?>
+                            </p>
+
+
+                        </div>
+                    </div>
+            <?php
+
+
+                }
+            }
+            ?>
+
+
         </div>
     </div>
 

@@ -19,22 +19,27 @@ require_once "../../main.php";
       transition: transform 0.3s ease;
       height: 100%;
     }
+
     .book-card:hover {
       transform: scale(1.03);
     }
+
     .book-image img {
       width: 100%;
       height: 300px;
       object-fit: cover;
     }
+
     .book-title {
       font-weight: bold;
       margin: 10px 0 5px;
     }
+
     .success {
       color: rgba(21, 83, 28, 1);
       background: rgba(185, 247, 192, 1);
     }
+
     .success:hover {
       background: rgb(69, 161, 80);
     }
@@ -58,8 +63,8 @@ require_once "../../main.php";
               <a href="#" class="text-decoration-none">See All <i class="fa fa-angle-right"></i></a>
             </div>
             <div class="row g-4">
-              <?php if (!empty($recbooks)) {
-                foreach ($recbooks as $row) { ?>
+              <?php if (!empty($booksrec)) {
+                foreach ($booksrec as $row) { ?>
                   <div class="col-md-3 col-sm-6">
                     <div class="book-card">
                       <div class="book-image">
@@ -70,10 +75,10 @@ require_once "../../main.php";
                           <div class="book-title"><?php echo $row["title"]; ?></div>
                           <div><?php echo $row["author"]; ?></div>
                         </div>
-                        <button class="btn success btn-sm view-details" 
-                          data-title="<?php echo $row["title"]; ?>" 
-                          data-author="<?php echo $row["author"]; ?>" 
-                          data-id="<?php echo $row["book_id"]; ?>" 
+                        <button class="btn success btn-sm view-details"
+                          data-title="<?php echo $row["title"]; ?>"
+                          data-author="<?php echo $row["author"]; ?>"
+                          data-id="<?php echo $row["book_id"]; ?>"
                           data-description="<?php echo $row["description"]; ?>">
                           View Details
                         </button>
@@ -113,10 +118,10 @@ require_once "../../main.php";
                           <div class="book-title"><?php echo $row["title"]; ?></div>
                           <div><?php echo $row["author"]; ?></div>
                         </div>
-                        <button class="btn success btn-sm view-details" 
-                          data-title="<?php echo $row["title"]; ?>" 
-                          data-author="<?php echo $row["author"]; ?>" 
-                          data-id="<?php echo $row["book_id"]; ?>" 
+                        <button class="btn success btn-sm view-details"
+                          data-title="<?php echo $row["title"]; ?>"
+                          data-author="<?php echo $row["author"]; ?>"
+                          data-id="<?php echo $row["book_id"]; ?>"
                           data-description="<?php echo $row["description"]; ?>">
                           View Details
                         </button>
@@ -134,6 +139,28 @@ require_once "../../main.php";
     </div>
   </div>
 
+  <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="bookDetailsCanvas" aria-labelledby="bookDetailsCanvasLabel" style="width: 300px;">
+    <div class="offcanvas-header">
+      <h5 id="bookDetailsCanvasLabel">Book Details</h5>
+      <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div class="book-details">
+        <img src="" alt="">
+        <h5 id="book-title"></h5>
+        <p id="book-author"></p>
+        <p><strong>ID:</strong> <span id="book-id"></span></p>
+        <p><strong>Description:</strong> <span id="book-description"></span></p>
+        <button id="reserve-btn" class="btn btn-primary">Reserve</button>
+        <button id="save-btn" class="btn btn-success">Save</button>
+
+      </div>
+    </div>
+  </div>
+  <script src="<?php echo Config::getJsPath("memberDashboard.js"); ?>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+
   <script>
     document.querySelectorAll('.view-details').forEach(button => {
       button.addEventListener('click', function() {
@@ -141,6 +168,7 @@ require_once "../../main.php";
         const author = this.getAttribute('data-author');
         const id = this.getAttribute('data-id');
         const description = this.getAttribute('data-description');
+        const memberId = '<?php echo $_SESSION["member"]["member_id"]; ?>';
 
         document.getElementById('book-title').textContent = title;
         document.getElementById('book-author').textContent = author;
@@ -160,4 +188,5 @@ require_once "../../main.php";
     });
   </script>
 </body>
+
 </html>

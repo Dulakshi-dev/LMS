@@ -35,12 +35,12 @@ require_once "../../main.php";
       margin: 10px 0 5px;
     }
 
-    .success {
+    #success {
       color: rgba(21, 83, 28, 1);
-      background: rgba(185, 247, 192, 1);
+      background: rgb(127, 221, 138);
     }
 
-    .success:hover {
+    #success:hover {
       background: rgb(69, 161, 80);
     }
   </style>
@@ -75,7 +75,7 @@ require_once "../../main.php";
                           <div class="book-title"><?php echo $row["title"]; ?></div>
                           <div><?php echo $row["author"]; ?></div>
                         </div>
-                        <button class="btn success btn-sm view-details"
+                        <button class="btn btn-sm view-details" id="success"
                           data-title="<?php echo $row["title"]; ?>"
                           data-author="<?php echo $row["author"]; ?>"
                           data-id="<?php echo $row["book_id"]; ?>"
@@ -96,7 +96,7 @@ require_once "../../main.php";
         <div class="col-md-12">
           <div class="bg-light rounded p-4">
             <h5>Categories</h5>
-            <div class="d-flex flex-wrap my-3">
+            <div class="d-flex flex-wrap my-3 mb-4">
               <button class="btn btn-primary mx-2">All</button>
               <button class="btn btn-outline-primary mx-2">Sci-Fi</button>
               <button class="btn btn-outline-primary mx-2">Fantasy</button>
@@ -118,7 +118,7 @@ require_once "../../main.php";
                           <div class="book-title"><?php echo $row["title"]; ?></div>
                           <div><?php echo $row["author"]; ?></div>
                         </div>
-                        <button class="btn success btn-sm view-details"
+                        <button class="btn btn-sm view-details" id="success"
                           data-title="<?php echo $row["title"]; ?>"
                           data-author="<?php echo $row["author"]; ?>"
                           data-id="<?php echo $row["book_id"]; ?>"
@@ -146,13 +146,15 @@ require_once "../../main.php";
     </div>
     <div class="offcanvas-body">
       <div class="book-details">
+        <div class="">
         <img src="" alt="">
-        <h5 id="book-title"></h5>
+        </div>
+        <h5 class="my-2 text-warning" id="book-title"></h5>
         <p id="book-author"></p>
         <p><strong>ID:</strong> <span id="book-id"></span></p>
         <p><strong>Description:</strong> <span id="book-description"></span></p>
         <button id="reserve-btn" class="btn btn-primary">Reserve</button>
-        <button id="save-btn" class="btn btn-success">Save</button>
+        <button id="save-btn" class="btn btn-success mx-2">Save</button>
 
       </div>
     </div>
@@ -163,29 +165,38 @@ require_once "../../main.php";
 
   <script>
     document.querySelectorAll('.view-details').forEach(button => {
-      button.addEventListener('click', function() {
-        const title = this.getAttribute('data-title');
-        const author = this.getAttribute('data-author');
-        const id = this.getAttribute('data-id');
-        const description = this.getAttribute('data-description');
-        const memberId = '<?php echo $_SESSION["member"]["member_id"]; ?>';
+  button.addEventListener('click', function() {
+    const title = this.getAttribute('data-title');
+    const author = this.getAttribute('data-author');
+    const id = this.getAttribute('data-id');
+    const description = this.getAttribute('data-description');
+    const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
+    const memberId = '<?php echo $_SESSION["member"]["member_id"]; ?>';
 
-        document.getElementById('book-title').textContent = title;
-        document.getElementById('book-author').textContent = author;
-        document.getElementById('book-id').textContent = id;
-        document.getElementById('book-description').textContent = description;
-        document.getElementById('reserve-btn').onclick = function() {
-          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=${id}&member_id=${memberId}`;
-        };
+    document.getElementById('book-title').textContent = title;
+    document.getElementById('book-author').textContent = author;
+    document.getElementById('book-id').textContent = id;
+    document.getElementById('book-description').textContent = description;
 
-        document.getElementById('save-btn').onclick = function() {
-          window.location.href = `<?php echo Config::indexPathMember(); ?>?action=save&book_id=${id}&member_id=${memberId}`;
-        };
+    const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
+    offcanvasImage.setAttribute('src', coverImage);
+    offcanvasImage.style.width = "150px";
+    offcanvasImage.style.height = "200px";
+    offcanvasImage.style.objectFit = "cover";
 
-        const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
-        offcanvas.show();
-      });
-    });
+    document.getElementById('reserve-btn').onclick = function() {
+      window.location.href = `<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=${id}&member_id=${memberId}`;
+    };
+
+    document.getElementById('save-btn').onclick = function() {
+      window.location.href = `<?php echo Config::indexPathMember(); ?>?action=save&book_id=${id}&member_id=${memberId}`;
+    };
+
+    const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
+    offcanvas.show();
+  });
+});
+
   </script>
 </body>
 

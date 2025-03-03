@@ -25,7 +25,7 @@ class MemberReservationController
                 
     
                 } else {
-                    echo json_encode(["success" => false, "message" => "Reservation failed"]);
+                    echo "<script>alert('Book Already Reserved!'); window.location.href='index.php?action=loadbooks';</script>";
                 }  
             }else{
                 

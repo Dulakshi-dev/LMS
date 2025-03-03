@@ -52,7 +52,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES ('B-000001','978-624-5314-08-9','Sherlock Holmes','Chandana Mendis','2006','Detective','676e30ae3d4b7_mkmk.jpg',20,14,1,1,1),('B-000002','0-307-26543-9','The Road','Cormac Mc Carthy','2006','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','677b7b30d2365_book3.jpg',20,20,1,1,1),('B-000003','111-111-1111-11-1','aa','mkmm','2001','sdsdsdsdsd','ssdsd.png',10,10,1,1,3);
+INSERT INTO `book` VALUES ('B-000001','978-624-5314-08-9','Sherlock Holmes','Chandana Mendis','2006','Traditionally, the canon of Sherlock Holmes consists of the 56 short stories and four novels written by Sir Arthur Conan Doyle. In this context, the term \"canon\" is an attempt to distinguish between Doyle\'s original works and subsequent works by other authors using the same characters.','676e30ae3d4b7_mkmk.jpg',20,17,1,1,1),('B-000002','0-307-26543-9','The Road','Cormac Mc Carthy','2006','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','677b7b30d2365_book3.jpg',20,20,1,1,1),('B-000003','111-111-1111-11-1','aa','mkmm','2001','sdsdsdsdsd','ssdsd.png',10,10,1,1,3);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,6 +228,35 @@ INSERT INTO `member_login` VALUES (1,'M-000001','Dg$11029',1),(3,'M-000002','Sam
 UNLOCK TABLES;
 
 --
+-- Table structure for table `member_saved_books`
+--
+
+DROP TABLE IF EXISTS `member_saved_books`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `member_saved_books` (
+  `save_id` int NOT NULL AUTO_INCREMENT,
+  `saved_member_id` varchar(12) NOT NULL,
+  `saved_book_id` varchar(12) NOT NULL,
+  PRIMARY KEY (`save_id`,`saved_member_id`,`saved_book_id`),
+  KEY `fk_member_login_has_book_book1_idx` (`saved_book_id`),
+  KEY `fk_member_login_has_book_member_login1` (`saved_member_id`),
+  CONSTRAINT `fk_member_login_has_book_book1` FOREIGN KEY (`saved_book_id`) REFERENCES `book` (`book_id`),
+  CONSTRAINT `fk_member_login_has_book_member_login1` FOREIGN KEY (`saved_member_id`) REFERENCES `member_login` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `member_saved_books`
+--
+
+LOCK TABLES `member_saved_books` WRITE;
+/*!40000 ALTER TABLE `member_saved_books` DISABLE KEYS */;
+INSERT INTO `member_saved_books` VALUES (1,'M-000001','B-000001'),(9,'M-000001','B-000002');
+/*!40000 ALTER TABLE `member_saved_books` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `module`
 --
 
@@ -262,7 +291,6 @@ CREATE TABLE `reservation` (
   `reservation_id` int NOT NULL AUTO_INCREMENT,
   `reservation_date` date NOT NULL,
   `expiration_date` date NOT NULL,
-  `status` varchar(10) NOT NULL,
   `reservation_book_id` varchar(12) NOT NULL,
   `reservation_member_id` varchar(12) NOT NULL,
   `status_id` int NOT NULL,
@@ -282,7 +310,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
-INSERT INTO `reservation` VALUES (5,'2025-03-01','2025-03-01','','B-000001','M-000001',1),(6,'2025-03-01','2025-03-01','','B-000001','M-000001',1),(7,'2025-03-01','2025-03-02','','B-000001','M-000001',1),(8,'2025-03-01','2025-03-08','','B-000001','M-000001',1);
+INSERT INTO `reservation` VALUES (5,'2025-03-01','2025-03-03','B-000001','M-000001',1);
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -358,7 +386,7 @@ CREATE TABLE `role_has_module` (
 
 LOCK TABLES `role_has_module` WRITE;
 /*!40000 ALTER TABLE `role_has_module` DISABLE KEYS */;
-INSERT INTO `role_has_module` VALUES (1,1),(2,1),(1,2),(2,2),(1,3),(2,3),(2,4);
+INSERT INTO `role_has_module` VALUES (1,1),(2,1),(1,2),(2,2),(1,3),(2,3),(2,4),(2,5);
 /*!40000 ALTER TABLE `role_has_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,4 +464,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-02 15:58:24
+-- Dump completed on 2025-03-03 14:58:27

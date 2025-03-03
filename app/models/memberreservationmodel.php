@@ -7,6 +7,11 @@ class MemberReservationModel
     public static function reserveBook($book_id, $member_id)
     {
 
+        $rs = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` ='$member_id' AND `reservation_book_id` = '$book_id'");
+        if ($rs->num_rows > 0 ) {
+            return false; 
+        }
+
         Database::insert("INSERT INTO `reservation` (`reservation_date`, `expiration_date`, `reservation_member_id`, `reservation_book_id`, `status_id`) 
         VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), '$member_id', '$book_id', '1')");
 

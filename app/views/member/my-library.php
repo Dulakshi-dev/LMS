@@ -70,9 +70,9 @@
             } else {
                 foreach ($books as $row) {
             ?>
-                    <div class="row my-5 border rounded">
+                    <div class="row my-4 border rounded d-flex align-items-center">
                         <!-- Book Image -->
-                        <div class="col-md-4 mb-4 mb-md-0 p-4 d-flex justify-content-center align-items-center">
+                        <div class="col-md-4 mb-4 mb-md-0 p-2 d-flex justify-content-center align-items-center">
                             <div class="book-card text-center position-relative d-flex flex-column align-items-center">
                                 <!-- Bookmark Icon -->
                                 <span class="position-absolute top-0 end-0 mx-1">
@@ -86,8 +86,8 @@
                             </div>
                         </div>
                         <div class="col-md-8 p-5">
-                            <h2 class="text-danger">Book ID <?php echo $row["book_id"]; ?></h2>
-                            <p>
+                            <h2 class="text-danger">Book ID : <?php echo $row["book_id"]; ?></h2>
+                            <p class="col-10 text-justify mt-3">
                                 <?php echo $row["description"]; ?>
                             </p>
 

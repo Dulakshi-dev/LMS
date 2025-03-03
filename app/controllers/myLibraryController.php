@@ -21,11 +21,11 @@ class MyLibraryController
                 $result = MyLibraryModel::saveBook($book_id, $member_id);
     
                 if ($result) {
+                    
                     header("Location: index.php?action=loadbooks");
-                
-    
+            
                 } else {
-                    echo json_encode(["success" => false, "message" => "Failed to save"]);
+                    echo "<script>alert('Book already saved!'); window.location.href='index.php?action=loadbooks';</script>";
                 }  
             }else{
                 

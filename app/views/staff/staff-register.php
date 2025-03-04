@@ -7,6 +7,12 @@
     <title>Staff Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        .box-1 {
+            background: rgba(255, 255, 255, 0.24);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
         body {
             background-image: url('<?php echo Config::getImagePath("staff-reg back.jpg"); ?>');
             background-repeat: no-repeat;
@@ -32,8 +38,8 @@
 
 <body>
     <div class="container-fluid d-flex justify-content-left align-items-center my-5">
-        <div class="box-1 p-5 text-white m-3 rounded-5 shadow-lg overflow-hidden" style="width: 100%; max-width: 800px; background-color: rgba(0, 0, 0, 0.58);">
-            <h3 class="text-center mb-4">Staff Registration</h3>
+        <div class="box-1 p-5 text-dark mx-5 rounded-5 " style="width: 100%; max-width: 800px; ">
+            <h2 class="text-center mb-4" style="color: rgb(37, 87, 162);">Staff Registration</h2>
             <form id="registrationForm" action="<?php echo Config::indexPath() ?>?action=register" method="POST" novalidate>
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -97,7 +103,7 @@
 
         </div>
 
-        <div class="box-2 rounded-5 px-3 m-5 shadow-lg overflow-hidden">
+        <div class="box-2 rounded-5 px-3 m-5 shadow-lg overflow-hidden" style="backdrop-filter: blur(3px);">
             <h2 class="text-center text-white m-4">Librarian Registration</h2>
             <p class="p-3" style="color: rgb(37, 87, 162);">An enrollment key has been sent to the email address Please check your inbox for the key. </p>
             <form class="p-3" id="enrollmentForm">

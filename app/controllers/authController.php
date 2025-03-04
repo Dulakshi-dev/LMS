@@ -42,10 +42,6 @@ class authController
         }
     }
 
-
-
-
-
     public static function sendOTP()
     {
         require_once Config::getServicePath('emailService.php');
@@ -132,7 +128,6 @@ class authController
         }
     }
 
-
     public static function registerMember()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -144,19 +139,16 @@ class authController
             $lname = $_POST['lname'];
             $password = $_POST['password'];
 
-
             $result = AuthModel::registerMember($nic, $address, $mobile, $email, $fname, $lname, $password);
 
             if ($result) {
-                echo json_encode(["success" => true, "message" => "Successful Registration"]);
+                echo json_encode(["success" => true, "message" => "Thank you for registering! Your Library Membership ID will be issued by the library. This process may take some time. Please check your email"]);
                 exit();
 
             } else {
                 echo json_encode(["success" => false, "message" => "Registration Failed!"]);
                 exit();
             }
-
-           
         }
     }
 }

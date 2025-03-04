@@ -59,7 +59,6 @@ $userController = new UserController();
                             <th>#</th>
                             <th>Member ID</th>
                             <th>Book ID</th>
-                            <th>Book</th>
                             <th>Book Name</th>
                             <th>Reservation Date</th>
                             <th>Expiration Date</th>
@@ -80,9 +79,7 @@ $userController = new UserController();
                                     <td><?php echo $row["reservation_id"]; ?></td>
                                     <td><?php echo $row["reservation_member_id"]; ?></td>
                                     <td><?php echo $row["book_id"]; ?></td>
-                                    <td>
-                                    <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
-                                    </td>
+
                                     <td><?php echo $row["title"]; ?></td>
                                     <td><?php echo $row["reservation_date"]; ?></td>
                                     <td><?php echo $row["expiration_date"]; ?></td>
@@ -96,13 +93,17 @@ $userController = new UserController();
                                             <form method="post" action="<?php echo Config::indexPath(); ?>?action=showissuebook">
                                                 <input type="hidden" name="book_id" value="<?php echo $row['book_id']; ?>">
                                                 <input type="hidden" name="member_id" value="<?php echo $row['reservation_member_id']; ?>">
-                                                <button type="submit" class="btn btn-warning">Issue</button>
+                                                <button type="submit" class="btn btn-primary">Approve</button>
                                             </form> <?php
-                                                } else {
+                                                } else if($row["status"] == "Borrowed"){
                                                     ?>
-                                            <p><?php echo $row["status"]; ?></p>
+                                            <p class="text-success"><?php echo $row["status"]; ?></p>
                                         <?php
 
+                                                }else{
+                                                    ?>
+                                                    <p class="text-danger"><?php echo $row["status"]; ?></p>
+                                                <?php
                                                 }
                                         ?>
                                     </td>

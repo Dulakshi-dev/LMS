@@ -1,4 +1,13 @@
-
+function validateReturnForm(){
+    alert("mkm");
+    let isValid = true;
+    let returnDate = document.getElementById("returnDate").value.trim();
+    if (returnDate === "") {
+        document.getElementById("returndateerror").innerText = "Please select the return date.";
+        isValid = false;
+    }
+    return isValid;
+}
 
 function loadBookData() {
     var book_id = document.getElementById("book_id").value;

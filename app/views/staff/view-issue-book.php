@@ -44,11 +44,12 @@ require_once "../../main.php";
                         <tr>
                             <th>BorrowID</th>
                             <th>Book ID</th>
-                            <th>Tiltle</th>
+                            <th>Book Name</th>
                             <th>Member ID</th>
                             <th>Member Name</th>
                             <th>Issue Date</th>
                             <th>Due Date</th>
+                            <th>Return Date</th>
                             <th>Action</th>
 
                         </tr>
@@ -71,6 +72,7 @@ require_once "../../main.php";
                                     <td><?php echo $row["fname"] . " " . $row["lname"]; ?></td>
                                     <td><?php echo $row["borrow_date"]; ?></td>
                                     <td><?php echo $row["due_date"]; ?></td>
+                                    <td><?php echo $row["return_date"]; ?></td>
 
                                     <td><?php
                                         if ($return_date == NULL) {
@@ -137,7 +139,7 @@ require_once "../../main.php";
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?php echo Config::indexPath() ?>?action=returnbook" method="POST">
+                    <form action="<?php echo Config::indexPath() ?>?action=returnbook" method="POST" onsubmit="return validateReturnForm();">
                         <input type="text" class="d-none" id="borrowId" name="borrowId">
                         <input type="text" class="d-none" id="bookId" name="bookId">
 
@@ -147,12 +149,16 @@ require_once "../../main.php";
                             <div class="col-sm-8">
                                 <input type="date" class="form-control" id="dueDate" placeholder="Enter due date">
                             </div>
+                            <span id="duedateerror" class="text-danger"></span>
+
                         </div>
                         <div class="mb-3 row align-items-center">
                             <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
                             <div class="col-sm-8">
                                 <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Enter return date" onchange="generateFine();">
                             </div>
+                            <span id="returndateerror" class="text-danger"></span>
+
                         </div>
                         <div class="mb-3 row align-items-center">
                             <label for="amount" class="col-sm-4 col-form-label">Fines(Rs)</label>

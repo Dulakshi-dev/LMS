@@ -15,9 +15,8 @@ class ReservationController
     public function getAllReservations()
     {
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-        $member_id = $_SESSION["member"]["member_id"];
 
-        $data = ReservationModel::getAllReservations($member_id, $page);
+        $data = ReservationModel::getAllReservations($page);
 
         $totalBooks = $data['total']; 
         $booksResult = $data['results']; 

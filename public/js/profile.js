@@ -46,10 +46,12 @@ function updateProfileDetails(event) {
     document.getElementById("address_error").innerText = "";
 
     // Get the values from the form fields
+    var nic = document.getElementById("nic").value;
     var fname = document.getElementById("fname").value;
     var lname = document.getElementById("lname").value;
     var phone = document.getElementById("phone").value;
     var address = document.getElementById("address").value;
+    var profimg = document.getElementById("uploadprofimg").files[0]; 
 
     var isValid = true;
 
@@ -71,6 +73,12 @@ function updateProfileDetails(event) {
         isValid = false;
     }
 
+    // Validate Phone
+    if (!/^\d{10}$/.test(phone)) {
+        document.getElementById("phone_error").textContent = "Phone number must be 10 digits.";
+        isValid = false;
+    }
+
     // Validate Address
     if (address.trim() === "") {
         document.getElementById("address_error").innerText = "Address is required.";
@@ -83,6 +91,7 @@ function updateProfileDetails(event) {
 
     // Create FormData object
     var formData = new FormData();
+    formData.append("nic", nic);
     formData.append("fname", fname);
     formData.append("lname", lname);
     formData.append("mobile", phone);
@@ -118,7 +127,7 @@ function showProfilePreview() {
     var file = document.getElementById('uploadprofimg').files[0];
     if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             document.getElementById('profileimg').src = e.target.result;
         };
         reader.readAsDataURL(file);
@@ -127,12 +136,12 @@ function showProfilePreview() {
 
 function goToChangePassword(event) {
     event.preventDefault(); // Prevent any default behavior (if inside a form)
-    
+
     // Ensure box1 is hidden and box2 is shown
     document.getElementById("box1").classList.add("d-none");
     document.getElementById("box2").style.display = "block";
     document.getElementById("box2").classList.remove("d-none");
-    
+
 }
 
 function validateCurrentPassword(user_id) {

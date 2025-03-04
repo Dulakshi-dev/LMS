@@ -87,7 +87,7 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-lg-5 form-group">
+                                        <div class="col-lg-10 form-group">
                                             <label for="author">Author</label>
                                             <input id="author" class="form-control" type="text" disabled>
                                         </div>

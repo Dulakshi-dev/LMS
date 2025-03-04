@@ -7,14 +7,12 @@ class ProfileModel
     public static function updateUserDetails($nic, $fname, $lname, $address, $mobile, $fileName)
     {
         Database::ud("UPDATE `user` SET `fname`='$fname',`lname`='$lname',`address`='$address', `mobile`='$mobile', `profile_img`='$fileName' WHERE `nic` = '$nic'");
-
         return true;
     }
 
     public static function updateUserDetailsWithoutImage($nic, $fname, $lname, $address, $mobile)
     {
         Database::ud("UPDATE `user` SET `fname`='$fname',`lname`='$lname',`address`='$address', `mobile`='$mobile' WHERE `nic` = '$nic'");
-
         return true;
     }
 
@@ -35,14 +33,11 @@ class ProfileModel
         }else{
             return false;
         }
-        
     }
 
-    
     public static function resetPassword($userid ,$password)
     {
         Database::ud("UPDATE `login` SET `password` = '$password' WHERE `user_id`='$userid'");
-            return true;
-        
+        return true;
     }
 }

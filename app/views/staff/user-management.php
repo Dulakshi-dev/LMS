@@ -191,7 +191,7 @@ $userController = new UserController();
                         <span id="addressError" class="text-danger"></span> <!-- Address Error -->
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
+                        <button type="button"  class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
                     </div>
                 </div>
 
@@ -228,7 +228,7 @@ $userController = new UserController();
                         <span id="messageError" class="text-danger"></span> <!-- Message error message -->
                     </div>
                     <div class="text-end">
-                        <button type="button" data-bs-dismiss="modal" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
+                        <button type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
                     </div>
                 </div>
 

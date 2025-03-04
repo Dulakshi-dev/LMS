@@ -1,17 +1,13 @@
 function registerBox1() {
-    var nicNumber = document.getElementById("NICNumber").value;
+    var nic = document.getElementById("NICNumber").value;
 
-    if (nicNumber === "") {
+    if (nic === "" || !/^(?:\d{10}|\d{12})$/.test(nic)) {
+        document.getElementById("nicnumerror").innerText = "Invalid NIC. Must be 10 or 12 digits.";
+        return false;
+    }
+    else {
+        document.getElementById("nicnumerror").innerText = "";
 
-
-        if (nicNumber === "") {
-            document.getElementById("nicnumerror").innerText = "Please enter NIC Number";
-        } else {
-            document.getElementById("nicnumerror").innerText = "";
-        }
-
-        return false; // Prevents form submission
-    } else {
         document.getElementById("Box1").classList.add("d-none");
         document.getElementById("Box2").classList.remove("d-none");
         return false;
@@ -22,39 +18,33 @@ function registerBox2() {
     var Address = document.getElementById("Address").value;
     var PhoneNumber = document.getElementById("PhoneNumber").value;
 
-    if (Address === "" || PhoneNumber === "") {
         if (Address === "") {
             document.getElementById("Addresserror").innerText = "Please enter Address";
-        } else {
+            return false;
+        } else if(PhoneNumber === "" || !/^(0[1-9][0-9]{8})$/.test(PhoneNumber)){
+            document.getElementById("Pnumerror").innerText = "Please enter a valid mobile number";
+            return false;
+        }else{
             document.getElementById("Addresserror").innerText = "";
-        }
-
-        if (PhoneNumber === "") {
-            document.getElementById("Pnumerror").innerText = "Please enter Phone Number";
-        } else {
             document.getElementById("Pnumerror").innerText = "";
-        }
 
-        return false; // Prevents form submission
-    } else {
-        document.getElementById("Box2").classList.add("d-none");
-        document.getElementById("Box3").classList.remove("d-none");
-        return false;
-    }
+            document.getElementById("Box2").classList.add("d-none");
+            document.getElementById("Box3").classList.remove("d-none");
+            return false;
+
+        }
 }
 
 function registerBox3() {
     var email = document.getElementById("email").value;
 
-    if (email === "") {
-        if (email === "") {
-            document.getElementById("Emailerror").innerText = "Please enter a valid email address";
-        } else {
-            document.getElementById("Emailerror").innerText = "";
-        }
+    if (email === "" || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email)) {
+        document.getElementById("Emailerror").innerText = "Please enter a valid email address";
+        return false;
+    }else{
 
-        return false; // Prevents form submission
-    } else {
+        document.getElementById("Emailerror").innerText = "";
+
         var formData = new FormData();
         formData.append("email", email);
 
@@ -155,7 +145,7 @@ window.onload = function () {
 };
 
 function registerBox5() {
-    
+
     var Fname = document.getElementById("Fname").value;
     var Lname = document.getElementById("Lname").value;
     var Pword = document.getElementById("Pword").value;
@@ -199,7 +189,7 @@ function registerBox5() {
             .then(resp => {
                 if (resp.status === "success") {
                     alert("Redirecting to PayHere...");
-    
+
                     // Start PayHere Payment directly here
                     payhere.startPayment(resp.payment);
                 } else {
@@ -209,7 +199,7 @@ function registerBox5() {
             .catch(error => {
                 console.error("Error fetching user data:", error);
             });
-    
+
         return false;
     }
 }

@@ -1,7 +1,7 @@
 
 
 function loadUserDataUpdate(member_id) {
-    
+
     // Create a FormData object and append the user ID
     var formData = new FormData();
     formData.append("member_id", member_id);
@@ -11,7 +11,7 @@ function loadUserDataUpdate(member_id) {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
                 document.getElementById("userID").value = resp.member_id;
@@ -38,11 +38,18 @@ function updateUserDetails() {
     var address = document.getElementById("address").value.trim();
 
     // Clear previous error messages
-    document.getElementById("nicError").innerText = "";
-    document.getElementById("usernameError").innerText = "";
-    document.getElementById("emailError").innerText = "";
-    document.getElementById("phoneError").innerText = "";
-    document.getElementById("addressError").innerText = "";
+    var nicError = document.getElementById("nicError");
+    var usernameError = document.getElementById("usernameError");
+    var emailError = document.getElementById("emailError");
+    var phoneError = document.getElementById("phoneError");
+    var addressError = document.getElementById("addressError");
+
+    // Clear previous error messages
+    nicError.innerText = "";
+    usernameError.innerText = "";
+    emailError.innerText = "";
+    phoneError.innerText = "";
+    addressError.innerText = "";
 
     var isValid = true;
 
@@ -93,17 +100,17 @@ function updateUserDetails() {
         method: "POST",
         body: formData,
     })
-    .then(response => response.json()) 
-    .then(resp => {
-        if (resp.success) {
-            location.reload();
-        } else {
-            alert("Failed to update user data. Please try again.");
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching user data:", error);
-    });
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                location.reload();
+            } else {
+                alert("Failed to update user data. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
 }
 
 
@@ -116,12 +123,12 @@ function loadMailData(member_id) {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
                 document.getElementById("name").value = resp.name;
                 document.getElementById("emailadd").value = resp.email;
-               
+
             } else {
                 alert("Failed to load user data. Please try again.");
             }
@@ -183,21 +190,21 @@ function sendEmail() {
         method: "POST",
         body: formData,
     })
-    .then(response => response.json()) 
-    .then(resp => {
-        if (resp.success) {
-            alert("Mail sent successfully.");
-        } else {
-            alert("Failed to send mail. Please try again.");
-        }
-    })
-    .catch(error => {
-        console.error("Error sending mail:", error);
-    });
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                alert("Mail sent successfully.");
+            } else {
+                alert("Failed to send mail. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error sending mail:", error);
+        });
 }
 
 
-function changeUserStatus(id) { 
+function changeUserStatus(id) {
     var formData = new FormData();
     formData.append("id", id);
     alert(id);
@@ -206,17 +213,17 @@ function changeUserStatus(id) {
         method: "POST",
         body: formData,
     })
-    .then(response => response.json())
-    .then(resp => {
-        if (resp.success) {
-            location.reload();
-        } else {
-            alert("Failed to load user data. Please try again.");
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching user data:", error);
-    });
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                location.reload();
+            } else {
+                alert("Failed to load user data. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
 }
 
 

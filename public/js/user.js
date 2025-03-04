@@ -66,7 +66,7 @@ function updateUserDetails() {
     }
 
     // Email validation
-    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format check
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
     if (!emailPattern.test(email)) {
         emailError.innerText = "Please enter a valid email address";
         isValid = false;

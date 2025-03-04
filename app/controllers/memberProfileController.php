@@ -67,7 +67,7 @@ class MemberProfileController
             $nic = $_POST['nic'];
             $fname = $_POST['fname'];
             $lname = $_POST["lname"];
-            $mobile = $_POST["mobile"];
+            $mobile = $_POST["phone"];
             $address = $_POST["address"];
     
             $fileName = ''; 

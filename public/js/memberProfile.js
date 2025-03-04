@@ -73,23 +73,6 @@ function updateProfileDetails() {
         valid = false;
     }
 
-    // Validate NIC (old and new format)
-    if (nic.trim() === "") {
-        document.getElementById("nicerror").innerText = "NIC is required.";
-        valid = false;
-    } else {
-        // Check if the NIC is in the old or new format
-        // Old NIC format: 9 digits followed by 'V' or 'v' (e.g., 123456789V)
-        // New NIC format: 12 digits (e.g., 2000-01-01-1234)
-        var oldNicPattern = /^\d{9}[Vv]$/;
-        var newNicPattern = /^\d{4}-\d{2}-\d{2}-\d{4}$/;
-
-        if (!oldNicPattern.test(nic) && !newNicPattern.test(nic)) {
-            document.getElementById("nicerror").innerText = "Please enter a valid NIC (Old format: 123456789V, New format: 2000-01-01-1234).";
-            valid = false;
-        }
-    }
-
     // Validate Mobile
     if (phone.trim() === "" || !/^\d{10}$/.test(phone)) {
         document.getElementById("phoneerror").innerText = "Valid phone number is required (10 digits).";

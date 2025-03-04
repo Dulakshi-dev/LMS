@@ -23,7 +23,6 @@
         .container {
             background: rgba(0, 0, 0, 0.5);
             border-radius: 20px;
-
         }
 
         .txt {
@@ -57,7 +56,6 @@
 
         .bt:hover {
             background-color: #141414;
-            /* Darker green on hover */
         }
 
 
@@ -106,25 +104,15 @@
     ?>
     <!-- Important Notes Section -->
     <div class="text-white p-5 mt-3 Important">
-        <h5 class="text-danger fs-3 font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h5>
-        <ol class="pl-4">
-            <li>Visit the Library:</li>
-            <li>Pay the Membership Fee:
-                <ul>
-                    <li>Pay the membership fee of <span class="text-success font-weight-bold">RS 1000</span> at the library.</li>
+        <h1 class="text-danger fs-1font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h1>
+        <ol class="py-4 fs-5">
+        Pay the Membership Fee:
+                <ul class="m-3">
+                    <li>The annual membership fee is <span class="phone-number font-weight-bold">RS 1000</span></li>
                 </ul>
-            </li>
-            <li>Receive Your Receipt:
-                <ul>
-                    <li>The library office will provide you with a receipt that includes your unique Library Membership ID.</li>
+                <ul class="m-3">
+                    <li>Make the payment online through the designated payment portal.</li>
                 </ul>
-            </li>
-            <li>Complete the Online Registration:
-                <ul>
-                    <li>Upload a clear image of the receipt.</li>
-                    <li>Enter your Library Membership ID in the registration form.</li>
-                </ul>
-            </li>
         </ol>
     </div>
 
@@ -145,7 +133,6 @@
                         <h5 class="mb-1">Enter <b>NIC Number</b> :</h5>
                         <form id="loginForm1">
                             <div class="row mb-3">
-
                                 <div class="col-md-12">
                                     <label for="nicNumber" class="my-2">NIC Number :</label>
                                     <input type="text" class="form-control" id="NICNumber" name="NICNumber" placeholder="Enter NIC Number">

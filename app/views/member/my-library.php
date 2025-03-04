@@ -25,6 +25,14 @@
             border-radius: 5px;
         }
 
+        #success {
+            color: rgba(21, 83, 28, 1);
+            background: rgb(127, 221, 138);
+        }
+
+        #success:hover {
+            background: rgb(69, 161, 80);
+        }
 
         .book-title {
             font-size: 18px;
@@ -104,7 +112,7 @@
                         ?>
                         </p>
 
-                        <button>reserve</button>
+                        <button class="btn" id="success">reserve</button>
                         </div>
                     </div>
             <?php

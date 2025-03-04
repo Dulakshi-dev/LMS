@@ -56,7 +56,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 
 
         <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
-            <i class="fas fa-user mr-3"></i>My Profile
+            <i class="fas fa-user mr-3"></i>  My Profile
         </a>
         <?php
 

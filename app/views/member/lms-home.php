@@ -18,7 +18,7 @@
                 <div class="row vh-100 d-flex justify-content-center align-items-center">
                     <div class="col-12 col-lg-6 offset-lg-6 text-center text-white">
                         <h1 class="mb-4 fw-bold">Library LMS - Institute Name</h1>
-                        <p class="fs-5">Register now to access our full range of features and <br> start exploring our vast collection of resources</p>
+                        <p class="fs-5 text-dark">Register now to access our full range of features and <br> start exploring our vast collection of resources</p>
                         <div class="mt-4">
                             <button class="btn btn-dark rounded-5 px-4" onclick="window.location.href='<?php echo Config::indexPathMember() ?>?action=register'">Register</button>
                             <button class="btn btn-secondary ms-3 rounded-5 px-4" onclick="window.location.href='<?php echo Config::indexPathMember() ?>?action=login'">Login</button>
@@ -31,9 +31,9 @@
     </div>
 
     <!-- Top Books Section -->
-    <div class="container-fluid bg-dark text-white py-5">
+    <div class="container-fluid bg-light text-white py-5">
     <div class="row">
-        <h1 class="text-start ms-4 fw-bold"><span class="text-danger">Top</span> Books</h1>
+        <h1 class="text-start ms-4 fw-bold"><span class="text-danger">Top</span> <span class="text-dark">Books</span> </h1>
     </div>
     <div class="row justify-content-center mt-5">
         <!-- Card 1 -->

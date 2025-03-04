@@ -12,13 +12,6 @@ require_once "../../main.php";
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .box {
-            height: 400px;
-            width: 500px;
-            background-color: rgb(33, 33, 69);
-        }
-    </style>
 </head>
 
 <body>
@@ -42,17 +35,24 @@ require_once "../../main.php";
                     <div class="fw-bold bg-white d-flex justify-content-center mt-5">
                         <div class="container mt-5">
                             <div class="row g-3 d-flex justify-content-evenly">
-                                <div class="col-12 col-md-5 mr-3 text-right pt-3 box rounded">
-                                    <div class="d-flex justify-content-end m-1">
-                                        <button class="btn btn-light "><a class="text-decoration-none" href="<?php echo Config::indexPath() ?>?action=addBook">Add Books</a></button>
-                                    </div>
+
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
+
+                                    <i class="fas fa-plus display-1 text-primary"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">Add Books</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=addBook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
+
                                 </div>
 
-                                <div class="col-12 col-md-5 ml-4 text-right pt-3 box rounded">
-                                    <div class="d-flex justify-content-end m-1">
-                                        <button class="btn btn-light d-flex "><a class="text-decoration-none" href="<?php echo Config::indexPath() ?>?action=viewBook">View Books</a></button>
-                                    </div>
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 400px; height: 350px;">
+
+                                    <i class="fa fa-book display-1 text-success"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">View All Books</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewBook" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+
                                 </div>
+
+
                             </div>
                         </div>
                     </div>

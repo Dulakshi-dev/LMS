@@ -38,29 +38,20 @@
 
         .long-line {
             width: 90%;
-            /* Longer line */
 
         }
 
         .short-line {
             width: 90%;
-            /* Shorter line */
-
         }
 
         .bt {
             background-color: #000000;
             color: white;
-            /* White text */
             padding: 10px;
-            border: none;
-            /* No border */
             border-radius: 105px;
-            /* Rounded corners */
             cursor: pointer;
-            /* Pointer/hand icon on hover */
             font-size: 16px;
-            /* Font size */
             width: 150px;
         }
 
@@ -115,7 +106,7 @@
     ?>
     <!-- Important Notes Section -->
     <div class="text-white p-5 mt-3 Important">
-        <h5 class="text-danger font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h5>
+        <h5 class="text-danger fs-3 font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h5>
         <ol class="pl-4">
             <li>Visit the Library:</li>
             <li>Pay the Membership Fee:
@@ -151,7 +142,7 @@
                 <div class="text-white login-form">
                     <!-- Box 1: Membership ID and NIC Number -->
                     <div id="Box1">
-                        <h5 class="mb-1">Enter <b>membership ID</b> and <b>NIC Number</b> :</h5>
+                        <h5 class="mb-1">Enter <b>NIC Number</b> :</h5>
                         <form id="loginForm1">
                             <div class="row mb-3">
 

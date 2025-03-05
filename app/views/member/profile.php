@@ -13,7 +13,12 @@ $member_id = $_SESSION["member"]["member_id"];
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body class="bg-light" onload="loadProfileData('<?php echo $member_id; ?>');">
+<body class="bg-light">
+<script>
+        window.addEventListener('load', function() {
+            loadProfileData('<?php echo $member_id; ?>');
+        });
+    </script>
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">

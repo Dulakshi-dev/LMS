@@ -25,7 +25,7 @@ class MemberProfileModel
 
     public static function getMemberCurrentProfileImage($nic)
     {
-        $result = Database::search("SELECT `profile_img` FROM `user` WHERE `nic` = '$nic'");
+        $result = Database::search("SELECT `profile_img` FROM `member` WHERE `nic` = '$nic'");
         if ($row = $result->fetch_assoc()) {
             return $row['profile_img'];
         }

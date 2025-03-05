@@ -77,9 +77,8 @@ $userController = new UserController();
                         ?>
                                 <tr>
                                     <td><?php echo $row["reservation_id"]; ?></td>
-                                    <td><?php echo $row["reservation_member_id"]; ?></td>
-                                    <td><?php echo $row["book_id"]; ?></td>
-
+                                    <td><?php echo $row["member_id"]; ?></td>
+                                    <td><?php echo $row["reservation_book_id"]; ?></td>
                                     <td><?php echo $row["title"]; ?></td>
                                     <td><?php echo $row["reservation_date"]; ?></td>
                                     <td><?php echo $row["expiration_date"]; ?></td>
@@ -91,8 +90,8 @@ $userController = new UserController();
                                         if ($row["status"] == "Reserved") {
                                         ?>
                                             <form method="post" action="<?php echo Config::indexPath(); ?>?action=showissuebook">
-                                                <input type="hidden" name="book_id" value="<?php echo $row['book_id']; ?>">
-                                                <input type="hidden" name="member_id" value="<?php echo $row['reservation_member_id']; ?>">
+                                                <input type="hidden" name="book_id" value="<?php echo $row['reservation_book_id']; ?>">
+                                                <input type="hidden" name="member_id" value="<?php echo $row['member_id']; ?>">
                                                 <button type="submit" class="btn btn-primary">Approve</button>
                                             </form> <?php
                                                 } else if($row["status"] == "Borrowed"){

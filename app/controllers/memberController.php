@@ -54,6 +54,8 @@ class MemberController
 
     public function loadMemberDetails()
     {
+       
+        
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $member_id = $_POST['member_id'];
 

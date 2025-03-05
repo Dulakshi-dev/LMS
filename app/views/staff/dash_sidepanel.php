@@ -1,6 +1,6 @@
 <?php
 
-if (!isset($_SESSION["user"])) {
+if (!isset($_SESSION["staff"])) {
     header("Location: login.php");
     exit();
 }
@@ -38,7 +38,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 <body>
 
     <div id="sidepanel" class=" bg-dark text-white" style="width: 250px; height: 100%;">
-    <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
+    <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i>  Dashboard
         </a>
         <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
@@ -59,12 +59,10 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
         }
         ?>
 
-
-
-        <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i>  Library Setup
         </a>
-        <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i>  About Software
         </a>
         <?php
@@ -72,37 +70,6 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 
         ?>
 
-
-        <!-- <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-tachometer-alt mr-3"></i>Dashboard
-        </a>
-        <a href="user-profile.php" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-user mr-3"></i>My Profile
-        </a>
-        <a href="book-management.php" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-book mr-3"></i>Manage Books
-        </a>
-        <a href="user-management.php" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-users mr-3"></i>Manage Users
-        </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-user-tie mr-3"></i>Manage Staff
-        </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-folder-open mr-3"></i>Issue Books
-        </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-list mr-3"></i>View all issue Books
-        </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom  align-items-center">
-            <i class="fas fa-rupee-sign mr-3"></i>Manage Fines
-        </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-cogs mr-3"></i>Institution Setup
-        </a>
-        <a href="#" class="nav-link text-white py-2 border-bottom align-items-center">
-            <i class="fas fa-info-circle mr-3"></i>About Software
-        </a> -->
     </div>
 </body>
 

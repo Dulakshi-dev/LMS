@@ -1,9 +1,9 @@
 <?php
 require_once "../../main.php";
-$fname = $_SESSION["user"]["fname"];
-$lname = $_SESSION["user"]["lname"];
-$role_name = $_SESSION["user"]["role_name"];
-$profile_img = $_SESSION["user"]["profile_img"];
+$fname = $_SESSION["staff"]["fname"];
+$lname = $_SESSION["staff"]["lname"];
+$role_name = $_SESSION["staff"]["role_name"];
+$profile_img = $_SESSION["staff"]["profile_img"];
 
 ?>
 

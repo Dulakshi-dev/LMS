@@ -1,3 +1,10 @@
+<?php
+require_once "../../main.php";
+$fname = $_SESSION["member"]["fname"];
+$lname = $_SESSION["member"]["lname"];
+$profile_img = $_SESSION["member"]["profile_img"];
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +20,8 @@
     rel="stylesheet" />
 </head>
 
-<body>
+<body onload="loadprofileimg('<?php echo addslashes($profile_img); ?>');">
+
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center" href="#">
@@ -54,11 +62,12 @@
         </div>
         <div class="d-flex align-items-center me-2 px-3">
           <img
-            src="../../../public/images/user.jpg"
+            src=""
             alt="User"
+            id="headerprofileimg"
             class="rounded-circle me-2"
             style="height: 40px; width: 40px;" />
-          <span class="text-white px-2">User Name</span>
+          <span class="text-white px-2"><?php echo $fname . " " . $lname; ?></span>
         </div>
         <button
           class="navbar-toggler"
@@ -74,7 +83,7 @@
 
     </div>
   </nav>
-
+  <script src="<?php echo Config::getJsPath("test.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 

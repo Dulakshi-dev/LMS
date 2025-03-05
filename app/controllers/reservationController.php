@@ -3,7 +3,6 @@ require_once __DIR__ . '/../../main.php';
 
 class ReservationController
 {
-
     private $reservationModel;
 
     public function __construct()

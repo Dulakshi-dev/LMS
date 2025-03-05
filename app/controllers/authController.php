@@ -24,11 +24,14 @@ class authController
 
             if ($userDetails) {
 
-                $_SESSION['member_id'] = $userDetails['member_id']; 
-                $_SESSION['id'] = $userDetails['id'];        
-                $_SESSION['role'] = $userDetails['role'];          
+                $_SESSION['member'] = [
+                    'member_id' => $userDetails['member_id'],
+                    'id' => $userDetails['id'],
+                    'profile_img' => $userDetails['profile_img'],
+                    'lname' => $userDetails['lname'],
+                    'fname' => $userDetails['fname']
+                ];
 
-                //$_SESSION["member"] = $userDetails;
 
                 if ($rememberme) {
                     setcookie("memberID", $memid, time() + (60 * 60 * 24 * 365), "/");
@@ -149,7 +152,6 @@ class authController
             if ($result) {
                 echo json_encode(["success" => true, "message" => "Thank you for registering! Your Library Membership ID will be issued by the library. This process may take some time. Please check your email"]);
                 exit();
-
             } else {
                 echo json_encode(["success" => false, "message" => "Registration Failed!"]);
                 exit();

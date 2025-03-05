@@ -21,7 +21,9 @@ class Config {
         "services" => Config::sourcePath . "\\app\\services\\",
         "mail" => Config::sourcePath ."\\app\\services\\mail\\",
         "book_covers" => Config::sourcePath ."\\storage\\book_covers\\",
-        "profile_img" => Config::sourcePath ."\\storage\\profile_img\\",
+        "staff_profile_img" => Config::sourcePath ."\\storage\\profile_img\\staff\\",
+        "member_profile_img" => Config::sourcePath ."\\storage\\profile_img\\member\\",
+
     ];
 
     public static $database = [
@@ -89,9 +91,16 @@ class Config {
         return Config::$paths["book_covers"];
     }
 
-    public static function getProfileImagePath()
+    public static function getStaffProfileImagePath()
     {
-        return Config::$paths["profile_img"];
+        return Config::$paths["staff_profile_img"];
     }
+
+    public static function getMemberProfileImagePath()
+    {
+        return Config::$paths["member_profile_img"];
+    }
+
+    
 }
 

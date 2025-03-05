@@ -45,7 +45,7 @@ class MemberProfileController
         $imageName = $_GET['image'] ?? '';
         $userID = 
         
-        $basePath = Config::getProfileImagePath();;
+        $basePath = Config::getMemberProfileImagePath();;
         $filePath = realpath($basePath . basename($imageName));
     
         if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
@@ -58,7 +58,6 @@ class MemberProfileController
         echo "Image not found.";
         exit;
     }
-    
     public function updateProfile()
     {
 
@@ -73,9 +72,9 @@ class MemberProfileController
             $fileName = ''; 
     
             if (isset($_FILES['profimg']) && $_FILES['profimg']['error'] === UPLOAD_ERR_OK) {
-                $receipt = $_FILES['profimg'];
-                $targetDir = Config::getProfileImagePath();
-                $fileName = uniqid() . "_" . basename($receipt["name"]);
+                $img = $_FILES['profimg'];
+                $targetDir = Config::getMemberProfileImagePath();
+                $fileName = uniqid() . "_" . basename($img["name"]);
                 $targetFilePath = $targetDir . $fileName;
     
               $currentImage = MemberProfileModel::getMemberCurrentProfileImage($nic); 
@@ -84,9 +83,9 @@ class MemberProfileController
                     unlink($targetDir . $currentImage);
                 }
     
-                if (move_uploaded_file($receipt["tmp_name"], $targetFilePath)) {
+                if (move_uploaded_file($img["tmp_name"], $targetFilePath)) {
                     $result = MemberProfileModel::updateMemberDetails($nic, $fname, $lname, $address, $mobile, $fileName);
-                    $_SESSION["member"]["profile_img"] = $fileName;
+                    $_SESSION["profile_img"] = $fileName;
     
                     if ($result) {
                         echo json_encode(["success" => true, "message" => "User updated successfully."]);

@@ -16,9 +16,9 @@ class MemberReservationController
     {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $book_id = $_GET['book_id'];
-                $member_id = $_SESSION["member"]["member_id"];
+                $id = $_SESSION["id"];
 
-                $result = MemberReservationModel::reserveBook($book_id, $member_id);
+                $result = MemberReservationModel::reserveBook($book_id, $id);
     
                 if ($result) {
                     header("Location: index.php?action=loadbooks");
@@ -36,8 +36,8 @@ class MemberReservationController
 
     public function loadReservedBooks()
     {
-        $member_id = $_SESSION["member"]["member_id"];
-        $data = MemberReservationModel::getReservedBooks($member_id);
+        $id = $_SESSION["id"];
+        $data = MemberReservationModel::getReservedBooks($id);
 
         $booksResult = $data['results']; 
 

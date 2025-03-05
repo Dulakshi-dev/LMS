@@ -14,9 +14,10 @@ class BorrowHistoryController
 
     public function loadBorrowBooks()
     {
-        $member_id = $_GET['member_id'] ?? '';
+        
+        $id = $_SESSION["id"] ?? '';
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-        $data = BorrowHistoryModel::getBorrowBooks($page, $member_id);
+        $data = BorrowHistoryModel::getBorrowBooks($page, $id);
 
         $totalBooks = $data['total']; 
         $booksResult = $data['results']; 

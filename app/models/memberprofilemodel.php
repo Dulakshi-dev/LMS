@@ -5,7 +5,7 @@ require_once __DIR__ . '../../../database/connection.php';
 class MemberProfileModel
 {
     public static function loadMemberDetails($id) {
-        $rs = Database::search("SELECT * FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
+        $rs = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`profile_img` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
         return $rs;
     }
 

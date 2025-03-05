@@ -63,7 +63,6 @@ class MemberController
                 $userData = $result->fetch_assoc();
                 echo json_encode([
                     "success" => true,
-                    "id" => $userData['id'],
                     "member_id" => $userData['member_id'],
                     "nic" => $userData['nic'],
                     "fname" => $userData['fname'],
@@ -71,7 +70,6 @@ class MemberController
                     "email" => $userData['email'],
                     "mobile" => $userData['mobile'],
                     "address" => $userData['address'],
-                    "profile_img" => $userData['profile_img']
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);

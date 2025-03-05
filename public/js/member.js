@@ -1,10 +1,10 @@
 
 
-function loadUserDataUpdate(member_id) {
+function loadUserDataUpdate(id) {
 
     // Create a FormData object and append the user ID
     var formData = new FormData();
-    formData.append("member_id", member_id);
+    formData.append("id", id);
 
     // Fetch user data from the server
     fetch("index.php?action=loadMemberData", {

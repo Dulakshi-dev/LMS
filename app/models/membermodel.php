@@ -5,12 +5,12 @@ require_once __DIR__ . '../../../database/connection.php';
 class MemberModel {
     public static function getAllMembers($page)
     {
-        $rs = Database::search("SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`");
+        $rs = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`");
         $num = $rs->num_rows;
         $resultsPerPage = 10;
         $pageResults = ($page - 1) * $resultsPerPage;
 
-        $rs2 = Database::search("SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` JOIN `status` ON `member`.`status_id`= `status`.`status_id` LIMIT $resultsPerPage OFFSET $pageResults");
+        $rs2 = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` JOIN `status` ON `member`.`status_id`= `status`.`status_id` LIMIT $resultsPerPage OFFSET $pageResults");
         return [
             'total' => $num,
             'results' => $rs2
@@ -19,7 +19,9 @@ class MemberModel {
 
 
     public static function searchMembers($memberId, $nic, $userName) {
-        $sql = "SELECT * FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";
+
+        
+        $sql = "SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";
         if (!empty($memberId)) {
             $sql .= " AND `member_id` LIKE '%$memberId%'";
         }
@@ -34,13 +36,8 @@ class MemberModel {
     }
 
     public static function loadMemberDetails($id) {
-        $rs = Database::search("SELECT * FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
+        $rs = Database::search("SELECT `member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
         return $rs;
-    }
-
-    public static function getMemberbyID($member_id) {
-        $rs = Database::search("SELECT * FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$member_id'");
-        return $rs->fetch_assoc();
     }
 
     
@@ -65,8 +62,17 @@ class MemberModel {
         return true;
     }
     
-    public static function loadMailDetails($id) {
-        $rs = Database::search("SELECT * FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
+    public static function loadMailDetails($member_id) {
+
+        $id_result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$member_id'");
+
+        if ($id_result->num_rows == 0) {
+            return false;
+        }
+
+        $id_data = $id_result->fetch_assoc();
+        $id = $id_data['id'];
+        $rs = Database::search("SELECT `id`,`fname`,`lname`,`email` FROM `member` WHERE `id` = '$id'");
         return $rs;
     }
     

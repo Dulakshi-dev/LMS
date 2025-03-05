@@ -197,7 +197,7 @@ function validateForm() {
     }
 
     let author = document.getElementById("author").value.trim();
-    if (!/^[A-Za-z\s'\-]+$/.test(author) || author === "") {
+    if (author === "") {
         document.getElementById("author-error").innerText = "Enter a valid author name.";
         isValid = false;
     }

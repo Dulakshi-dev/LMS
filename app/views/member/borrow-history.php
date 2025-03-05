@@ -1,6 +1,3 @@
-<?php
-$member_id = $_SESSION["member"]["member_id"];
-?>
 
 <!DOCTYPE html>
 <html lang="en">

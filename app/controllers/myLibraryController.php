@@ -16,9 +16,9 @@ class MyLibraryController
     {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $book_id = $_GET['book_id'];
-                $member_id = $_SESSION["member"]["member_id"];
+                $id = $_SESSION["id"];
 
-                $result = MyLibraryModel::saveBook($book_id, $member_id);
+                $result = MyLibraryModel::saveBook($book_id, $id);
     
                 if ($result) {
                     
@@ -36,8 +36,8 @@ class MyLibraryController
 
     public function loadSavedBooks()
     {
-        $member_id = $_SESSION["member"]["member_id"];
-        $data = MyLibraryModel::getSavedBooks($member_id);
+        $id = $_SESSION["id"];
+        $data = MyLibraryModel::getSavedBooks($id);
 
         $booksResult = $data['results']; 
 
@@ -53,9 +53,9 @@ class MyLibraryController
     {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $book_id = $_GET['book_id'];
-                $member_id = $_SESSION["member"]["member_id"];
+                $id = $_SESSION["id"];
 
-                $result = MyLibraryModel::unSaveBook($book_id, $member_id);
+                $result = MyLibraryModel::unSaveBook($book_id, $id);
     
                 if ($result) {
                     

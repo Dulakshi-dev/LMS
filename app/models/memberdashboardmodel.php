@@ -23,7 +23,7 @@ $pageResults");
 
     public static function getRecommendedBooks()
     {
-        $member_id = $_SESSION["member"]["member_id"];
+        $id = $_SESSION["id"];
 
         $rs = Database::search("SELECT DISTINCT b.*
             FROM book b
@@ -35,12 +35,12 @@ $pageResults");
                     SELECT DISTINCT book.category_id 
                     FROM book 
                     INNER JOIN borrow ON book.book_id = borrow.borrow_book_id
-                    WHERE borrow.borrow_member_id = '$member_id'
+                    WHERE borrow.borrow_member_id = '$id'
                     UNION
                     SELECT DISTINCT book.category_id
                     FROM book
-                    INNER JOIN member_saved_books ON book.book_id = member_saved_books.saved_book_id
-                    WHERE member_saved_books.saved_member_id = '$member_id'
+                    INNER JOIN member_saved_book ON book.book_id = member_saved_book.saved_book_id
+                    WHERE member_saved_book.saved_member_id = '$id'
                 ))
                 AND 
                 (b.language_id IN (
@@ -48,12 +48,12 @@ $pageResults");
                     SELECT DISTINCT book.language_id 
                     FROM book 
                     INNER JOIN borrow ON book.book_id = borrow.borrow_book_id
-                    WHERE borrow.borrow_member_id = '$member_id'
+                    WHERE borrow.borrow_member_id = '$id'
                     UNION
                     SELECT DISTINCT book.language_id
                     FROM book
-                    INNER JOIN member_saved_books ON book.book_id = member_saved_books.saved_book_id
-                    WHERE member_saved_books.saved_member_id = '$member_id'
+                    INNER JOIN member_saved_book ON book.book_id = member_saved_book.saved_book_id
+                    WHERE member_saved_book.saved_member_id = '$id'
                 ))
                 OR 
                 (b.author IN (
@@ -61,17 +61,17 @@ $pageResults");
                     SELECT DISTINCT book.author 
                     FROM book 
                     INNER JOIN borrow ON book.book_id = borrow.borrow_book_id
-                    WHERE borrow.borrow_member_id = '$member_id'
+                    WHERE borrow.borrow_member_id = '$id'
                     UNION
                     SELECT DISTINCT book.author
                     FROM book
-                    INNER JOIN member_saved_books ON book.book_id = member_saved_books.saved_book_id
-                    WHERE member_saved_books.saved_member_id = '$member_id'
+                    INNER JOIN member_saved_book ON book.book_id = member_saved_book.saved_book_id
+                    WHERE member_saved_book.saved_member_id = '$id'
                 ))
             )
             -- Exclude books already borrowed by the user
             AND b.book_id NOT IN (
-                SELECT borrow_book_id FROM borrow WHERE borrow_member_id = '$member_id'
+                SELECT borrow_book_id FROM borrow WHERE borrow_member_id = '$id'
             )
             LIMIT 10");
         

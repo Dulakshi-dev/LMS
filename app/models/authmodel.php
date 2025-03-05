@@ -16,8 +16,7 @@ class AuthModel
 
     public static function validateLogin($memid, $password)
     {
-        $query = "SELECT * FROM `member`
-JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$memid' AND `password` = '$password' ;";
+        $query = "SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$memid' AND `password` = '$password' ;";
         $result = Database::search($query);
 
         if ($result && $result->num_rows > 0) {
@@ -46,20 +45,19 @@ JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_i
         return $newMemberID;
     }
 
-    public static function registerMember($nic,  $address, $phone,$email, $fname, $lname,$password )
+    public static function registerMember($nic,  $address, $phone, $email, $fname, $lname, $password)
     {
-        
-            $id = Database::insert("INSERT INTO `member`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1')");
-            $memberID = self::generateMemberID();
 
-            if ($id) {
-                Database::insert("INSERT INTO `member_login`(`member_id`, `password`, `memberId`) VALUES ('$memberID', '$password', '$id')");
-                self::sendMail($id, $memberID);
-                return true;
-            } else {
-                return false;
-            }
-        
+        $id = Database::insert("INSERT INTO `member`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1')");
+        $memberID = self::generateMemberID();
+
+        if ($id) {
+            Database::insert("INSERT INTO `member_login`(`member_id`, `password`, `memberId`) VALUES ('$memberID', '$password', '$id')");
+            self::sendMail($id, $memberID);
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

@@ -16,7 +16,7 @@ class ProfileController
         $imageName = $_GET['image'] ?? '';
         $userID = 
         
-        $basePath = Config::getProfileImagePath();;
+        $basePath = Config::getStaffProfileImagePath();;
         $filePath = realpath($basePath . basename($imageName));
     
         if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
@@ -44,7 +44,7 @@ class ProfileController
     
             if (isset($_FILES['profimg']) && $_FILES['profimg']['error'] === UPLOAD_ERR_OK) {
                 $receipt = $_FILES['profimg'];
-                $targetDir = Config::getProfileImagePath();
+                $targetDir = Config::getStaffProfileImagePath();
                 $fileName = uniqid() . "_" . basename($receipt["name"]);
                 $targetFilePath = $targetDir . $fileName;
     

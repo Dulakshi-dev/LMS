@@ -1,7 +1,7 @@
 <?php
 
-$user_id = $_SESSION["user"]["user_id"];
-$role_name = $_SESSION["user"]["role_name"];
+$user_id = $_SESSION["staff"]["staff_id"];
+$role_name = $_SESSION["staff"]["role_name"];
 
 ?>
 

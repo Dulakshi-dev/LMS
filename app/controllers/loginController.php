@@ -23,8 +23,17 @@ class LoginController
             $userDetails = LoginModel::validateLogin($username, $password);
     
             if ($userDetails) {
-                $_SESSION["user"] = $userDetails;
-                self::loadModules($_SESSION['user']['role_id']);
+
+                $_SESSION['staff'] = [
+                    'staff_id' => $userDetails['user_id'],
+                    'id' => $userDetails['id'],
+                    'role_name' => $userDetails['role_name'],
+                    'profile_img' => $userDetails['profile_img'],
+                    'lname' => $userDetails['lname'],
+                    'fname' => $userDetails['fname']
+                ];
+
+                self::loadModules($_SESSION['staff']['role_id']);
     
                 if ($rememberme) {
                     setcookie("username", $username, time() + (60 * 60 * 24 * 365), "/");

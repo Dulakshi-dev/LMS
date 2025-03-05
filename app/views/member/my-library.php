@@ -1,3 +1,6 @@
+<?php
+$member_id = $_SESSION["member"]["member_id"]
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -112,7 +115,10 @@
                         ?>
                         </p>
 
-                        <button class="btn" id="success">reserve</button>
+                        <button class="btn" id="success" 
+    onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo $row['book_id']; ?>&member_id=<?php echo $_SESSION['member']['member_id']; ?>'">
+    Reserve
+</button>
                         </div>
                     </div>
             <?php

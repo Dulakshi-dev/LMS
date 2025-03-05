@@ -41,6 +41,19 @@ function loadProfileData(id) {
 }
 
 
+function showProfilePreview() {
+    var file = document.getElementById('uploadprofimg').files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('profileimg').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
+
+
 function updateProfileDetails() {
     // Get form values
     var fname = document.getElementById("fname").value;
@@ -49,6 +62,8 @@ function updateProfileDetails() {
     var phone = document.getElementById("phone").value;
     var address = document.getElementById("address").value;
     var email = document.getElementById("email").value;
+    var profimg = document.getElementById("uploadprofimg").files[0]; 
+
     
     // Initialize error flag
     var valid = true;
@@ -94,6 +109,10 @@ function updateProfileDetails() {
         formData.append("phone", phone);
         formData.append("address", address);
         formData.append("email", email);
+
+        if (profimg) {
+            formData.append("profimg", profimg);
+        }
 
         fetch("index.php?action=updateprofile", {
             method: "POST",

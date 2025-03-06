@@ -2,16 +2,18 @@
 session_start();
 require_once __DIR__ . '/../../main.php';
 
-class authController
+class AuthController
 {
 
     private $authModel;
+    //private static $storedPassword;
 
     public function __construct()
     {
         require_once Config::getModelPath('authmodel.php');
         $this->authModel = new AuthModel();
     }
+
 
     public static function login()
     {
@@ -146,8 +148,12 @@ class authController
             $fname = $_POST['fname'];
             $lname = $_POST['lname'];
             $password = $_POST['password'];
+            $transactionId = $_POST['transactionId'];
 
-            $result = AuthModel::registerMember($nic, $address, $mobile, $email, $fname, $lname, $password);
+            //self::storePassword($password);
+
+            $id = AuthModel::registerMember($nic, $address, $mobile, $email, $fname, $lname);
+            $result = PaymentModel::insertPayment($transactionId, $id);
 
             if ($result) {
                 echo json_encode(["success" => true, "message" => "Thank you for registering! Your Library Membership ID will be issued by the library. This process may take some time. Please check your email"]);
@@ -158,4 +164,14 @@ class authController
             }
         }
     }
+
+    // public static function storePassword($password)
+    // {
+    //     self::$storedPassword = $password;
+    // }
+
+    // public static function getPassword()
+    // {
+    //     return self::$storedPassword;
+    // }
 }

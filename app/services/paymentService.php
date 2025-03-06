@@ -29,7 +29,7 @@ class PaymentService
             $payment["merchant_id"] = $merchantId; 
             $payment["return_url"] = "http://localhost/library/membership-success.php"; 
             $payment["cancel_url"] = "http://localhost/library/membership-cancel.php"; 
-            $payment["notify_url"] = "http://localhost/library/membership-notify.php"; 
+            $payment["notify_url"] =  Config::indexPathMember() . "?action=payment_notify";
             $payment["order_id"] = $orderId; 
             $payment["items"] = "Annual Membership Fee"; 
             $payment["amount"] = number_format($membershipFee, 2, '.', ''); 

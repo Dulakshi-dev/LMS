@@ -18,21 +18,21 @@ function registerBox2() {
     var Address = document.getElementById("Address").value;
     var PhoneNumber = document.getElementById("PhoneNumber").value;
 
-        if (Address === "") {
-            document.getElementById("Addresserror").innerText = "Please enter Address";
-            return false;
-        } else if(PhoneNumber === "" || !/^(0[1-9][0-9]{8})$/.test(PhoneNumber)){
-            document.getElementById("Pnumerror").innerText = "Please enter a valid mobile number";
-            return false;
-        }else{
-            document.getElementById("Addresserror").innerText = "";
-            document.getElementById("Pnumerror").innerText = "";
+    if (Address === "") {
+        document.getElementById("Addresserror").innerText = "Please enter Address";
+        return false;
+    } else if (PhoneNumber === "" || !/^(0[1-9][0-9]{8})$/.test(PhoneNumber)) {
+        document.getElementById("Pnumerror").innerText = "Please enter a valid mobile number";
+        return false;
+    } else {
+        document.getElementById("Addresserror").innerText = "";
+        document.getElementById("Pnumerror").innerText = "";
 
-            document.getElementById("Box2").classList.add("d-none");
-            document.getElementById("Box3").classList.remove("d-none");
-            return false;
+        document.getElementById("Box2").classList.add("d-none");
+        document.getElementById("Box3").classList.remove("d-none");
+        return false;
 
-        }
+    }
 }
 
 function registerBox3() {
@@ -41,7 +41,7 @@ function registerBox3() {
     if (email === "" || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email)) {
         document.getElementById("Emailerror").innerText = "Please enter a valid email address";
         return false;
-    }else{
+    } else {
 
         document.getElementById("Emailerror").innerText = "";
 
@@ -130,9 +130,28 @@ function backToBox4() {
 }
 
 window.onload = function () {
-    payhere.onCompleted = function (orderId) {
-        alert("Payment Successful!");
-        register();
+    payhere.onCompleted = function (transactionId) {
+
+        let formData = new FormData();
+        formData.append("transactionId", transactionId);
+
+        fetch("index.php?action=payment_notify", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    alert("Payment processed successfully.");
+                } else {
+                    alert("Payment failed or was incomplete.");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching user data:", error);
+            });
+        register(transactionId);
+        return false;
     };
 
     payhere.onDismissed = function () {
@@ -204,7 +223,7 @@ function registerBox5() {
     }
 }
 
-function register() {
+function register(transactionId) {
     var nic = document.getElementById("NICNumber").value;
     var address = document.getElementById("Address").value;
     var mobile = document.getElementById("PhoneNumber").value;
@@ -221,6 +240,8 @@ function register() {
     formData.append("fname", fname);
     formData.append("lname", lname);
     formData.append("password", password);
+    formData.append("transactionId", transactionId);
+
 
     fetch("index.php?action=registerMember", {
         method: "POST",

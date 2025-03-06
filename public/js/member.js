@@ -1,4 +1,23 @@
+function approveMembership(id){
+    var formData = new FormData();
+    formData.append("id", id);
 
+    fetch("index.php?action=approvemembership", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                location.reload();
+            } else {
+                alert("Approval failed. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+}
 
 function loadUserDataUpdate(id) {
     // Create a FormData object and append the user ID
@@ -201,7 +220,6 @@ function sendEmail() {
             console.error("Error sending mail:", error);
         });
 }
-
 
 function changeUserStatus(id) {
     var formData = new FormData();

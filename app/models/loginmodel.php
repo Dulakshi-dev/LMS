@@ -117,25 +117,27 @@ JOIN `role` ON `user`.`role_id` = `role`.`role_id` WHERE `user_id` = '$username'
         }
     }
 
-    public static function validateEmail($email,$vcode){
+    public static function validateEmail($email, $vcode)
+    {
         $rs = Database::search("SELECT * FROM `user` WHERE `email` = '$email'");
 
-        if($rs->num_rows > 0 ){
+        if ($rs->num_rows > 0) {
             $row = $rs->fetch_assoc();
             $id = $row["id"];
             Database::insert("UPDATE `user` SET `vcode` ='$vcode' WHERE `id`='$id'");
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public static function changePassword($password, $vcode){
-        $vcode =trim($vcode);
+    public static function changePassword($password, $vcode)
+    {
+        $vcode = trim($vcode);
 
         $rs = Database::search("SELECT * FROM `user` WHERE `vcode` = '$vcode'");
 
-        if($rs->num_rows > 0 ){
+        if ($rs->num_rows > 0) {
 
             $row = $rs->fetch_assoc();
             $id = $row["id"];
@@ -144,10 +146,8 @@ JOIN `role` ON `user`.`role_id` = `role`.`role_id` WHERE `user_id` = '$username'
             Database::ud("UPDATE `user` SET `vcode` = NULL WHERE `id`='$id'");
 
             return true;
-        }else{
+        } else {
             return false;
         }
-
     }
-
 }

@@ -28,12 +28,13 @@ class LoginController
                     'staff_id' => $userDetails['user_id'],
                     'id' => $userDetails['id'],
                     'role_name' => $userDetails['role_name'],
+                    'role_id' => $userDetails['role_id'],
                     'profile_img' => $userDetails['profile_img'],
                     'lname' => $userDetails['lname'],
                     'fname' => $userDetails['fname']
                 ];
 
-                self::loadModules($_SESSION['staff']['role_id']);
+                self::loadModules($_SESSION["staff"]["role_id"]);
     
                 if ($rememberme) {
                     setcookie("username", $username, time() + (60 * 60 * 24 * 365), "/");

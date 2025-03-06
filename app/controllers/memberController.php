@@ -1,7 +1,5 @@
 <?php
 
-use LDAP\Result;
-
 require_once __DIR__ . '/../../main.php';
 
 class MemberController
@@ -11,6 +9,7 @@ class MemberController
     public function __construct()
     {
         require_once Config::getModelPath('membermodel.php');
+
         $this->memberModel = new MemberModel();
     }
 
@@ -30,9 +29,46 @@ class MemberController
         $resultsPerPage = 10;
         $totalPages = ceil($totalUsers / $resultsPerPage);
 
-        require_once Config::getViewPath("staff", 'member-management.php');
+        require_once Config::getViewPath("staff", 'view-members.php');
     }
 
+    public function getPendingMembers()
+    {
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $data = MemberModel::getPendingMembers($page);
+
+        $totalUsers = $data['total'];
+        $usersResult = $data['results'];
+
+        $users = [];
+        while ($row = $usersResult->fetch_assoc()) {
+            $users[] = $row;
+        }
+
+        $resultsPerPage = 10;
+        $totalPages = ceil($totalUsers / $resultsPerPage);
+
+        require_once Config::getViewPath("staff", 'view-member-requests.php');
+    }
+
+    public function approveMembership()
+    {
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+
+            //$password = AuthController::getPassword();
+            $result = MemberModel::approveMembership($id);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Membership active"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "User not found."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
 
     public function searchUsers()
     {
@@ -54,8 +90,8 @@ class MemberController
 
     public function loadMemberDetails()
     {
-       
-        
+
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $member_id = $_POST['member_id'];
 

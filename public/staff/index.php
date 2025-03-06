@@ -59,11 +59,13 @@ $router->add('savenewpw', [$profileController, 'resetPassword']);
 $router->add('searchBorrowBooks', [$circulationController, 'searchBorrowBooks']);
 $router->add('getallcategories', [$bookController, 'getAllCategories']);
 $router->add('getlanguages', [$bookController, 'getLanguages']);
-$router->add('membermanagement', [$memberController, 'getAllMembers']);
+$router->add('showRequests', [$memberController, 'getPendingMembers']);
+$router->add('viewmembers', [$memberController, 'getAllMembers']);
 $router->add('loadMemberData', [$memberController, 'loadMemberDetails']); 
 $router->add('updateMember', [$memberController, 'UpdateMemberDetails']);
 $router->add('loadMemberMailData', [$memberController, 'loadMailData']); 
 $router->add('changeMemberStatus', [$memberController, 'changeMemberStatus']); 
+$router->add('approvemembership', [$memberController, 'approveMembership']); 
 $router->add('reservationmanagement', [$reservationController, 'getAllReservations']);
 
 
@@ -97,7 +99,9 @@ $router->add('showissuebook', function () {
 $router->add('profile', function () {
     include Config::getViewPath("staff", "profile.php");
 });
-
+$router->add('membermanagement', function () {
+    include Config::getViewPath("staff", "member-management.php");
+});
 
 // Get the action from the URL
 $action = $_GET['action'] ?? 'login';

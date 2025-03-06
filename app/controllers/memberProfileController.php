@@ -85,7 +85,7 @@ class MemberProfileController
     
                 if (move_uploaded_file($img["tmp_name"], $targetFilePath)) {
                     $result = MemberProfileModel::updateMemberDetails($nic, $fname, $lname, $address, $mobile, $fileName);
-                    $_SESSION["profile_img"] = $fileName;
+                    $_SESSION["member"]["profile_img"] = $fileName;
     
                     if ($result) {
                         echo json_encode(["success" => true, "message" => "User updated successfully."]);

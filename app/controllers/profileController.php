@@ -56,7 +56,7 @@ class ProfileController
     
                 if (move_uploaded_file($receipt["tmp_name"], $targetFilePath)) {
                     $result = ProfileModel::updateUserDetails($nic, $fname, $lname, $address, $mobile, $fileName);
-                    $_SESSION["user"]["profile_img"] = $fileName;
+                    $_SESSION["staff"]["profile_img"] = $fileName;
     
                     if ($result) {
                         echo json_encode(["success" => true, "message" => "User updated successfully."]);

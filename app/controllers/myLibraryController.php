@@ -16,7 +16,7 @@ class MyLibraryController
     {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $book_id = $_GET['book_id'];
-                $id = $_SESSION["id"];
+                $id = $_SESSION["member"]["id"];
 
                 $result = MyLibraryModel::saveBook($book_id, $id);
     
@@ -36,7 +36,7 @@ class MyLibraryController
 
     public function loadSavedBooks()
     {
-        $id = $_SESSION["id"];
+        $id = $_SESSION["member"]["id"];
         $data = MyLibraryModel::getSavedBooks($id);
 
         $booksResult = $data['results']; 

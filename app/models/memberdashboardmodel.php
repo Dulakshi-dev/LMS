@@ -23,7 +23,7 @@ $pageResults");
 
     public static function getRecommendedBooks()
     {
-        $id = $_SESSION["id"];
+        $id = $_SESSION["member"]["id"];
 
         $rs = Database::search("SELECT DISTINCT b.*
             FROM book b

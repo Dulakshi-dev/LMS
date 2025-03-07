@@ -51,6 +51,10 @@ require_once Config::getViewPath("home", "header.view.php");
                     <input class="form-control mt-3" placeholder="Enter your Email" type="email" name="email" id="email">
                     <button class="btn btn-primary mt-4 w-100" onclick="forgotpw();">Continue</button>
                 <div id="responseMessage"></div>
+
+
+               
+
             </div>
         </div>
     </div>

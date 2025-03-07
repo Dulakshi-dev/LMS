@@ -50,6 +50,7 @@ require_once "../../main.php";
                             <th>Issue Date</th>
                             <th>Due Date</th>
                             <th>Return Date</th>
+                            <th>Fines</th>
                             <th>Action</th>
 
                         </tr>
@@ -73,12 +74,18 @@ require_once "../../main.php";
                                     <td><?php echo $row["borrow_date"]; ?></td>
                                     <td><?php echo $row["due_date"]; ?></td>
                                     <td><?php echo $row["return_date"]; ?></td>
+                                    <td><?php echo $row["amount"]; ?></td>
+
 
                                     <td><?php
                                         if ($return_date == NULL) {
                                         ?>
                                             <div class="m-1">
-                                                <button class="btn btn-success my-1 btn-sm" data-due-date="<?php echo $row["due_date"]; ?>" data-borrow-id="<?php echo $row["borrow_id"]; ?>" data-book-id="<?php echo $row["book_id"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
+                                                <button class="btn btn-success my-1 btn-sm" 
+                                                data-due-date="<?php echo $row["due_date"]; ?>" 
+                                                data-borrow-id="<?php echo $row["borrow_id"]; ?>" 
+                                                data-book-id="<?php echo $row["book_id"]; ?>"
+                                                data-memberId="<?php echo $row["id"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
                                                     <i class="fas fa-edit"></i></span>
                                             </div>
                                         <?php
@@ -142,6 +149,7 @@ require_once "../../main.php";
                     <form action="<?php echo Config::indexPath() ?>?action=returnbook" method="POST" onsubmit="return validateReturnForm();">
                         <input type="text" class="d-none" id="borrowId" name="borrowId">
                         <input type="text" class="d-none" id="bookId" name="bookId">
+                        <input type="text" class="d-none" id="memberId" name="memberId">
 
 
                         <div class="mb-3 row align-items-center">
@@ -163,7 +171,7 @@ require_once "../../main.php";
                         <div class="mb-3 row align-items-center">
                             <label for="amount" class="col-sm-4 col-form-label">Fines(Rs)</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="amount">
+                                <input type="text" class="form-control" id="fines" name="fines">
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">

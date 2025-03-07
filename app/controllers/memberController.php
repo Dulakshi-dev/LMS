@@ -57,7 +57,6 @@ class MemberController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
 
-            //$password = AuthController::getPassword();
             $result = MemberModel::approveMembership($id);
 
             if ($result) {

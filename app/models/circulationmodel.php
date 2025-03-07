@@ -65,9 +65,13 @@ class CirculationModel
     }
 
 
-    public static function returnBook($borrow_id, $return_date, $book_id)
+    public static function returnBook($borrow_id, $return_date, $book_id, $fines, $memberId)
     {
         Database::ud("UPDATE `borrow` SET `return_date` = '$return_date' WHERE `borrow_id` = '$borrow_id'");
+        
+        if($fines > 0){
+            Database::insert("INSERT INTO `fines`(`amount`,`fine_borrow_id`,`fine_member_id`) VALUES('$fines','$borrow_id','$memberId')");
+        }
 
         $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
         $data = $result->fetch_assoc();
@@ -83,7 +87,8 @@ class CirculationModel
         $rs = Database::search("SELECT * FROM `borrow` 
 INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
 INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
-INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`;
+INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
+LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
 ;");
         $num = $rs->num_rows;
         $resultsPerPage = 10;
@@ -93,6 +98,7 @@ INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`;
 INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
 INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
 INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
+LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
  LIMIT $resultsPerPage OFFSET 
 $pageResults");
         return [

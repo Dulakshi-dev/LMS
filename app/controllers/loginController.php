@@ -125,7 +125,7 @@ class LoginController
                   <p>Dear Member,</p>
                   <p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
                   <div style="margin-bottom: 10px;">
-                        <a href="http://localhost/LMS/public/index.php?action=showresetpw&vcode='.$vcode.'">Click here to reset your password</a>
+                        <a href="http://localhost/LMS/public/staff/index.php?action=showresetpw&vcode='.$vcode.'">Click here to reset your password</a>
                   </div>
                   <div>
                         <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>

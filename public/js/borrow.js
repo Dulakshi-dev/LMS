@@ -1,5 +1,4 @@
 function validateReturnForm(){
-    alert("mkm");
     let isValid = true;
     let returnDate = document.getElementById("returnDate").value.trim();
     if (returnDate === "") {
@@ -67,11 +66,15 @@ function returnButtonClick(button) {
     const dueDate = button.getAttribute("data-due-date");
     const borrow_id = button.getAttribute("data-borrow-id");
     const book_id = button.getAttribute("data-book-id");
+    const memberId = button.getAttribute("data-memberId");
+
 
     
     document.getElementById("dueDate").value = dueDate;
     document.getElementById("borrowId").value = borrow_id;
     document.getElementById("bookId").value = book_id;
+    document.getElementById("memberId").value = memberId;
+
 
 }
 
@@ -91,9 +94,9 @@ function generateFine() {
 
     // Show alert based on fine amount
     if (fine > 0) {
-        document.getElementById("amount").value = fine;
+        document.getElementById("fines").value = fine;
     } else {
-        document.getElementById("amount").value = 0;
+        document.getElementById("fines").value = 0;
     }
 
     return fine;

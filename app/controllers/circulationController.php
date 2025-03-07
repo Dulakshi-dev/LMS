@@ -169,25 +169,33 @@ class CirculationController{
     }
 
     public function returnBook()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $borrow_id = $_POST['borrowId'];
-            $book_id = $_POST['bookId'];
-            $return_date = $_POST['returnDate'];
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $borrow_id = $_POST['borrowId'];
+        $book_id = $_POST['bookId'];
+        $memberId = $_POST['memberId'];
+        $return_date = $_POST['returnDate'];
+        $fines = $_POST['fines'];
 
-          
-            $result = CirculationModel::returnBook($borrow_id, $return_date, $book_id);
-            if($result){
-                header("Location: index.php?action=viewissuebooks");
-            }else{
-                echo("error");
+        // Call the returnBook method and get the result including fine amount
+        $result = CirculationModel::returnBook($borrow_id, $return_date, $book_id, $fines, $memberId);
 
-            }
-  
+        // Check if the result was successful
+        if ($result) {
+            $fineAmount = $result['fine_amount'];  // Get the fine amount from the result
+
+            // Output the fine amount for debugging
+            echo "Fine Amount: " . $fineAmount; // This will display the fine amount on the page
+
+            // Redirect after debugging (optional, can be removed if only debugging)
+            header("Location: index.php?action=viewissuebooks"); 
         } else {
-            echo json_encode(["success" => false, "message" => "Invalid request."]);
+            echo "Error: " . $result['message']; // Show error message if there is a failure
         }
+    } else {
+        echo json_encode(["success" => false, "message" => "Invalid request."]);
     }
+}
 
 
 }

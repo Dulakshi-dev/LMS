@@ -39,7 +39,7 @@ $router->add('savenewpw', [$memberProfileController, 'resetPassword']);
 $router->add('loadissuebooks', [$borrowHistoryController, 'loadBorrowBooks']); 
 $router->add('sendotp', [$authController, 'sendOTP']); 
 $router->add('verifyotp', [$authController, 'verifyOTP']); 
-$router->add('showPayment', [$authController, 'proceedPayment']); 
+$router->add('showPayment', [$paymentController, 'proceedPayment']); 
 $router->add('registerMember', [$authController, 'registerMember']); 
 $router->add('reserve', [$memberReservationController, 'reserveBook']); 
 $router->add('reservedbooks', [$memberReservationController, 'loadReservedBooks']); 
@@ -47,7 +47,9 @@ $router->add('save', [$myLibraryController, 'saveBook']);
 $router->add('savedbooks', [$myLibraryController, 'loadSavedBooks']); 
 $router->add('unsave', [$myLibraryController, 'unSaveBook']); 
 $router->add('payment_notify', [$paymentController, 'paymentNotify']);
-
+$router->add('insertPayment', [$paymentController, 'renewPayment']); 
+$router->add('forgotpassword', [$authController, 'forgotPassword']);
+$router->add('changepassword', [$authController, 'resetPassword']);
 
 
 
@@ -89,6 +91,18 @@ $router->add('borrowhistory', function () {
 
 $router->add('register', function () {
     include Config::getViewPath("member", "register.php");
+});
+
+$router->add('renewmembership', function () {
+    include Config::getViewPath("member", "renew-membership.php");
+});
+
+$router->add('showforgotpw', function () {
+    include Config::getViewPath("member", "forgot-password.php");
+});
+
+$router->add('showresetpw', function () {
+    include Config::getViewPath("member", "reset-password.php");
 });
 
 // Get the action from the URL

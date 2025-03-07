@@ -73,7 +73,7 @@
                                 <label for="rememberme">Remember me</label>
                             </div>
                             <div class="col d-flex justify-content-end">
-                                <a href="forgot-password.php" class="text-decoration-none forgot-password">Forgot Password?</a>
+                                <a href="<?php echo Config::indexPathMember() ?>?action=showforgotpw" class="text-decoration-none forgot-password">Forgot Password?</a>
                             </div>
                         </div>
 

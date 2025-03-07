@@ -49,7 +49,7 @@
                         <span class="error text-danger" id="cpwError"></span>
 
                         <!-- Hidden Verification Code -->
-                        <input class="form-control mt-4 d-none" type="text" id="vcode" name="vcode" value="<?php echo htmlspecialchars($vcode); ?>">
+                        <input type="hidden" id="vcode" name="vcode" value="<?php echo isset($_GET['vcode']) ? htmlspecialchars($_GET['vcode']) : ''; ?>">
                     </div>
 
                     <div class="form-group">

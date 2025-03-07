@@ -57,55 +57,58 @@ class MemberModel {
     public static function approveMembership($id) {
         Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
         $memberID = self::generateMemberID();
+        $password = self::generatePassword();
 
-        if ($id) {
-            Database::insert("INSERT INTO `member_login`(`member_id`, `password`, `memberId`) VALUES ('$memberID', '$', '$id')");
-            self::sendMail($id, $memberID);
-            return true;
-        } else {
-            return false;
-        }
-
-        Database::insert("INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES('$memberID','$','$id');");
+        self::sendMail($id, $memberID ,$password);
+        Database::insert("INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES('$memberID','$password','$id');");
 
         return true;
     }
 
-    public static function sendMail($id, $memberID)
+    public static function sendMail($id, $memberID, $password, $vcode = null)
     {
         $rs = Database::search("SELECT * FROM `member` WHERE `id` = '$id'");
         $row = $rs->fetch_assoc();
-
+    
         require_once Config::getServicePath('emailService.php');
-
+    
         $name = $row["fname"] . " " . $row["lname"];
         $email = $row["email"];
         $subject = 'Member ID';
-
+    
+        $resetLink = '';
+        if (!empty($vcode)) {
+            $resetLink = '<div style="margin-bottom: 10px;">
+                <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&vcode=' . $vcode . '">Click here to reset your password</a>
+            </div>';
+        }else{
+            $resetLink = '<div style="margin-bottom: 10px;">
+                <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&id='.$id.'">Click here to reset your password</a>
+            </div>';
+        }
+    
         $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
-        <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
+            <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
             <p>Dear ' . $name . ',</p>
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-            <p>We are pleased to connect with you! Here’s some important information:</p>
-            <h2>Your Member ID is ' . $memberID . '</h2>
-            <p>If you have any questions or issues, please reach out to us.</p>
-            <p>Call:[tel_num]</p>
-
-            <div style="margin-top: 20px;">
-                <p>Best regards,</p>
-                <p>Shelf Loom Team</p>
-            </div>
-        </div>';
-
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+                <p>We are pleased to connect with you! Here’s some important information:</p>
+                <h2>Your Member ID is ' . $memberID . '</h2>
+                <h2>Your temporary password is ' . $password . '</h2>
+                ' . $resetLink . '
+                <p>If you have any questions or issues, please reach out to us.</p>
+                <p>Call:[tel_num]</p>
+                <div style="margin-top: 20px;">
+                    <p>Best regards,</p>
+                    <p>Shelf Loom Team</p>
+                </div>
+            </div>';
+    
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
-
-        if ($emailSent) {
-            return true;
-        } else {
-            return false;
-        }
+    
+        return $emailSent;
     }
+    
 
     public static function generateMemberID()
     {
@@ -126,6 +129,29 @@ class MemberModel {
         return $newMemberID;
     }
 
+    public static function generatePassword($length = 12) {
+        $uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $lowercase = 'abcdefghijklmnopqrstuvwxyz';
+        $numbers = '0123456789';
+        $specialChars = '!@#$%^&*()-_=+[]{}|;:,.<>?';
+    
+        $allCharacters = $uppercase . $lowercase . $numbers . $specialChars;
+    
+        // Ensure the password contains at least one character from each category
+        $password = $uppercase[rand(0, strlen($uppercase) - 1)] .
+                    $lowercase[rand(0, strlen($lowercase) - 1)] .
+                    $numbers[rand(0, strlen($numbers) - 1)] .
+                    $specialChars[rand(0, strlen($specialChars) - 1)];
+    
+        // Generate the remaining random characters
+        for ($i = 4; $i < $length; $i++) {
+            $password .= $allCharacters[rand(0, strlen($allCharacters) - 1)];
+        }
+    
+        // Shuffle the password to make it more random
+        return str_shuffle($password);
+    }    
+
     public static function UpdateMemberDetails($member_id, $fname, $lname, $email, $phone, $address, $nic) {
       
             Database::ud("UPDATE `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` SET 
@@ -140,7 +166,6 @@ class MemberModel {
        
     }
     
-
     public static function toggleMemberStatus($id) {
        
         Database::ud("UPDATE `member` SET `status_id` = 3 - `status_id` WHERE `id` = '$id'");

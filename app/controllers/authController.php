@@ -4,16 +4,13 @@ require_once __DIR__ . '/../../main.php';
 
 class AuthController
 {
-
     private $authModel;
-    //private static $storedPassword;
 
     public function __construct()
     {
         require_once Config::getModelPath('authmodel.php');
         $this->authModel = new AuthModel();
     }
-
 
     public static function login()
     {
@@ -62,7 +59,6 @@ class AuthController
             // Generate a 6-digit OTP
             $otp = rand(100000, 999999);
 
-            // Store OTP in session with expiry time (5 minutes)
             $_SESSION['otp'] = $otp;
             $_SESSION['otp_expiry'] = time() + (5 * 60); // Current time + 5 minutes
             $_SESSION['otp_email'] = $email; // Store email for verification
@@ -126,17 +122,17 @@ class AuthController
         }
     }
 
-    public static function proceedPayment()
-    {
-        require_once Config::getServicePath('paymentService.php');
+    // public static function proceedPayment()
+    // {
+    //     require_once Config::getServicePath('paymentService.php');
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $paymentService = new PaymentService();
-            $paymentService->createPayment();
-        } else {
-            echo json_encode(["success" => false, "message" => "Invalid Request"]);
-        }
-    }
+    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //         $paymentService = new PaymentService();
+    //         $paymentService->createPayment();
+    //     } else {
+    //         echo json_encode(["success" => false, "message" => "Invalid Request"]);
+    //     }
+    // }
 
     public static function registerMember()
     {
@@ -150,7 +146,6 @@ class AuthController
             $password = $_POST['password'];
             $transactionId = $_POST['transactionId'];
 
-            //self::storePassword($password);
 
             $id = AuthModel::registerMember($nic, $address, $mobile, $email, $fname, $lname);
             $result = PaymentModel::insertPayment($transactionId, $id);
@@ -165,13 +160,91 @@ class AuthController
         }
     }
 
-    // public static function storePassword($password)
-    // {
-    //     self::$storedPassword = $password;
-    // }
+    public static function forgotPassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+            $vcode = uniqid();
 
-    // public static function getPassword()
-    // {
-    //     return self::$storedPassword;
-    // }
+            $result = AuthModel::validateEmail($email, $vcode);
+
+            if ($result) {
+                self::sendResetLink($email, $vcode);
+                exit();
+            } else {
+
+                $error = "Invalid Email";
+                exit();
+            }
+        }
+    }
+
+    public static function sendResetLink($email, $vcode)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST["email"];
+            $subject = "Reset Password";
+
+            $body = '
+               <h1 style="padding-top: 30px;">Reset your password</h1>
+               <p style = "font-size: 30px; color: black; font-weight: bold; text-align: center;">Shelf Loom</p> 
+
+               <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+                  <p>Dear Member,</p>
+                  <p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
+                  <div style="margin-bottom: 10px;">
+                        <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&vcode=' . $vcode . '">Click here to reset your password</a>
+                  </div>
+                  <div>
+                        <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
+                        <p style="margin: 0px;">Call: [tel_num]</p>
+                  </div>
+
+                  <div>
+                        <p style="margin-bottom: 0px;">Best regards,</p>
+                        <p style="margin: 0px;">Shelf Loom</p>
+                  </div>
+               </div>';
+
+            $emailService = new EmailService();
+            $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+            if ($emailSent) {
+                echo ("Email for reset sent successfully! Check Your email address");
+            } else {
+                echo ("Failed to send email.");
+            }
+        } else {
+            echo ("Invalid Request");
+        }
+    }
+
+
+    public static function resetPassword()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $password = $_POST['password'];
+            $vcode = isset($_POST['vcode']) ? trim($_POST['vcode']) : '';
+            $id = isset($_POST['id']) ? trim($_POST['id']) : '';
+
+
+            if (empty($vcode)) {
+                $result = AuthModel::changePasswordwithid($password, $id);
+                return;
+            }
+
+            if (empty($id)) {
+                $result = AuthModel::changePasswordwithvcode($password, $vcode);
+            }
+        }
+        if ($result) {
+            header("Location: index.php?action=login");
+            exit();
+        } else {
+            echo "Error: Password reset failed.";
+        }
+    }
 }

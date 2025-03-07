@@ -41,12 +41,13 @@
 
                 <div class="form-group mt-1">
 
-                    <form class="form-group mt-4" method="POST" action="index.php?route=reset_password" onsubmit="return validatePassword()">
+                    <form class="form-group mt-4" method="POST" action="index.php?action=changepassword" onsubmit="return validatePassword()">
                         <div class="bg-success-subtle p-1 rounded-2 text-center mb-4">
                             <p class="text-success">Please create a new password you don't use on any other site</p>
                         </div>
                         <!-- Hidden Verification Code -->
-                        <input type="hidden" name="vcode" value="<?php echo isset($_GET['code']) ? htmlspecialchars($_GET['code']) : ''; ?>">
+                        <input type="hidden" id="vcode" name="vcode" value="<?php echo isset($_GET['vcode']) ? htmlspecialchars($_GET['vcode']) : ''; ?>">
+                        <input type="hidden" id="id" name="id" value="<?php echo isset($_GET['id']) ? htmlspecialchars($_GET['id']) : ''; ?>">
 
                         <input class="form-control" type="password" placeholder="Create new password" id="pw" name="password">
                         <span class="error text-danger" id="pwError"></span>

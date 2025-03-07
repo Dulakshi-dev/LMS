@@ -17,7 +17,7 @@ $member_id = $_SESSION["member"]["member_id"];
     rel="stylesheet" />
 </head>
 
-<body>
+<body onload="loadprofileimg('<?php echo addslashes($profile_img); ?>');">
 
   <div class="d-flex">
     <!-- Sidebar -->
@@ -47,12 +47,13 @@ $member_id = $_SESSION["member"]["member_id"];
       <!-- User Section -->
       <div class="mt-auto text-center">
         <div class="d-flex align-items-center">
-          <img
-            src="<?php echo Config::getImagePath("user.jpg"); ?>"
+        <img
+            src=""
             alt="User"
+            id="headerprofileimg"
             class="rounded-circle me-2"
             style="height: 40px; width: 40px;" />
-          <p class="mb-0">User Name</p>
+          <p class="mb-0"><?php echo $fname . " " . $lname; ?></p>
         </div>
         <div class="d-flex"><a href="#" class="btn btn-outline-dark btn-sm mt-4 w-50 d-flex align-items-center">
             <i class="fas fa-sign-out-alt mx-2"></i>
@@ -61,7 +62,8 @@ $member_id = $_SESSION["member"]["member_id"];
       </div>
     </div>
   </div>
-
+  
+  <script src="<?php echo Config::getJsPath("test.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 

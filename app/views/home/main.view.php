@@ -11,6 +11,7 @@
         .book {
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
+        <div></div>
 
         .book:hover {
             transform: scale(1.05);

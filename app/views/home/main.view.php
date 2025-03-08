@@ -11,8 +11,7 @@
         .book {
             transition: transform 0.3s ease, opacity 0.3s ease;
         }
-        <div>kl</div>
-      <div>hgf</div>
+
         .book:hover {
             transform: scale(1.05);
             /* Or any other transformation */

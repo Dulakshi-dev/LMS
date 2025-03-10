@@ -81,9 +81,7 @@ $userController = new UserController();
                                     <td><?= htmlspecialchars($row["email"]) ?></td>
                                     <td>
                                         <button class="btn btn-info" onclick="approveMembership(<?= htmlspecialchars($row['id']) ?>);"><i class="fa fa-check" style="font-size: 10px"></i></button>
-                                        <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
-
-
+                                        <button class="btn btn-danger" onclick="rejectUser('<?php echo $row['id']; ?>');"><i class="fa fa-trash" style="font-size: 10px"></i></button>
                                     </td>
                                 </tr>
 

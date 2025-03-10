@@ -69,6 +69,41 @@ class MemberController
         }
     }
 
+    public function deactivateMember()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+
+            $result = MemberModel::deactivateMember($id);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Membership deactivated"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "User not found."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+    public function rejectMember()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+
+            $result = MemberModel::rejectMember($id);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Member Rejected"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "User not found."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+
     public function searchUsers()
     {
         $users = [];
@@ -166,6 +201,8 @@ class MemberController
         }
     }
 
+
+
     public function sendMail()
     {
         require_once Config::getServicePath('emailService.php');
@@ -220,4 +257,6 @@ class MemberController
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
     }
+
+    
 }

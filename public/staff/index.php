@@ -66,6 +66,8 @@ $router->add('updateMember', [$memberController, 'UpdateMemberDetails']);
 $router->add('loadMemberMailData', [$memberController, 'loadMailData']); 
 $router->add('changeMemberStatus', [$memberController, 'changeMemberStatus']); 
 $router->add('approvemembership', [$memberController, 'approveMembership']); 
+$router->add('deactivatemember', [$memberController, 'deactivateMember']);
+$router->add('rejectmember', [$memberController, 'rejectMember']);
 $router->add('reservationmanagement', [$reservationController, 'getAllReservations']);
 
 

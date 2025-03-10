@@ -115,10 +115,10 @@ $member_id = $_SESSION["member"]["member_id"]
                         ?>
                         </p>
 
-                        <button class="btn" id="success" 
-    onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo $row['book_id']; ?>&member_id=<?php echo $_SESSION['member']['member_id']; ?>'">
-    Reserve
-</button>
+                        <button class="btn" id="success"
+                            onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo $row['book_id']; ?>&member_id=<?php echo $_SESSION['member']['member_id']; ?>'">
+                            Reserve
+                        </button>
                         </div>
                     </div>
             <?php
@@ -127,6 +127,34 @@ $member_id = $_SESSION["member"]["member_id"]
                 }
             }
             ?>
+
+            <div class="d-flex justify-content-between align-items-center entries offset-5">
+
+                <nav aria-label="Page navigation example" class="">
+                    <ul class="pagination d-flex justify-content-center">
+                        <!-- Previous Button -->
+                        <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
+                            <a class="page-link" href="<?= Config::indexPathMember() ?>?action=savedbooks&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+
+                        <!-- Page Numbers -->
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <li class="page-item <?= $i == $page ? 'active' : '' ?>">
+                                <a class="page-link" href="<?= Config::indexPathMember() ?>?action=savedbooks&page=<?= $i ?>"><?= $i ?></a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <!-- Next Button -->
+                        <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
+                            <a class="page-link" href="<?= Config::indexPathMember() ?>?action=savedbooks&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
 
         </div>

@@ -56,15 +56,13 @@ require_once "../../main.php";
 
     <div class="container-fluid p-4">
       <div class="row">
+
         <div class="col-md-12">
-          <div class="bg-light rounded p-4 mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5>Recommended</h5>
-              <a href="<?php echo Config::indexPathMember() ?>?action=getallbooks" class="text-decoration-none">See All <i class="fa fa-angle-right"></i></a>
-            </div>
+          <div class="bg-light rounded p-4">
+
             <div class="row g-4">
-              <?php if (!empty($booksrec)) {
-                foreach ($booksrec as $row) { ?>
+              <?php if (!empty($books)) {
+                foreach ($books as $row) { ?>
                   <div class="col-md-3 col-sm-6">
                     <div class="book-card">
                       <div class="book-image">
@@ -81,9 +79,9 @@ require_once "../../main.php";
                           data-id="<?php echo $row["book_id"]; ?>"
                           data-description="<?php echo $row["description"]; ?>"
                           data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
-
                           View Details
                         </button>
+
                       </div>
                     </div>
                   </div>
@@ -94,84 +92,6 @@ require_once "../../main.php";
             </div>
           </div>
         </div>
-
-        <div class="col-md-12">
-          <div class="bg-light rounded p-4 mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5>New Arrivals</h5>
-            </div>
-            <div class="row g-4">
-              <?php if (!empty($latestbooks)) {
-                foreach ($latestbooks as $row) { ?>
-                  <div class="col-md-3 col-sm-6">
-                    <div class="book-card">
-                      <div class="book-image">
-                        <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-                      </div>
-                      <div class="p-3 d-flex justify-content-between align-items-center">
-                        <div class="text-start">
-                          <div class="book-title"><?php echo $row["title"]; ?></div>
-                          <div><?php echo $row["author"]; ?></div>
-                        </div>
-                        <button class="btn btn-sm view-details" id="success"
-                          data-title="<?php echo $row["title"]; ?>"
-                          data-author="<?php echo $row["author"]; ?>"
-                          data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>"
-                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
-
-                          View Details
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              <?php }
-              } else {
-                echo "<p>No Books found</p>";
-              } ?>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-12">
-          <div class="bg-light rounded p-4 mb-5">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <h5>Top Books</h5>
-            </div>
-            <div class="row g-4">
-              <?php if (!empty($topbooks)) {
-                foreach ($topbooks as $row) { ?>
-                  <div class="col-md-3 col-sm-6">
-                    <div class="book-card">
-                      <div class="book-image">
-                        <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-                      </div>
-                      <div class="p-3 d-flex justify-content-between align-items-center">
-                        <div class="text-start">
-                          <div class="book-title"><?php echo $row["title"]; ?></div>
-                          <div><?php echo $row["author"]; ?></div>
-                        </div>
-                        <button class="btn btn-sm view-details" id="success"
-                          data-title="<?php echo $row["title"]; ?>"
-                          data-author="<?php echo $row["author"]; ?>"
-                          data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>"
-                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
-
-                          View Details
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              <?php }
-              } else {
-                echo "<p>No Books found</p>";
-              } ?>
-            </div>
-          </div>
-        </div>
-
-
       </div>
     </div>
   </div>
@@ -207,6 +127,7 @@ require_once "../../main.php";
   </div>
   <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
 
+  <script src="<?php echo Config::getJsPath("memberDashboard.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
   <script>

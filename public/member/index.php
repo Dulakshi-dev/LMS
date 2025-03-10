@@ -29,8 +29,8 @@ $paymentController = new PaymentController();
 
 
 $router->add('memberlogin', [$authController, 'login']);
-$router->add('loadbooks', [$memberDashboardController, 'getAllBooks']);
-$router->add('loadreccomendedbooks', [$memberDashboardController, 'getRecommendedBooks']);
+$router->add('loaddashboardbooks', [$memberDashboardController, 'getDashboardBooks']);
+$router->add('getallbooks', [$memberDashboardController, 'getAllBooks']);
 $router->add('loadMemberData', [$memberProfileController, 'loadMemberDetails']); 
 $router->add('updateprofile', [$memberProfileController, 'updateProfile']); 
 $router->add('serveprofimage', [$memberProfileController, 'serveProfileImage']);

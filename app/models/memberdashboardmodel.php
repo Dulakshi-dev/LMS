@@ -75,9 +75,30 @@ $pageResults");
             )
             LIMIT 10");
         
-        $num = $rs->num_rows;
         return [
-            'total' => $num,
+            'results' => $rs
+        ];
+    }
+
+    public static function getLatestArrivalBooks()
+    {
+        $rs = Database::search("SELECT * FROM `book` ORDER BY CAST(SUBSTRING(`book_id`, 3) AS UNSIGNED) DESC LIMIT 4;");
+        
+        return [
+            'results' => $rs
+        ];
+    }
+
+    public static function getTopBooks()
+    {
+        $rs = Database::search("SELECT book.*, COUNT(borrow.borrow_book_id) AS borrow_count
+FROM book
+INNER JOIN borrow ON book.book_id = borrow.borrow_book_id
+GROUP BY book.book_id
+ORDER BY borrow_count DESC
+LIMIT 4;");
+        
+        return [
             'results' => $rs
         ];
     }

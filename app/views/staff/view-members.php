@@ -78,35 +78,14 @@ $userController = new UserController();
                                     <td><?= htmlspecialchars($row["mobile"]) ?></td>
                                     <td><?= htmlspecialchars($row["email"]) ?></td>
                                     <td>
-                                        <?php
-                                        if ($row["status_id"] == '1') {
-                                        ?>
+                                        
                                             <div class="m-1">
                                                 <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate('<?php echo $row['member_id']; ?>');"><i class="fa fa-edit" style="font-size: 10px"></i></button>
                                                 <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal" onclick="loadMailData('<?php echo $row['member_id']; ?>');"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
                                             </div>
                                             <div class="m-1">
-                                                <button class="btn btn-info" onclick="changeUserStatus('<?php echo $row['id']; ?>');"><i class="fa fa-check" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
+                                                <button class="btn btn-danger" onclick="deactivateUser('<?php echo $row['id']; ?>');"><i class="fa fa-trash" style="font-size: 10px"></i></button>
                                             </div>
-
-
-
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <div class="m-1">
-                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate();"><i class="fa fa-edit" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal" onclick="loadMailData('<?php echo $row['user_id']; ?>');"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
-                                            </div>
-                                            <div class="m-1">
-                                                <button class="btn btn-info" onclick="changeUserStatus('<?php echo $row['id']; ?>');"><i class="fa fa-times" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
-                                            </div>
-
-                                        <?php
-                                        }
-                                        ?>
                                     </td>
                                 </tr>
 

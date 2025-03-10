@@ -58,9 +58,10 @@ class PaymentController
             } else {
                 echo json_encode(['success' => false, 'message' => 'Payment failed or was incomplete.']);
             }
-        }else{
+        } else {
             echo json_encode(['success' => false, 'message' => 'Invalid Request']);
-
         }
     }
+
+    
 }

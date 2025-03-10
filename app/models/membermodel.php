@@ -31,6 +31,16 @@ class MemberModel {
         ];
     }
 
+    public static function deactivateMember($id) {
+        $rs = Database::ud("UPDATE `member` SET `status_id`='2' WHERE `id`='$id'");
+        return true;
+    }
+
+    public static function rejectMember($id) {
+        $rs = Database::ud("UPDATE `member` SET `status_id`='4' WHERE `id`='$id'");
+        return true;
+    }
+
 
     public static function searchMembers($memberId, $nic, $userName) {
 

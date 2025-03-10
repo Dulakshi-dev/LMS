@@ -27,36 +27,38 @@ class MemberDashboardController
     
         $resultsPerPage = 10;
         $totalPages = ceil($totalBooks / $resultsPerPage);
+        require_once Config::getViewPath("member", 'view-all-books.php');
+    }
     
-        // Fetch recommended books
-        $recData = MemberDashboardModel::getRecommendedBooks();
-    
-        $totalRecBooks = $recData['total']; 
-        $recBooksResult = $recData['results']; 
-    
+
+    public function getDashboardBooks()
+    {
+        $data = MemberDashboardModel::getRecommendedBooks();
+        $recBooksResult = $data['results']; 
+
         $booksrec = [];
         while ($row = $recBooksResult->fetch_assoc()) {
             $booksrec[] = $row;
         }
-    
-        require_once Config::getViewPath("member", 'dashboard.php');
-    }
-    
 
-    public function getRecommendedBooks()
-    {
-        $data = MemberDashboardModel::getRecommendedBooks();
+        $newArrivalData = MemberDashboardModel::getLatestArrivalBooks();
+        $newArrivalResult = $newArrivalData['results']; 
 
-        $totalBooks = $data['total']; 
-        $booksResult = $data['results']; 
-
-        $booksrec = [];
-        while ($row = $booksResult->fetch_assoc()) {
-            $booksrec[] = $row;
+        $latestbooks = [];
+        while ($row = $newArrivalResult->fetch_assoc()) {
+            $latestbooks[] = $row;
         }
 
-        $resultsPerPage = 10;
-        $totalPages = ceil($totalBooks / $resultsPerPage); 
+        $topData = MemberDashboardModel::getTopBooks();
+        $topResult = $topData['results']; 
+        $topbooks = [];
+        while ($row = $topResult->fetch_assoc()) {
+            $topbooks[] = $row;
+        }
+
+
         require_once Config::getViewPath("member", 'dashboard.php');
+
+
     }
 }

@@ -77,4 +77,20 @@ WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY
             return false;
         }
     }
+
+    public static function checkOverduePayments()
+    {
+        $today = date('Y-m-d');
+
+        $result = Database::search("SELECT `member_id` FROM `payment` JOIN `member` ON `payment`.`member_id` = `member`.`id` WHERE DATE(`payment`.`next_due_date`) < '$today';");
+        
+        while ($row = $result->fetch_assoc()) {
+            $member_id = $row['member_id'];
+            self::deactivateMembership($member_id);        }
+    }
+
+    private static function deactivateMembership($id)
+    {
+        Database::ud("UPDATE `member` SET `status_id` = '2' WHERE `id` = '$id'");
+    }
 }

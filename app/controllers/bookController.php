@@ -202,7 +202,7 @@ class BookController
                 require_once Config::getViewPath("staff", 'view-books.php');
             }
         } else {
-            return []; // Return an empty array or an appropriate error response
+            return []; 
         }
     }
 }

@@ -156,6 +156,51 @@ function loadMailData(member_id) {
         });
 }
 
+function deactivateUser(member_id) {
+
+    var formData = new FormData();
+    formData.append("id", member_id);
+
+    fetch("index.php?action=deactivatemember", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                alert("Member Deactivated");
+            } else {
+                alert("Failed to load user data. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+}
+
+function rejectUser(member_id) {
+
+    var formData = new FormData();
+    formData.append("id", member_id);
+
+    fetch("index.php?action=rejectmember", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                alert("Member Rejected");
+                location.reload();
+            } else {
+                alert("Failed to load user data. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+}
+
 function sendEmail() {
     var name = document.getElementById("name").value.trim();
     var email = document.getElementById("emailadd").value.trim();

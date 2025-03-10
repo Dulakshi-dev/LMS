@@ -20,12 +20,12 @@ class MemberReservationController
 
                 $result = MemberReservationModel::reserveBook($book_id, $id);
     
-                if ($result) {
-                    header("Location: index.php?action=loadbooks");
+                if ($result["success"]) {
+                    header("Location: index.php?action=loaddashboardbooks");
                 
     
                 } else {
-                    echo "<script>alert('Book Already Reserved!'); window.location.href='index.php?action=loadbooks';</script>";
+                    echo "<script>alert('{$result['message']}'); window.location.href='index.php?action=loaddashboardbooks';</script>";
                 }  
             }else{
                 
@@ -33,6 +33,7 @@ class MemberReservationController
 
             }
     }
+
 
     public function loadReservedBooks()
     {

@@ -22,10 +22,10 @@ class MyLibraryController
     
                 if ($result) {
                     
-                    header("Location: index.php?action=loadbooks");
+                    header("Location: index.php?action=loaddashboardbooks");
             
                 } else {
-                    echo "<script>alert('Book already saved!'); window.location.href='index.php?action=loadbooks';</script>";
+                    echo "<script>alert('Book already saved!'); window.location.href='index.php?action=loaddashboardbooks';</script>";
                 }  
             }else{
                 
@@ -37,14 +37,14 @@ class MyLibraryController
     public function loadSavedBooks()
     {
         $id = $_SESSION["member"]["id"];
-        $data = MyLibraryModel::getSavedBooks($id);
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $resultsPerPage = 10; 
 
-        $booksResult = $data['results']; 
+        $data = MyLibraryModel::getSavedBooks($page, $id, $resultsPerPage);
 
-        $books = [];
-        while ($row = $booksResult->fetch_assoc()) {
-            $books[] = $row;
-        }
+        $totalBooks = $data['total'];
+        $books = $data['results']; 
+        $totalPages = ceil($totalBooks / $resultsPerPage);
 
         require_once Config::getViewPath("member", 'my-library.php');
     }
@@ -53,21 +53,17 @@ class MyLibraryController
     {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 $book_id = $_GET['book_id'];
-                $id = $_SESSION["id"];
+                $id = $_SESSION["member"]["id"];
 
                 $result = MyLibraryModel::unSaveBook($book_id, $id);
     
                 if ($result) {
-                    
                     header("Location: index.php?action=savedbooks");
-            
                 } else {
                     echo json_encode(["success" => false, "message" => "Error"]);
                 }  
-            }else{
-                
+            }else{               
                 echo json_encode(["success" => false, "message" => "Invalid Request"]);
-
             }
     }
 }

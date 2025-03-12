@@ -201,8 +201,6 @@ class MemberController
         }
     }
 
-
-
     public function sendMail()
     {
         require_once Config::getServicePath('emailService.php');

@@ -48,7 +48,7 @@ require_once "../../main.php";
 
                                     <i class="fa fa-book display-1 text-success"></i>
                                     <p class="fw-bold fs-5 mt-3 text-dark">View All Books</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewBook" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewBooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
 
                                 </div>
 

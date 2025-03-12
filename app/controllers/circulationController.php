@@ -11,6 +11,39 @@ class CirculationController{
         $this->circulationModel = new CirculationModel();
     }
 
+    public function getAllBorrowBooks()
+    {
+        $resultsPerPage = 10;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; 
+            $bookid = $_POST['bookid'] ?? null;
+            $memberid = $_POST['memberid'] ?? null;
+
+            if (!empty($bookid) || !empty($memberid)) {
+                $bookData = CirculationModel::searchBorrowData($bookid, $memberid, $page, $resultsPerPage);
+             }else {
+                $bookData = CirculationModel::getAllBorrowData($page, $resultsPerPage);
+            }
+
+            $issuebooks = $bookData['results'] ?? [];
+            $total = $bookData['total'] ?? 0;
+            $totalPages = ceil($total / $resultsPerPage);
+        
+            echo json_encode([
+                "success" => true,
+                "issuebooks" => $issuebooks,
+                "total" => $total,
+                "totalPages" => $totalPages,
+                "currentPage" => $page
+            ]);
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+
+        }
+    }
+
     public function loadBookDetails()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -124,47 +157,6 @@ class CirculationController{
             }
         } else {
             echo("Invalid Request");
-        }
-    }
-
-
-    public function getAllBorrowBooks()
-    {
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-        $data = CirculationModel::getAllBorrowData($page);
-
-        $totalBooks = $data['total']; 
-        $booksResult = $data['results']; 
-
-        $books = [];
-        while ($row = $booksResult->fetch_assoc()) {
-            $books[] = $row;
-        }
-
-        $resultsPerPage = 10;
-        $totalPages = ceil($totalBooks / $resultsPerPage); 
-
-        require_once Config::getViewPath("staff", 'view-issue-book.php');
-    }
-
-    public function searchBorrowBooks()
-    {
-        $books = [];
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve input from the POST request
-            $memberid = $_POST['memberid'] ?? null;
-            $bookid = $_POST['bookid'] ?? null;
-
-            if (empty($memberid) && empty($bookid)) {
-                $books = CirculationModel::getAllBorrowData(1);
-                require_once Config::getViewPath("staff", 'view-issue-book.php');
-            } else {
-                $books =  CirculationModel::searchBorrowBooks($memberid, $bookid);
-                require_once Config::getViewPath("staff", 'view-issue-book.php');
-            }
-        } else {
-            return []; // Return an empty array or an appropriate error response
         }
     }
 

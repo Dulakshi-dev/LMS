@@ -14,21 +14,36 @@ class BookController
 
     public function getAllBooks()
     {
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-        $data = BookModel::getAllBooks($page);
-
-        $totalBooks = $data['total']; 
-        $booksResult = $data['results']; 
-
-        $books = [];
-        while ($row = $booksResult->fetch_assoc()) {
-            $books[] = $row;
-        }
-
         $resultsPerPage = 10;
-        $totalPages = ceil($totalBooks / $resultsPerPage); 
 
-        require_once Config::getViewPath("staff", 'view-books.php');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; 
+            $bookid = $_POST['bookid'] ?? null;
+            $title = $_POST['title'] ?? null;
+            $isbn = $_POST['isbn'] ?? null;
+
+            if (!empty($bookid) || !empty($title) || !empty($isbn)) {
+                $bookData = BookModel::searchBooks($bookid, $title, $isbn, $page, $resultsPerPage);
+             }else {
+                $bookData = BookModel::getAllBooks($page, $resultsPerPage);
+            }
+
+            $books = $bookData['results'] ?? [];
+            $total = $bookData['total'] ?? 0;
+            $totalPages = ceil($total / $resultsPerPage);
+        
+            echo json_encode([
+                "success" => true,
+                "books" => $books,
+                "total" => $total,
+                "totalPages" => $totalPages,
+                "currentPage" => $page
+            ]);
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+
+        }
     }
 
     public function loadBookDetails()
@@ -183,26 +198,22 @@ class BookController
         exit;
     }
 
-
-    public function searchBooks()
+    public function deactivateBook()
     {
-        $books = [];
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve input from the POST request
-            $bookid = $_POST['bid'] ?? null;
-            $title = $_POST['title'] ?? null;
-            $isbn = $_POST['isbn'] ?? null;
+            $book_id = $_POST['book_id'];
 
-            if (empty($title) && empty($isbn) && empty($bookid)) {
-                $books = BookModel::getAllBooks(1);
-                require_once Config::getViewPath("staff", 'view-books.php');
+            $result = BookModel::deactivateBook($book_id);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Book deactivated"]);
             } else {
-                $books =  BookModel::searchBooks($title, $isbn, $bookid);
-                require_once Config::getViewPath("staff", 'view-books.php');
+                echo json_encode(["success" => false, "message" => "Book not found."]);
             }
         } else {
-            return []; 
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
     }
+
+   
 }

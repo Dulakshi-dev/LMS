@@ -1,10 +1,8 @@
 <?php
 require_once "../../main.php";
 
-
-require_once Config::getControllerPath("usercontroller.php");
-
-$userController = new UserController();
+$totalPages = $totalPages ?? 1;
+$page = $page ?? 1;
 
 
 ?>
@@ -20,7 +18,7 @@ $userController = new UserController();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body>
+<body onload="loadUsers();">
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
@@ -36,16 +34,15 @@ $userController = new UserController();
             </div>
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
-                    <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchUsers">
-                        <input name="memberId" class="form-control" type="text" placeholder="Type Membership ID">
+                    <input id="memberId" name="memberId" class="form-control" type="text" placeholder="Type Membership ID">
                 </div>
                 <div class="col-md-3 mt-2">
-                    <input name="nic" class="form-control" type="text" placeholder="Type NIC">
+                    <input id="nic" name="nic" class="form-control" type="text" placeholder="Type NIC">
                 </div>
                 <div class="col-md-6 mt-2">
                     <div class="d-flex">
-                        <input name="userName" class="form-control" type="text" placeholder="Type User Name">
-                        <button type="submit" name="search" class="btn btn-primary mx-3 px-3"><i class="fa fa-search"></i></button>
+                        <input id="userName" name="userName" class="form-control" type="text" placeholder="Type User Name">
+                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadUsers();"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
                 </form>
@@ -64,83 +61,14 @@ $userController = new UserController();
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php
-                        if (empty($users)) {
-                            echo "<tr><td colspan='7'>No users found</td></tr>";
-                        } else {
-                            foreach ($users as $row) { ?>
-                                <tr>
-                                    <td><?= htmlspecialchars($row["user_id"]) ?></td>
-                                    <td><?= htmlspecialchars($row["nic"]) ?></td>
-                                    <td><?= htmlspecialchars($row["fname"] . " " . $row["lname"]) ?></td>
-                                    <td><?= htmlspecialchars($row["address"]) ?></td>
-                                    <td><?= htmlspecialchars($row["mobile"]) ?></td>
-                                    <td><?= htmlspecialchars($row["email"]) ?></td>
-                                    <td>
-                                        <?php
-                                        if ($row["status_id"] == '1') {
-                                        ?>
-                                            <div class="m-1">
-                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate('<?php echo $row['user_id']; ?>');"><i class="fa fa-edit" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal" onclick="loadMailData('<?php echo $row['user_id']; ?>');"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
-                                            </div>
-                                            <div class="m-1">
-                                                <button class="btn btn-info" onclick="changeUserStatus('<?php echo $row['id']; ?>');"><i class="fa fa-check" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
-                                            </div>
+                    <tbody id="userTableBody">
 
-
-
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <div class="m-1">
-                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateDetailsModal" onclick="loadUserDataUpdate();"><i class="fa fa-edit" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#mailModal" onclick="loadMailData('<?php echo $row['user_id']; ?>');"><i class="fa fa-envelope" style="font-size: 10px"></i></button>
-                                            </div>
-                                            <div class="m-1">
-                                                <button class="btn btn-info" onclick="changeUserStatus('<?php echo $row['id']; ?>');"><i class="fa fa-times" style="font-size: 10px"></i></button>
-                                                <button class="btn btn-danger"><i class="fa fa-trash" style="font-size: 10px"></i></button>
-                                            </div>
-
-                                        <?php
-                                        }
-                                        ?>
-                                    </td>
-                                </tr>
-
-                        <?php }
-                        }
-                        ?>
                     </tbody>
                 </table>
             </div>
 
-            <nav aria-label="Page navigation example" class="">
-                <ul class="pagination d-flex justify-content-center">
-                    <!-- Previous Button -->
-                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPath() ?>?action=usermanagement&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+            <div id="pagination"></div>
 
-                    <!-- Page Numbers -->
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                            <a class="page-link" href="<?= Config::indexPath() ?>?action=usermanagement&page=<?= $i ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <!-- Next Button -->
-                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPath() ?>?action=usermanagement&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
     </div>
 
@@ -151,8 +79,7 @@ $userController = new UserController();
             <div class="modal-content p-3">
                 <div class="d-flex justify-content-between align-items-center m-3">
                     <h3 class="mb-0">Edit User Detail</h3>
-                    <i class="fa fa-close text-black" style="cursor: pointer;" data-bs-dismiss="modal" aria-label="Close"></i>
-
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                 </div>
                 <div class="border border-2"></div>
@@ -191,7 +118,7 @@ $userController = new UserController();
                         <span id="addressError" class="text-danger"></span> <!-- Address Error -->
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="button"  class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
+                        <button type="button" class="btn btn-primary mt-3 px-4" onclick="updateUserDetails();">Update User Details</button>
                     </div>
                 </div>
 
@@ -205,7 +132,7 @@ $userController = new UserController();
             <div class="modal-content">
                 <div class="d-flex justify-content-between align-items-center m-3">
                     <h3 class="mb-0">Send Email</h3>
-                    <i class="fa fa-close text-black" style="cursor: pointer;" data-bs-dismiss="modal" aria-label="Close"></i>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="border border-2"></div>
                 <div class="p-4">
@@ -239,6 +166,8 @@ $userController = new UserController();
 
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("user.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

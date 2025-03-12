@@ -12,7 +12,7 @@ require_once "../../main.php";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body>
+<body onload="loadIssuedBooks();">
 
     <?php include "dash_header.php"; ?>
 
@@ -23,7 +23,6 @@ require_once "../../main.php";
             <?php include "dash_sidepanel.php"; ?>
         </div>
         <div class="container-fluid bg-white m-5">
-            <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBorrowBooks">
 
                 <div class="row m-3">
                     <div class="col-md-6 my-3">
@@ -31,13 +30,11 @@ require_once "../../main.php";
                     </div>
                     <div class="col-md-6 d-flex my-3">
                         <input id="bookid" name="bookid" type="text" class="form-control mx-3" placeholder="Enter Book ID">
-                        <button class="btn btn-primary ml-3 px-4"><i class="fa fa-search px-2"></i></button>
+                        <button class="btn btn-primary ml-3 px-4" onclick="loadIssuedBooks()"><i class="fa fa-search px-2"></i></button>
                     </div>
                 </div>
-            </form>
 
             <div class="border border-secondary mb-4"></div>
-
             <div class="px-1">
                 <table class="table">
                     <thead class="thead-light">
@@ -55,84 +52,15 @@ require_once "../../main.php";
 
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php
-                        if (empty($books)) {
-                            echo "<tr><td colspan='7'>No Books found</td></tr>";
-                        } else {
-
-                            foreach ($books as $row) {
-                                $return_date = $row["return_date"];
-
-                        ?>
-                                <tr>
-                                    <td><?php echo $row["borrow_id"]; ?></td>
-                                    <td><?php echo $row["book_id"]; ?></td>
-                                    <td><?php echo $row["title"]; ?></td>
-                                    <td><?php echo $row["member_id"]; ?></td>
-                                    <td><?php echo $row["fname"] . " " . $row["lname"]; ?></td>
-                                    <td><?php echo $row["borrow_date"]; ?></td>
-                                    <td><?php echo $row["due_date"]; ?></td>
-                                    <td><?php echo $row["return_date"]; ?></td>
-                                    <td><?php echo $row["amount"]; ?></td>
-
-
-                                    <td><?php
-                                        if ($return_date == NULL) {
-                                        ?>
-                                            <div class="m-1">
-                                                <button class="btn btn-success my-1 btn-sm" 
-                                                data-due-date="<?php echo $row["due_date"]; ?>" 
-                                                data-borrow-id="<?php echo $row["borrow_id"]; ?>" 
-                                                data-book-id="<?php echo $row["book_id"]; ?>"
-                                                data-memberId="<?php echo $row["id"]; ?>" onclick="returnButtonClick(this)" data-bs-toggle="modal" data-bs-target="#borrowBookAction">
-                                                    <i class="fas fa-edit"></i></span>
-                                            </div>
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <p class="text-danger">Book Returned</p>
-                                        <?php
-
-                                        }
-                                        ?>
-
-
-                                    </td>
-                                </tr>
-                        <?php
-                            }
-                        }
-
-                        ?>
+                    <tbody id="issueBookTableBody">
+                    
                     </tbody>
                 </table>
 
             </div>
-            <nav aria-label="Page navigation example" class="">
-                <ul class="pagination d-flex justify-content-center">
-                    <!-- Previous Button -->
-                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewissuebook&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+            <div id="pagination"></div>
 
-                    <!-- Page Numbers -->
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                            <a class="page-link" href="<?= Config::indexPath() ?>?action=viewissuebook&page=<?= $i ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <!-- Next Button -->
-                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewissuebook&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+         
         </div>
 
     </div>
@@ -184,6 +112,7 @@ require_once "../../main.php";
     </div>
 
     <!-- Bootstrap and JavaScript -->
+    <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
     <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

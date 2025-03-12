@@ -14,55 +14,39 @@ class UserController
         $this->userModel = new UserModel();
     }
 
-    public function getAllUsers()
+    public function loadUsers()
     {
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; 
-        $data = UserModel::getAllUsers($page);
-
-        $totalUsers = $data['total']; 
-        $usersResult = $data['results']; 
-
-        $users = [];
-        while ($row = $usersResult->fetch_assoc()) {
-            $users[] = $row;
-        }
-
-        $resultsPerPage = 1;
-        $totalPages = ceil($totalUsers / $resultsPerPage); 
-
-        require_once Config::getViewPath("staff", 'user-management.php');
-    }
-
-    public function searchUsers()
-    {
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-    
+        $resultsPerPage = 10;
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve input from the POST request
-            $memberId = $_POST['memberId'] ?? null;
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+            $memberId = $_POST['memberid'] ?? null;
             $nic = $_POST['nic'] ?? null;
-            $userName = $_POST['userName'] ?? null;
-    
-            if (empty($memberId) && empty($nic) && empty($userName)) {
-                // No search fields filled, get all users
-                $usersData = UserModel::getAllUsers($page);
-            } else {
-                // Search users based on input fields
-                $usersData = UserModel::searchUsers($memberId, $nic, $userName, $page);
+            $userName = $_POST['username'] ?? null;
+
+            if (!empty($memberId) || !empty($nic) || !empty($userName)) {
+                $usersData = UserModel::searchUsers($memberId, $nic, $userName, $page, $resultsPerPage);
+             }else {
+                $usersData = UserModel::getAllUsers($page, $resultsPerPage);
             }
-    
-            $users = $usersData['results']; // Extract the list of users
-            $total = $usersData['total'];   // Total number of results
-    
-            require_once Config::getViewPath("staff", 'user-management.php');
-        } else {
-            // For non-POST requests, redirect or handle gracefully
-            header("Location: " . Config::indexPath() . "?action=userManagement");
-            exit();
+        
+            $users = $usersData['results'] ?? [];
+            $total = $usersData['total'] ?? 0;
+            $totalPages = ceil($total / $resultsPerPage);
+        
+            echo json_encode([
+                "success" => true,
+                "users" => $users,
+                "total" => $total,
+                "totalPages" => $totalPages,
+                "currentPage" => $page
+            ]);
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+
         }
     }
     
-
     public function loadUserDetails()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -82,7 +66,7 @@ class UserController
                     "email" => $userData['email'],
                     "mobile" => $userData['mobile'],
                     "address" => $userData['address'],
-                    "profile_img" =>$userData['profile_img']
+                    "profile_img" => $userData['profile_img']
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);
@@ -181,20 +165,19 @@ class UserController
         }
     }
 
-    public function changeUserStatus(){
+    public function deactivateUser()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
 
-            $result = UserModel::toggleUserStatus($id);
-            if($result){
-                echo json_encode(["success" => true, "message" => "User Status Changed"]);
+            $result = UserModel::deactivateUser($id);
 
-            }else{
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Membership deactivated"]);
+            } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);
-
             }
-
-        }else{
+        } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
     }

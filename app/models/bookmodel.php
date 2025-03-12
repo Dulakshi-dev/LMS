@@ -1,24 +1,96 @@
 <?php
-
-require_once __DIR__ . '../../../database/connection.php';
+require_once config::getdbPath();
 
 class BookModel
 {
 
-    public static function getAllBooks($page)
+    public static function getAllBooks($page, $resultsPerPage)
     {
-        $rs = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN `status` ON book.status_id = status.status_id INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id`");
-        $num = $rs->num_rows;
-        $resultsPerPage = 10;
         $pageResults = ($page - 1) * $resultsPerPage;
+        $totalBooks = self::getTotalBooks();
+        $rs = Database::search("SELECT * FROM book 
+        INNER JOIN category ON book.category_id = category.category_id 
+        INNER JOIN `status` ON book.status_id = status.status_id 
+        INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
+        WHERE `book`.`status_id`='1'
+        LIMIT $resultsPerPage OFFSET $pageResults");
 
-        $rs2 = Database::search("SELECT * FROM book INNER JOIN category ON book.category_id = category.category_id INNER JOIN `status` ON book.status_id = status.status_id INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` LIMIT $resultsPerPage OFFSET 
-$pageResults");
+        $books = [];
+
+        while ($row = $rs->fetch_assoc()) {
+            $books[] = $row;
+        }
         return [
-            'total' => $num,
-            'results' => $rs2
+            'total' => $totalBooks,
+            'results' => $books
         ];
+
     }
+
+    private static function getTotalBooks()
+    {
+        $result = Database::search("SELECT COUNT(*) AS total FROM book 
+        INNER JOIN category ON book.category_id = category.category_id 
+        INNER JOIN `status` ON book.status_id = status.status_id 
+        INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
+        WHERE `book`.`status_id`='1'");
+        $row = $result->fetch_assoc();
+        return $row['total'] ?? 0;
+    }
+
+    public static function searchBooks($bookid, $title, $isbn, $page, $resultsPerPage)
+    {
+        $pageResults = ($page - 1) * $resultsPerPage;
+        $totalSearch = self::getTotalSearchResults($title, $isbn, $bookid);
+
+        $sql = "SELECT * FROM `book`
+        INNER JOIN category ON book.category_id = category.category_id 
+        INNER JOIN `status` ON book.status_id = status.status_id 
+        INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
+        WHERE `book`.`status_id`='1' AND 1";
+       
+        if (!empty($bookid)) {
+            $sql .= " AND `book_id` LIKE '%$bookid%'";
+        }
+        if (!empty($title)) {
+            $sql .= " AND `title` LIKE '%$title%'";
+        }
+        if (!empty($isbn)) {
+            $sql .= " AND `isbn` LIKE '%$isbn%'";
+        }
+        $sql .= "LIMIT $resultsPerPage OFFSET $pageResults"; 
+
+        $rs = Database::search($sql);
+        $books = [];
+        while ($row = $rs->fetch_assoc()) {
+            $books[] = $row;
+        }
+        return ['results' => $books, 'total' => $totalSearch];
+    }
+
+    private static function getTotalSearchResults($title, $isbn, $bookid)
+    {
+        $countQuery = "SELECT COUNT(*) as total FROM `book`
+        INNER JOIN category ON book.category_id = category.category_id 
+        INNER JOIN `status` ON book.status_id = status.status_id 
+        INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
+        WHERE `book`.`status_id`='1' AND 1";
+        
+        if (!empty($bookid)) {
+            $countQuery .= " AND `book_id` LIKE '%$bookid%'";
+        }
+        if (!empty($title)) {
+            $countQuery .= " AND `title` LIKE '%$title%'";
+        }
+        if (!empty($isbn)) {
+            $countQuery .= " AND `isbn` LIKE '%$isbn%'";
+        }
+    
+        $result = Database::search($countQuery);
+        $row = $result->fetch_assoc();
+        return $row['total'] ?? 0;
+    }
+     
 
     public static function loadBookDetails($id)
     {
@@ -54,23 +126,6 @@ $pageResults");
         }
 
         return $languages;
-    }
-
-    public static function searchBooks($title, $isbn, $bookid)
-    {
-        $sql = "SELECT * FROM `book` WHERE 1";
-        if (!empty($bookid)) {
-            $sql .= " AND `book_id` LIKE '%$bookid%'";
-        }
-        if (!empty($title)) {
-            $sql .= " AND `title` LIKE '%$title%'";
-        }
-        if (!empty($isbn)) {
-            $sql .= " AND `isbn` LIKE '%$isbn%'";
-        }
-
-        $rs = Database::search($sql);
-        return $rs;
     }
 
     public static function updateBookDetails($book_id, $isbn, $title, $author, $category, $language, $pubYear, $quantity, $description)
@@ -115,4 +170,10 @@ $pageResults");
         }
         return $newBookID;
     }
+
+    public static function deactivateBook($book_id) {
+        $rs = Database::ud("UPDATE `book` SET `status_id`='2' WHERE `book_id`='$book_id'");
+        return true;
+    }
+
 }

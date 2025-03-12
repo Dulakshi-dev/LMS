@@ -1,4 +1,92 @@
-function validateReturnForm(){
+function loadIssuedBooks(page = 1) {
+    var memberid = document.getElementById("memberid").value.trim();
+    var bookid = document.getElementById("bookid").value.trim();
+
+    let formData = new FormData();
+    formData.append("page", page);
+    formData.append("memberid", memberid);
+    formData.append("bookid", bookid);
+
+    fetch("index.php?action=loadissuedbooks", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            let tableBody = document.getElementById("issueBookTableBody");
+            tableBody.innerHTML = "";
+
+            if (resp.success && resp.issuebooks.length > 0) {
+                resp.issuebooks.forEach(issuebook => {
+                    let row = `
+                    <tr>
+                        <td>${issuebook.borrow_id}</td>
+                        <td>${issuebook.borrow_book_id}</td>
+                        <td>${issuebook.title} </td>
+                        <td>${issuebook.member_id}</td>
+                        <td>${issuebook.fname}</td>
+                        <td>${issuebook.borrow_date}</td>
+                        <td>${issuebook.due_date}</td>
+                        <td>${issuebook.return_date}</td>
+                        <td>${issuebook.amount}</td>
+                        <td>`;
+
+                    if (issuebook.return_date == null) {
+                        row += `<div class="m-1">
+                            <button class="btn btn-success my-1 btn-sm return-book"
+                                data-due-date="${issuebook.due_date}"
+                                data-borrow-id="${issuebook.borrow_id}"
+                                data-book-id="${issuebook.borrow_book_id}"
+                                data-member-id="${issuebook.borrow_member_id}">
+                                <i class="fa fa-edit"></i>
+                            </button>
+                        </div>`;
+                    } else {
+                        row += `<p class="text-danger">Book Returned</p>`;
+                    }
+
+                    row += `</td></tr>`;
+
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='10'>No issued books found</td></tr>";
+            }
+
+            createPagination("pagination", resp.totalPages, page, "loadIssuedBooks");
+        })
+        .catch(error => {
+            console.error("Error fetching borrow data:", error);
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".return-book")) {
+            let button = event.target.closest(".return-book");
+            returnButtonClick(button);
+        }
+    });
+});
+
+function returnButtonClick(button) {
+    const dueDate = button.getAttribute("data-due-date");
+    const borrow_id = button.getAttribute("data-borrow-id");
+    const book_id = button.getAttribute("data-book-id");
+    const memberId = button.getAttribute("data-member-id"); // Corrected case
+
+    let updateModal = new bootstrap.Modal(document.getElementById("borrowBookAction"));
+    updateModal.show();
+
+    document.getElementById("dueDate").value = dueDate;
+    document.getElementById("borrowId").value = borrow_id;
+    document.getElementById("bookId").value = book_id;
+    document.getElementById("memberId").value = memberId;
+}
+
+
+
+function validateReturnForm() {
     let isValid = true;
     let returnDate = document.getElementById("returnDate").value.trim();
     if (returnDate === "") {
@@ -11,7 +99,7 @@ function validateReturnForm(){
 function loadBookData() {
     var book_id = document.getElementById("book_id").value;
 
-//validate book id - empty and format
+    //validate book id - empty and format
 
     var formData = new FormData();
     formData.append("book_id", book_id);
@@ -19,13 +107,13 @@ function loadBookData() {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
                 document.getElementById("isbn").value = resp.isbn;
                 document.getElementById("title").value = resp.title;
                 document.getElementById("author").value = resp.author;
-              
+
             } else {
                 alert("Failed to load book data. Please try again.");
             }
@@ -46,12 +134,12 @@ function loadMemberData() {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
             if (resp.success) {
                 document.getElementById("nic").value = resp.nic;
                 document.getElementById("memName").value = resp.name;
-              
+
             } else {
                 alert("Failed to load book data. Please try again.");
             }
@@ -61,25 +149,9 @@ function loadMemberData() {
         });
 }
 
-function returnButtonClick(button) {
-
-    const dueDate = button.getAttribute("data-due-date");
-    const borrow_id = button.getAttribute("data-borrow-id");
-    const book_id = button.getAttribute("data-book-id");
-    const memberId = button.getAttribute("data-memberId");
-
-
-    
-    document.getElementById("dueDate").value = dueDate;
-    document.getElementById("borrowId").value = borrow_id;
-    document.getElementById("bookId").value = book_id;
-    document.getElementById("memberId").value = memberId;
-
-
-}
 
 function generateFine() {
-    
+
     var dueDate = document.getElementById("dueDate").value;
     var returnDate = document.getElementById("returnDate").value;
 

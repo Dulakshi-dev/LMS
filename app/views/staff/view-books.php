@@ -1,12 +1,5 @@
 <?php
 require_once "../../main.php";
-
-
-require_once Config::getControllerPath("usercontroller.php");
-
-$userController = new UserController();
-
-
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +13,7 @@ $userController = new UserController();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body>
+<body onload="loadBooks();">
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
@@ -28,21 +21,19 @@ $userController = new UserController();
             <?php include "dash_sidepanel.php"; ?>
         </div>
         <div class="container-fluid bg-white m-5">
-            <form method="POST" action="<?php echo Config::indexPath() ?>?action=searchBooks">
 
                 <div class="row m-3">
                     <div class="col-md-4 my-3">
-                        <input id="bid" name="bid" type="text" class="form-control" placeholder="Type Book ID">
+                        <input id="bookid" name="bookid" type="text" class="form-control" placeholder="Type Book ID">
                     </div>
                     <div class="col-md-4 d-flex my-3">
                         <input id="bname" name="title" type="text" class="form-control" placeholder="Type Book Name">
                     </div>
                     <div class="col-md-4 d-flex my-3">
                         <input id="isbn" name="isbn" type="text" class="form-control" placeholder="Type ISBN">
-                        <button class="btn btn-primary ml-3 px-4 ms-2"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-primary ml-3 px-4 ms-2" onclick="loadBooks();"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
-            </form>
             <div class="border border-secondary mb-4"></div>
             <div class="px-1">
                 <table class="table">
@@ -61,74 +52,13 @@ $userController = new UserController();
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <?php
-                        if (empty($books)) {
-                            echo "<tr><td colspan='7'>No Books found</td></tr>";
-                        } else {
-
-                            foreach ($books as $row) {
-
-                                if ($row["status"] == 'Active') {
-
-                        ?>
-                                    <tr>
-                                        <td><?php echo $row["book_id"]; ?></td>
-                                        <td><?php echo $row["isbn"]; ?></td>
-                                        <td>
-                                            <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
-
-                                        </td>
-                                        <td><?php echo $row["title"]; ?></td>
-                                        <td><?php echo $row["author"]; ?></td>
-                                        <td><?php echo $row["pub_year"]; ?></td>
-                                        <td><?php echo $row["category_name"]; ?></td>
-                                        <td><?php echo $row["language_name"]; ?></td>
-                                        <td><?php echo $row["qty"]; ?></td>
-                                        <td><?php echo $row["qty"] - $row["available_qty"]; ?></td>
-                                        <td>
-                                            <div class="m-1">
-                                                <span class="btn btn-success my-1 btn-sm" data-bs-toggle="modal" data-bs-target="#updateBookDetailsModal" onclick="loadBookDataUpdate('<?php echo $row['book_id']; ?>'); loadAllCategories();"><i class="fas fa-edit"></i></span>
-                                                <span class="btn btn-danger my-1 btn-sm"><i class="fas fa-trash-alt"></i></span>
-                                            </div>
-                                        </td>
-                                    </tr>
-
-
-                        <?php
-                                }
-                            }
-                        }
-                        ?>
+                    <tbody id="bookTableBody">
+                        
                     </tbody>
                 </table>
 
             </div>
-            <nav aria-label="Page navigation example" class="">
-                <ul class="pagination d-flex justify-content-center">
-                    <!-- Previous Button -->
-                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewBook&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-
-                    <!-- Page Numbers -->
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                            <a class="page-link" href="<?= Config::indexPath() ?>?action=viewBook&page=<?= $i ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <!-- Next Button -->
-                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPath() ?>?action=viewBook&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
+            <div id="pagination"></div>
         </div>
     </div>
 
@@ -211,7 +141,9 @@ $userController = new UserController();
         </div>
     </div>
 
+
     <!-- Bootstrap and JavaScript -->
+    <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
 
     <script src="<?php echo Config::getJsPath("book.js"); ?>"></script>
 

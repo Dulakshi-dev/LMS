@@ -1,4 +1,112 @@
+function loadBooks(page = 1) {
+    var bookid = document.getElementById("bookid").value.trim();
+    var title = document.getElementById("bname").value.trim();
+    var isbn = document.getElementById("isbn").value.trim();
 
+    let formData = new FormData();
+    formData.append("page", page);
+    formData.append("bookid", bookid);
+    formData.append("title", title);
+    formData.append("isbn", isbn);
+
+    fetch("index.php?action=loadBooks", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(resp => {
+        let tableBody = document.getElementById("bookTableBody");
+        tableBody.innerHTML = "";
+
+        if (resp.success && resp.books.length > 0) {
+            resp.books.forEach(book => {
+                let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
+
+                let row = `
+                <tr>
+                    <td>${book.book_id}</td>
+                    <td>${book.isbn}</td>
+                    <td><img src="${coverImageUrl}" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;"></td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.pub_year}</td>
+                    <td>${book.category_name}</td>
+                    <td>${book.language_name}</td>
+                    <td>${book.qty}</td>
+                    <td>${book.available_qty}</td>
+                    <td>
+                    <div class="m-1">
+                        <button class="btn btn-success my-1 btn-sm edit-book" data-book_id="${book.book_id}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger my-1 btn-sm deactivate" data-book_id="${book.book_id}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        </div>
+                        
+                    </td>
+                </tr>
+                `;
+
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = "<tr><td colspan='7'>No books found</td></tr>";
+        }
+        createPagination("pagination", resp.totalPages, page, "loadBooks");
+    })
+    .catch(error => {
+        console.error("Error fetching book data:", error);
+    });
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Handle book Edit Modal
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".edit-book")) {
+            let button = event.target.closest(".edit-book");
+            loadBookDataUpdate(button.dataset.book_id);
+
+            let updateModal = new bootstrap.Modal(document.getElementById("updateBookDetailsModal"));
+            updateModal.show();
+        }
+    });
+
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".deactivate")) {
+            let button = event.target.closest(".deactivate");
+            deactivateBook(button.dataset.book_id);
+
+           
+        }
+    });
+})
+
+function deactivateBook(book_id){
+    var formData = new FormData();
+    formData.append("book_id", book_id);
+
+    fetch("index.php?action=deactivatebook", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                alert("Book Deactivated");
+                location.reload();
+
+            } else {
+                alert("Failed to load book data. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching book data:", error);
+        });
+
+}
 
 function loadAllCategories(selectedCategoryId = null) {
     return new Promise((resolve, reject) => {
@@ -165,11 +273,11 @@ function updateBookDetails() {
             if (resp.success) {
                 location.reload();
             } else {
-                alert("Failed to update user data. Please try again.");
+                alert("Failed to update book data. Please try again.");
             }
         })
         .catch(error => {
-            console.error("Error fetching user data:", error);
+            console.error("Error fetching book data:", error);
         });
 }
 

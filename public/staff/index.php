@@ -26,30 +26,32 @@ $memberController = new MemberController();
 $reservationController = new ReservationController();
 
 
-
-
 // Define the routes and map them to controller methods
 $router->add('loginProcess', [$loginController, 'login']);
 $router->add('logout', [$loginController, 'logout']);
-$router->add('staffmanagement', [$userController, 'getAllUsers']);
-$router->add('searchUsers', [$userController, 'searchUsers']);
+$router->add('loadusers', [$userController, 'loadUsers']);
+
+
+//$router->add('staffmanagement', [$userController, 'loadUsers']);
 $router->add('loadUserData', [$userController, 'loadUserDetails']); 
 $router->add('updateUser', [$userController, 'UpdateUserDetails']);
 $router->add('loadMailData', [$userController, 'loadMailData']); 
 $router->add('sendMail', [$userController, 'sendMail']); 
-$router->add('changeStatus', [$userController, 'changeUserStatus']); 
+$router->add('deactivateuser', [$userController, 'deactivateUser']);
 $router->add('addBookData', [$bookController, 'addBookData']);
-$router->add('viewBook', [$bookController, 'getAllBooks']);
+$router->add('loadBooks', [$bookController, 'getAllBooks']);
 $router->add('loadBookData', [$bookController, 'loadBookDetails']);
 $router->add('updateBook', [$bookController, 'updateBookDetails']); 
 $router->add('searchBooks', [$bookController, 'searchBooks']);
+$router->add('deactivatebook', [$bookController, 'deactivateBook']);
+
 $router->add('register', [$loginController, 'register']);
 $router->add('forgotpassword', [$loginController, 'forgotPassword']);
 $router->add('resetpassword', [$loginController, 'resetPassword']);
 $router->add('loadborrowbookdata', [$circulationController, 'loadBookDetails']);
 $router->add('loadborrowmemberdata', [$circulationController, 'loadMemberDetails']);
 $router->add('issuebook', [$circulationController, 'issueBook']);
-$router->add('viewissuebooks', [$circulationController, 'getAllBorrowBooks']);
+$router->add('loadissuedbooks', [$circulationController, 'getAllBorrowBooks']);
 $router->add('returnbook', [$circulationController, 'returnBook']);
 $router->add('serveimage', [$bookController, 'serveBookCover']);
 $router->add('updateprofile', [$profileController, 'updateProfile']);
@@ -104,6 +106,19 @@ $router->add('profile', function () {
 $router->add('membermanagement', function () {
     include Config::getViewPath("staff", "member-management.php");
 });
+
+$router->add('staffmanagement', function () {
+    include Config::getViewPath("staff", "user-management.php");
+});
+
+$router->add('viewBooks', function () {
+    include Config::getViewPath("staff", "view-books.php");
+});
+
+$router->add('viewissuebooks', function () {
+    include Config::getViewPath("staff", "view-issue-books.php");
+});
+
 
 // Get the action from the URL
 $action = $_GET['action'] ?? 'login';

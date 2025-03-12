@@ -43,6 +43,10 @@ require_once "../../main.php";
     #success:hover {
       background: rgb(69, 161, 80);
     }
+
+    .reseve {
+      color: red;
+    }
   </style>
 </head>
 
@@ -176,7 +180,7 @@ require_once "../../main.php";
     </div>
   </div>
 
-  <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="bookDetailsCanvas" aria-labelledby="bookDetailsCanvasLabel" style="width: 320px;">
+  <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="bookDetailsCanvas" aria-labelledby="bookDetailsCanvasLabel" style="width: 350px;">
     <div class="offcanvas-header">
       <h5 id="bookDetailsCanvasLabel">Book Details</h5>
       <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -201,67 +205,126 @@ require_once "../../main.php";
         <p> <span id="book-availability"></span></p>
 
         <p style="text-align: justify;"><strong>Description:</strong> <span id="book-description"></span></p>
-        <button id="reserve-btn" class="btn btn-primary">Reserve</button>
+        <button id="rbox" class="btn btn-primary">Reserve</button>
+
+        <div id="rbox-1">
+          <div class="text-white">
+            <div class="d-flex justify-content-center my-2">
+              <button class="btn btn-light">Reserve this book</button>
+            </div>
+            <p>
+              Your book reservation is <span class="reseve">valid for one week</span> from the reserved date.
+              If the book is not collected within this period,
+              the reservation will be automatically canceled
+            </p>
+          </div>
+        </div>
+
+        <div id="rbox-2">
+          <div class="d-flex justify-content-center my-2">
+            <h3>Reserve this book</h3>
+          </div>
+          <p>
+            Your book reservation is <span class="reseve">valid for one week</span> from the reserved date.
+            If the book is not collected within this period,
+            the reservation will be automatically canceled
+          </p>
+          <div class="d-flex justify-content-center my-2">
+              <button class="btn btn-primary" id="reserve-btn">Confirm Reservation</button>
+              <button id="cancel" class="btn btn-secondary mx-2">cancel</button>
+            </div>
+        </div>
+
       </div>
     </div>
   </div>
   <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
+  
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
   <script>
-  document.querySelectorAll('.view-details').forEach(button => {
-    button.addEventListener('click', function() {
-      const title = this.getAttribute('data-title');
-      const author = this.getAttribute('data-author');
-      const id = this.getAttribute('data-id');
-      const description = this.getAttribute('data-description');
-      const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
-      const availability = this.getAttribute('data-availability');
+    document.querySelectorAll('.view-details').forEach(button => {
+      button.addEventListener('click', function() {
+        const title = this.getAttribute('data-title');
+        const author = this.getAttribute('data-author');
+        const id = this.getAttribute('data-id');
+        const description = this.getAttribute('data-description');
+        const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
+        const availability = this.getAttribute('data-availability');
 
-      document.getElementById('book-title').textContent = title;
-      document.getElementById('book-author').textContent = author;
-      document.getElementById('book-id').textContent = id;
-      document.getElementById('book-description').textContent = description;
-      document.getElementById('book-availability').textContent = availability;
+        document.getElementById('book-title').textContent = title;
+        document.getElementById('book-author').textContent = author;
+        document.getElementById('book-id').textContent = id;
+        document.getElementById('book-description').textContent = description;
+        document.getElementById('book-availability').textContent = availability;
 
-      const reserveBtn = document.getElementById('reserve-btn');
-      const availabilityText = document.getElementById('book-availability');
+        const reserveBtn = document.getElementById('reserve-btn');
+        const availabilityText = document.getElementById('book-availability');
 
-      if (availability === "Not Available") {
-        reserveBtn.classList.add("d-none");
-        availabilityText.style.color = "#F08080"; // Light Coral
-      } else {
-        reserveBtn.classList.remove("d-none");
-        availabilityText.style.color = "#98FF98"; // Mint Green
-      }
+        if (availability === "Not Available") {
+          reserveBtn.classList.add("d-none");
+          availabilityText.style.color = "#F08080"; // Light Coral
+        } else {
+          reserveBtn.classList.remove("d-none");
+          availabilityText.style.color = "#98FF98"; // Mint Green
+        }
 
-      const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
-      offcanvasImage.setAttribute('src', coverImage);
-      offcanvasImage.style.width = "150px";
-      offcanvasImage.style.height = "200px";
-      offcanvasImage.style.objectFit = "cover";
+        const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
+        offcanvasImage.setAttribute('src', coverImage);
+        offcanvasImage.style.width = "150px";
+        offcanvasImage.style.height = "200px";
+        offcanvasImage.style.objectFit = "cover";
 
-      // Ensure memberId is properly defined before using it
-      const memberId = "<?php echo $_SESSION['member']['member_id'] ?? ''; ?>"; 
+        // Ensure memberId is properly defined before using it
+        const memberId = "<?php echo $_SESSION['member']['member_id'] ?? ''; ?>";
 
-      if (memberId) {
-        document.getElementById('reserve-btn').onclick = function() {
-          window.location.href = "<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=" + id + "&member_id=" + memberId;
-        };
+        if (memberId) {
+          document.getElementById('reserve-btn').onclick = function() {
+            window.location.href = "<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=" + id + "&member_id=" + memberId;
+          };
 
-        document.getElementById('save-btn').onclick = function() {
-          window.location.href = "<?php echo Config::indexPathMember(); ?>?action=save&book_id=" + id + "&member_id=" + memberId;
-        };
-      } else {
-        console.error("Member ID is not set.");
-      }
+          document.getElementById('save-btn').onclick = function() {
+            window.location.href = "<?php echo Config::indexPathMember(); ?>?action=save&book_id=" + id + "&member_id=" + memberId;
+          };
+        } else {
+          console.error("Member ID is not set.");
+        }
 
-      const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
-      offcanvas.show();
+        const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
+        offcanvas.show();
+      });
     });
+
+    //for reserve
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const reserveBtn = document.getElementById("rbox");
+      const cancelBtn = document.getElementById("cancel");
+      const rbox1 = document.getElementById("rbox-1");
+      const rbox2 = document.getElementById("rbox-2");
+      const reserveBookBtn = rbox1.querySelector("button");
+
+
+      rbox1.style.display = "none";
+      rbox2.style.display = "none";
+
+      reserveBtn.addEventListener("click", function () {
+          rbox1.style.display = "block";
+          reserveBtn.style.display = "none";
+      });
+
+      cancelBtn.addEventListener("click", function () {
+        reserveBtn.style.display = "block";
+        rbox2.style.display = "none";
+      });
+
+      reserveBookBtn.addEventListener("click", function () {
+          rbox1.style.display = "none";  
+          rbox2.style.display = "block";
+      });
   });
-</script>
+  </script>
 
 </body>
 

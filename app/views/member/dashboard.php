@@ -231,7 +231,6 @@ require_once "../../main.php";
           </p>
           <div class="d-flex justify-content-center my-2">
               <button class="btn btn-primary" id="reserve-btn">Confirm Reservation</button>
-              <button id="cancel" class="btn btn-secondary mx-2">cancel</button>
             </div>
         </div>
 
@@ -300,7 +299,6 @@ require_once "../../main.php";
     document.addEventListener("DOMContentLoaded", function () {
 
       const reserveBtn = document.getElementById("rbox");
-      const cancelBtn = document.getElementById("cancel");
       const rbox1 = document.getElementById("rbox-1");
       const rbox2 = document.getElementById("rbox-2");
       const reserveBookBtn = rbox1.querySelector("button");
@@ -314,10 +312,6 @@ require_once "../../main.php";
           reserveBtn.style.display = "none";
       });
 
-      cancelBtn.addEventListener("click", function () {
-        reserveBtn.style.display = "block";
-        rbox2.style.display = "none";
-      });
 
       reserveBookBtn.addEventListener("click", function () {
           rbox1.style.display = "none";  

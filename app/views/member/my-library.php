@@ -46,6 +46,10 @@ $member_id = $_SESSION["member"]["member_id"]
             font-size: 14px;
             color: gray;
         }
+
+        .reseve {
+            color: red;
+        }
     </style>
 </head>
 
@@ -115,10 +119,24 @@ $member_id = $_SESSION["member"]["member_id"]
                         ?>
                         </p>
 
-                        <button class="btn" id="success"
-                            onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo $row['book_id']; ?>&member_id=<?php echo $_SESSION['member']['member_id']; ?>'">
-                            Reserve
-                        </button>
+                        <div class="">
+                            <div id="reserve1">
+                                <button id="r1" class="btn btn-dark" onclick="showReserve2()">
+                                    Reserve this Book
+                                </button>
+                            </div>
+                            <div id="reserve2" class="d-none">
+                                <div>
+                                    <button class="btn btn-primary" onclick="window.location.href='<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=<?php echo $row['book_id']; ?>&member_id=<?php echo $_SESSION['member']['member_id']; ?>'">Confirm Reserve</button>
+                                </div>
+                                <p>
+                                    Your book reservation is <span class="reseve fs-5">valid for one week</span> from the reserved date.
+                                    If the book is not collected within this period,
+                                    the reservation will be automatically canceled.
+                                </p>
+                            </div>
+                        </div>
+
                         </div>
                     </div>
             <?php
@@ -164,6 +182,11 @@ $member_id = $_SESSION["member"]["member_id"]
 
 
     <script>
+        function showReserve2() {
+            document.getElementById("reserve1").classList.add("d-none");
+            document.getElementById("reserve2").classList.remove("d-none");
+        }
+
         // Star rating functionality
         document.querySelectorAll('.fa-star').forEach(star => {
             star.addEventListener('click', function() {

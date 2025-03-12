@@ -18,7 +18,7 @@ require_once Config::getViewPath("home", "header.view.php");
 
     <section class="contact py-5" style="background: url('<?php echo Config::getImagePath("contactbg.png"); ?>') no-repeat center center/cover;">
         <div class="container text-center text-white">
-            <h1>Contact Us</h1>
+            <h1>Contact  Us with malanka</h1>
             <p>If you have any questions or inquiries, feel free to reach out to us.</p>
         </div>
 

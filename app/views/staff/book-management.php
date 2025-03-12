@@ -36,7 +36,7 @@ require_once "../../main.php";
                         <div class="container mt-5">
                             <div class="row g-3 d-flex justify-content-evenly">
 
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 300px; height: 250px;">
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
 
                                     <i class="fas fa-plus display-1 text-primary"></i>
                                     <p class="fw-bold fs-5 mt-3 text-dark">Add Books</p>
@@ -44,7 +44,7 @@ require_once "../../main.php";
 
                                 </div>
 
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 300px; height: 250px;">
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 400px; height: 350px;">
 
                                     <i class="fa fa-book display-1 text-success"></i>
                                     <p class="fw-bold fs-5 mt-3 text-dark">View All Books</p>
@@ -56,7 +56,7 @@ require_once "../../main.php";
 
                             <div class="d-flex justify-content-center m-5">
 
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 300px; height: 250px;">
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 400px; height: 350px;">
 
                                     <i class="fa fa-navicon display-1 text-warning"></i>
                                     <p class="fw-bold fs-5 mt-3 text-dark">Add New Category</p>

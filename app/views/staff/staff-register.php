@@ -167,13 +167,9 @@
             }
 
             if (isValid) {
-                if (roleSelected.value === "Librarian") {
-                    // Show the enrollment form for Librarian
+                if (roleSelected) {
                     document.querySelector(".box-1").style.display = "none";
                     document.querySelector(".box-2").style.display = "block";
-                } else {
-                    // If Library Staff is selected, submit the form
-                    this.submit();
                 }
             }
         });

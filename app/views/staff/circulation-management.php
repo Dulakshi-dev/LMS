@@ -53,9 +53,9 @@ require_once "../../main.php";
                             <div class="d-flex justify-content-center m-5">
                                 <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
 
-                                    <i class="fa fa-cubes display-1 text-secondary"></i>
+                                    <i class="fa fa-cubes display-1 text-success"></i>
                                     <p class="fw-bold fs-5 mt-3 text-dark">View Reservation</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewissuebooks" class="btn btn-secondary w-50 rounded-pill mt-2">View</a>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewissuebooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
                                 </div>
                             </div>
                         </div>

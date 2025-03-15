@@ -18,7 +18,7 @@
         </div>
         <div class="box-0 container m-5">
             <div class="bg-white ">
-                <div class="text-center border-bottom border-danger mb-4 pb-3">
+                <div class="text-center border-bottom border-danger border-4 mb-4 pb-3">
                     <h2>Add Books</h2>
                 </div>
                 <form action="<?php echo Config::indexPath() ?>?action=addBookData" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
@@ -84,7 +84,7 @@
                                 <span id="des-error" class="text-danger"></span>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary px-5 mr-5">Save</button>
+                                <button type="submit" class="btn btn-primary px-5 mb-4 mr-5">Save</button>
                             </div>
                         </div>
                     </div>

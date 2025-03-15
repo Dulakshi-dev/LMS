@@ -45,18 +45,18 @@ require_once "../../main.php";
                         <div class="container mt-5">
                             <div class="row g-3 d-flex justify-content-evenly">
 
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
+                                <div class="card text-danger-emphasis text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
 
-                                    <i class="fas fa-plus display-1 text-secondary"></i>
-                                    <p class="fw-bold fs-5 mt-3 text-dark">Veiw Requests</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-secondary  w-50 rounded-pill mt-2">Issue</a>
+                                    <i class="fas fa-plus display-1"></i>
+                                    <p class="fw-bold fs-5 mt-3 ">Veiw Requests</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-danger w-50 rounded-pill mt-2">Issue</a>
 
                                 </div>
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
+                                <div class="card text-info-emphasis text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
 
-                                    <i class="fa fa-book display-1 text-warning"></i>
-                                    <p class="fw-bold fs-5 mt-3 text-dark">View Members</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewmembers" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
+                                    <i class="fa fa-book display-1 "></i>
+                                    <p class="fw-bold fs-5 mt-3">View Members</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewmembers" class="btn btn-info w-50 rounded-pill mt-2">View</a>
 
                                 </div>
 

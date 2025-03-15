@@ -8,7 +8,7 @@
     <title>Shelf Loom || Forgot Password</title>
     <style>
         body {
-            background-image: url('images/login_background.png');
+            background-image: url('<?php echo Config::getImagePath("stafflog.jpg"); ?>');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -20,7 +20,7 @@
             background: rgba(0, 0, 0, 0.8);
             padding: 30px;
             border-radius: 20px;
-            height: 400px;
+            height: 350px;
 
         }
 

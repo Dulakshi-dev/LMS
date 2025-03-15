@@ -15,40 +15,69 @@ class MemberController
 
     public function getAllMembers()
     {
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $data = MemberModel::getAllMembers($page);
-
-        $totalUsers = $data['total'];
-        $usersResult = $data['results'];
-
-        $users = [];
-        while ($row = $usersResult->fetch_assoc()) {
-            $users[] = $row;
-        }
-
         $resultsPerPage = 10;
-        $totalPages = ceil($totalUsers / $resultsPerPage);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        require_once Config::getViewPath("staff", 'view-members.php');
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+            $memberId = $_POST['memberid'] ?? null;
+            $nic = $_POST['nic'] ?? null;
+            $userName = $_POST['username'] ?? null;
+
+            if (!empty($memberId) || !empty($nic) || !empty($userName)) {
+                $membersData = MemberModel::searchMembers($memberId, $nic, $userName, $page, $resultsPerPage);
+             }else {
+                $membersData = MemberModel::getAllMembers($page, $resultsPerPage);
+            }
+        
+            $members = $membersData['results'] ?? [];
+            $total = $membersData['total'] ?? 0;
+            $totalPages = ceil($total / $resultsPerPage);
+        
+            echo json_encode([
+                "success" => true,
+                "members" => $members,
+                "total" => $total,
+                "totalPages" => $totalPages,
+                "currentPage" => $page
+            ]);
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+
+        }
     }
 
-    public function getPendingMembers()
+    public function getMemberRequests()
     {
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $data = MemberModel::getPendingMembers($page);
-
-        $totalUsers = $data['total'];
-        $usersResult = $data['results'];
-
-        $users = [];
-        while ($row = $usersResult->fetch_assoc()) {
-            $users[] = $row;
-        }
-
         $resultsPerPage = 10;
-        $totalPages = ceil($totalUsers / $resultsPerPage);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        require_once Config::getViewPath("staff", 'view-member-requests.php');
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
+            $nic = $_POST['nic'] ?? null;
+            $userName = $_POST['username'] ?? null;
+
+            if (!empty($memberId) || !empty($nic) || !empty($userName)) {
+                $requestData = MemberModel::searchMemberRequests( $nic, $userName, $page, $resultsPerPage);
+             }else {
+                $requestData = MemberModel::getAllMemberRequests($page, $resultsPerPage);
+            }
+        
+            $requests = $requestData['results'] ?? [];
+            $total = $requestData['total'] ?? 0;
+            $totalPages = ceil($total / $resultsPerPage);
+        
+            echo json_encode([
+                "success" => true,
+                "requests" => $requests,
+                "total" => $total,
+                "totalPages" => $totalPages,
+                "currentPage" => $page
+            ]);
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+
+        }
     }
 
     public function approveMembership()
@@ -104,23 +133,7 @@ class MemberController
     }
 
 
-    public function searchUsers()
-    {
-        $users = [];
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve and sanitize input from the POST request
-            $memberId = trim($_POST['memberId'] ?? '');
-            $nic = trim($_POST['nic'] ?? '');
-            $userName = trim($_POST['userName'] ?? '');
-
-            if (empty($memberId) && empty($nic) && empty($userName)) {
-                header("Location: index.php?action=staffmanagement");
-            } else {
-                $users = MemberModel::searchMembers($memberId, $nic, $userName);
-            }
-        }
-    }
+  
 
     public function loadMemberDetails()
     {

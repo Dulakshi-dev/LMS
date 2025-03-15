@@ -1,34 +1,152 @@
 <?php
-// UserModel.php
-require_once __DIR__ . '../../../database/connection.php'; 
+
+require_once config::getdbPath();
 
 class MemberModel {
-    public static function getAllMembers($page)
-    {
-        $rs = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `status_id`='1'");
-        $num = $rs->num_rows;
-        $resultsPerPage = 10;
-        $pageResults = ($page - 1) * $resultsPerPage;
 
-        $rs2 = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `status_id`='1' LIMIT $resultsPerPage OFFSET $pageResults");
+    public static function getAllMembers($page, $resultsPerPage)
+    {
+        $pageResults = ($page - 1) * $resultsPerPage;
+        $totalMembers = self::getTotalMembers();
+
+        $rs = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`status_id` FROM `member`
+JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` 
+WHERE `status_id` = '1' LIMIT $resultsPerPage OFFSET $pageResults");
+
+        $members = [];
+
+        while ($row = $rs->fetch_assoc()) {
+            $members[] = $row;
+        }
         return [
-            'total' => $num,
-            'results' => $rs2
+            'total' => $totalMembers,
+            'results' => $members
         ];
     }
 
-    public static function getPendingMembers($page)
+    private static function getTotalMembers()
     {
-        $rs = Database::search("SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` WHERE `status_id`='3'");
-        $num = $rs->num_rows;
-        $resultsPerPage = 10;
-        $pageResults = ($page - 1) * $resultsPerPage;
+        $result = Database::search("SELECT COUNT(*) AS total 
+FROM `member`
+JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` 
+WHERE `status_id` = '1';");
+        $row = $result->fetch_assoc();
+        return $row['total'] ?? 0;
+    }
 
-        $rs2 = Database::search("SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` WHERE `status_id`='3' LIMIT $resultsPerPage OFFSET $pageResults");
+    public static function searchMembers($memberId, $nic, $userName, $page, $resultsPerPage)
+    {
+        $pageResults = ($page - 1) * $resultsPerPage;
+        $totalSearch = self::getTotalSearchResults($memberId, $nic, $userName);
+
+        $sql = "SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";
+        
+        if (!empty($memberId)) {
+            $sql .= " AND `member_id` LIKE '%$memberId%'";
+        }
+        if (!empty($nic)) {
+            $sql .= " AND `nic` LIKE '%$nic%'";
+        }
+        if (!empty($userName)) {
+            $sql .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+        }
+    
+        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults"; 
+    
+        $rs = Database::search($sql);
+
+        $users = [];
+        while ($row = $rs->fetch_assoc()) {
+            $users[] = $row;
+        }
+        return ['results' => $users, 'total' => $totalSearch];
+    }
+
+    private static function getTotalSearchResults($memberId, $nic, $userName)
+    {
+        $countQuery = "SELECT COUNT(*) as total FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";
+        
+        if (!empty($memberId)) {
+            $countQuery .= " AND `member_id` LIKE '%$memberId%'";
+        }
+        if (!empty($nic)) {
+            $countQuery .= " AND `nic` LIKE '%$nic%'";
+        }
+        if (!empty($userName)) {
+            $countQuery .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+        }
+    
+        $result = Database::search($countQuery);
+        $row = $result->fetch_assoc();
+        return $row['total'] ?? 0;
+    }
+
+    public static function getAllMemberRequests($page, $resultsPerPage)
+    {
+        $pageResults = ($page - 1) * $resultsPerPage;
+        $totalrequests = self::getTotalRequests();
+
+        $rs = Database::search("SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` WHERE `status_id`='3' LIMIT $resultsPerPage OFFSET $pageResults");
+
+        $requests = [];
+
+        while ($row = $rs->fetch_assoc()) {
+            $requests[] = $row;
+        }
         return [
-            'total' => $num,
-            'results' => $rs2
+            'total' => $totalrequests,
+            'results' => $requests
         ];
+    }
+
+    private static function getTotalRequests()
+    {
+        $result = Database::search("SELECT COUNT(*) AS total FROM `member` WHERE `status_id`='3';");
+        $row = $result->fetch_assoc();
+        return $row['total'] ?? 0;
+    }
+
+
+    public static function searchMemberRequests($nic, $userName, $page, $resultsPerPage)
+    {
+        $pageResults = ($page - 1) * $resultsPerPage;
+        $totalSearch = self::getTotalSearchMemberRequest($nic, $userName);
+
+        $sql = "SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` WHERE 1";
+        
+        if (!empty($nic)) {
+            $sql .= " AND `nic` LIKE '%$nic%'";
+        }
+        if (!empty($userName)) {
+            $sql .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+        }
+    
+        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults"; 
+    
+        $rs = Database::search($sql);
+
+        $users = [];
+        while ($row = $rs->fetch_assoc()) {
+            $users[] = $row;
+        }
+        return ['results' => $users, 'total' => $totalSearch];
+    }
+
+    private static function getTotalSearchMemberRequest($nic, $userName)
+    {
+        $countQuery = "SELECT COUNT(*) as total FROM `member` WHERE 1";
+        
+
+        if (!empty($nic)) {
+            $countQuery .= " AND `nic` LIKE '%$nic%'";
+        }
+        if (!empty($userName)) {
+            $countQuery .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+        }
+    
+        $result = Database::search($countQuery);
+        $row = $result->fetch_assoc();
+        return $row['total'] ?? 0;
     }
 
     public static function deactivateMember($id) {
@@ -41,23 +159,6 @@ class MemberModel {
         return true;
     }
 
-
-    public static function searchMembers($memberId, $nic, $userName) {
-
-        
-        $sql = "SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";
-        if (!empty($memberId)) {
-            $sql .= " AND `member_id` LIKE '%$memberId%'";
-        }
-        if (!empty($nic)) {
-            $sql .= " AND `nic` LIKE '%$nic%'";
-        }
-        if (!empty($userName)) {
-            $sql .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
-        }
-        $rs = Database::search($sql);
-        return $rs;
-    }
 
     public static function loadMemberDetails($id) {
         $rs = Database::search("SELECT `member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
@@ -122,7 +223,6 @@ class MemberModel {
 
     public static function generateMemberID()
     {
-        // Query to get the latest member_id
         $result = Database::search("SELECT member_id FROM `member_login` ORDER BY member_login_id DESC LIMIT 1");
 
         if ($result->num_rows > 0) {

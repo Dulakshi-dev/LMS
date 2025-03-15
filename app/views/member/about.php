@@ -22,7 +22,7 @@
                 <h1 class="text-center">About Us</h1>
                 <p class="fs-5 mt-4">Welcome to <strong>SHELFLOOM</strong>, where knowledge meets convenience. Our library management system is dedicated to revolutionizing the way you interact with library resources. At SHELFLOOM, we believe in the power of information and the joy of reading. Our mission is to provide an accessible, user-friendly platform that caters to the needs of both library staff and patrons.</p>
                 <p class="fs-5 mt-4">Our system is designed with efficiency in mind, streamlining tasks such as cataloging, borrowing, and returning books. This allows our dedicated staff to focus on what matters most: helping you discover new knowledge and enjoy your reading journey. We offer a comprehensive catalog of books, e-books, and other resources, all easily searchable and accessible.</p>
-                <p class="fs-5 mt-4">We are committed to continuous improvement and innovation, ensuring that our library management system remains at the forefront of technology. Our team works tirelessly to enhance the user experience, providing features that make managing and using library resources simpler and more efficient..........</p>
+                <p class="fs-5 mt-4">We are committed to continuous improvement and innovation, ensuring that our library management system remains at the forefront of technology. Our team works tirelessly to enhance the user experience, providing features that make managing and using library resources simpler and more efficient.</p>
             </div>
         </div>
     </div>

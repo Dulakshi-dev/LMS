@@ -12,6 +12,42 @@ class MyLibraryController
         $this->myLibraryModel = new MyLibraryModel();
     }
 
+    public function loadSavedBooks()
+    {
+        $id = $_SESSION["member"]["id"] ?? '';
+
+        $resultsPerPage = 10;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; 
+            $bookid = $_POST['bookid'] ?? null;
+            $title = $_POST['title'] ?? null;
+            $category = $_POST['category'] ?? null;
+
+            if (!empty($bookid) || !empty($title) || !empty($category)) {
+                $bookData = MyLibraryModel::searchSavedBooks($id, $bookid, $title, $category, $page, $resultsPerPage);
+             }else {
+                $bookData = MyLibraryModel::getSavedBooks($id, $page, $resultsPerPage);
+            }
+
+            $books = $bookData['results'] ?? [];
+            $total = $bookData['total'] ?? 0;
+            $totalPages = ceil($total / $resultsPerPage);
+        
+            echo json_encode([
+                "success" => true,
+                "books" => $books,
+                "total" => $total,
+                "totalPages" => $totalPages,
+                "currentPage" => $page
+            ]);
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+
+        }
+    }
+
     public function saveBook()
     {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -34,21 +70,6 @@ class MyLibraryController
             }
     }
 
-    public function loadSavedBooks()
-    {
-        $id = $_SESSION["member"]["id"];
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $resultsPerPage = 10; 
-
-        $data = MyLibraryModel::getSavedBooks($page, $id, $resultsPerPage);
-
-        $totalBooks = $data['total'];
-        $books = $data['results']; 
-        $totalPages = ceil($totalBooks / $resultsPerPage);
-
-        require_once Config::getViewPath("member", 'my-library.php');
-    }
-
     public function unSaveBook()
     {
             if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -58,7 +79,8 @@ class MyLibraryController
                 $result = MyLibraryModel::unSaveBook($book_id, $id);
     
                 if ($result) {
-                    header("Location: index.php?action=savedbooks");
+                    echo json_encode(["success" => true, "message" => "Book Unsaved"]);
+
                 } else {
                     echo json_encode(["success" => false, "message" => "Error"]);
                 }  

@@ -15,17 +15,39 @@ class BorrowHistoryController
     public function loadBorrowBooks()
     {
         $id = $_SESSION["member"]["id"] ?? '';
-        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $resultsPerPage = 10; 
-    
-        $data = BorrowHistoryModel::getBorrowBooks($page, $id, $resultsPerPage);
+
+        $resultsPerPage = 10;
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; 
+            $bookid = $_POST['bookid'] ?? null;
+            $title = $_POST['title'] ?? null;
+            $category = $_POST['category'] ?? null;
+
+            if (!empty($bookid) || !empty($title) || !empty($category)) {
+                $bookData = BorrowHistoryModel::searchBorrowBooks($id, $bookid, $title, $category, $page, $resultsPerPage);
+             }else {
+                $bookData = BorrowHistoryModel::getBorrowBooks($id, $page, $resultsPerPage);
+            }
+
+            $books = $bookData['results'] ?? [];
+            $total = $bookData['total'] ?? 0;
+            $totalPages = ceil($total / $resultsPerPage);
         
-        $totalBooks = $data['total'];
-        $books = $data['results']; 
-        $totalPages = ceil($totalBooks / $resultsPerPage);
-    
-        require_once Config::getViewPath("member", 'borrow-history.php');
+            echo json_encode([
+                "success" => true,
+                "books" => $books,
+                "total" => $total,
+                "totalPages" => $totalPages,
+                "currentPage" => $page
+            ]);
+
+        }else{
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+
+        }
     }
+
     
     
 

@@ -36,9 +36,9 @@ $router->add('updateprofile', [$memberProfileController, 'updateProfile']);
 $router->add('serveprofimage', [$memberProfileController, 'serveProfileImage']);
 $router->add('validatecurrentpw', [$memberProfileController, 'validateCurrentPassword']); 
 $router->add('savenewpw', [$memberProfileController, 'resetPassword']); 
-$router->add('loadissuebooks', [$borrowHistoryController, 'loadBorrowBooks']); 
 $router->add('sendotp', [$authController, 'sendOTP']); 
 $router->add('verifyotp', [$authController, 'verifyOTP']); 
+$router->add('loadBorrowHistory', [$borrowHistoryController, 'loadBorrowBooks']); 
 $router->add('showPayment', [$paymentController, 'proceedPayment']); 
 $router->add('registerMember', [$authController, 'registerMember']); 
 $router->add('reserve', [$memberReservationController, 'reserveBook']); 
@@ -50,6 +50,8 @@ $router->add('payment_notify', [$paymentController, 'paymentNotify']);
 $router->add('insertPayment', [$paymentController, 'renewPayment']); 
 $router->add('forgotpassword', [$authController, 'forgotPassword']);
 $router->add('changepassword', [$authController, 'resetPassword']);
+$router->add('serveimage', [$memberDashboardController, 'serveBookCover']);
+
 
 
 
@@ -104,6 +106,15 @@ $router->add('showforgotpw', function () {
 $router->add('showresetpw', function () {
     include Config::getViewPath("member", "reset-password.php");
 });
+
+$router->add('viewborrowhistory', function () {
+    include Config::getViewPath("member", "borrow-history.php");
+});
+
+$router->add('viewMyLibrary', function () {
+    include Config::getViewPath("member", "my-library.php");
+});
+
 
 // Get the action from the URL
 $action = $_GET['action'] ?? 'home';

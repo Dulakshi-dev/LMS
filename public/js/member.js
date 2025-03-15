@@ -1,3 +1,176 @@
+function loadMembers(page = 1) {
+
+    var memberid = document.getElementById("memberId").value.trim();
+    var nic = document.getElementById("nic").value.trim();
+    var name = document.getElementById("userName").value.trim();
+
+    let formData = new FormData();
+    formData.append("page", page);
+    formData.append("memberid", memberid);
+    formData.append("nic", nic);
+    formData.append("username", name);
+
+    fetch("index.php?action=loadmembers", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            let tableBody = document.getElementById("memberTableBody");
+            tableBody.innerHTML = "";
+
+            if (resp.success && resp.members.length > 0) {
+                resp.members.forEach(member => {
+                    let row = `
+                    <tr>
+                        <td>${member.member_id}</td>
+                        <td>${member.nic}</td>
+                        <td>${member.fname} ${member.lname}</td>
+                        <td>${member.address}</td>
+                        <td>${member.mobile}</td>
+                        <td>${member.email}</td>
+                        <td>
+                        <div class="m-1">
+
+                            <button class="btn btn-success my-1 btn-sm edit-member " 
+                                data-memberid="${member.member_id}">
+                                <i class="fa fa-edit"></i>
+                            </button>
+
+                            <button class="btn btn-warning my-1 btn-sm send-mail" 
+                                data-memberid="${member.member_id}">
+                                <i class="fa fa-envelope"></i>
+                            </button>
+
+                            <button class="btn btn-danger my-1 btn-sm deactivate" 
+                                data-memberid="${member.id}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                    tableBody.innerHTML += row;
+
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='7'>No members found</td></tr>";
+            }
+            createPagination("pagination", resp.totalPages, page, "loadMembers");
+        })
+        .catch(error => {
+            console.error("Error fetching member data:", error);
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".edit-member")) {
+            let button = event.target.closest(".edit-member");
+
+            loadMemberDataUpdate(button.dataset.memberid);
+        }
+    });
+
+    // Handle Send Email Modal
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".send-mail")) {
+            let button = event.target.closest(".send-mail");
+            loadMailData(button.dataset.memberid);
+        }
+    });
+
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".deactivate")) {
+            let button = event.target.closest(".deactivate");
+            deactivateMember(button.dataset.memberid);
+        }
+    });
+});
+
+function loadMemberRequests(page = 1) {
+
+    var nic = document.getElementById("nic").value.trim();
+    var name = document.getElementById("userName").value.trim();
+
+    let formData = new FormData();
+    formData.append("page", page);
+    formData.append("nic", nic);
+    formData.append("username", name);
+
+    fetch("index.php?action=loadmemberrequests", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            let tableBody = document.getElementById("requestTableBody");
+            tableBody.innerHTML = "";
+
+            if (resp.success && resp.requests.length > 0) {
+                resp.requests.forEach(request => {
+                    let row = `
+                    <tr>
+                        <td>${request.nic}</td>
+                        <td>${request.fname} ${request.lname}</td>
+                        <td>${request.address}</td>
+                        <td>${request.mobile}</td>
+                        <td>${request.email}</td>
+                        <td>
+                        <div class="m-1">
+
+                            <button class="btn btn-info my-1 btn-sm approve-request " 
+                                data-id="${request.id}">
+                                <i class="fa fa-check"></i>
+                            </button>
+
+                            <button class="btn btn-danger my-1 btn-sm reject" 
+                                data-id="${request.id}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                            
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                    tableBody.innerHTML += row;
+
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='7'>No members found</td></tr>";
+            }
+            createPagination("pagination", resp.totalPages, page, "loadMemberRequests");
+        })
+        .catch(error => {
+            console.error("Error fetching request data:", error);
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".approve-request")) {
+            let button = event.target.closest(".approve-request");
+            approveMembership(button.dataset.id);
+            alert("Membership Request Approved")
+
+            location.reload();
+        }
+    });
+
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".reject")) {
+            let button = event.target.closest(".reject");
+            rejectMemberRequest(button.dataset.id);
+            alert("Membership Request Rejected")
+
+            location.reload();
+
+        }
+    });
+});
+
+
 function approveMembership(id){
     var formData = new FormData();
     formData.append("id", id);
@@ -19,7 +192,7 @@ function approveMembership(id){
         });
 }
 
-function loadUserDataUpdate(id) {
+function loadMemberDataUpdate(id) {
     // Create a FormData object and append the user ID
     var formData = new FormData();
     formData.append("member_id", id);
@@ -32,6 +205,9 @@ function loadUserDataUpdate(id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
+                let updateModal = new bootstrap.Modal(document.getElementById("updateDetailsModal"));
+                updateModal.show();
+
                 document.getElementById("userID").value = resp.member_id;
                 document.getElementById("NIC").value = resp.nic;
                 document.getElementById("username").value = resp.fname + " " + resp.lname;
@@ -144,6 +320,9 @@ function loadMailData(member_id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
+                let updateModal = new bootstrap.Modal(document.getElementById("mailModal"));
+                updateModal.show();
+
                 document.getElementById("name").value = resp.name;
                 document.getElementById("emailadd").value = resp.email;
 
@@ -178,10 +357,10 @@ function deactivateUser(member_id) {
         });
 }
 
-function rejectUser(member_id) {
+function rejectMemberRequest(id) {
 
     var formData = new FormData();
-    formData.append("id", member_id);
+    formData.append("id", id);
 
     fetch("index.php?action=rejectmember", {
         method: "POST",
@@ -190,7 +369,6 @@ function rejectUser(member_id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                alert("Member Rejected");
                 location.reload();
             } else {
                 alert("Failed to load user data. Please try again.");

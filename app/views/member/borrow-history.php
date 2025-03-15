@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -44,7 +43,7 @@
   </style>
 </head>
 
-<body class="bg-light">
+<body class="bg-light" onload="loadBorrowBooks();">
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
@@ -62,10 +61,10 @@
 
       <!-- Search Bar -->
       <div class="input-group mb-5">
-        <input type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
-        <input type="text" class="form-control mx-2" placeholder="Type Book Name" aria-label="Book Name">
-        <input type="text" class="form-control" placeholder="Type Category" aria-label="Category">
-        <button class="btn btn-primary ms-2">
+        <input id="bookid" type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
+        <input id="title" type="text" class="form-control mx-2" placeholder="Type Book Name" aria-label="Book Name">
+        <input id="category" type="text" class="form-control" placeholder="Type Category" aria-label="Category">
+        <button class="btn btn-primary ms-2" onclick="loadBorrowBooks();">
           <i class="fa fa-search"></i> Search
         </button>
       </div>
@@ -83,59 +82,16 @@
             <th>Date Returned</th>
           </tr>
         </thead>
-        <tbody>
-          <?php
-          if (empty($books)) {
-            echo "<tr><td colspan='8'>No Books found</td></tr>";
-          } else {
-            foreach ($books as $row) {
-          ?>
-              <tr>
-                <td><?php echo $row["borrow_id"]; ?></td>
-                <td><?php echo $row["book_id"]; ?></td>
-                <td>
-                <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
-                </td>
-                <td><?php echo $row["title"]; ?></td>
-                <td><?php echo $row["borrow_date"]; ?></td>
-                <td><?php echo $row["due_date"]; ?></td>
-                <td><?php echo $row["return_date"]; ?></td>
-                
-              </tr>
-          <?php
-            }
-          }
-          ?>
+        <tbody id="bookTableBody">
+
         </tbody>
       </table>
 
       <!-- Pagination -->
       <div class="d-flex justify-content-between align-items-center entries offset-5">
 
-      <nav aria-label="Page navigation example" class="">
-                <ul class="pagination d-flex justify-content-center">
-                    <!-- Previous Button -->
-                    <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPathMember() ?>?action=loadissuebooks&page=<?= max(1, $page - 1) ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
+      <div id="pagination"></div>
 
-                    <!-- Page Numbers -->
-                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                        <li class="page-item <?= $i == $page ? 'active' : '' ?>">
-                            <a class="page-link" href="<?= Config::indexPathMember() ?>?action=loadissuebooks&page=<?= $i ?>"><?= $i ?></a>
-                        </li>
-                    <?php endfor; ?>
-
-                    <!-- Next Button -->
-                    <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
-                        <a class="page-link" href="<?= Config::indexPathMember() ?>?action=loadissuebooks&page=<?= min($totalPages, $page + 1) ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
       </div>
     </div>
   </div>
@@ -194,6 +150,8 @@
   </script> -->
 
   <!-- Bootstrap JS -->
+  <script src="<?php echo Config::getJsPath("borrowHistory.js"); ?>"></script>
+  <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

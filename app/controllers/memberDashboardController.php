@@ -61,4 +61,22 @@ class MemberDashboardController
 
 
     }
+
+    public function serveBookCover()
+    {
+        $imageName = $_GET['image'] ?? '';
+
+        $basePath = Config::getBookCoverPath();;
+        $filePath = realpath($basePath . basename($imageName));
+
+        if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
+            header('Content-Type: ' . mime_content_type($filePath));
+            readfile($filePath);
+            exit;
+        }
+
+        http_response_code(404);
+        echo "Image not found.";
+        exit;
+    }
 }

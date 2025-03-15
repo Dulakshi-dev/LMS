@@ -169,7 +169,7 @@
                             </div>
                             <span class="text-danger" id="fileInputError"></span>
                             <div class="text-end pt-4">
-                                <button class="btn px-5 btn-primary" onclick="validateForm()">Save</button>
+                                <button class="btn px-5 btn-success" onclick="validateForm()">Save</button>
                             </div>
                         </div>
                     </div>

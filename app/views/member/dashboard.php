@@ -59,8 +59,48 @@ require_once "../../main.php";
     </div>
 
     <div class="container-fluid p-4">
+
+      <div class="">
+        <div class="row my-2">
+          <div class="col-lg-4 col-md-1">
+
+          </div>
+
+          <div class="col-lg-4 col-md-8">
+            <div class="d-flex gap-2">
+              <input type="text" class="form-control" placeholder="Search your favourite Book">
+              <button class="btn"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+
+          <div class="col-4 col-md-2 d-flex justify-content-end align-items-center ms-auto">
+            <a href="#" class="text-decoration-none text-dark  d-flex align-items-center">
+              <i class="fa fa-home me-1"></i> Dashboard
+            </a>
+          </div>
+
+
+        </div>
+
+        <div class="container my-4">
+          <div class="row align-items-center">
+            <div class="col-4 col-md-5 d-flex justify-content-end">
+              <input type="text" class="form-control w-75" placeholder="Category">
+            </div>
+            <div class="col-4 col-md-5 d-flex justify-content-end">
+              <input type="text" class="form-control w-75" placeholder="Language">
+            </div>
+            <div class="col-4 col-md-2 d-flex align-items-center">
+              <a href="#" class="ms-2 btn btn-dark px-4"><i class="fa fa-search fs-5"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 ">
           <div class="bg-light rounded p-4 mb-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5>Recommended</h5>
@@ -69,7 +109,7 @@ require_once "../../main.php";
             <div class="row g-4">
               <?php if (!empty($booksrec)) {
                 foreach ($booksrec as $row) { ?>
-                  <div class="col-md-3 col-sm-6">
+                  <div class="col-md-6 col-lg-3 col-sm-12">
                     <div class="book-card">
                       <div class="book-image">
                         <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
@@ -107,7 +147,7 @@ require_once "../../main.php";
             <div class="row g-4">
               <?php if (!empty($latestbooks)) {
                 foreach ($latestbooks as $row) { ?>
-                  <div class="col-md-3 col-sm-6">
+                  <div class="col-md-6 col-lg-3 col-sm-12">
                     <div class="book-card">
                       <div class="book-image">
                         <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
@@ -145,7 +185,7 @@ require_once "../../main.php";
             <div class="row g-4">
               <?php if (!empty($topbooks)) {
                 foreach ($topbooks as $row) { ?>
-                  <div class="col-md-3 col-sm-6">
+                  <div class="col-md-6 col-lg-3 col-sm-12">
                     <div class="book-card">
                       <div class="book-image">
                         <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
@@ -230,15 +270,15 @@ require_once "../../main.php";
             the reservation will be automatically canceled
           </p>
           <div class="d-flex justify-content-center my-2">
-              <button class="btn btn-primary" id="reserve-btn">Confirm Reservation</button>
-            </div>
+            <button class="btn btn-primary" id="reserve-btn">Confirm Reservation</button>
+          </div>
         </div>
 
       </div>
     </div>
   </div>
   <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
-  
+
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 
@@ -296,7 +336,7 @@ require_once "../../main.php";
     });
 
     //for reserve
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
 
       const reserveBtn = document.getElementById("rbox");
       const rbox1 = document.getElementById("rbox-1");
@@ -307,17 +347,17 @@ require_once "../../main.php";
       rbox1.style.display = "none";
       rbox2.style.display = "none";
 
-      reserveBtn.addEventListener("click", function () {
-          rbox1.style.display = "block";
-          reserveBtn.style.display = "none";
+      reserveBtn.addEventListener("click", function() {
+        rbox1.style.display = "block";
+        reserveBtn.style.display = "none";
       });
 
 
-      reserveBookBtn.addEventListener("click", function () {
-          rbox1.style.display = "none";  
-          rbox2.style.display = "block";
+      reserveBookBtn.addEventListener("click", function() {
+        rbox1.style.display = "none";
+        rbox2.style.display = "block";
       });
-  });
+    });
   </script>
 
 </body>

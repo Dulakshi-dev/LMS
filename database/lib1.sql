@@ -324,11 +324,8 @@ CREATE TABLE `payment` (
   `transaction_id` varchar(50) NOT NULL,
   `payed_at` datetime NOT NULL,
   `next_due_date` datetime NOT NULL,
-  `member_id` int NOT NULL,
   PRIMARY KEY (`payment_id`),
-  UNIQUE KEY `trasaction_id_UNIQUE` (`transaction_id`),
-  KEY `fk_payment_member1_idx` (`member_id`),
-  CONSTRAINT `fk_payment_member1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+  UNIQUE KEY `trasaction_id_UNIQUE` (`transaction_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -338,7 +335,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,1000,'1223','2025-03-06 00:00:00','2026-03-06 00:00:00',1),(10,1000,'67da9bdbe4db9','2025-03-19 15:57:13','2026-03-19 15:57:13',17);
+INSERT INTO `payment` VALUES (1,1000,'1223','2025-03-06 00:00:00','2026-03-06 00:00:00'),(10,1000,'67da9bdbe4db9','2025-03-19 15:57:13','2026-03-19 15:57:13');
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -527,4 +524,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-19 22:36:44
+-- Dump completed on 2025-03-19 22:48:22

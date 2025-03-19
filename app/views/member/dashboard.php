@@ -54,7 +54,7 @@ require_once "../../main.php";
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
-    <div class="nav-bar">
+    <div class="nav-bar d-none d-md-block">
       <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
     </div>
 

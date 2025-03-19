@@ -23,7 +23,7 @@ $member_id = $_SESSION["member"]["member_id"];
 
   <div class="d-flex">
     <!-- Side Panel -->
-    <div class="nav-bar">
+    <div class="nav-bar d-none d-md-block">
       <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
     </div>
 

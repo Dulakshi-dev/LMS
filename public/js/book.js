@@ -1,3 +1,13 @@
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
 function loadBooks(page = 1) {
     var bookid = document.getElementById("bookid").value.trim();
     var title = document.getElementById("bname").value.trim();
@@ -84,6 +94,47 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 })
 
+function addBook() {
+    let formData = new FormData();
+
+    // Get input values
+    formData.append("isbn", document.getElementById("isbn").value);
+    formData.append("author", document.getElementById("author").value);
+    formData.append("title", document.getElementById("title").value);
+    formData.append("category", document.getElementById("category").value);
+    formData.append("language", document.getElementById("language").value);
+    formData.append("pub", document.getElementById("pub").value);
+    formData.append("qty", document.getElementById("qty").value);
+    formData.append("des", document.getElementById("des").value);
+    
+    // Handle file input (Cover Page)
+    let coverPage = document.getElementById("coverpage").files[0];
+    if (coverPage) {
+        formData.append("coverpage", coverPage);
+    }
+
+    // Send data to controller via AJAX (Fetch API)
+    fetch("index.php?action=addBookData", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json()) // Convert response to JSON
+    .then(resp => {
+        if (resp.success) {
+            showAlert("Success", resp.message, "success").then(() => {
+                location.reload();
+            });
+        } else {
+            Swal.fire("Error", resp.message, "error"); // Show error message
+        }
+    })
+    .catch(error => {
+        console.error("Error adding book:", error);
+        Swal.fire("Error", "Something went wrong!", "error");
+    });
+}
+
+
 function deactivateBook(book_id){
     var formData = new FormData();
     formData.append("book_id", book_id);
@@ -95,17 +146,17 @@ function deactivateBook(book_id){
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                alert("Book Deactivated");
-                location.reload();
-
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
-                alert("Failed to load book data. Please try again.");
+                showAlert("Success", "Failed to deactivate book", "success");
+
             }
         })
         .catch(error => {
             console.error("Error fetching book data:", error);
         });
-
 }
 
 function loadAllCategories(selectedCategoryId = null) {
@@ -220,7 +271,9 @@ function loadBookDataUpdate(book_id) {
                         // Categories are now loaded, and the correct category is pre-selected
                     })
                     .catch(error => {
-                        alert('Failed to load categories. Please try again.');
+                        console.error('Failed to load languages', error);
+
+
                     });
 
                 loadLanguages(resp.language_id)
@@ -228,58 +281,22 @@ function loadBookDataUpdate(book_id) {
                         // languages are now loaded, and the correct category is pre-selected
                     })
                     .catch(error => {
-                        alert('Failed to load languages. Please try again.');
+                        console.error('Failed to load languages', error);
+
+
                     });
             } else {
-                alert('Failed to load book data. Please try again.');
+                showAlert("Error", resp.message, "error");
+
             }
         })
         .catch(error => {
             console.error('Error fetching book data:', error);
+            showAlert("Error", "An error occurred. Please try again.", "error");
+
         });
 }
 
-function updateBookDetails() {
-    var book_id = document.getElementById("book_id").value;
-    var isbn = document.getElementById("isbn_no").value;
-    var title = document.getElementById("title").value;
-    var author = document.getElementById("author").value;
-    var category = document.getElementById("category").value;
-    var language = document.getElementById("language").value;
-    var pubYear = document.getElementById("pub_year").value;
-    var quantity = document.getElementById("qty").value;
-    var description = document.getElementById("des").value;
-
-    //validate book details
-
-    var formData = new FormData();
-    formData.append("book_id", book_id);
-    formData.append("isbn", isbn);
-    formData.append("title", title);
-    formData.append("author", author);
-    formData.append("category_id", category);
-    formData.append("language_id", language);
-    formData.append("pub_year", pubYear);
-    formData.append("quantity", quantity);
-    formData.append("description", description);
-
-
-    fetch("index.php?action=updateBook", {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.json())
-        .then(resp => {
-            if (resp.success) {
-                location.reload();
-            } else {
-                alert("Failed to update book data. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching book data:", error);
-        });
-}
 
 function showImagePreview() {
     var file = document.getElementById('coverpage').files[0];
@@ -356,8 +373,6 @@ function validateForm() {
     return isValid;
 }
 
-
-
 function updateBookDetails() {
     var book_id = document.getElementById("book_id").value;
     var isbn = document.getElementById("isbn_no").value;
@@ -415,9 +430,6 @@ function updateBookDetails() {
         isValid = false;
     }
 
-
-
-
     if (isValid) {
         var formData = new FormData();
         formData.append("book_id", book_id);
@@ -437,18 +449,22 @@ function updateBookDetails() {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    location.reload();
-                } else {
-                    alert("Failed to update book data. Please try again.");
+                    showAlert("Success", resp.message, "success").then(() => {
+                        location.reload();
+                    });                } else {
+                    showAlert("Error", resp.message, "error");
+
                 }
             })
             .catch(error => {
                 console.error("Error fetching book data:", error);
+                showAlert("Error", "An error occurred. Please try again.", "error");
+
             });
     }
 }
 
-// Clear all error messages
+
 function clearErrors() {
     document.getElementById("isbn_error").textContent = "";
     document.getElementById("title_error").textContent = "";
@@ -460,3 +476,36 @@ function clearErrors() {
     document.getElementById("des_error").textContent = "";
 }
 
+function addCategory() {
+    var category = document.getElementById("category").value.trim();
+    var categoryInput = document.getElementById("category");
+
+    if (category === "") {
+        alert("Category name is required!");
+        return;
+    }
+
+    var formData = new FormData();
+    formData.append("category", category);
+
+    fetch("index.php?action=addCategoryData", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success");
+
+                categoryInput.value = "";
+            } else {
+                showAlert("Error", resp.message , "error");
+
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            showAlert("Error", "An error occurred. Please try again.", "error");
+
+        });
+}

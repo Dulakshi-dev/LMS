@@ -20,7 +20,6 @@
             background: rgba(0, 0, 0, 0.8);
             padding: 30px;
             border-radius: 10px;
-
         }
     </style>
 </head>
@@ -42,54 +41,43 @@
                     <h1 class="text-center">Log In</h1>
 
                     <?php
-
-                    $username = "";
-                    $password = "";
-
-                    if (isset($_COOKIE["username"])) {
-                        $username = $_COOKIE["username"];
-                    }
-
-                    if (isset($_COOKIE["password"])) {
-                        $password = $_COOKIE["password"];
-                    }
+                    $memberid = isset($_COOKIE["memberid"]) ? $_COOKIE["memberid"] : "";
+                    $memberpw = isset($_COOKIE["memberpw"]) ? $_COOKIE["memberpw"] : "";
+                    $rememberChecked = isset($_COOKIE["memberid"]) ? "checked" : "";
                     ?>
-                    <form id="loginForm" action="<?php echo Config::indexPathMember() ?>?action=memberlogin" method="POST">
-                        <div class="form-group">
-                            <label for="username">User Name</label>
-                            <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memid" value="<?php echo $username; ?>">
-                            <span class="error text-danger" id="usernameError"></span>
+                    <div class="form-group">
+                        <label for="memberid">Member ID</label>
+                        <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memberid" value="<?php echo $memberid; ?>">
+                        <span class="error text-danger" id="memberidError"></span>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="memberpw">Password</label>
+                        <input class="form-control mt-2" placeholder="Enter your password" type="password" name="password" id="password" value="<?php echo $memberpw; ?>">
+                        <span class="error text-danger" id="passwordError"></span>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col">
+                            <input type="checkbox" name="rememberme" id="rememberme" <?php echo $rememberChecked; ?>>
+                            <label for="rememberme">Remember me</label>
+
                         </div>
-
-                        <div class="form-group mt-3">
-                            <label for="password">Password</label>
-                            <input class="form-control mt-2" placeholder="Enter your password" type="password" name="password" id="password" value="<?php echo $password; ?>">
-                            <span class="error text-danger" id="passwordError"></span>
+                        <div class="col d-flex justify-content-end">
+                            <a href="<?php echo Config::indexPathMember() ?>?action=showforgotpw" class="text-decoration-none forgot-password">Forgot Password?</a>
                         </div>
+                    </div>
 
-                        <div class="row mt-2">
-                            <div class="col">
-                                <input type="checkbox" name="Remember me" id="rememberme">
-                                <label for="rememberme">Remember me</label>
-                            </div>
-                            <div class="col d-flex justify-content-end">
-                                <a href="<?php echo Config::indexPathMember() ?>?action=showforgotpw" class="text-decoration-none forgot-password">Forgot Password?</a>
-                            </div>
+                    <button type="button" class="btn btn-primary w-100 my-4" onclick="login();">Login</button>
+
+                    <div class="row">
+                        <div class="col">
+                            <p>Not registered yet?</p>
                         </div>
-
-                        <button type="submit" class="btn btn-primary w-100 my-4">Login</button>
-
-                        <div class="row">
-                            <div class="col">
-                                <p>Not registered yet?</p>
-                            </div>
-                            <div class="col d-flex justify-content-end">
-                                <a href="<?php echo Config::indexPathMember() ?>?action=register" class="text-decoration-none create-account">Create an account</a>
-                            </div>
+                        <div class="col d-flex justify-content-end">
+                            <a href="<?php echo Config::indexPathMember() ?>?action=register" class="text-decoration-none create-account">Create an account</a>
                         </div>
-                    </form>
-
-
+                    </div>
                 </div>
             </div>
             <div class="d-lg-block col-12 col-lg-3 offset-3">
@@ -101,45 +89,9 @@
     <?php
     require_once Config::getViewPath("home", "footer-noscroll.view.php");
     ?>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const form = document.getElementById("loginForm");
-            const usernameInput = document.getElementById("memid");
-            const passwordInput = document.getElementById("password");
-            const usernameError = document.getElementById("usernameError");
-            const passwordError = document.getElementById("passwordError");
 
-            function validateUsername() {
-                const usernamePattern = /^M-\d{6}$/;
-                if (!usernameInput.value.match(usernamePattern)) {
-                    usernameError.textContent = "Please enter a valid username (e.g., M-123456)";
-                    return false;
-                }
-                usernameError.textContent = "";
-                return true;
-            }
+    <script src="<?php echo Config::getJsPath("memberLogin.js"); ?>"></script>
 
-            function validatePassword() {
-                if (passwordInput.value.trim() === "") {
-                    passwordError.textContent = "Password is required.";
-                    return false;
-                }
-                passwordError.textContent = "";
-                return true;
-            }
-
-            form.addEventListener("submit", function(e) {
-                let isValid = true;
-
-                if (!validateUsername() || !validatePassword()) {
-                    e.preventDefault();
-                }
-            });
-
-            usernameInput.addEventListener("input", validateUsername);
-            passwordInput.addEventListener("input", validatePassword);
-        });
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

@@ -16,11 +16,11 @@ class LoginController
     public static function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $username = $_POST['username'];
+            $staffid = $_POST['staffid'];
             $password = $_POST['password'];
             $rememberme = isset($_POST['rememberme']) ? true : false;
     
-            $userDetails = LoginModel::validateLogin($username, $password);
+            $userDetails = LoginModel::validateLogin($staffid, $password);
     
             if ($userDetails) {
 
@@ -37,17 +37,16 @@ class LoginController
                 self::loadModules($_SESSION["staff"]["role_id"]);
     
                 if ($rememberme) {
-                    setcookie("username", $username, time() + (60 * 60 * 24 * 365), "/");
-                    setcookie("password", $password, time() + (60 * 60 * 24 * 365), "/");
+                    setcookie("staffid", $staffid, time() + (60 * 60 * 24 * 365), "/");
+                    setcookie("staffpw", $password, time() + (60 * 60 * 24 * 365), "/");
                 } else {
-                    setcookie("username", "", time() - 3600, "/");
-                    setcookie("password", "", time() - 3600, "/");
+                    setcookie("staffid", "", time() - 3600, "/");
+                    setcookie("staffpw", "", time() - 3600, "/");
                 }
-                header("Location: index.php?action=dashboard");
+                echo json_encode(["success" => true, "message" => "Login successful!"]);
                 exit;
             } else {
-                $error = "Invalid username or password.";
-                header("Location: index.php");
+                echo json_encode(["success" => false, "message" => "Invalid username or password."]);
                 exit; 
             }
         }
@@ -81,10 +80,13 @@ class LoginController
             $result = LoginModel::register($fname, $lname, $address, $phone, $email, $nic, $role, $password);
 
             if ($result) {
+                echo json_encode(["success" => true, "message" => "Successfully Registered."]);
+
                 header("Location: index.php");
                 exit();
             } else {
-                $error = "Unsuccessful Registration";
+                echo json_encode(["success" => false, "message" => "Registration Failed."]);
+
             }
         }
     }
@@ -102,7 +104,7 @@ class LoginController
                 exit();
             } else {
 
-                $error = "Invalid Email";
+                echo json_encode(["success" => false, "message" => "Invalid Email."]);
                 exit(); 
             }
         }
@@ -142,13 +144,15 @@ class LoginController
             $emailSent = $emailService->sendEmail($email, $subject, $body);
 
             if ($emailSent) {
-                echo ("Email for reset sent successfully! Check Your email address");
+                echo json_encode(["success" => true, "message" => "Password reset link sent! Check Your email address"]);
 
             } else {
-                echo ("Failed to send email.");
+                echo json_encode(["success" => false, "message" => "Failed to send email."]);
+
             }
         } else {
-            echo("Invalid Request");
+            echo json_encode(["success" => false, "message" => "Invalid Request."]);
+
         }
     }
 
@@ -161,9 +165,9 @@ class LoginController
          
             $result = LoginModel::changePassword($password ,$vcode);
             if ($result) {
-                header("Location: index.php");
+                echo json_encode(["success" => true, "message" => "Password reset successfully"]);
             } else {
-                echo("error");
+                echo json_encode(["Error" => false, "message" => "Failed to reset password"]);
             }
         }
     }

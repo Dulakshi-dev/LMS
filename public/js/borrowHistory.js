@@ -1,3 +1,13 @@
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
 function loadBorrowBooks(page = 1) {
     var bookid = document.getElementById("bookid").value.trim();
     var title = document.getElementById("title").value.trim();

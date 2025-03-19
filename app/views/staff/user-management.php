@@ -167,7 +167,7 @@ $page = $page ?? 1;
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("user.js"); ?>"></script>
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

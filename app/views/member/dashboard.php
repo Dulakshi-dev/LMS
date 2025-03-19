@@ -50,7 +50,7 @@ require_once "../../main.php";
   </style>
 </head>
 
-<body>
+<body onload="loadDashboardBooks();">
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
@@ -78,63 +78,20 @@ require_once "../../main.php";
               <i class="fa fa-home me-1"></i> Dashboard
             </a>
           </div>
-
-
         </div>
 
-        <div class="container my-4">
-          <div class="row align-items-center">
-            <div class="col-4 col-md-5 d-flex justify-content-end">
-              <input type="text" class="form-control w-75" placeholder="Category">
-            </div>
-            <div class="col-4 col-md-5 d-flex justify-content-end">
-              <input type="text" class="form-control w-75" placeholder="Language">
-            </div>
-            <div class="col-4 col-md-2 d-flex align-items-center">
-              <a href="#" class="ms-2 btn btn-dark px-4"><i class="fa fa-search fs-5"></i></a>
-            </div>
-          </div>
-        </div>
+
       </div>
-
-
 
       <div class="row">
         <div class="col-md-12 ">
           <div class="bg-light rounded p-4 mb-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5>Recommended</h5>
-              <a href="<?php echo Config::indexPathMember() ?>?action=getallbooks" class="text-decoration-none">See All <i class="fa fa-angle-right"></i></a>
+              <a href="<?php echo Config::indexPathMember() ?>?action=showallbooks" class="text-decoration-none">See All <i class="fa fa-angle-right"></i></a>
             </div>
-            <div class="row g-4">
-              <?php if (!empty($booksrec)) {
-                foreach ($booksrec as $row) { ?>
-                  <div class="col-md-6 col-lg-3 col-sm-12">
-                    <div class="book-card">
-                      <div class="book-image">
-                        <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-                      </div>
-                      <div class="p-3 d-flex justify-content-between align-items-center">
-                        <div class="text-start">
-                          <div class="book-title"><?php echo $row["title"]; ?></div>
-                          <div><?php echo $row["author"]; ?></div>
-                        </div>
-                        <button class="btn btn-sm view-details" id="success"
-                          data-title="<?php echo $row["title"]; ?>"
-                          data-author="<?php echo $row["author"]; ?>"
-                          data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>"
-                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
+            <div class="row g-4" id="recommendedBooks">
 
-                          View Details
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              <?php }
-              } else {
-                echo "<p>No Books found</p>";
-              } ?>
             </div>
           </div>
         </div>
@@ -144,35 +101,8 @@ require_once "../../main.php";
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5>New Arrivals</h5>
             </div>
-            <div class="row g-4">
-              <?php if (!empty($latestbooks)) {
-                foreach ($latestbooks as $row) { ?>
-                  <div class="col-md-6 col-lg-3 col-sm-12">
-                    <div class="book-card">
-                      <div class="book-image">
-                        <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-                      </div>
-                      <div class="p-3 d-flex justify-content-between align-items-center">
-                        <div class="text-start">
-                          <div class="book-title"><?php echo $row["title"]; ?></div>
-                          <div><?php echo $row["author"]; ?></div>
-                        </div>
-                        <button class="btn btn-sm view-details" id="success"
-                          data-title="<?php echo $row["title"]; ?>"
-                          data-author="<?php echo $row["author"]; ?>"
-                          data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>"
-                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
+            <div class="row g-4" id="latestBooks">
 
-                          View Details
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              <?php }
-              } else {
-                echo "<p>No Books found</p>";
-              } ?>
             </div>
           </div>
         </div>
@@ -182,35 +112,8 @@ require_once "../../main.php";
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5>Top Books</h5>
             </div>
-            <div class="row g-4">
-              <?php if (!empty($topbooks)) {
-                foreach ($topbooks as $row) { ?>
-                  <div class="col-md-6 col-lg-3 col-sm-12">
-                    <div class="book-card">
-                      <div class="book-image">
-                        <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-                      </div>
-                      <div class="p-3 d-flex justify-content-between align-items-center">
-                        <div class="text-start">
-                          <div class="book-title"><?php echo $row["title"]; ?></div>
-                          <div><?php echo $row["author"]; ?></div>
-                        </div>
-                        <button class="btn btn-sm view-details" id="success"
-                          data-title="<?php echo $row["title"]; ?>"
-                          data-author="<?php echo $row["author"]; ?>"
-                          data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>"
-                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
+            <div class="row g-4" id="topBooks">
 
-                          View Details
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              <?php }
-              } else {
-                echo "<p>No Books found</p>";
-              } ?>
             </div>
           </div>
         </div>
@@ -226,13 +129,11 @@ require_once "../../main.php";
       <button type="button" class="btn-close bg-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
 
-
     <div class="offcanvas-body">
       <div class="d-flex justify-content-end ">
         <button style="background: none; border: none; padding: 0; cursor: pointer;">
           <i id="save-btn" class="fa fa-bookmark text-white fs-4"></i>
         </button>
-
       </div>
       <div class="book-details">
         <div class="bg-white rounded m-3 d-flex flex-column align-items-center justify-content-center"
@@ -247,119 +148,43 @@ require_once "../../main.php";
         <p style="text-align: justify;"><strong>Description:</strong> <span id="book-description"></span></p>
         <button id="rbox" class="btn btn-primary">Reserve</button>
 
-        <div id="rbox-1">
-          <div class="text-white">
-            <div class="d-flex justify-content-center my-2">
-              <button class="btn btn-light">Reserve this book</button>
-            </div>
-            <p>
-              Your book reservation is <span class="reseve">valid for one week</span> from the reserved date.
-              If the book is not collected within this period,
-              the reservation will be automatically canceled
-            </p>
-          </div>
-        </div>
-
-        <div id="rbox-2">
-          <div class="d-flex justify-content-center my-2">
-            <h3>Reserve this book</h3>
-          </div>
+        <div id="rbox-2" class="d-none">
           <p>
             Your book reservation is <span class="reseve">valid for one week</span> from the reserved date.
             If the book is not collected within this period,
             the reservation will be automatically canceled
           </p>
           <div class="d-flex justify-content-center my-2">
-            <button class="btn btn-primary" id="reserve-btn">Confirm Reservation</button>
+            <button class="btn btn-primary reserve-btn" id="reserve-btn">Confirm Reservation</button>
           </div>
         </div>
 
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      const reserveBtn = document.getElementById("rbox");
+      const rbox2 = document.getElementById("rbox-2");
+
+      reserveBtn.addEventListener("click", function() {
+rbox2.classList.remove("d-none");
+        reserveBtn.style.display = "none";
+      });
+
+    });
+  </script>
+
+
   <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script>
-    document.querySelectorAll('.view-details').forEach(button => {
-      button.addEventListener('click', function() {
-        const title = this.getAttribute('data-title');
-        const author = this.getAttribute('data-author');
-        const id = this.getAttribute('data-id');
-        const description = this.getAttribute('data-description');
-        const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
-        const availability = this.getAttribute('data-availability');
-
-        document.getElementById('book-title').textContent = title;
-        document.getElementById('book-author').textContent = author;
-        document.getElementById('book-id').textContent = id;
-        document.getElementById('book-description').textContent = description;
-        document.getElementById('book-availability').textContent = availability;
-
-        const reserveBtn = document.getElementById('reserve-btn');
-        const availabilityText = document.getElementById('book-availability');
-
-        if (availability === "Not Available") {
-          reserveBtn.classList.add("d-none");
-          availabilityText.style.color = "#F08080"; // Light Coral
-        } else {
-          reserveBtn.classList.remove("d-none");
-          availabilityText.style.color = "#98FF98"; // Mint Green
-        }
-
-        const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
-        offcanvasImage.setAttribute('src', coverImage);
-        offcanvasImage.style.width = "150px";
-        offcanvasImage.style.height = "200px";
-        offcanvasImage.style.objectFit = "cover";
-
-        // Ensure memberId is properly defined before using it
-        const memberId = "<?php echo $_SESSION['member']['member_id'] ?? ''; ?>";
-
-        if (memberId) {
-          document.getElementById('reserve-btn').onclick = function() {
-            window.location.href = "<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=" + id + "&member_id=" + memberId;
-          };
-
-          document.getElementById('save-btn').onclick = function() {
-            window.location.href = "<?php echo Config::indexPathMember(); ?>?action=save&book_id=" + id + "&member_id=" + memberId;
-          };
-        } else {
-          console.error("Member ID is not set.");
-        }
-
-        const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
-        offcanvas.show();
-      });
-    });
-
-    //for reserve
-    document.addEventListener("DOMContentLoaded", function() {
-
-      const reserveBtn = document.getElementById("rbox");
-      const rbox1 = document.getElementById("rbox-1");
-      const rbox2 = document.getElementById("rbox-2");
-      const reserveBookBtn = rbox1.querySelector("button");
-
-
-      rbox1.style.display = "none";
-      rbox2.style.display = "none";
-
-      reserveBtn.addEventListener("click", function() {
-        rbox1.style.display = "block";
-        reserveBtn.style.display = "none";
-      });
-
-
-      reserveBookBtn.addEventListener("click", function() {
-        rbox1.style.display = "none";
-        rbox2.style.display = "block";
-      });
-    });
-  </script>
-
+  <script src="<?php echo Config::getJsPath("memberBook.js"); ?>"></script>
+  <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
 </body>
 
 </html>

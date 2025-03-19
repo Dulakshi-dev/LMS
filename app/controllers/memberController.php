@@ -89,7 +89,7 @@ class MemberController
             $result = MemberModel::approveMembership($id);
 
             if ($result) {
-                echo json_encode(["success" => true, "message" => "Membership active"]);
+                echo json_encode(["success" => true, "message" => "Membership approved"]);
             } else {
                 echo json_encode(["success" => false, "message" => "User not found."]);
             }
@@ -131,9 +131,6 @@ class MemberController
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
     }
-
-
-  
 
     public function loadMemberDetails()
     {
@@ -182,9 +179,9 @@ class MemberController
             $result = MemberModel::UpdateMemberDetails($member_id, $firstName, $lastName, $email, $phone, $address, $nic);
 
             if ($result) {
-                echo json_encode(["success" => true, "message" => "User updated successfully."]);
+                echo json_encode(["success" => true, "message" => "Member updated successfully."]);
             } else {
-                echo json_encode(["success" => false, "message" => "User not found."]);
+                echo json_encode(["success" => false, "message" => "Member not found."]);
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
@@ -207,7 +204,7 @@ class MemberController
 
                 ]);
             } else {
-                echo json_encode(["success" => false, "message" => "User not found."]);
+                echo json_encode(["success" => false, "message" => "Member not found."]);
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
@@ -250,22 +247,6 @@ class MemberController
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid Request"]);
-        }
-    }
-
-    public function changeMemnerStatus()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id'];
-
-            $result = MemberModel::toggleMemberStatus($id);
-            if ($result) {
-                echo json_encode(["success" => true, "message" => "User Status Changed"]);
-            } else {
-                echo json_encode(["success" => false, "message" => "User not found."]);
-            }
-        } else {
-            echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
     }
 

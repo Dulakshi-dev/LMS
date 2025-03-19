@@ -5,32 +5,28 @@ require_once '../../router.php';
 require_once '../../main.php';
 
 require_once Config::getControllerPath("authController.php");
-require_once Config::getControllerPath("memberDashboardController.php");
+require_once Config::getControllerPath("memberBookController.php");
 require_once Config::getControllerPath("memberProfileController.php");
 require_once Config::getControllerPath("borrowHistoryController.php");
 require_once Config::getControllerPath("memberReservationController.php");
 require_once Config::getControllerPath("myLibraryController.php");
 require_once Config::getControllerPath("PaymentController.php");
 
-
-
 // Initialize the Router
 $router = new Router();
 
 // Create controller instances
 $authController = new AuthController();
-$memberDashboardController = new MemberDashboardController();
+$memberBookController = new MemberBookController();
 $memberProfileController = new memberProfileController();
 $borrowHistoryController = new BorrowHistoryController();
 $memberReservationController = new MemberReservationController();
 $myLibraryController = new MyLibraryController();
 $paymentController = new PaymentController();
 
-
-
 $router->add('memberlogin', [$authController, 'login']);
-$router->add('loaddashboardbooks', [$memberDashboardController, 'getDashboardBooks']);
-$router->add('getallbooks', [$memberDashboardController, 'getAllBooks']);
+$router->add('loaddashboardbooks', [$memberBookController, 'getDashboardBooks']);
+$router->add('getallbooks', [$memberBookController, 'getAllBooks']);
 $router->add('loadMemberData', [$memberProfileController, 'loadMemberDetails']); 
 $router->add('updateprofile', [$memberProfileController, 'updateProfile']); 
 $router->add('serveprofimage', [$memberProfileController, 'serveProfileImage']);
@@ -42,7 +38,7 @@ $router->add('loadBorrowHistory', [$borrowHistoryController, 'loadBorrowBooks'])
 $router->add('showPayment', [$paymentController, 'proceedPayment']); 
 $router->add('registerMember', [$authController, 'registerMember']); 
 $router->add('reserve', [$memberReservationController, 'reserveBook']); 
-$router->add('reservedbooks', [$memberReservationController, 'loadReservedBooks']); 
+$router->add('loadreservedbooks', [$memberReservationController, 'loadReservedBooks']); 
 $router->add('save', [$myLibraryController, 'saveBook']); 
 $router->add('savedbooks', [$myLibraryController, 'loadSavedBooks']); 
 $router->add('unsave', [$myLibraryController, 'unSaveBook']); 
@@ -50,9 +46,10 @@ $router->add('payment_notify', [$paymentController, 'paymentNotify']);
 $router->add('insertPayment', [$paymentController, 'renewPayment']); 
 $router->add('forgotpassword', [$authController, 'forgotPassword']);
 $router->add('changepassword', [$authController, 'resetPassword']);
-$router->add('serveimage', [$memberDashboardController, 'serveBookCover']);
-
-
+$router->add('serveimage', [$memberBookController, 'serveBookCover']);
+$router->add('getallcategories', [$memberBookController, 'getAllCategories']);
+$router->add('getlanguages', [$memberBookController, 'getLanguages']);
+$router->add('cancelreservation', [$memberReservationController, 'cancelReservation']); 
 
 
 $router->add('home', function () {
@@ -115,6 +112,13 @@ $router->add('viewMyLibrary', function () {
     include Config::getViewPath("member", "my-library.php");
 });
 
+$router->add('showallbooks', function () {
+    include Config::getViewPath("member", "view-all-books.php");
+});
+
+$router->add('reservedbooks', function () {
+    include Config::getViewPath("member", "reserved-books.php");
+});
 
 // Get the action from the URL
 $action = $_GET['action'] ?? 'home';

@@ -1,3 +1,11 @@
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
 function loadMembers(page = 1) {
 
     var memberid = document.getElementById("memberId").value.trim();
@@ -152,9 +160,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.target.closest(".approve-request")) {
             let button = event.target.closest(".approve-request");
             approveMembership(button.dataset.id);
-            alert("Membership Request Approved")
-
-            location.reload();
+            
         }
     });
 
@@ -162,9 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.target.closest(".reject")) {
             let button = event.target.closest(".reject");
             rejectMemberRequest(button.dataset.id);
-            alert("Membership Request Rejected")
-
-            location.reload();
+           
 
         }
     });
@@ -182,13 +186,17 @@ function approveMembership(id){
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                location.reload();
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
-                alert("Approval failed. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
+            showAlert("Error", "Something went wrong", "error");
             console.error("Error fetching user data:", error);
+
         });
 }
 
@@ -215,10 +223,11 @@ function loadMemberDataUpdate(id) {
                 document.getElementById("phoneNumber").value = resp.mobile;
                 document.getElementById("address").value = resp.address;
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
+            showAlert("Error", "Something went wrong", "error");
             console.error("Error fetching user data:", error);
         });
 }
@@ -297,12 +306,16 @@ function updateUserDetails() {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                location.reload();
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
-                alert("Failed to update user data. Please try again.");
+                showAlert("Error", resp.message, "error");
+
             }
         })
         .catch(error => {
+            showAlert("Error", "Something went wrong", "error");
             console.error("Error fetching user data:", error);
         });
 }
@@ -327,10 +340,12 @@ function loadMailData(member_id) {
                 document.getElementById("emailadd").value = resp.email;
 
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
+
             }
         })
         .catch(error => {
+            showAlert("Error", "Something went wrong", "error");
             console.error("Error fetching user data:", error);
         });
 }
@@ -347,12 +362,14 @@ function deactivateUser(member_id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                alert("Member Deactivated");
+                showAlert("Success", resp.message, "success");
+
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
+            showAlert("Error", "Something went wrong", "error");
             console.error("Error fetching user data:", error);
         });
 }
@@ -369,12 +386,16 @@ function rejectMemberRequest(id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                location.reload();
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
+
             }
         })
         .catch(error => {
+            showAlert("Error", "Something went wrong", "error");
             console.error("Error fetching user data:", error);
         });
 }
@@ -434,36 +455,40 @@ function sendEmail() {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                alert("Mail sent successfully.");
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
-                alert("Failed to send mail. Please try again.");
+                showAlert("Error", resp.message, "error");
+
             }
         })
         .catch(error => {
+            showAlert("Error", "Something went wrong", "error");
             console.error("Error sending mail:", error);
         });
 }
 
-function changeUserStatus(id) {
-    var formData = new FormData();
-    formData.append("id", id);
-    alert(id);
+// function changeUserStatus(id) {
+//     var formData = new FormData();
+//     formData.append("id", id);
 
-    fetch("index.php?action=changeMemberStatus", {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.json())
-        .then(resp => {
-            if (resp.success) {
-                location.reload();
-            } else {
-                alert("Failed to load user data. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching user data:", error);
-        });
-}
+//     fetch("index.php?action=changeMemberStatus", {
+//         method: "POST",
+//         body: formData,
+//     })
+//         .then(response => response.json())
+//         .then(resp => {
+//             if (resp.success) {
+//                 showAlert("Success", resp.message, "success");
+//             } else {
+//                 showAlert("Error", resp.message, "error");
+//             }
+//         })
+//         .catch(error => {
+//             showAlert("Error", "Something went wrong", "error");
+//             console.error("Error fetching user data:", error);
+//         });
+// }
 
 

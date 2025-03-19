@@ -46,7 +46,7 @@ require_once "../../main.php";
   </style>
 </head>
 
-<body>
+<body onload="viewallbooks();">
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
@@ -55,45 +55,44 @@ require_once "../../main.php";
     </div>
 
     <div class="container-fluid p-4">
+
       <div class="row">
-
-        <div class="col-md-12">
-          <div class="bg-light rounded p-4">
-
-            <div class="row g-4">
-              <?php if (!empty($books)) {
-                foreach ($books as $row) { ?>
-                  <div class="col-md-3 col-sm-6">
-                    <div class="book-card">
-                      <div class="book-image">
-                        <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover">
-                      </div>
-                      <div class="p-3 d-flex justify-content-between align-items-center">
-                        <div class="text-start">
-                          <div class="book-title"><?php echo $row["title"]; ?></div>
-                          <div><?php echo $row["author"]; ?></div>
-                        </div>
-                        <button class="btn btn-sm view-details" id="success"
-                          data-title="<?php echo $row["title"]; ?>"
-                          data-author="<?php echo $row["author"]; ?>"
-                          data-id="<?php echo $row["book_id"]; ?>"
-                          data-description="<?php echo $row["description"]; ?>"
-                          data-availability="<?php echo ($row["available_qty"] > 0) ? 'Available' : 'Not Available'; ?>">
-                          View Details
-                        </button>
-
-                      </div>
-                    </div>
-                  </div>
-              <?php }
-              } else {
-                echo "<p>No Books found</p>";
-              } ?>
-            </div>
+        <div class="col-lg-4 col-md-8 offset-lg-4 mb-3">
+          <div class="input-group">
+            <input type="text" id="title" class="form-control" placeholder="Search your favourite Book">
+            <span class="input-group-text"><i class="fa fa-search"></i></span>
           </div>
+
+        </div>
+      </div>
+
+      <div class="row align-items-center mb-3">
+        <div class="offset-lg-1 col-5 col-md-5 d-flex justify-content-end">
+          <select class="form-select" id="category">
+            <option value="">...</option>
+          </select>
+        </div>
+        <div class="col-5 col-md-5 d-flex justify-content-end">
+          <select class="form-select" id="language">
+            <option value="">...</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div class="col-md-12">
+        <div class="bg-light rounded p-4">
+
+
+          <div class="row g-4" id="bookBody">
+
+          </div>
+          <div id="pagination"></div>
+
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="bookDetailsCanvas" aria-labelledby="bookDetailsCanvasLabel" style="width: 320px;">
@@ -127,62 +126,11 @@ require_once "../../main.php";
   </div>
   <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
 
-  <script src="<?php echo Config::getJsPath("memberDashboard.js"); ?>"></script>
+
+  <script src="<?php echo Config::getJsPath("memberBook.js"); ?>"></script>
+  <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-  <script>
-  document.querySelectorAll('.view-details').forEach(button => {
-    button.addEventListener('click', function() {
-      const title = this.getAttribute('data-title');
-      const author = this.getAttribute('data-author');
-      const id = this.getAttribute('data-id');
-      const description = this.getAttribute('data-description');
-      const coverImage = this.closest('.book-card').querySelector('img').getAttribute('src');
-      const availability = this.getAttribute('data-availability');
-
-      document.getElementById('book-title').textContent = title;
-      document.getElementById('book-author').textContent = author;
-      document.getElementById('book-id').textContent = id;
-      document.getElementById('book-description').textContent = description;
-      document.getElementById('book-availability').textContent = availability;
-
-      const reserveBtn = document.getElementById('reserve-btn');
-      const availabilityText = document.getElementById('book-availability');
-
-      if (availability === "Not Available") {
-        reserveBtn.classList.add("d-none");
-        availabilityText.style.color = "#F08080"; // Light Coral
-      } else {
-        reserveBtn.classList.remove("d-none");
-        availabilityText.style.color = "#98FF98"; // Mint Green
-      }
-
-      const offcanvasImage = document.querySelector('.offcanvas-body .book-details img');
-      offcanvasImage.setAttribute('src', coverImage);
-      offcanvasImage.style.width = "150px";
-      offcanvasImage.style.height = "200px";
-      offcanvasImage.style.objectFit = "cover";
-
-      // Ensure memberId is properly defined before using it
-      const memberId = "<?php echo $_SESSION['member']['member_id'] ?? ''; ?>"; 
-
-      if (memberId) {
-        document.getElementById('reserve-btn').onclick = function() {
-          window.location.href = "<?php echo Config::indexPathMember(); ?>?action=reserve&book_id=" + id + "&member_id=" + memberId;
-        };
-
-        document.getElementById('save-btn').onclick = function() {
-          window.location.href = "<?php echo Config::indexPathMember(); ?>?action=save&book_id=" + id + "&member_id=" + memberId;
-        };
-      } else {
-        console.error("Member ID is not set.");
-      }
-
-      const offcanvas = new bootstrap.Offcanvas(document.getElementById('bookDetailsCanvas'));
-      offcanvas.show();
-    });
-  });
-</script>
 
 </body>
 

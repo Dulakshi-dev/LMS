@@ -55,7 +55,7 @@ require_once "../../main.php";
 
                                     <i class="fa fa-cubes display-1 text-success"></i>
                                     <p class="fw-bold fs-5 mt-3 text-dark">View Reservation</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewissuebooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewreservations" class="btn btn-success w-50 rounded-pill mt-2">View</a>
                                 </div>
                             </div>
                         </div>

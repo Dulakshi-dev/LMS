@@ -276,11 +276,6 @@ WHERE `status_id` = '1';");
        
     }
     
-    public static function toggleMemberStatus($id) {
-       
-        Database::ud("UPDATE `member` SET `status_id` = 3 - `status_id` WHERE `id` = '$id'");
-        return true;
-    }
     
     public static function loadMailDetails($member_id) {
 

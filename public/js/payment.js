@@ -1,3 +1,13 @@
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
 window.onload = function () {
     payhere.onCompleted = function (transactionId) {
         const memberId = window.membershipId;
@@ -13,9 +23,11 @@ window.onload = function () {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    alert("Payment processed successfully.");
+                    showAlert("Success", resp.message, "success");
+
                 } else {
-                    alert("Payment failed or was incomplete.");
+                    showAlert("Error", resp.message, "error");
+
                 }
             })
             .catch(error => {
@@ -26,11 +38,14 @@ window.onload = function () {
     };
 
     payhere.onDismissed = function () {
-        alert("Payment dismissed!");
+        showAlert("Info", "Payment Dismissed!", "info");
+
     };
 
     payhere.onError = function (error) {
-        alert("Payment failed: " + error);
+        
+        showAlert("Error", "Payment failed: " + error, "error");
+
     };
 };
 
@@ -44,12 +59,12 @@ function proceedPayment(id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.status === "success") {
-                alert("Redirecting to PayHere...");
+                showAlert("Info", "Redirecting to PayHere...", "info");
 
                 // Start PayHere Payment directly here
                 payhere.startPayment(resp.payment);
             } else {
-                alert("Payment Error: " + resp.error);
+                showAlert("Error", "Payment Error: " + resp.error, "error");
             }
         })
         .catch(error => {
@@ -77,7 +92,7 @@ function renewMembership(transactionId, memberId) {
             if (resp.success) {
                 window.location.href = "index.php?action=login";
             } else {
-                alert("Failed to register member");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {

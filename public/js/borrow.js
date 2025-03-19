@@ -1,3 +1,13 @@
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
 function loadIssuedBooks(page = 1) {
     var memberid = document.getElementById("memberid").value.trim();
     var bookid = document.getElementById("bookid").value.trim();
@@ -115,7 +125,7 @@ function loadBookData() {
                 document.getElementById("author").value = resp.author;
 
             } else {
-                alert("Failed to load book data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
@@ -141,14 +151,73 @@ function loadMemberData() {
                 document.getElementById("memName").value = resp.name;
 
             } else {
-                alert("Failed to load book data. Please try again.");
+                showAlert("Success", resp.message, "success");
             }
         })
         .catch(error => {
             console.error("Error fetching book data:", error);
+            showAlert("Error", resp.message, "error");
         });
 }
 
+function issueBook() {
+    document.getElementById("book_id_error").innerText = "";
+    document.getElementById("member_id_error").innerText = "";
+    document.getElementById("issueDate_error").innerText = "";
+    document.getElementById("returnDate_error").innerText = "";
+
+    // Get the values from the form fields
+    var book_id = document.getElementById("book_id").value;
+    var member_id = document.getElementById("member_id").value;
+    var issueDate = document.getElementById("issueDate").value;
+    var returnDate = document.getElementById("returnDate").value;
+
+    // Book ID validation
+    if (book_id.trim() === "") {
+        document.getElementById("book_id_error").innerText = "Book ID is required.";
+    } else if (member_id.trim() === "") {
+        document.getElementById("member_id_error").innerText = "Membership ID is required.";
+        isValid = false;
+    } if (issueDate.trim() === "") {
+        document.getElementById("issueDate_error").innerText = "Issue date is required.";
+
+    } if (returnDate.trim() === "") {
+        document.getElementById("returnDate_error").innerText = "Due date is required.";
+    } else {
+        let formData = new FormData();
+
+        // Collect input values
+        formData.append("book_id", document.getElementById("book_id").value);
+        formData.append("member_id", document.getElementById("member_id").value);
+        formData.append("isbn", document.getElementById("isbn").value);
+        formData.append("nic", document.getElementById("nic").value);
+        formData.append("title", document.getElementById("title").value);
+        formData.append("memName", document.getElementById("memName").value);
+        formData.append("author", document.getElementById("author").value);
+        formData.append("borrow_date", document.getElementById("issueDate").value);
+        formData.append("due_date", document.getElementById("returnDate").value);
+
+        // Send data to controller via AJAX
+        fetch("index.php?action=issuebook", {
+            method: "POST",
+            body: formData
+        })
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    showAlert("Success", resp.message, "success").then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire("Error", resp.message, "error"); // Show error message
+                }
+            })
+            .catch(error => {
+                console.error("Error issuing book:", error);
+                Swal.fire("Error", "Something went wrong!", "error");
+            });
+    }
+}
 
 function generateFine() {
 
@@ -174,45 +243,35 @@ function generateFine() {
     return fine;
 
 }
-function validateForm() {
-    // Clear any previous error messages
-    document.getElementById("book_id_error").innerText = "";
-    document.getElementById("member_id_error").innerText = "";
-    document.getElementById("issueDate_error").innerText = "";
-    document.getElementById("returnDate_error").innerText = "";
 
-    // Get the values from the form fields
-    var book_id = document.getElementById("book_id").value;
-    var member_id = document.getElementById("member_id").value;
-    var issueDate = document.getElementById("issueDate").value;
-    var returnDate = document.getElementById("returnDate").value;
+function returnBook(){
+    let formData = new FormData();
 
-    var isValid = true;
+    // Collect input values
+    formData.append("borrowId", document.getElementById("borrowId").value);
+    formData.append("bookId", document.getElementById("bookId").value);
+    formData.append("memberId", document.getElementById("memberId").value);
+    formData.append("dueDate", document.getElementById("dueDate").value);
+    formData.append("returnDate", document.getElementById("returnDate").value);
+    formData.append("fines", document.getElementById("fines").value);
 
-    // Book ID validation
-    if (book_id.trim() === "") {
-        document.getElementById("book_id_error").innerText = "Book ID is required.";
-        isValid = false;
-    }
-
-    // Member ID validation
-    if (member_id.trim() === "") {
-        document.getElementById("member_id_error").innerText = "Membership ID is required.";
-        isValid = false;
-    }
-
-    // Issue Date validation
-    if (issueDate.trim() === "") {
-        document.getElementById("issueDate_error").innerText = "Issue date is required.";
-        isValid = false;
-    }
-
-    // Return Date validation
-    if (returnDate.trim() === "") {
-        document.getElementById("returnDate_error").innerText = "Due date is required.";
-        isValid = false;
-    }
-
-    // Return false if validation fails
-    return isValid;
+    // Send data to the backend using Fetch API
+    fetch("index.php?action=returnbook", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(resp => {
+        if (resp.success) {
+            showAlert("Success", resp.message, "success").then(() => {
+                location.reload();
+            });
+        } else {
+            showAlert("Error", resp.message, "error"); 
+        }
+    })
+    .catch(error => {
+        console.error("Error returning book:", error);
+        Swal.fire("Error", "Something went wrong!", "error");
+    });
 }

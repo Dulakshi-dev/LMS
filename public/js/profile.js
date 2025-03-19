@@ -1,4 +1,14 @@
 
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
+
 function loadProfileData(id) {
     var formData = new FormData();
     formData.append("user_id", id);
@@ -27,7 +37,8 @@ function loadProfileData(id) {
                     profileImgElement.src = "index.php?action=serveprofimage&image=" + profimg;
                 }
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error",  resp.error, "error");
+
             }
         })
         .catch(error => {
@@ -109,18 +120,15 @@ function updateProfileDetails(event) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                location.reload();
+                showAlert("Success", resp.message, "success");
             } else {
-                alert("Failed to update user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
             console.error("Error fetching user data:", error);
         });
 }
-
-
-
 
 
 function showProfilePreview() {
@@ -214,10 +222,12 @@ function saveNewPassword(user_id) {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    alert("Password changed successfully!");
-                    location.reload();
+                   
+                    showAlert("Success", resp.message, "success").then(() => {
+                        location.reload();
+                    });
                 } else {
-                    alert("Error changing password. Please try again.");
+                    showAlert("Error", resp.message, "error");
                 }
             })
             .catch(error => {

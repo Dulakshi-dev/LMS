@@ -10,7 +10,7 @@
 
     <style>
         body {
-            background-image: url('../../../public/images/login_background.png');
+            background-image: url('<?php echo Config::getImagePath("login_background.png"); ?>');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -34,7 +34,6 @@
                 <h1 class="text-center pb-3">Reset Pasword</h1>
                 <span class="bg-danger text-dark text-center" id="doesnt"></span>
 
-                <form class="form-group" method="POST" action="index.php?action=resetpassword" onsubmit="return resetpw()">
                     <div class="form-group mt-1">
                         <div class="bg-success-subtle p-1 rounded-2 text-center mb-1">
                             <p class="text-success">Please create a new password you don't use on any other site</p>
@@ -53,48 +52,18 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary mt-4 w-100">Change</button>
+                        <button type="button" class="btn btn-primary mt-4 w-100" onclick="resetpassword();">Change</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <script>
-function resetpw() {
-    var pw = document.getElementById("pw").value.trim();
-    var cpw = document.getElementById("cpw").value.trim();
-    var pwError = document.getElementById("pwError");
-    var cpwError = document.getElementById("cpwError");
 
-    pwError.textContent = "";
-    cpwError.textContent = "";
-
-    var pwPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-    if (pw === "") {
-        pwError.textContent = "Password is required.";
-        return false;
-    }
-
-    if (!pw.match(pwPattern)) {
-        pwError.textContent = "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
-        return false;
-    }
-
-    if (cpw === "") {
-        cpwError.textContent = "Please confirm your password.";
-        return false;
-    }
-
-    if (pw !== cpw) {
-        cpwError.textContent = "Passwords do not match.";
-        return false;
-    }
-
-    return true;
-}
 </script>
     <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 
 </html>

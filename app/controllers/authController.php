@@ -12,17 +12,15 @@ class AuthController
         $this->authModel = new AuthModel();
     }
 
-    public static function login()
-    {
+    public static function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $memid = $_POST['memid'];
-            $password = $_POST['password'];
-            $rememberme = isset($_POST['rememberme']) ? true : false;
-
-            $userDetails = AuthModel::validateLogin($memid, $password);
-
+            $memberid = $_POST['memberid'];
+            $memberpw = $_POST['memberpw'];
+            $rememberme = ($_POST['rememberme'] == "1") ? true : false;
+    
+            $userDetails = AuthModel::validateLogin($memberid, $memberpw);
+    
             if ($userDetails) {
-
                 $_SESSION['member'] = [
                     'member_id' => $userDetails['member_id'],
                     'id' => $userDetails['id'],
@@ -30,25 +28,26 @@ class AuthController
                     'lname' => $userDetails['lname'],
                     'fname' => $userDetails['fname']
                 ];
-
-
+    
                 if ($rememberme) {
-                    setcookie("memberID", $memid, time() + (60 * 60 * 24 * 365), "/");
-                    setcookie("password", $password, time() + (60 * 60 * 24 * 365), "/");
+                    setcookie("memberid", $memberid, time() + (365 * 24 * 60 * 60), "/");
+                    setcookie("memberpw", $memberpw, time() + (365 * 24 * 60 * 60), "/");
+                    setcookie("rememberme", "1", time() + (365 * 24 * 60 * 60), "/"); // Store the checkbox state
                 } else {
-                    setcookie("memberID", "", time() - 3600, "/");
-                    setcookie("password", "", time() - 3600, "/");
+                    setcookie("memberid", "", time() - 3600, "/");
+                    setcookie("memberpw", "", time() - 3600, "/");
+                    setcookie("rememberme", "", time() - 3600, "/");
                 }
-                header("Location: index.php?action=dashboard");
+                
+                echo json_encode(["success" => true, "message" => "Login successful!"]);
                 exit;
             } else {
-                $error = "Invalid username or password.";
-                header("Location: index.php");
+                echo json_encode(["success" => false, "message" => "Invalid Member ID or Password."]);
                 exit;
             }
         }
     }
-
+    
     public static function sendOTP()
     {
         require_once Config::getServicePath('emailService.php');
@@ -56,7 +55,6 @@ class AuthController
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $email = $_POST['email'];
 
-            // Generate a 6-digit OTP
             $otp = rand(100000, 999999);
 
             $_SESSION['otp'] = $otp;
@@ -91,7 +89,7 @@ class AuthController
             $emailSent = $emailService->sendEmail($email, $subject, $body);
             if ($emailSent) {
 
-                echo json_encode(["success" => true, "message" => "Email sent successfully!"]);
+                echo json_encode(["success" => true, "message" => "OTP sent. Check your email!"]);
             } else {
                 echo json_encode(["success" => false, "message" => "Failed to send email."]);
             }
@@ -121,18 +119,6 @@ class AuthController
             }
         }
     }
-
-    // public static function proceedPayment()
-    // {
-    //     require_once Config::getServicePath('paymentService.php');
-
-    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //         $paymentService = new PaymentService();
-    //         $paymentService->createPayment();
-    //     } else {
-    //         echo json_encode(["success" => false, "message" => "Invalid Request"]);
-    //     }
-    // }
 
     public static function registerMember()
     {
@@ -173,7 +159,7 @@ class AuthController
                 exit();
             } else {
 
-                $error = "Invalid Email";
+                echo json_encode(["success" => false, "message" => "Invalid Email!"]);
                 exit();
             }
         }
@@ -213,12 +199,16 @@ class AuthController
             $emailSent = $emailService->sendEmail($email, $subject, $body);
 
             if ($emailSent) {
-                echo ("Email for reset sent successfully! Check Your email address");
+                echo json_encode(["success" => true, "message" => "Email for reset password sent! Check Your email"]);
+
             } else {
-                echo ("Failed to send email.");
+                echo json_encode(["success" => false, "message" => "Failed to send email."]);
+
             }
         } else {
-            echo ("Invalid Request");
+            
+            echo json_encode(["success" => false, "message" => "Invalid Request"]);
+
         }
     }
 
@@ -241,10 +231,11 @@ class AuthController
             }
         }
         if ($result) {
-            header("Location: index.php?action=login");
+            echo json_encode(["success" => true, "message" => "Password reset successfully."]);
             exit();
         } else {
-            echo "Error: Password reset failed.";
+            echo json_encode(["success" => false, "message" => "Password reset failed."]);
+
         }
     }
 }

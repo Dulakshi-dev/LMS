@@ -1,4 +1,3 @@
-
 function showAlert(title, message, type) {
     return Swal.fire({
         title: title,
@@ -8,29 +7,33 @@ function showAlert(title, message, type) {
     });
 }
 
-function staffLogin() {
-    var staffid = document.getElementById('staffid').value.trim();
-    var password = document.getElementById('password').value.trim();
-    var staffidError = document.getElementById('staffidError');
-    var passwordError = document.getElementById('passwordError');
+function login() {
+    let memberid = document.getElementById("memberid").value.trim();
+    let memberpw = document.getElementById("password").value.trim();
     let rememberMe = document.getElementById("rememberme").checked ? "1" : "0"; // Convert boolean to "1"/"0"
 
-    staffidError.innerText = '';
-    passwordError.innerText = '';
+    if (memberid !== "") {
+        rememberMe.checked = true; // Auto-check the box if Member ID exists
+    }
 
-    // Validate
-    if (staffid === '') {
-        staffidError.innerText = 'Staff ID is required.';
-    } else if (password === '') {
-        passwordError.innerText = 'Password is required.';
-
+    const memberidPattern = /^M-\d{6}$/;
+    if (memberid === "" || !memberid.match(memberidPattern)) {
+        document.getElementById("memberidError").textContent = "Please enter a Valid Member ID (e.g., M-123456)";
+        return false;
+    } else if (password === "") {
+        document.getElementById("memberidError").textContent ="";
+        document.getElementById("passwordError").textContent = "Password is Required.";
+        return false;
     } else {
+        document.getElementById("passwordError").textContent ="";
+        document.getElementById("memberidError").textContent ="";
+
         let formData = new FormData();
-        formData.append("staffid", staffid);
-        formData.append("password", password);
+        formData.append("memberid", memberid);
+        formData.append("memberpw", memberpw);
         formData.append("rememberme", rememberMe); // Send as "1" or "0"
 
-        fetch("index.php?action=loginProcess", {
+        fetch("index.php?action=memberlogin", {
             method: "POST",
             body: formData,
         })
@@ -45,36 +48,8 @@ function staffLogin() {
             .catch(error => {
                 showAlert("Error", "Error fetching user data: " + error, "error");
             });
-
     }
 }
-
-function staffRegistration() {
-    //validate all the fiels and formats
-    var fname = document.getElementById('firstName').value.trim();
-    var lname = document.getElementById('lastName').value.trim();
-    var address = document.getElementById('address').value.trim();
-    var phone = document.getElementById('phone').value.trim();
-    var email = document.getElementById('email').value.trim();
-    var nic = document.getElementById('nic').value.trim();
-    var role = document.querySelector('input[name="role"]:checked');
-
-
-    if (username === '') {
-        errorMsg.innerText = 'Username is required.';
-        errorMsgDiv.style.display = 'block';
-        return false;
-    } else if (password === '') {
-        errorMsg.innerText = 'Password is required.';
-        errorMsgDiv.style.display = 'block';
-        return false;
-    }
-
-    //validate details
-
-    return true;
-}
-
 
 function forgotpw() {
 
@@ -131,12 +106,14 @@ function resetpassword() {
 
     } else {
         var vcode = document.getElementById("vcode").value.trim();
+        var id = document.getElementById("id").value.trim();
 
         var formData = new FormData();
         formData.append("password", password);
         formData.append("vcode", vcode);
+        formData.append("id", id);
 
-        fetch("index.php?action=resetpassword", {
+        fetch("index.php?action=changepassword", {
             method: "POST",
             body: formData,
         })
@@ -156,4 +133,12 @@ function resetpassword() {
             });
 
     }
+
+
+
+
 }
+
+
+
+

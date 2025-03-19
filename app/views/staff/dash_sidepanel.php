@@ -47,8 +47,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
         <?php
 
         foreach ($modules as $module) {
-            // Generate a safe action string from the module name
-            $action = strtolower(str_replace(' ', '', $module));  // Remove spaces and convert to lowercase
+            $action = strtolower(str_replace(' ', '', $module));  
 
         ?>
             <a href="<?php echo Config::indexPath() ?>?action=<?php echo htmlspecialchars($action); ?>" class="nav-link p-2 text-white border-bottom align-items-center">
@@ -59,7 +58,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
         }
         ?>
 
-        <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a href="<?php echo Config::indexPath() ?>?action=libsetup" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i>  Library Setup
         </a>
         <a href="" class="nav-link text-white p-2 border-bottom align-items-center">

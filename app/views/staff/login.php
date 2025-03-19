@@ -44,28 +44,27 @@ require_once "../../main.php";
 
                 <?php
 
-                $username = "";
-                $password = "";
+                $staffid = "";
+                $staffpw = "";
 
-                if (isset($_COOKIE["username"])) {
-                    $username = $_COOKIE["username"];
+                if (isset($_COOKIE["staffid"])) {
+                    $staffid = $_COOKIE["staffid"];
                 }
 
-                if (isset($_COOKIE["password"])) {
-                    $password = $_COOKIE["password"];
+                if (isset($_COOKIE["staffpw"])) {
+                    $staffpw = $_COOKIE["staffpw"];
                 }
                 ?>
 
-                <form id="loginForm" action="<?php echo Config::indexPath() ?>?action=loginProcess" method="POST" onsubmit="return staffLogin()">
                     <div>
-                        <label for="username">Username:</label>
-                        <input class="form-control mt-2" type="text" name="username" id="username" placeholder="Enter Staff ID" value="<?php echo $username; ?>">
-                        <span class="error text-danger" id="usernameError"></span>
+                        <label for="staffid">Staff ID:</label>
+                        <input class="form-control mt-2" type="text" name="staffid" id="staffid" placeholder="Enter Staff ID" value="<?php echo $staffid; ?>">
+                        <span class="error text-danger" id="staffidError"></span>
                     </div>
 
                     <div class="mt-3">
                         <label for="password" class="mt-3">Password:</label>
-                        <input class="form-control mt-2" type="password" name="password" id="password" placeholder="Enter Password" value="<?php echo $password; ?>">
+                        <input class="form-control mt-2" type="password" name="password" id="password" placeholder="Enter Password" value="<?php echo $staffpw; ?>">
                         <span class="error text-danger" id="passwordError"></span>
                     </div>
 
@@ -90,8 +89,7 @@ require_once "../../main.php";
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 rounded-pill mt-3">Login</button>
-                </form>
+                    <button type="button" class="btn btn-primary w-100 rounded-pill mt-3" onclick="staffLogin();">Login</button>
             </div>
         </div>
     </div>
@@ -100,6 +98,8 @@ require_once "../../main.php";
     require_once Config::getViewPath("home", "footer.view.php");    ?>
 
     <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 
 </html>

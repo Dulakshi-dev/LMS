@@ -1,3 +1,13 @@
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
 function loadUsers(page = 1) {
 
     var userid = document.getElementById("memberId").value.trim();
@@ -102,9 +112,12 @@ function deactivateUser(user_id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                alert("Staff member Deactivated");
+                
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
@@ -134,7 +147,7 @@ function loadUserDataUpdate(user_id) {
                 let updateModal = new bootstrap.Modal(document.getElementById("updateDetailsModal"));
                 updateModal.show();
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
@@ -218,9 +231,9 @@ function updateUserDetails() {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                location.reload();
+                showAlert("Success", resp.message, "success");
             } else {
-                alert("Failed to update user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
@@ -247,7 +260,7 @@ function loadMailData(user_id) {
                 mailModal.show();
 
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
@@ -295,9 +308,9 @@ function sendEmail() {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                alert("Mail sent successfully!");
+                showAlert("Success", resp.message, "success");
             } else {
-                alert("Failed to send mail. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
@@ -306,24 +319,24 @@ function sendEmail() {
 }
 
 
-function changeUserStatus(id) {
-    var formData = new FormData();
-    formData.append("id", id);
+// function changeUserStatus(id) {
+//     var formData = new FormData();
+//     formData.append("id", id);
 
-    fetch("index.php?action=changeStatus", {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.json())
-        .then(resp => {
-            if (resp.success) {
-                location.reload();
-            } else {
-                alert("Failed to load user data. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching user data:", error);
-        });
-}
+//     fetch("index.php?action=changeStatus", {
+//         method: "POST",
+//         body: formData,
+//     })
+//         .then(response => response.json())
+//         .then(resp => {
+//             if (resp.success) {
+//                 location.reload();
+//             } else {
+//                 alert("Failed to load user data. Please try again.");
+//             }
+//         })
+//         .catch(error => {
+//             console.error("Error fetching user data:", error);
+//         });
+// }
 

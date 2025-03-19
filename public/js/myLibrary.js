@@ -1,3 +1,13 @@
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
 function loadSavedBooks(page = 1) {
     var bookid = document.getElementById("bookid").value.trim();
     var title = document.getElementById("title").value.trim();
@@ -68,10 +78,10 @@ function reserveBook(bookId) {
     .then(response => response.json())
     .then(resp => {
         if (resp.success) {
-            alert("Book reserved successfully!");
+            showAlert("Success", resp.message, "success");
             loadSavedBooks(); 
         } else {
-            alert("Failed to reserve the book. Try again.");
+            showAlert("Error", resp.message, "error");
         }
     })
     .catch(error => console.error("Error reserving book:", error));
@@ -84,10 +94,12 @@ function unsaveBook(bookId) {
     .then(response => response.json())
     .then(resp => {
         if (resp.success) {
-            alert("Book unsaved successfully!");
+            showAlert("Success", resp.message, "success");
+
             loadSavedBooks(); 
         } else {
-            alert("Failed to unsave the book. Try again.");
+            showAlert("Error", resp.message, "error");
+
         }
     })
     .catch(error => console.error("Error unsaving book:", error));

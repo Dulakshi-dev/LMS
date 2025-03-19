@@ -11,8 +11,6 @@ require_once Config::getControllerPath("profileController.php");
 require_once Config::getControllerPath("memberController.php");
 require_once Config::getControllerPath("reservationController.php");
 
-
-
 // Initialize the Router
 $router = new Router();
 
@@ -41,6 +39,7 @@ $router->add('deactivateuser', [$userController, 'deactivateUser']);
 $router->add('addBookData', [$bookController, 'addBookData']);
 $router->add('loadBooks', [$bookController, 'getAllBooks']);
 $router->add('loadBookData', [$bookController, 'loadBookDetails']);
+$router->add('addCategoryData', [$bookController, 'addCategory']);
 $router->add('updateBook', [$bookController, 'updateBookDetails']); 
 $router->add('searchBooks', [$bookController, 'searchBooks']);
 $router->add('deactivatebook', [$bookController, 'deactivateBook']);
@@ -69,8 +68,7 @@ $router->add('approvemembership', [$memberController, 'approveMembership']);
 $router->add('deactivatemember', [$memberController, 'deactivateMember']);
 $router->add('rejectmember', [$memberController, 'rejectMember']);
 $router->add('loadmemberrequests', [$memberController, 'getMemberRequests']);
-
-$router->add('reservationmanagement', [$reservationController, 'getAllReservations']);
+$router->add('loadreservations', [$reservationController, 'getAllReservations']);
 
 
 $router->add('login', function () {
@@ -84,6 +82,9 @@ $router->add('bookmanagement', function () {
 });
 $router->add('addBook', function () {
     include Config::getViewPath("staff", "add-book.php");
+});
+$router->add('addCategory', function () {
+    include Config::getViewPath("staff", "add-category.php");
 });
 $router->add('showregister', function () {
     include Config::getViewPath("staff", "staff-register.php");
@@ -102,6 +103,10 @@ $router->add('showissuebook', function () {
 });
 $router->add('profile', function () {
     include Config::getViewPath("staff", "profile.php");
+});
+
+$router->add('libsetup', function () {
+    include Config::getViewPath("staff", "library-setup.php");
 });
 $router->add('membermanagement', function () {
     include Config::getViewPath("staff", "member-management.php");
@@ -125,6 +130,10 @@ $router->add('viewmembers', function () {
 
 $router->add('viewmemberrequests', function () {
     include Config::getViewPath("staff", "view-member-requests.php");
+});
+
+$router->add('viewreservations', function () {
+    include Config::getViewPath("staff", "view-reservations.php");
 });
 
 

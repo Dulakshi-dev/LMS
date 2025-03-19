@@ -10,3 +10,13 @@ function loadprofileimg(profimg){
     
     }
 }
+
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}

@@ -1,6 +1,5 @@
 <?php
 require_once "../../main.php";
-
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +13,7 @@ require_once "../../main.php";
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body onload="loadMemberRequests();">
+<body>
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
@@ -29,43 +28,49 @@ require_once "../../main.php";
                 </nav>
             </div>
             <div class="row m-4">
-               
-                <div class="col-md-6 mt-2">
-                    <input name="nic" id="nic" class="form-control" type="text" placeholder="Type NIC">
+                <div class="col-md-3 mt-2">
+                        <input name="memberId" id="memberid" class="form-control" type="text" placeholder="Type Membership ID">
+                </div>
+                <div class="col-md-3 mt-2">
+                    <input name="book_id" id="bookid" class="form-control" type="text" placeholder="Type Book ID">
                 </div>
                 <div class="col-md-6 mt-2">
                     <div class="d-flex">
-                        <input name="userName" id="userName" class="form-control" type="text" placeholder="Type User Name">
-                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadMemberRequests();"><i class="fa fa-search"></i></button>
+                        <input name="title" id="title" class="form-control" type="text" placeholder="Type Book Title">
+                        <button type="button" name="search" class="btn btn-primary mx-3 px-3"  onclick="loadReservations();"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>
 
             <div class="px-1">
-                <table class="table">
-                    <thead class="thead-light text-center">
+                <!-- Table -->
+                <table class="table table-bordered text-center">
+                    <thead class="table-light">
                         <tr>
-                            <th>NIC</th>
-                            <th>User's Name</th>
-                            <th>Address</th>
-                            <th>Phone Number</th>
-                            <th>Email</th>
-                            <th>Action</th>
+                            <th>#</th>
+                            <th>Member ID</th>
+                            <th>Book ID</th>
+                            <th>Book Name</th>
+                            <th>Reservation Date</th>
+                            <th>Notified Date</th>
+                            <th>Expiration Date</th>
+                            <th>Status</th>
+
                         </tr>
                     </thead>
-                    <tbody id="requestTableBody">
-                       
+                    <tbody id="reservationTableBody">
                     </tbody>
                 </table>
-            </div>
+                <div id="pagination"></div>
 
-            <div id="pagination"></div>
+            </div>
 
         </div>
     </div>
 
+
     <!-- Bootstrap and JavaScript -->
-    <script src="<?php echo Config::getJsPath("member.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("reservation.js"); ?>"></script>
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

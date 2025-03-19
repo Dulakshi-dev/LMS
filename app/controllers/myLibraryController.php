@@ -50,18 +50,19 @@ class MyLibraryController
 
     public function saveBook()
     {
-            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                $book_id = $_GET['book_id'];
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $book_id = $_POST['book_id'];
                 $id = $_SESSION["member"]["id"];
 
                 $result = MyLibraryModel::saveBook($book_id, $id);
     
                 if ($result) {
                     
-                    header("Location: index.php?action=loaddashboardbooks");
+                    echo json_encode(["success" => true, "message" => "Book Added to Your Library!"]);
             
                 } else {
-                    echo "<script>alert('Book already saved!'); window.location.href='index.php?action=loaddashboardbooks';</script>";
+                    echo json_encode(["success" => false, "message" => "Book Already Added to Your Library!"]);
+
                 }  
             }else{
                 
@@ -69,6 +70,7 @@ class MyLibraryController
 
             }
     }
+
 
     public function unSaveBook()
     {
@@ -79,10 +81,10 @@ class MyLibraryController
                 $result = MyLibraryModel::unSaveBook($book_id, $id);
     
                 if ($result) {
-                    echo json_encode(["success" => true, "message" => "Book Unsaved"]);
+                    echo json_encode(["success" => true, "message" => "Book Removed From Your Library"]);
 
                 } else {
-                    echo json_encode(["success" => false, "message" => "Error"]);
+                    echo json_encode(["success" => false, "message" => "Something Wend Wrong."]);
                 }  
             }else{               
                 echo json_encode(["success" => false, "message" => "Invalid Request"]);

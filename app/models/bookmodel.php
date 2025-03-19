@@ -58,7 +58,7 @@ class BookModel
         if (!empty($isbn)) {
             $sql .= " AND `isbn` LIKE '%$isbn%'";
         }
-        $sql .= "LIMIT $resultsPerPage OFFSET $pageResults"; 
+        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults"; 
 
         $rs = Database::search($sql);
         $books = [];
@@ -151,6 +151,13 @@ class BookModel
 
         return true;
     }
+
+    public static function addCategory($category)
+    {
+        Database::insert("INSERT INTO `category`(`category_name`) VALUES ('$category')");
+        return true;
+    }
+
 
     public static function generateID()
     {

@@ -74,7 +74,6 @@ require_once "../../main.php";
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="<?php echo Config::indexPath() ?>?action=returnbook" method="POST" onsubmit="return validateReturnForm();">
                         <input type="text" class="d-none" id="borrowId" name="borrowId">
                         <input type="text" class="d-none" id="bookId" name="bookId">
                         <input type="text" class="d-none" id="memberId" name="memberId">
@@ -103,9 +102,8 @@ require_once "../../main.php";
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Return Book</button>
+                            <button type="button" class="btn btn-primary" onclick="returnBook();">Return Book</button>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -114,7 +112,7 @@ require_once "../../main.php";
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
     <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

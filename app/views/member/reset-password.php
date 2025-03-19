@@ -9,7 +9,7 @@
 
     <style>
         body {
-            background-image: url('../../../public/images/login_background.png');
+            background-image: url('<?php echo Config::getImagePath("login_background.png"); ?>');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -41,7 +41,6 @@
 
                 <div class="form-group mt-1">
 
-                    <form class="form-group mt-4" method="POST" action="index.php?action=changepassword" onsubmit="return validatePassword()">
                         <div class="bg-success-subtle p-1 rounded-2 text-center mb-4">
                             <p class="text-success">Please create a new password you don't use on any other site</p>
                         </div>
@@ -55,10 +54,9 @@
                         <input class="form-control mt-4" type="password" placeholder="Confirm your password" id="cpw" name="cpassword">
                         <span class="error text-danger" id="cpwError"></span>
                         <div class="text-center">
-                            <button class="btn btn-primary mt-4 w-75" type="submit">Change</button>
+                            <button class="btn btn-primary mt-4 w-75" type="button" onclick="resetpassword();">Change</button>
                         </div>
-                        
-                    </form>
+            
 
                 </div>
 
@@ -66,43 +64,9 @@
         </div>
     </div>
 
+<script src="<?php echo Config::getJsPath("memberLogin.js"); ?>"></script>
 
-    <script>
-        function validatePassword() {
-            var pw = document.getElementById("pw").value.trim();
-            var cpw = document.getElementById("cpw").value.trim();
-            var pwError = document.getElementById("pwError");
-            var cpwError = document.getElementById("cpwError");
-
-            pwError.textContent = "";
-            cpwError.textContent = "";
-
-            var pwPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-            if (pw === "") {
-                pwError.textContent = "Password is required.";
-                return false;
-            }
-
-            if (!pw.match(pwPattern)) {
-                pwError.textContent = "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.";
-                return false;
-            }
-
-            if (cpw === "") {
-                cpwError.textContent = "Please confirm your password.";
-                return false;
-            }
-
-            if (pw !== cpw) {
-                cpwError.textContent = "Passwords do not match.";
-                return false;
-            }
-
-            return true;
-        }
-    </script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 

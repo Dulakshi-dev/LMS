@@ -239,16 +239,7 @@
                                     <input type="text" class="form-control" id="Lname" placeholder="Enter Last Name">
                                     <div id="Lerror" class="text-danger"></div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="Address" class="my-1">Password:</label>
-                                    <input type="password" class="form-control" id="Pword" placeholder="Enter Password">
-                                    <div id="Perror" class="text-danger"></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="PhoneNumber" class="my-1">Confirm Password:</label>
-                                    <input type="password" class="form-control" id="Cpword" placeholder="Confirm Password">
-                                    <div id="Cperror" class="text-danger"></div>
-                                </div>
+                                
                             </div>
                             <div>
                                 <input type="checkbox" id="agreeCheckbox">
@@ -276,6 +267,6 @@
     <script src="<?php echo Config::getJsPath("memberRegister.js"); ?>"></script>
     <script src="https://www.payhere.lk/lib/payhere.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
+    </body>
 
 </html>

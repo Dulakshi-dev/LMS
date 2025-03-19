@@ -2,8 +2,6 @@
 
 require_once config::getdbPath();
 
-
-
 class CirculationModel
 {
 
@@ -74,7 +72,7 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
         return ['results' => $books, 'total' => $totalSearch];
     }
 
-    private static function getTotalSearchResults($bookid , $memberid)
+    private static function getTotalSearchResults($bookid, $memberid)
     {
         $countQuery = "SELECT COUNT(*) as total FROM `borrow` 
 INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
@@ -116,16 +114,16 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
         }
 
         $id_data = $id_result->fetch_assoc();
-        $member_real_id = $id_data['id'];
+        $memberid = $id_data['id'];
 
-        $result = Database::search("SELECT * FROM `reservation` WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id` = '$member_id'");
+        $result = Database::search("SELECT * FROM `reservation` WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id` = '$memberid'");
         $num = $result->num_rows;
 
         if ($num > 0) {
             Database::insert("INSERT INTO `borrow`(`borrow_date`,`due_date`,`borrow_book_id`,`borrow_member_id`) 
-                              VALUES('$borrow_date','$due_date','$book_id','$member_real_id')");
+                              VALUES('$borrow_date','$due_date','$book_id','$memberid')");
 
-            Database::ud("UPDATE `reservation` SET `status_id` = '2' WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id`='$member_id'");
+            Database::ud("UPDATE `reservation` SET `status_id` = '2' WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id`='$memberid'");
         } else {
             $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
             $data = $result->fetch_assoc();
@@ -133,14 +131,13 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
 
             if ($available_qty > 0) {
                 Database::insert("INSERT INTO `borrow`(`borrow_date`,`due_date`,`borrow_book_id`,`borrow_member_id`) 
-                                  VALUES('$borrow_date','$due_date','$book_id','$member_real_id')");
+                                  VALUES('$borrow_date','$due_date','$book_id','$memberid')");
 
                 Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
             } else {
                 return false;
             }
         }
-
         return true;
     }
 
@@ -158,7 +155,80 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
         $available_qty = $data["available_qty"];
 
         Database::ud("UPDATE `book` SET `available_qty` = $available_qty + 1 WHERE `book_id` = '$book_id'");
-
         return true;
+    }
+
+    public static function notifyNextWaitlistMember($book_id)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+        $waitlist = Database::search("SELECT * FROM `reservation` 
+                                  WHERE `reservation_book_id` = '$book_id' 
+                                  AND `status_id` = 5
+                                  ORDER BY `reservation_date` ASC 
+                                  LIMIT 1");
+
+        if ($waitlist->num_rows > 0) {
+            $reservation = $waitlist->fetch_assoc();
+            $reservation_id = $reservation["reservation_id"];
+            $reserved_member_id = $reservation["reservation_member_id"];
+
+            //Update reservation status to "reserved" 
+            Database::ud("UPDATE `reservation` 
+                      SET `status_id` = 1, 
+                          `notified_date` = CURDATE(), 
+                          `expiration_date` = DATE_ADD(CURDATE(), INTERVAL 3 DAY) 
+                      WHERE `reservation_id` = '$reservation_id'");
+
+            $book = Database::search("SELECT `title`,`available_qty` FROM `book` WHERE `book_id` = '$book_id'")->fetch_assoc();
+            $title = $book["title"];
+            $available_qty = $book["available_qty"];
+            self::sendReservationEmail($book_id, $reserved_member_id, $title);
+
+
+
+            Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
+            return ["success" => true, "message" => "Book status changed to reserved."];
+
+        }
+
+        return ["success" => false, "message" => "No waitlisted reservations found."];
+    }
+
+    private static function sendReservationEmail($book_id, $member_id, $title)
+    {
+        $member = Database::search("SELECT `fname`,`lname`,`email` FROM `member` WHERE `id` = '$member_id'")->fetch_assoc();
+        $email = $member["email"];
+        $name = $member["fname"] . '' . $member["lname"];
+
+        $subject = "Reset Password";
+
+        $body = '
+           <h1 style="padding-top: 30px;">Book Reservation</h1>
+           <p style = "font-size: 30px; color: black; font-weight: bold; text-align: center;">Shelf Loom</p> 
+
+           <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+              <p>Dear ' . $name . ',</p>
+              <p>The book you reserved ' . $title . '(' . $book_id . ') is available now.</p>
+              <p>Please make sure to collect it withing next 3 days. Otherwise reservation will be expired.</p>
+              <div>
+                    <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
+                    <p style="margin: 0px;">Call: [tel_num]</p>
+              </div>
+
+              <div>
+                    <p style="margin-bottom: 0px;">Best regards,</p>
+                    <p style="margin: 0px;">Shelf Loom</p>
+              </div>
+           </div>';
+
+        $emailService = new EmailService();
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+        if ($emailSent) {
+            echo ("Email for reset sent successfully! Check Your email address");
+        } else {
+            echo ("Failed to send email.");
+        }
     }
 }

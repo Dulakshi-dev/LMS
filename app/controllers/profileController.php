@@ -59,7 +59,7 @@ class ProfileController
                     $_SESSION["staff"]["profile_img"] = $fileName;
     
                     if ($result) {
-                        echo json_encode(["success" => true, "message" => "User updated successfully."]);
+                        echo json_encode(["success" => true, "message" => "Profile updated successfully."]);
                     } else {
                         echo json_encode(["success" => false, "message" => "User not found."]);
                     }
@@ -70,7 +70,7 @@ class ProfileController
                 $result = ProfileModel::updateUserDetailsWithoutImage($nic, $fname, $lname, $address, $mobile);
     
                 if ($result) {
-                    echo json_encode(["success" => true, "message" => "User updated successfully."]);
+                    echo json_encode(["success" => true, "message" => "Profile updated successfully."]);
                 } else {
                     echo json_encode(["success" => false, "message" => "User not found."]);
                 }

@@ -26,16 +26,6 @@
         </a>
       </div>
 
-      <!-- Search Bar -->
-      <div class="input-group mb-5">
-        <input type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
-        <input type="text" class="form-control mx-2" placeholder="Type Book Name" aria-label="Book Name">
-        <input type="text" class="form-control" placeholder="Type Category" aria-label="Category">
-        <button class="btn btn-primary ms-2">
-          <i class="fa fa-search"></i> Search
-        </button>
-      </div>
-
       <!-- Table -->
       <table class="table table-bordered text-center">
         <thead class="table-light">
@@ -46,38 +36,19 @@
             <th>Book Name</th>
             <th>Reservation Date</th>
             <th>Expiration Date</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
-        <tbody>
-
-
-        <?php
-          if (empty($books)) {
-            echo "<tr><td colspan='8'>No Books found</td></tr>";
-          } else {
-            foreach ($books as $row) {
-          ?>
-              <tr>
-                <td><?php echo $row["reservation_id"]; ?></td>
-                <td><?php echo $row["book_id"]; ?></td>
-                <td>
-                <img src="<?php echo Config::indexPath() ?>?action=serveimage&image=<?php echo urlencode(basename($row['cover_page'])); ?>" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;">
-                </td>
-                <td><?php echo $row["title"]; ?></td>
-                <td><?php echo $row["reservation_date"]; ?></td>
-                <td><?php echo $row["expiration_date"]; ?></td>
-               
-              </tr>
-          <?php
-            }
-          }
-          ?>
+        <tbody id="reservationTableBody">
         </tbody>
       </table>
     </div>
   </div>
 
   <!-- Bootstrap JS -->
+  <script src="<?php echo Config::getJsPath("memberReservation.js"); ?>"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

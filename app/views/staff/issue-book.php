@@ -48,7 +48,6 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
 
                             <!-- Update Form -->
                             <div>
-                                <form class="mx-4 px-4" action="<?php echo Config::indexPath() ?>?action=issuebook" method="POST" onsubmit="return validateForm();">
                                     <!-- Name -->
                                     <div class="row my-4 gap-5">
                                         <div class="col-lg-5 form-group">
@@ -113,9 +112,8 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
 
                                     <!-- Buttons -->
                                     <div class="d-flex justify-content-end">
-                                        <button class="btn btn-primary px-4" type="submit">Issue Book</button>
+                                        <button class="btn btn-primary px-4" type="button" onclick="issueBook();">Issue Book</button>
                                     </div>
-                                </form>
 
                             </div>
                         </div>
@@ -140,6 +138,7 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
 
 
     <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>
 

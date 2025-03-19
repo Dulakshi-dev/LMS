@@ -1,3 +1,13 @@
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
+}
+
 function registerBox1() {
     var nic = document.getElementById("NICNumber").value;
 
@@ -55,12 +65,12 @@ function registerBox3() {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    alert("Check your email");
+                    showAlert("Info", resp.message, "info");
 
                     document.getElementById("Box3").classList.add("d-none");
                     document.getElementById("Box4").classList.remove("d-none");
                 } else {
-                    alert("Failed to send email. Please try again.");
+                    showAlert("Error", resp.message, "error");
                 }
             })
             .catch(error => {
@@ -95,7 +105,8 @@ function registerBox4() {
                 document.getElementById("Box4").classList.add("d-none");
                 document.getElementById("Box5").classList.remove("d-none");
             } else {
-                alert("Failed to varify OTP. Please try again.");
+                showAlert("Error", resp.message, "error");
+
             }
         })
         .catch(error => {
@@ -142,9 +153,12 @@ window.onload = function () {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    alert("Payment processed successfully.");
+                    showAlert("Success", resp.message, "success");
+
                 } else {
-                    alert("Payment failed or was incomplete.");
+                    showAlert("Error", resp.message, "error");
+
+                    // alert("Payment failed or was incomplete.");
                 }
             })
             .catch(error => {
@@ -155,11 +169,13 @@ window.onload = function () {
     };
 
     payhere.onDismissed = function () {
-        alert("Payment dismissed!");
+        showAlert("Success", "Payment dismissed!", "success");
+
     };
 
     payhere.onError = function (error) {
-        alert("Payment failed: " + error);
+        showAlert("Error", "Payment failed: " + error, "error");
+
     };
 };
 
@@ -167,9 +183,6 @@ function registerBox5() {
 
     var Fname = document.getElementById("Fname").value;
     var Lname = document.getElementById("Lname").value;
-    var Pword = document.getElementById("Pword").value;
-    var Cpword = document.getElementById("Cpword").value;
-
     if (Fname === "" || Lname === "" || Pword === "" || Cpword === "") {
         if (Fname === "") {
             document.getElementById("Ferror").innerText = "First name is required";
@@ -183,22 +196,6 @@ function registerBox5() {
             document.getElementById("Lerror").innerText = "";
         }
 
-        if (Pword === "") {
-            document.getElementById("Perror").innerText = "Password is required";
-        } else if (Pword.length < 6) {
-            document.getElementById("Perror").innerText = "Password must be at least 6 characters.";
-        } else {
-            document.getElementById("Perror").innerText = "";
-        }
-
-        if (Cpword === "") {
-            document.getElementById("Cperror").innerText = "Password confirmation is required";
-        } else if (Pword !== Cpword) {
-            document.getElementById("Cperror").innerText = "Passwords do not match";
-        } else {
-            document.getElementById("Cperror").innerText = "";
-        }
-
         return false;
     } else {
         fetch("index.php?action=showPayment", {
@@ -207,12 +204,13 @@ function registerBox5() {
             .then(response => response.json())
             .then(resp => {
                 if (resp.status === "success") {
-                    alert("Redirecting to PayHere...");
+                    showAlert("Success", "Redirecting to PayHere...", "success");
 
                     // Start PayHere Payment directly here
                     payhere.startPayment(resp.payment);
                 } else {
-                    alert("Payment Error: " + resp.error);
+                    showAlert("Error", "Payment Error: " + resp.error, "error");
+
                 }
             })
             .catch(error => {
@@ -251,10 +249,12 @@ function register(transactionId) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                location.reload();
-                window.location.href = "index.php?action=login";
+                
+                showAlert("Success", resp.message, "success").then(() => {
+                    window.location.href = "index.php?action=login";
+                });
             } else {
-                alert("Failed to register member");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {

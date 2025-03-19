@@ -6,7 +6,6 @@ require_once config::getdbPath();
 
 class AuthModel
 {
-
     private $db;
 
     public function __construct()
@@ -22,8 +21,9 @@ class AuthModel
         if ($result && $result->num_rows > 0) {
             $user = $result->fetch_assoc();
             return $user;
+        }else{
+            return false;
         }
-        return false;
     }
 
     public static function registerMember($nic,  $address, $phone, $email, $fname, $lname)

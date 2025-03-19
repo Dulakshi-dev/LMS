@@ -127,9 +127,9 @@ class BookController
             $result = BookModel::updateBookDetails($book_id, $isbn, $title, $author, $category,$language, $pubYear, $quantity, $description);
 
             if ($result) {
-                echo json_encode(["success" => true, "message" => "User updated successfully."]);
+                echo json_encode(["success" => true, "message" => "Book updated successfully."]);
             } else {
-                echo json_encode(["success" => false, "message" => "User not found."]);
+                echo json_encode(["success" => false, "message" => "Book not found."]);
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
@@ -139,7 +139,6 @@ class BookController
     public function addBookData()
     {
         
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $isbn = $_POST['isbn'];
             $author = $_POST['author'];
@@ -151,34 +150,42 @@ class BookController
             $des = $_POST['des'];
             $fileName = '';
 
-            if (isset($_FILES['coverpage']) && $_FILES['coverpage']['error'] === UPLOAD_ERR_OK) {
                 $receipt = $_FILES['coverpage'];
                 $targetDir = Config::getBookCoverPath();  // Ensure this directory exists
                 $fileName = uniqid() . "_" . basename($receipt["name"]);
                 $targetFilePath = $targetDir . $fileName;
 
-                if (move_uploaded_file($receipt["tmp_name"], $targetFilePath)) {
-                    echo "File uploaded successfully to: $targetFilePath<br>";
-                } else {
-                    echo "Error moving uploaded file.<br>";
-                    exit();
-                }
-            } else {
-                echo "No file uploaded or upload error.<br>";
-            }
+                move_uploaded_file($receipt["tmp_name"], $targetFilePath);
+            
 
             $result = BookModel::addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $fileName);
 
             if ($result) {
-                header("Location: index.php?action=bookmanagement");
+                echo json_encode(["success" => true, "message" => "Book added successfully."]);
             } else {
-                echo "Failed to add book data.";
+                echo json_encode(["success" => false, "message" => "Failed to add book data."]);
             }
         } else {
-            echo "Invalid request method.";
+            echo json_encode(["success" => false, "message" => "Invalid Request."]);
         }
     }
 
+    public function addCategory()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $category = trim($_POST['category']);
+    
+            $result = BookModel::addCategory($category);
+    
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Category Added."]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Database insertion failed."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request method."]);
+        }
+    }
 
     public function serveBookCover()
     {

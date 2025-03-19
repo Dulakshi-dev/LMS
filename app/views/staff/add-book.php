@@ -21,8 +21,7 @@
                 <div class="text-center border-bottom border-danger border-4 mb-4 pb-3">
                     <h2>Add Books</h2>
                 </div>
-                <form action="<?php echo Config::indexPath() ?>?action=addBookData" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
-                    <div class="row">
+                    <div class="row add-book-form">
                         <div class="col-md-3 text-center mt-5">
                             <div class="mb-3">
                                 <img id="book" style="height: 200px; width: 150px;" src="" alt="Cover Page">
@@ -84,11 +83,10 @@
                                 <span id="des-error" class="text-danger"></span>
                             </div>
                             <div class="d-flex justify-content-end">
-                                <button type="submit" class="btn btn-primary px-5 mb-4 mr-5">Save</button>
+                                <button type="button" class="btn btn-primary px-5 mb-4 mr-5" onclick="addBook();">Save</button>
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
         </div>
     </div>
@@ -97,6 +95,7 @@
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

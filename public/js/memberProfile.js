@@ -195,8 +195,9 @@ function saveNewPassword(member_id) {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    alert("Password changed successfully!");
-                    location.reload();
+                    showAlert("Success", resp.message, "success").then(() => {
+                        location.reload();
+                    });
 
                 } else {
                     errorMsg.textContent = "error";
@@ -216,4 +217,13 @@ function goBack() {
 function goBackToCurrent() {
     document.getElementById("box3").classList.add("d-none");
     document.getElementById("box2").classList.remove("d-none");
+}
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
 }

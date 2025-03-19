@@ -93,8 +93,6 @@ class CirculationController{
         }
     }
 
-    
-
     public function issueBook()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -105,58 +103,12 @@ class CirculationController{
           
             $result = CirculationModel::issueBook($book_id, $member_id, $borrow_date, $due_date);
             if($result){
-                header("Location: index.php?action=bookcirculation");
+                echo json_encode(["success" => true, "message" => "Book Issued."]);
             }else{
-                echo("error");
-
+                echo json_encode(["success" => false, "message" => "Invalid request."]);
             }
-  
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
-        }
-    }
-
-    public static function sendIssueBookReciept($email)
-    {
-        require_once Config::getServicePath('emailService.php');
-
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = $_POST["email"];
-            $subject = "Reset Password";
-            
-            $body = '
-               <h1 style="padding-top: 30px;">Reset your password</h1>
-               <p style = "font-size: 30px; color: black; font-weight: bold; text-align: center;">Shelf Loom</p> 
-
-               <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-                  <p>Dear Member,</p>
-                  <p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
-                  <div style="margin-bottom: 10px;">
-                        <a href="http://localhost/LMS/public/index.php?action=showresetpw&vcode='.$vcode.'">Click here to reset your password</a>
-                  </div>
-                  <div>
-                        <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
-                        <p style="margin: 0px;">Call: [tel_num]</p>
-                  </div>
-
-                  <div>
-                        <p style="margin-bottom: 0px;">Best regards,</p>
-                        <p style="margin: 0px;">Shelf Loom</p>
-                  </div>
-               </div>';
-
-            $emailService = new EmailService();
-            $emailSent = $emailService->sendEmail($email, $subject, $body);
-
-            if ($emailSent) {
-                echo ("Email for reset sent successfully! Check Your email address");
-
-            } else {
-                echo ("Failed to send email.");
-            }
-        } else {
-            echo("Invalid Request");
         }
     }
 
@@ -169,20 +121,15 @@ class CirculationController{
         $return_date = $_POST['returnDate'];
         $fines = $_POST['fines'];
 
-        // Call the returnBook method and get the result including fine amount
         $result = CirculationModel::returnBook($borrow_id, $return_date, $book_id, $fines, $memberId);
 
-        // Check if the result was successful
         if ($result) {
-            $fineAmount = $result['fine_amount'];  // Get the fine amount from the result
 
-            // Output the fine amount for debugging
-            echo "Fine Amount: " . $fineAmount; // This will display the fine amount on the page
+            CirculationModel::notifyNextWaitlistMember($book_id);
+            echo json_encode(["success" => true, "message" => "Book Retruned."]);
 
-            // Redirect after debugging (optional, can be removed if only debugging)
-            header("Location: index.php?action=viewissuebooks"); 
         } else {
-            echo "Error: " . $result['message']; // Show error message if there is a failure
+            echo json_encode(["success" => false, "message" => "Failed to return book."]);
         }
     } else {
         echo json_encode(["success" => false, "message" => "Invalid request."]);

@@ -183,7 +183,7 @@ function registerBox5() {
 
     var Fname = document.getElementById("Fname").value;
     var Lname = document.getElementById("Lname").value;
-    if (Fname === "" || Lname === "" || Pword === "" || Cpword === "") {
+    if (Fname === "" || Lname === "") {
         if (Fname === "") {
             document.getElementById("Ferror").innerText = "First name is required";
         } else {

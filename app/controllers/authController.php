@@ -16,7 +16,7 @@ class AuthController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $memberid = $_POST['memberid'];
             $memberpw = $_POST['memberpw'];
-            $rememberme = ($_POST['rememberme'] == "1") ? true : false;
+            $rememberme = isset($_POST['rememberme']) ? $_POST['rememberme'] : 0;
     
             $userDetails = AuthModel::validateLogin($memberid, $memberpw);
     
@@ -32,11 +32,9 @@ class AuthController
                 if ($rememberme) {
                     setcookie("memberid", $memberid, time() + (365 * 24 * 60 * 60), "/");
                     setcookie("memberpw", $memberpw, time() + (365 * 24 * 60 * 60), "/");
-                    setcookie("rememberme", "1", time() + (365 * 24 * 60 * 60), "/"); // Store the checkbox state
                 } else {
                     setcookie("memberid", "", time() - 3600, "/");
                     setcookie("memberpw", "", time() - 3600, "/");
-                    setcookie("rememberme", "", time() - 3600, "/");
                 }
                 
                 echo json_encode(["success" => true, "message" => "Login successful!"]);

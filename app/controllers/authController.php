@@ -157,7 +157,7 @@ class AuthController
                 exit();
             } else {
 
-                echo json_encode(["success" => false, "message" => "Invalid Email!"]);
+                echo json_encode(["success" => false, "message" => "Account not found!"]);
                 exit();
             }
         }

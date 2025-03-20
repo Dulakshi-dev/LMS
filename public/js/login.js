@@ -13,40 +13,40 @@ function staffLogin() {
     var password = document.getElementById('password').value.trim();
     var staffidError = document.getElementById('staffidError');
     var passwordError = document.getElementById('passwordError');
-    let rememberMe = document.getElementById("rememberme").checked ? "1" : "0"; // Convert boolean to "1"/"0"
+    let rememberMe = document.getElementById("rememberme").checked ? "1" : "0";
 
     staffidError.innerText = '';
     passwordError.innerText = '';
 
-    // Validate
     if (staffid === '') {
         staffidError.innerText = 'Staff ID is required.';
-    } else if (password === '') {
+        return; // Prevent request
+    } 
+    if (password === '') {
         passwordError.innerText = 'Password is required.';
-
-    } else {
-        let formData = new FormData();
-        formData.append("staffid", staffid);
-        formData.append("password", password);
-        formData.append("rememberme", rememberMe); // Send as "1" or "0"
-
-        fetch("index.php?action=loginProcess", {
-            method: "POST",
-            body: formData,
-        })
-            .then(response => response.json())
-            .then(resp => {
-                if (resp.success) {
-                    window.location.href = "index.php?action=dashboard";
-                } else {
-                    showAlert("Error", resp.message, "error");
-                }
-            })
-            .catch(error => {
-                showAlert("Error", "Error fetching user data: " + error, "error");
-            });
-
+        return; // Prevent request
     }
+
+    let formData = new FormData();
+    formData.append("staffid", staffid);
+    formData.append("password", password);
+    formData.append("rememberme", rememberMe);
+
+    fetch("index.php?action=loginProcess", {
+        method: "POST",
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(resp => {
+        if (resp.success) {
+            window.location.href = "index.php?action=dashboard";
+        } else {
+            showAlert("Error", resp.message, "error");
+        }
+    })
+    .catch(error => {
+        showAlert("Error", "Error fetching user data: " + error, "error");
+    });
 }
 
 function staffRegistration() {

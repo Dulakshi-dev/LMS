@@ -27,7 +27,7 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
             <nav class="navbar py-4 navbar-light bg-light">
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1">
-                        Dashboard <small class="text-muted">Control Panel</small>
+                        Issue Book <small class="text-muted">Control Panel</small>
                     </span>
                     <a href="#" class="text-decoration-none h5">
                         <i class="fa fa-home"></i> Home

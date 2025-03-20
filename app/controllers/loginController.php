@@ -18,7 +18,7 @@ class LoginController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $staffid = $_POST['staffid'];
             $password = $_POST['password'];
-            $rememberme = isset($_POST['rememberme']) ? true : false;
+            $rememberme = isset($_POST['rememberme']) ? $_POST['rememberme'] : 0;
     
             $userDetails = LoginModel::validateLogin($staffid, $password);
     
@@ -35,14 +35,16 @@ class LoginController
                 ];
 
                 self::loadModules($_SESSION["staff"]["role_id"]);
-    
+
                 if ($rememberme) {
                     setcookie("staffid", $staffid, time() + (60 * 60 * 24 * 365), "/");
                     setcookie("staffpw", $password, time() + (60 * 60 * 24 * 365), "/");
                 } else {
-                    setcookie("staffid", "", time() - 3600, "/");
-                    setcookie("staffpw", "", time() - 3600, "/");
+                    setcookie("staffid", "", time() - 3600, "/"); // Delete cookie
+                    setcookie("staffpw", "", time() - 3600, "/"); // Delete cookie
                 }
+                
+                
                 echo json_encode(["success" => true, "message" => "Login successful!"]);
                 exit;
             } else {

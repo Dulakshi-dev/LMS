@@ -26,11 +26,12 @@ require_once "../../main.php";
             <div class="container-fluid mx-5 mb-5 bg-white">
                 <div class="row">
                     <nav class="navbar p-4 navbar-light bg-light">
-                        <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                        <span class="navbar-brand mb-0 h1">Book Management <small class="text-muted">control panel</small></span>
                         <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                     </nav>
                 </div>
 
+<<<<<<< HEAD
                 <div class="row g-5 m-5 justify-content-center">
                     <!-- Add Books -->
                     <div class="col-sm-12 col-md-6">
@@ -39,11 +40,35 @@ require_once "../../main.php";
                             <p class="fw-bold fs-5 mt-3">Add Books</p>
                             <div class="d-flex justify-content-center">
                             <a href="<?php echo Config::indexPath() ?>?action=addBook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
+=======
+                <div class="row">
+                    <div class="fw-bold bg-white d-flex justify-content-center">
+                        <div class="container mt-4">
+                            <div class="row g-3 d-flex justify-content-evenly">
+
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 300px; height: 250px;">
+
+                                    <i class="fas fa-plus display-1 text-primary"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">Add Books</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=addBook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
+
+                                </div>
+
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 300px; height: 250px;">
+
+                                    <i class="fa fa-book display-1 text-success"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">View All Books</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewBooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+
+                                </div>
+
+>>>>>>> 7164187c7510cbd2f7d058055d23d9991f219848
                             </div>
                             
                         </div>
                     </div>
 
+<<<<<<< HEAD
                     <!-- View All Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-dark text-center shadow-lg rounded-4 py-5">
@@ -51,6 +76,15 @@ require_once "../../main.php";
                             <p class="fw-bold fs-5 mt-3">View all Books</p>
                             <div class="d-flex justify-content-center">
                             <a href="<?php echo Config::indexPath() ?>?action=viewBooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+=======
+                            <div class="d-flex justify-content-center m-4">
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 300px; height: 250px;">
+                                    <i class="fa fa-navicon display-1 text-warning"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">Add New Category</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=addCategory" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
+
+                                </div>
+>>>>>>> 7164187c7510cbd2f7d058055d23d9991f219848
                             </div>
                             
                         </div>

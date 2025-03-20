@@ -34,6 +34,7 @@ require_once "../../main.php";
                     </nav>
                 </div>
 
+<<<<<<< HEAD
                 <div class="row g-5 m-5 justify-content-center">
                     <!-- Add Books -->
                     <div class="col-sm-12 col-md-6">
@@ -42,6 +43,31 @@ require_once "../../main.php";
                             <p class="fw-bold fs-5 mt-3">Issue Books</p>
                             <div class="d-flex justify-content-center">
                             <a href="<?php echo Config::indexPath() ?>?action=showissuebook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
+=======
+                <div class="row">
+                    <div class="fw-bold bg-white d-flex justify-content-center mt-5">
+                        <div class="container mt-5">
+                            <div class="row g-3 d-flex justify-content-evenly">
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 300px; height: 250px;">
+                                    <i class="fas fa-plus display-1 text-secondary"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">Issue Books</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=showissuebook" class="btn btn-secondary  w-50 rounded-pill mt-2">Issue</a>
+                                </div>
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 300px; height: 250px;">
+
+                                    <i class="fa fa-book display-1 text-warning"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">View Issued Books</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewissuebooks" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center m-5">
+                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 300px; height: 250px;">
+
+                                    <i class="fa fa-cubes display-1 text-success"></i>
+                                    <p class="fw-bold fs-5 mt-3 text-dark">View Reservation</p>
+                                    <a href="<?php echo Config::indexPath() ?>?action=viewreservations" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+                                </div>
+>>>>>>> 7164187c7510cbd2f7d058055d23d9991f219848
                             </div>
                             
                         </div>

@@ -58,13 +58,15 @@ require_once "../../main.php";
 
                     <div>
                         <label for="staffid">Staff ID:</label>
-                        <input class="form-control mt-2" type="text" name="staffid" id="staffid" placeholder="Enter Staff ID" value="<?php echo $staffid; ?>">
+                        <input class="form-control mt-2" type="text" name="staffid" id="staffid" 
+                        placeholder="Enter Staff ID" value="<?php echo $staffid; ?>" autocomplete="off">
                         <span class="error text-danger" id="staffidError"></span>
                     </div>
 
                     <div class="mt-3">
                         <label for="password" class="mt-3">Password:</label>
-                        <input class="form-control mt-2" type="password" name="password" id="password" placeholder="Enter Password" value="<?php echo $staffpw; ?>">
+                        <input class="form-control mt-2" type="password" name="password" id="password" 
+                        placeholder="Enter Password" value="<?php echo $staffpw; ?>" autocomplete="new-password">
                         <span class="error text-danger" id="passwordError"></span>
                     </div>
 

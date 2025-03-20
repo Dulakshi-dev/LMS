@@ -9,6 +9,8 @@ function showAlert(title, message, type) {
 }
 
 function staffLogin() {
+    const staffidPattern = /^S-\d{6}$/;
+
     // Get input values and trim any whitespace
     var staffid = document.getElementById('staffid').value.trim();
     var password = document.getElementById('password').value.trim();
@@ -28,7 +30,10 @@ function staffLogin() {
     if (staffid === '') {
         staffidError.innerText = 'Staff ID is required.';
         return;
-    } else if (password === '') {
+    } else if(!staffid.match(staffidPattern)){
+        staffidError.innerText = 'Invalid Staff ID.';
+        return;
+    }else if (password === '') {
         passwordError.innerText = 'Password is required.';
         return; 
     } else {

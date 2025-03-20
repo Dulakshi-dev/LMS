@@ -34,7 +34,7 @@ class MemberReservationController
                 $waitlistResult = MemberReservationModel::addToWaitlist($book_id, $member_id);
 
                 if ($waitlistResult["success"]) {
-                    echo json_encode(["success" => true, "message" => "Added to waitinglist. We will notify when book is available"]);
+                    echo json_encode(["success" => true, "message" => "Added to waiting list. We will notify when book is available"]);
                 } else {
                     echo json_encode(["success" => false, "message" => "{$waitlistResult['message']}"]);
 

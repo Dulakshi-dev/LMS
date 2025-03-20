@@ -11,7 +11,7 @@ class MemberReservationModel
             return ["success" => false, "message" => "Book already reserved!"];
         }
 
-        $rs2 = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` ='$id'");
+        $rs2 = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` ='$id' AND (`status_id` = '1' OR `status_id` = '5') ");
         if ($rs2->num_rows < 5) {
             Database::insert("INSERT INTO `reservation` (`reservation_date`, `expiration_date`, `reservation_member_id`, `reservation_book_id`, `status_id`) 
             VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), '$id', '$book_id', '1')");

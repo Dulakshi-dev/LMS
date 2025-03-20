@@ -11,7 +11,7 @@ function showAlert(title, message, type) {
 function loadSavedBooks(page = 1) {
     var bookid = document.getElementById("bookid").value.trim();
     var title = document.getElementById("title").value.trim();
-    var category = document.getElementById("category").value.trim();
+    var category = document.getElementById("category").value; // No .trim() needed for select
 
     let formData = new FormData();
     formData.append("page", page);
@@ -26,15 +26,12 @@ function loadSavedBooks(page = 1) {
     .then(response => response.json())
     .then(resp => {
         let tableBody = document.getElementById("myLibraryBody");
-        tableBody.innerHTML = "";
+        tableBody.innerHTML = ""; // Clear previous content
 
         if (resp.success && resp.books.length > 0) {
             resp.books.forEach(book => {
                 let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
-
-                let availabilityText = book.available_qty > 0 
-                    ? '<p class="text-success fw-bold">Available</p>' 
-                    : '<p class="text-danger fw-bold">Not Available</p>';
+                let availabilityTextValue = book.available_qty > 0 ? 'Available' : 'Not Available';
 
                 let row = `
                     <div class="row m-4 border rounded d-flex align-items-center">
@@ -51,15 +48,15 @@ function loadSavedBooks(page = 1) {
                         <div class="col-md-8 p-5">
                             <h2 class="text-danger">Book ID : ${book.book_id}</h2>
                             <p class="col-10 text-justify mt-3">${book.description}</p>
-                            ${availabilityText}
-                            <button class="btn" id="success" onclick="reserveBook('${book.book_id}')">
+                            <p class="${book.available_qty > 0 ? 'text-success' : 'text-danger'} fw-bold">${availabilityTextValue}</p>
+                            <button class="btn" id="success" onclick="reserveBook('${book.book_id}', '${availabilityTextValue}')">
                                 Reserve
                             </button>
                         </div>
                     </div>
                 `;
 
-                tableBody.innerHTML += row;
+                tableBody.insertAdjacentHTML("beforeend", row); // Better performance
             });
         } else {
             tableBody.innerHTML = "<p class='text-center text-muted'>No books found</p>";
@@ -71,20 +68,34 @@ function loadSavedBooks(page = 1) {
     });
 }
 
-function reserveBook(bookId) {
-    fetch(`index.php?action=reserve&book_id=${bookId}`, {
-        method: "GET"
+
+function reserveBook(book_id, availability){
+    var formData = new FormData();
+    formData.append("book_id", book_id);
+    formData.append("availability", availability);
+
+
+    fetch("index.php?action=reserve", {
+        method: "POST",
+        body: formData,
     })
-    .then(response => response.json())
-    .then(resp => {
-        if (resp.success) {
-            showAlert("Success", resp.message, "success");
-            loadSavedBooks(); 
-        } else {
-            showAlert("Error", resp.message, "error");
-        }
-    })
-    .catch(error => console.error("Error reserving book:", error));
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                
+                showAlert("Success", resp.message, "success");
+                
+            } else {
+                showAlert("Error", resp.message, "error");
+            }
+        })
+        .catch(error => {
+            console.error("Error reserving book:", error);
+           
+                showAlert("Error", "Something went wrong. Please try again", "error");
+
+           
+        });
 }
 
 function unsaveBook(bookId) {

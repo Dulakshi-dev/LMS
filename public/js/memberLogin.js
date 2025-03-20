@@ -17,10 +17,13 @@ function login() {
     }
 
     const memberidPattern = /^M-\d{6}$/;
-    if (memberid === "" || !memberid.match(memberidPattern)) {
+    if (memberid === "") {
+        document.getElementById("memberidError").textContent = "Member ID Required";
+        return false;
+    } else if(!memberid.match(memberidPattern)){
         document.getElementById("memberidError").textContent = "Please enter a Valid Member ID (e.g., M-123456)";
         return false;
-    } else if (password === "") {
+    }else if (password === "") {
         document.getElementById("memberidError").textContent = "";
         document.getElementById("passwordError").textContent = "Password is Required.";
         return false;

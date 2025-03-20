@@ -31,39 +31,52 @@ require_once "../../main.php";
                     </nav>
                 </div>
 
-                <div class="row">
-                    <div class="fw-bold bg-white d-flex justify-content-center">
-                        <div class="container mt-5">
-                            <div class="row g-3 d-flex justify-content-evenly">
-
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 300px; height: 250px;">
-
-                                    <i class="fas fa-plus display-1 text-primary"></i>
-                                    <p class="fw-bold fs-5 mt-3 text-dark">Add Books</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=addBook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
-
-                                </div>
-
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 300px; height: 250px;">
-
-                                    <i class="fa fa-book display-1 text-success"></i>
-                                    <p class="fw-bold fs-5 mt-3 text-dark">View All Books</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewBooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
-
-                                </div>
-
+                <div class="row g-5 m-5 justify-content-center">
+                    <!-- Add Books -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-plus text-primary display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">Add Books</p>
+                            <div class="d-flex justify-content-center">
+                            <a href="<?php echo Config::indexPath() ?>?action=addBook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
                             </div>
+                            
+                        </div>
+                    </div>
 
-                            <div class="d-flex justify-content-center m-5">
-                                <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 300px; height: 250px;">
-                                    <i class="fa fa-navicon display-1 text-warning"></i>
-                                    <p class="fw-bold fs-5 mt-3 text-dark">Add New Category</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=addCategory" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
-
-                                </div>
-
-
+                    <!-- View All Books -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-list text-success display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">View all Books</p>
+                            <div class="d-flex justify-content-center">
+                            <a href="<?php echo Config::indexPath() ?>?action=viewBooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
                             </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Add New Category -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-layer-group text-warning display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">Add New Category</p>
+                            <div class="d-flex justify-content-center">
+                            <a href="<?php echo Config::indexPath() ?>?action=addCategory" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
+                            </div>
+                            
+                        </div>
+                    </div>
+
+                    <!-- View Deactivated Books -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-book-open text-danger display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">View Deactivate Books</p>
+                            <div class="d-flex justify-content-center">
+                            <a href="" class="btn btn-danger w-50 rounded-pill mt-2">View</a>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>

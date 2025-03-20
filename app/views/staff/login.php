@@ -37,9 +37,9 @@ require_once "../../main.php";
 
 
     <div class="login-container my-5">
-        <h1 class="text-dark text-center m-4">Hi! Welcome Back</h1>
-        <div class="row p-3 justify-content-center align-items-center">
-            <div class="col-lg-4 col-md-6 text-white login-form m-4">
+        <h1 class="text-dark text-center">Hi! Welcome Back</h1>
+        <div class="row p-4 justify-content-center align-items-center">
+            <div class="col-lg-5 p-4 col-md-6 text-white login-form">
                 <h1 class="text-center"> Staff Login</h1>
 
                 <?php
@@ -89,7 +89,11 @@ require_once "../../main.php";
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-primary w-100 rounded-pill mt-3" onclick="staffLogin();">Login</button>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary w-75 rounded-pill mt-3" onclick="staffLogin();">Login</button>
+                    </div>
+
+                    
             </div>
         </div>
     </div>

@@ -38,16 +38,16 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 <body>
 
     <div id="sidepanel" class=" bg-dark text-white" style="width: 250px; height: 100%;">
-    <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
-            <i class="fas fa-user mr-3"></i>  Dashboard
+        <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
+            <i class="fas fa-user mr-3"></i> Dashboard
         </a>
         <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
-            <i class="fas fa-user mr-3"></i>  My Profile
+            <i class="fas fa-user mr-3"></i> My Profile
         </a>
         <?php
 
         foreach ($modules as $module) {
-            $action = strtolower(str_replace(' ', '', $module));  
+            $action = strtolower(str_replace(' ', '', $module));
 
         ?>
             <a href="<?php echo Config::indexPath() ?>?action=<?php echo htmlspecialchars($action); ?>" class="nav-link p-2 text-white border-bottom align-items-center">
@@ -59,10 +59,10 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
         ?>
 
         <a href="<?php echo Config::indexPath() ?>?action=libsetup" class="nav-link text-white p-2 border-bottom align-items-center">
-            <i class="fas fa-user mr-3"></i>  Library Setup
+            <i class="fas fa-user mr-3"></i> Library Setup
         </a>
         <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
-            <i class="fas fa-user mr-3"></i>  About Software
+            <i class="fas fa-user mr-3"></i> About Software
         </a>
         <?php
 

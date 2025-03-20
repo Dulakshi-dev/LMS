@@ -40,30 +40,58 @@ require_once "../../main.php";
                     </nav>
                 </div>
 
-                <div class="row">
-                    <div class="fw-bold bg-white d-flex justify-content-center mt-5">
-                        <div class="container mt-5">
-                            <div class="row g-3 d-flex justify-content-evenly">
+                <div class="row g-5 m-5 justify-content-center">
+                    <!-- Add Books -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-user-plus text-primary display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">Resister Users</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-primary w-50 rounded-pill mt-2">Issue</a>
+                            </div>
 
-                                <div class="card text-danger-emphasis text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
+                        </div>
+                    </div>
 
-                                    <i class="fas fa-plus display-1"></i>
-                                    <p class="fw-bold fs-5 mt-3 ">Veiw Requests</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-danger w-50 rounded-pill mt-2">Issue</a>
+                    <!-- View All Books -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-list text-success display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">View Members</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="<?php echo Config::indexPath() ?>?action=viewmembers" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+                            </div>
 
-                                </div>
-                                <div class="card text-info-emphasis text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 400px; height: 350px;">
+                        </div>
+                    </div>
 
-                                    <i class="fa fa-book display-1 "></i>
-                                    <p class="fw-bold fs-5 mt-3">View Members</p>
-                                    <a href="<?php echo Config::indexPath() ?>?action=viewmembers" class="btn btn-info w-50 rounded-pill mt-2">View</a>
+                    <!-- Add New Category -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-user-minus text-warning display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">View Detective users</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-warning w-50 rounded-pill mt-2">Issue</a>
+                            </div>
 
-                                </div>
+                        </div>
+                    </div>
+
+                    <!-- View Deactivated Books -->
+                    <div class="col-sm-12 col-md-6">
+                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
+                            <i class="fas fa-users-slash text-info display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">view Reject users</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="<?php echo Config::indexPath() ?>?action=viewmembers" class="btn btn-info w-50 rounded-pill mt-2">View</a>
 
                             </div>
+
                         </div>
                     </div>
                 </div>
+
+
             </div>
 
 

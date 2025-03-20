@@ -23,16 +23,16 @@ function loadBooks(page = 1) {
         method: "POST",
         body: formData,
     })
-    .then(response => response.json())
-    .then(resp => {
-        let tableBody = document.getElementById("bookTableBody");
-        tableBody.innerHTML = "";
+        .then(response => response.json())
+        .then(resp => {
+            let tableBody = document.getElementById("bookTableBody");
+            tableBody.innerHTML = "";
 
-        if (resp.success && resp.books.length > 0) {
-            resp.books.forEach(book => {
-                let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
+            if (resp.success && resp.books.length > 0) {
+                resp.books.forEach(book => {
+                    let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
 
-                let row = `
+                    let row = `
                 <tr>
                     <td>${book.book_id}</td>
                     <td>${book.isbn}</td>
@@ -58,16 +58,16 @@ function loadBooks(page = 1) {
                 </tr>
                 `;
 
-                tableBody.innerHTML += row;
-            });
-        } else {
-            tableBody.innerHTML = "<tr><td colspan='7'>No books found</td></tr>";
-        }
-        createPagination("pagination", resp.totalPages, page, "loadBooks");
-    })
-    .catch(error => {
-        console.error("Error fetching book data:", error);
-    });
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='7'>No books found</td></tr>";
+            }
+            createPagination("pagination", resp.totalPages, page, "loadBooks");
+        })
+        .catch(error => {
+            console.error("Error fetching book data:", error);
+        });
 }
 
 
@@ -89,46 +89,15 @@ document.addEventListener("DOMContentLoaded", function () {
             let button = event.target.closest(".deactivate");
             deactivateBook(button.dataset.book_id);
 
-           
+
         }
     });
 })
 
 function addBook() {
-    let currentYear = new Date().getFullYear();
 
-    document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
-
-    let isbn = document.getElementById("isbn").value.trim();
-    let title = document.getElementById("title").value.trim();
-    let category = document.getElementById("category").value;
-    let language = document.getElementById("language").value;
-    let pub = document.getElementById("pub").value.trim();
-    let qty = document.getElementById("qty").value.trim();
-    let des = document.getElementById("des").value.trim();
-    let coverpage = document.getElementById("coverpage").value;
-    let author = document.getElementById("author").value.trim();
-
-    if (isbn === "") {
-        document.getElementById("isbn-error").innerText = "ISBN is required.";
-    }
-    else if (author === "") {
-        document.getElementById("author-error").innerText = "Enter a valid author name.";
-    }else if (title === "") {
-        document.getElementById("title-error").innerText = "Title is required.";
-    }else if (category === "") {
-        document.getElementById("category-error").innerText = "Select a category.";
-    }else if (language === "") {
-        document.getElementById("language-error").innerText = "Select a language.";
-    }else if (!/^[0-9]{4}$/.test(pub) || pub < 1500 || pub > currentYear) {
-        document.getElementById("pub-error").innerText = "Enter a valid published year.";
-    }else if (qty === "" || isNaN(qty) || qty <= 0) {
-        document.getElementById("qty-error").innerText = "Enter a valid quantity.";
-    }else if (des.length < 10) {
-        document.getElementById("des-error").innerText = "Description must be at least 10 characters long.";
-    }else if (coverpage === "") {
-        document.getElementById("coverpage-error").innerText = "Please upload a cover page image.";
-    }else{
+    validateForm();
+    if (validateForm()) {  
         let formData = new FormData();
 
         // Get input values
@@ -140,41 +109,38 @@ function addBook() {
         formData.append("pub", document.getElementById("pub").value);
         formData.append("qty", document.getElementById("qty").value);
         formData.append("des", document.getElementById("des").value);
-        
+
         // Handle file input (Cover Page)
         let coverPage = document.getElementById("coverpage").files[0];
         if (coverPage) {
             formData.append("coverpage", coverPage);
         }
-    
+
         // Send data to controller via AJAX (Fetch API)
         fetch("index.php?action=addBookData", {
             method: "POST",
             body: formData
         })
-        .then(response => response.json()) // Convert response to JSON
-        .then(resp => {
-            if (resp.success) {
-                showAlert("Success", resp.message, "success").then(() => {
-                    location.reload();
-                });
-            } else {
-                Swal.fire("Error", resp.message, "error"); // Show error message
-            }
-        })
-        .catch(error => {
-            console.error("Error adding book:", error);
-            Swal.fire("Error", "Something went wrong!", "error");
-        });
+            .then(response => response.json()) // Convert response to JSON
+            .then(resp => {
+                if (resp.success) {
+                    showAlert("Success", resp.message, "success").then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire("Error", resp.message, "error"); // Show error message
+                }
+            })
+            .catch(error => {
+                console.error("Error adding book:", error);
+                Swal.fire("Error", "Something went wrong!", "error");
+            });
     }
-
-
-
 
 }
 
 
-function deactivateBook(book_id){
+function deactivateBook(book_id) {
     var formData = new FormData();
     formData.append("book_id", book_id);
 
@@ -346,7 +312,7 @@ function showImagePreview() {
         };
         reader.readAsDataURL(file);
     }
-} 
+}
 
 function validateForm() {
     let isValid = true;
@@ -490,7 +456,8 @@ function updateBookDetails() {
                 if (resp.success) {
                     showAlert("Success", resp.message, "success").then(() => {
                         location.reload();
-                    });                } else {
+                    });
+                } else {
                     showAlert("Error", resp.message, "error");
 
                 }
@@ -538,7 +505,7 @@ function addCategory() {
 
                 categoryInput.value = "";
             } else {
-                showAlert("Error", resp.message , "error");
+                showAlert("Error", resp.message, "error");
 
             }
         })

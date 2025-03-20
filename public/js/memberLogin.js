@@ -21,12 +21,12 @@ function login() {
         document.getElementById("memberidError").textContent = "Please enter a Valid Member ID (e.g., M-123456)";
         return false;
     } else if (password === "") {
-        document.getElementById("memberidError").textContent ="";
+        document.getElementById("memberidError").textContent = "";
         document.getElementById("passwordError").textContent = "Password is Required.";
         return false;
     } else {
-        document.getElementById("passwordError").textContent ="";
-        document.getElementById("memberidError").textContent ="";
+        document.getElementById("passwordError").textContent = "";
+        document.getElementById("memberidError").textContent = "";
 
         let formData = new FormData();
         formData.append("memberid", memberid);
@@ -56,26 +56,30 @@ function forgotpw() {
     var email = document.getElementById("email").value;
     var response = document.getElementById("responseMessage");
 
-    //validate email
+    if (email === "") {
+        response.innerHTML = "Please enter the email";
+    } else {
+        var formData = new FormData();
+        formData.append("email", email);
 
-    var formData = new FormData();
-    formData.append("email", email);
 
-    fetch("index.php?action=forgotpassword", {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.json())
-        .then(resp => {
-            if (resp.success) {
-                showAlert("Info", resp.message, "info");
-            } else {
-                response.innerHTML = resp.message;
-            }
+        fetch("index.php?action=forgotpassword", {
+            method: "POST",
+            body: formData,
         })
-        .catch(error => {
-            showAlert("Error", "Error fetching user data: " + error, "error");
-        });
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    showAlert("Info", resp.message, "info");
+                } else {
+                    response.innerHTML = resp.message;
+                }
+            })
+            .catch(error => {
+                showAlert("Error", "Error fetching user data: " + error, "error");
+            });
+
+    }
 
 };
 
@@ -122,8 +126,8 @@ function resetpassword() {
                 if (resp.success) {
                     showAlert("Success", resp.message, "success").then(() => {
                         window.location.href = "index.php?action=login";
-                    });                    
-                
+                    });
+
                 } else {
                     showAlert("Error", resp.message, "error");
                 }

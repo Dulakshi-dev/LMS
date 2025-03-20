@@ -57,7 +57,7 @@ $profile_img = $_SESSION["staff"]["profile_img"];
                         <li class="list-inline-item d-flex align-items-center">
                             <a id="prof" class="text-white text-decoration-none d-flex align-items-center" href="#">
                                 <img src="" class="mr-2 rounded-circle" alt="" id="headerprofileimg" style="width: 40px; height: 40px;">
-                                <div class="text-left">
+                                <div class="text-left mx-3">
                                     <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
                                     <small><?php echo $role_name; ?></small>
                                 </div>

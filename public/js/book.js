@@ -43,7 +43,7 @@ function loadBooks(page = 1) {
                     <td>${book.category_name}</td>
                     <td>${book.language_name}</td>
                     <td>${book.qty}</td>
-                    <td>${book.available_qty}</td>
+                    <td>${book.qty - book.available_qty}</td>
                     <td>
                     <div class="m-1">
                         <button class="btn btn-success my-1 btn-sm edit-book" data-book_id="${book.book_id}">

@@ -28,7 +28,7 @@ $page = $page ?? 1;
         <div class="container-fluid mx-5 mb-5 bg-white">
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                    <span class="navbar-brand mb-0 h1">Staff Management <small class="text-muted">control panel</small></span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                 </nav>
             </div>

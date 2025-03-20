@@ -26,14 +26,14 @@ require_once "../../main.php";
             <div class="container-fluid mx-5 mb-5 bg-white">
                 <div class="row">
                     <nav class="navbar p-4 navbar-light bg-light">
-                        <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                        <span class="navbar-brand mb-0 h1">Book Management <small class="text-muted">control panel</small></span>
                         <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                     </nav>
                 </div>
 
                 <div class="row">
                     <div class="fw-bold bg-white d-flex justify-content-center">
-                        <div class="container mt-5">
+                        <div class="container mt-4">
                             <div class="row g-3 d-flex justify-content-evenly">
 
                                 <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-1" style="width: 300px; height: 250px;">
@@ -54,15 +54,13 @@ require_once "../../main.php";
 
                             </div>
 
-                            <div class="d-flex justify-content-center m-5">
+                            <div class="d-flex justify-content-center m-4">
                                 <div class="card text-white text-center p-4 shadow-lg rounded-4 d-flex flex-column justify-content-center align-items-center" id="box-2" style="width: 300px; height: 250px;">
                                     <i class="fa fa-navicon display-1 text-warning"></i>
                                     <p class="fw-bold fs-5 mt-3 text-dark">Add New Category</p>
                                     <a href="<?php echo Config::indexPath() ?>?action=addCategory" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
 
                                 </div>
-
-
                             </div>
                         </div>
                     </div>

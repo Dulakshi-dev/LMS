@@ -95,43 +95,82 @@ document.addEventListener("DOMContentLoaded", function () {
 })
 
 function addBook() {
-    let formData = new FormData();
+    let currentYear = new Date().getFullYear();
 
-    // Get input values
-    formData.append("isbn", document.getElementById("isbn").value);
-    formData.append("author", document.getElementById("author").value);
-    formData.append("title", document.getElementById("title").value);
-    formData.append("category", document.getElementById("category").value);
-    formData.append("language", document.getElementById("language").value);
-    formData.append("pub", document.getElementById("pub").value);
-    formData.append("qty", document.getElementById("qty").value);
-    formData.append("des", document.getElementById("des").value);
+    document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
+
+    let isbn = document.getElementById("isbn").value.trim();
+    let title = document.getElementById("title").value.trim();
+    let category = document.getElementById("category").value;
+    let language = document.getElementById("language").value;
+    let pub = document.getElementById("pub").value.trim();
+    let qty = document.getElementById("qty").value.trim();
+    let des = document.getElementById("des").value.trim();
+    let coverpage = document.getElementById("coverpage").value;
+    let author = document.getElementById("author").value.trim();
+
+    if (isbn === "") {
+        document.getElementById("isbn-error").innerText = "ISBN is required.";
+    }
+    else if (author === "") {
+        document.getElementById("author-error").innerText = "Enter a valid author name.";
+    }else if (title === "") {
+        document.getElementById("title-error").innerText = "Title is required.";
+    }else if (category === "") {
+        document.getElementById("category-error").innerText = "Select a category.";
+    }else if (language === "") {
+        document.getElementById("language-error").innerText = "Select a language.";
+    }else if (!/^[0-9]{4}$/.test(pub) || pub < 1500 || pub > currentYear) {
+        document.getElementById("pub-error").innerText = "Enter a valid published year.";
+    }else if (qty === "" || isNaN(qty) || qty <= 0) {
+        document.getElementById("qty-error").innerText = "Enter a valid quantity.";
+    }else if (des.length < 10) {
+        document.getElementById("des-error").innerText = "Description must be at least 10 characters long.";
+    }else if (coverpage === "") {
+        document.getElementById("coverpage-error").innerText = "Please upload a cover page image.";
+    }else{
+        let formData = new FormData();
+
+        // Get input values
+        formData.append("isbn", document.getElementById("isbn").value);
+        formData.append("author", document.getElementById("author").value);
+        formData.append("title", document.getElementById("title").value);
+        formData.append("category", document.getElementById("category").value);
+        formData.append("language", document.getElementById("language").value);
+        formData.append("pub", document.getElementById("pub").value);
+        formData.append("qty", document.getElementById("qty").value);
+        formData.append("des", document.getElementById("des").value);
+        
+        // Handle file input (Cover Page)
+        let coverPage = document.getElementById("coverpage").files[0];
+        if (coverPage) {
+            formData.append("coverpage", coverPage);
+        }
     
-    // Handle file input (Cover Page)
-    let coverPage = document.getElementById("coverpage").files[0];
-    if (coverPage) {
-        formData.append("coverpage", coverPage);
+        // Send data to controller via AJAX (Fetch API)
+        fetch("index.php?action=addBookData", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => response.json()) // Convert response to JSON
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                Swal.fire("Error", resp.message, "error"); // Show error message
+            }
+        })
+        .catch(error => {
+            console.error("Error adding book:", error);
+            Swal.fire("Error", "Something went wrong!", "error");
+        });
     }
 
-    // Send data to controller via AJAX (Fetch API)
-    fetch("index.php?action=addBookData", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.json()) // Convert response to JSON
-    .then(resp => {
-        if (resp.success) {
-            showAlert("Success", resp.message, "success").then(() => {
-                location.reload();
-            });
-        } else {
-            Swal.fire("Error", resp.message, "error"); // Show error message
-        }
-    })
-    .catch(error => {
-        console.error("Error adding book:", error);
-        Swal.fire("Error", "Something went wrong!", "error");
-    });
+
+
+
 }
 
 

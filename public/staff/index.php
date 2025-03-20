@@ -23,12 +23,10 @@ $profileController = new ProfileController();
 $memberController = new MemberController();
 $reservationController = new ReservationController();
 
-
 // Define the routes and map them to controller methods
 $router->add('loginProcess', [$loginController, 'login']);
 $router->add('logout', [$loginController, 'logout']);
 $router->add('loadusers', [$userController, 'loadUsers']);
-
 
 //$router->add('staffmanagement', [$userController, 'loadUsers']);
 $router->add('loadUserData', [$userController, 'loadUserDetails']); 
@@ -69,7 +67,6 @@ $router->add('deactivatemember', [$memberController, 'deactivateMember']);
 $router->add('rejectmember', [$memberController, 'rejectMember']);
 $router->add('loadmemberrequests', [$memberController, 'getMemberRequests']);
 $router->add('loadreservations', [$reservationController, 'getAllReservations']);
-
 
 $router->add('login', function () {
     include Config::getViewPath("staff", "login.php");
@@ -136,12 +133,9 @@ $router->add('viewreservations', function () {
     include Config::getViewPath("staff", "view-reservations.php");
 });
 
-
 // Get the action from the URL
 $action = $_GET['action'] ?? 'login';
 
 // Dispatch the appropriate action
 $router->dispatch($action);
-
-
 ?>

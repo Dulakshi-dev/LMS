@@ -16,11 +16,13 @@ class LoginModel
 
     public static function validateLogin($username, $password)
     {
+        // SQL query to retrieve user details by matching user ID and password
         $query = "SELECT * FROM `user`
-JOIN `login` ON `user`.`id` = `login`.`userId`
-JOIN `role` ON `user`.`role_id` = `role`.`role_id` WHERE `user_id` = '$username' AND `password` = '$password' ;";
+                JOIN `login` ON `user`.`id` = `login`.`userId`
+                JOIN `role` ON `user`.`role_id` = `role`.`role_id` WHERE `user_id` = '$username' AND `password` = '$password' ;";
         $result = Database::search($query);
 
+        // Check if a user record is found
         if ($result && $result->num_rows > 0) {
             $user = $result->fetch_assoc();
             return $user;
@@ -30,13 +32,15 @@ JOIN `role` ON `user`.`role_id` = `role`.`role_id` WHERE `user_id` = '$username'
 
     public static function getUserModules($role_id)
     {
-        $query = "SELECT `module_name`FROM `module` JOIN `role_has_module` ON `module`.`module_id` = `role_has_module`.`module_id` WHERE `role_id` = '$role_id'";
+        // SQL query to fetch module names assigned to the given role
+        $query = "SELECT `module_name`FROM `module` 
+        JOIN `role_has_module` ON `module`.`module_id` = `role_has_module`.`module_id` WHERE `role_id` = '$role_id'";
         $result = Database::search($query);
 
         if ($result && $result->num_rows > 0) {
             $modules = [];
             while ($row = $result->fetch_assoc()) {
-                $modules[] = $row["module_name"];
+                $modules[] = $row["module_name"]; // Store each module name in an array
             }
             return $modules; // Return all module names as an array
         } else {

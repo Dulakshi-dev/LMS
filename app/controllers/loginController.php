@@ -16,14 +16,16 @@ class LoginController
     public static function login()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Retrieve login details from POST request
             $staffid = $_POST['staffid'];
             $password = $_POST['password'];
             $rememberme = isset($_POST['rememberme']) ? $_POST['rememberme'] : 0;
-    
-            $userDetails = LoginModel::validateLogin($staffid, $password);
-    
-            if ($userDetails) {
 
+            // Validate login credentials using the LoginModel
+            $userDetails = LoginModel::validateLogin($staffid, $password);
+
+            if ($userDetails) {
+                // Store user details in the session
                 $_SESSION['staff'] = [
                     'staff_id' => $userDetails['user_id'],
                     'id' => $userDetails['id'],
@@ -34,8 +36,10 @@ class LoginController
                     'fname' => $userDetails['fname']
                 ];
 
+                // Load role-specific modules
                 self::loadModules($_SESSION["staff"]["role_id"]);
 
+                // Handle the "Remember Me" feature using cookies
                 if ($rememberme) {
                     setcookie("staffid", $staffid, time() + (60 * 60 * 24 * 365), "/");
                     setcookie("staffpw", $password, time() + (60 * 60 * 24 * 365), "/");
@@ -44,23 +48,23 @@ class LoginController
                     setcookie("staffpw", "", time() - 3600, "/"); // Delete cookie
                 }
                 
-                
                 echo json_encode(["success" => true, "message" => "Login successful!"]);
                 exit;
             } else {
                 echo json_encode(["success" => false, "message" => "Invalid username or password."]);
-                exit; 
+                exit;
             }
         }
     }
-    
+
 
     public static function loadModules($role)
-    {
+    {    
+        // Retrieve user-specific modules from the model
         $userModules = LoginModel::getUserModules($role);
 
         if ($userModules) {
-
+            // Store the modules in the session
             $_SESSION["modules"] = $userModules;
         } else {
             echo "No modules found for this role.";
@@ -88,7 +92,6 @@ class LoginController
                 exit();
             } else {
                 echo json_encode(["success" => false, "message" => "Registration Failed."]);
-
             }
         }
     }
@@ -97,22 +100,22 @@ class LoginController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST['email'];
-            $vcode = uniqid(); 
+            $vcode = uniqid();
 
-            $result = LoginModel::validateEmail($email ,$vcode);
+            $result = LoginModel::validateEmail($email, $vcode);
 
             if ($result) {
-                self::sendResetLink($email ,$vcode);
+                self::sendResetLink($email, $vcode);
                 exit();
             } else {
 
-                echo json_encode(["success" => false, "message" => "Invalid Email."]);
-                exit(); 
+                echo json_encode(["success" => false, "message" => "Account not found."]);
+                exit();
             }
         }
     }
 
-    public static function sendResetLink($email ,$vcode)
+    public static function sendResetLink($email, $vcode)
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -120,7 +123,7 @@ class LoginController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $email = $_POST["email"];
             $subject = "Reset Password";
-            
+
             $body = '
                <h1 style="padding-top: 30px;">Reset your password</h1>
                <p style = "font-size: 30px; color: black; font-weight: bold; text-align: center;">Shelf Loom</p> 
@@ -129,7 +132,7 @@ class LoginController
                   <p>Dear Member,</p>
                   <p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
                   <div style="margin-bottom: 10px;">
-                        <a href="http://localhost/LMS/public/staff/index.php?action=showresetpw&vcode='.$vcode.'">Click here to reset your password</a>
+                        <a href="http://localhost/LMS/public/staff/index.php?action=showresetpw&vcode=' . $vcode . '">Click here to reset your password</a>
                   </div>
                   <div>
                         <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
@@ -147,25 +150,22 @@ class LoginController
 
             if ($emailSent) {
                 echo json_encode(["success" => true, "message" => "Password reset link sent! Check Your email address"]);
-
             } else {
                 echo json_encode(["success" => false, "message" => "Failed to send email."]);
-
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid Request."]);
-
         }
     }
 
     public static function resetPassword()
     {
-    
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $password = $_POST['password'];
             $vcode = $_POST['vcode'];
-         
-            $result = LoginModel::changePassword($password ,$vcode);
+
+            $result = LoginModel::changePassword($password, $vcode);
             if ($result) {
                 echo json_encode(["success" => true, "message" => "Password reset successfully"]);
             } else {

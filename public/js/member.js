@@ -350,7 +350,7 @@ function loadMailData(member_id) {
         });
 }
 
-function deactivateUser(member_id) {
+function deactivateMember(member_id) {
 
     var formData = new FormData();
     formData.append("id", member_id);
@@ -362,8 +362,9 @@ function deactivateUser(member_id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                showAlert("Success", resp.message, "success");
-
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
                 showAlert("Error", resp.message, "error");
             }
@@ -468,27 +469,5 @@ function sendEmail() {
             console.error("Error sending mail:", error);
         });
 }
-
-// function changeUserStatus(id) {
-//     var formData = new FormData();
-//     formData.append("id", id);
-
-//     fetch("index.php?action=changeMemberStatus", {
-//         method: "POST",
-//         body: formData,
-//     })
-//         .then(response => response.json())
-//         .then(resp => {
-//             if (resp.success) {
-//                 showAlert("Success", resp.message, "success");
-//             } else {
-//                 showAlert("Error", resp.message, "error");
-//             }
-//         })
-//         .catch(error => {
-//             showAlert("Error", "Something went wrong", "error");
-//             console.error("Error fetching user data:", error);
-//         });
-// }
 
 

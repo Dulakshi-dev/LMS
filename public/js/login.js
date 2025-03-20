@@ -9,44 +9,53 @@ function showAlert(title, message, type) {
 }
 
 function staffLogin() {
+    // Get input values and trim any whitespace
     var staffid = document.getElementById('staffid').value.trim();
     var password = document.getElementById('password').value.trim();
+
+    // Get error message elements
     var staffidError = document.getElementById('staffidError');
     var passwordError = document.getElementById('passwordError');
+
+    // Check if "Remember Me" is checked, store "1" for checked and "0" for unchecked
     let rememberMe = document.getElementById("rememberme").checked ? "1" : "0";
 
+    // Clear previous error messages
     staffidError.innerText = '';
     passwordError.innerText = '';
 
+    // Validate fields
     if (staffid === '') {
         staffidError.innerText = 'Staff ID is required.';
-        return; // Prevent request
-    } 
-    if (password === '') {
+        return;
+    } else if (password === '') {
         passwordError.innerText = 'Password is required.';
-        return; // Prevent request
+        return; 
+    } else {
+        // Create a FormData object to send data via POST
+        let formData = new FormData();
+        formData.append("staffid", staffid);
+        formData.append("password", password);
+        formData.append("rememberme", rememberMe);
+
+        // Send a POST request to process the login
+        fetch("index.php?action=loginProcess", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json()) // Parse response as JSON
+            .then(resp => {
+                if (resp.success) {
+                    // If login is successful, redirect to the dashboard
+                    window.location.href = "index.php?action=dashboard";
+                } else {
+                    showAlert("Error", resp.message, "error");
+                }
+            })
+            .catch(error => {
+                showAlert("Error", "Error fetching user data: " + error, "error");
+            });
     }
-
-    let formData = new FormData();
-    formData.append("staffid", staffid);
-    formData.append("password", password);
-    formData.append("rememberme", rememberMe);
-
-    fetch("index.php?action=loginProcess", {
-        method: "POST",
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(resp => {
-        if (resp.success) {
-            window.location.href = "index.php?action=dashboard";
-        } else {
-            showAlert("Error", resp.message, "error");
-        }
-    })
-    .catch(error => {
-        showAlert("Error", "Error fetching user data: " + error, "error");
-    });
 }
 
 function staffRegistration() {
@@ -145,8 +154,8 @@ function resetpassword() {
                 if (resp.success) {
                     showAlert("Success", resp.message, "success").then(() => {
                         window.location.href = "index.php?action=login";
-                    });                    
-                
+                    });
+
                 } else {
                     showAlert("Error", resp.message, "error");
                 }

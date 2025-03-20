@@ -106,9 +106,9 @@ class MemberController
             $result = MemberModel::deactivateMember($id);
 
             if ($result) {
-                echo json_encode(["success" => true, "message" => "Membership deactivated"]);
+                echo json_encode(["success" => true, "message" => "Member deactivated"]);
             } else {
-                echo json_encode(["success" => false, "message" => "User not found."]);
+                echo json_encode(["success" => false, "message" => "Member not found."]);
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);

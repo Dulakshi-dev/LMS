@@ -29,38 +29,32 @@ class Config {
     public static $database = [
         "host" => "localhost", 
         "username" => "root", 
-        "password" => "",
+        "password" => "Dg$11029",
         "dbname" => "library_db",
         "port" => "3306"
     ];
 
-    public static function getViewPath(String $entity, String $view)
-    {
+    public static function getViewPath(String $entity, String $view){
         return Config::$paths["views"] . $entity . "\\" . $view;
     }
  
-    public static function getControllerPath(String $controller)
-    {
+    public static function getControllerPath(String $controller){
         return Config::$paths["controllers"] . $controller;
     }
 
-    public static function getModelPath(String $model)
-    {
+    public static function getModelPath(String $model){
         return Config::$paths["models"] . $model;
     }
     
-    public static function getImagePath(String $image)
-    {
+    public static function getImagePath(String $image){
         return Config::$paths["images"] . $image;
     }
 
-    public static function getjsPath(String $js)
-    {
+    public static function getjsPath(String $js){
         return Config::$paths["js"] . $js;
     }
 
-    public static function getdbPath()
-    {
+    public static function getdbPath(){
         return Config::$paths["database"];
     }
 
@@ -68,6 +62,7 @@ class Config {
         header("Location: $url");
         exit();
     }
+
     public static function indexPath() {
         return Config::$paths["index"];
     }
@@ -76,31 +71,24 @@ class Config {
         return Config::$paths["index_member"];
     }
 
-    public static function getServicePath(String $service)
-    {
+    public static function getServicePath(String $service){
         return Config::$paths["services"] . $service;
     }
 
-    public static function getMailPath(String $mail)
-    {
+    public static function getMailPath(String $mail){
         return Config::$paths["mail"] . $mail;
     }
 
-    public static function getBookCoverPath()
-    {
+    public static function getBookCoverPath(){
         return Config::$paths["book_covers"];
     }
 
-    public static function getStaffProfileImagePath()
-    {
+    public static function getStaffProfileImagePath(){
         return Config::$paths["staff_profile_img"];
     }
 
-    public static function getMemberProfileImagePath()
-    {
+    public static function getMemberProfileImagePath(){
         return Config::$paths["member_profile_img"];
     }
-
-    
 }
 

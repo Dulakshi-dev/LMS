@@ -1,10 +1,36 @@
 <?php
-require_once "../../main.php";
+
+if (!isset($_SESSION['member'])) {
+  header("Location: index.php?action=login"); 
+  exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['member']['last_activity']) && (time() - $_SESSION['member']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php?action=login"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['member']['last_activity'] = time();
+
 $fname = $_SESSION["member"]["fname"];
 $lname = $_SESSION["member"]["lname"];
 $profile_img = $_SESSION["member"]["profile_img"];
 
+$libraryData = HomeModel::getLibraryInfo();
+$libraryName = $libraryData['name']; 
+$libraryAddress = $libraryData['address']; 
+$libraryEmail = $libraryData['email']; 
+$libraryPhone = $libraryData['mobile']; 
+$logo = $libraryData['logo']; 
+$fee = $libraryData['membership_fee']; 
+$fine = $libraryData['fine_amount']; 
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,12 +51,7 @@ $profile_img = $_SESSION["member"]["profile_img"];
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center" href="#">
-        <img
-          src="../../../public/images/logo.png"
-          alt="Logo"
-          class="me-2"
-          style="height: 40px;" />
-        <span>SHELF LOOM</span>
+      <img src="<?php echo Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
       </a>
 
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -48,7 +69,7 @@ $profile_img = $_SESSION["member"]["profile_img"];
             <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=about">About</a>
           </li>
           <li class="nav-item px-4">
-            <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=lmshome">LMS</a>
+            <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=dashboard">LMS</a>
           </li>
         </ul>
       </div>

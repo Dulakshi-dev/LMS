@@ -48,32 +48,22 @@ $_SESSION['staff']['last_activity'] = time();
             <div class="container-fluid mx-5 mb-5 bg-white">
                 <div class="row">
                     <nav class="navbar p-4 navbar-light bg-light">
-                        <span class="navbar-brand mb-0 h1">Member Management <small class="text-muted">control panel</small></span>
+                        <span class="navbar-brand mb-0 h1">Staff Management <small class="text-muted">control panel</small></span>
                         <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                     </nav>
                 </div>
 
                 <div class="row g-5 m-5 justify-content-center">
-                    <!-- Add Books -->
-                    <div class="col-sm-12 col-md-6">
-                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-user-plus text-info display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">Register Users</p>
-                            <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-info rounded-pill mt-2 col-lg-3">Register</a>
-                            </div>
 
-                        </div>
-                    </div>
 
                     <!-- View All Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-list display-1" style="color: #2AC23A;"></i>
-                            <p class="fw-bold fs-5 mt-3">Members</p>
+                            <p class="fw-bold fs-5 mt-3">View Staff</p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewmembers"
-                                    class="btn col-lg-3 rounded-pill mt-2"
+                                <a href="<?php echo Config::indexPath() ?>?action=viewstaff"
+                                    class="btn col-3 rounded-pill mt-2"
                                     style="background-color: #2AC23A;  color: white;">
                                     View
                                 </a>
@@ -85,38 +75,19 @@ $_SESSION['staff']['last_activity'] = time();
                     <!-- Add New Category -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-user-minus text-warning display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">Deactive Members</p>
+                        <i class="fas fa-user-minus text-warning display-1"></i>
+                            <p class="fw-bold fs-5 mt-3">View Detective Staff</p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivemembers" class="btn btn-warning col-lg-3 rounded-pill mt-2">View</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning col-3 rounded-pill mt-2">Issue</a>
                             </div>
 
                         </div>
                     </div>
 
-                    <!-- View Deactivated Books -->
-                    <div class="col-sm-12 col-md-6">
-                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-users-slash display-1" style="color: #FD0D0D;"></i>
-                            <p class="fw-bold fs-5 mt-3">Rejected Users</p>
-                            <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewrejectedrequests"
-                                    class="btn col-sm-6 col-lg-3 rounded-pill mt-2"
-                                    style="background-color: #FD0D0D;  color: white;">
-                                    View
-                                </a>
-                            </div>
+            
 
-                        </div>
-                    </div>
                 </div>
-
-
             </div>
-
-
-
-
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -38,6 +38,12 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 <body>
 
     <div id="sidepanel" class=" bg-dark text-white" style="width: 250px; height: 100%;">
+
+        <h4 class="mx-2">Librarian Panel
+            <button id="tog" class="navbar-toggler ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </h4>
         <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i> Dashboard
         </a>
@@ -64,10 +70,6 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
         <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i> About Software
         </a>
-        <?php
-
-
-        ?>
 
     </div>
 </body>

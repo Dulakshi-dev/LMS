@@ -8,7 +8,7 @@ function showAlert(title, message, type) {
     });
 }
 
-function loadBooks(page = 1) {
+function loadBooks(page = 1, status = "Active") {
     var bookid = document.getElementById("bookid").value.trim();
     var title = document.getElementById("bname").value.trim();
     var isbn = document.getElementById("isbn").value.trim();
@@ -18,6 +18,8 @@ function loadBooks(page = 1) {
     formData.append("bookid", bookid);
     formData.append("title", title);
     formData.append("isbn", isbn);
+    formData.append("status", status);
+
 
     fetch("index.php?action=loadBooks", {
         method: "POST",
@@ -30,6 +32,28 @@ function loadBooks(page = 1) {
 
             if (resp.success && resp.books.length > 0) {
                 resp.books.forEach(book => {
+
+                    let actionButtons = "";
+
+                    if (status === "Active") {
+                        // Show Edit, Email, and Deactivate buttons for active users
+                        actionButtons = `
+                           <button class="btn btn-success my-1 btn-sm edit-book" data-book_id="${book.book_id}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger my-1 btn-sm deactivate" data-book_id="${book.book_id}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                        `;
+                    } else {
+                        // Show Activate button for deactivated users
+                        actionButtons = `
+                            <button class="btn btn-success my-1 btn-sm activate" data-book_id="${book.book_id}">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        `;
+                    }
+
                     let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
 
                     let row = `
@@ -46,13 +70,7 @@ function loadBooks(page = 1) {
                     <td>${book.qty - book.available_qty}</td>
                     <td>
                     <div class="m-1">
-                        <button class="btn btn-success my-1 btn-sm edit-book" data-book_id="${book.book_id}">
-                            <i class="fa fa-edit"></i>
-                        </button>
-                        <button class="btn btn-danger my-1 btn-sm deactivate" data-book_id="${book.book_id}">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                        </div>
+                    ${actionButtons}
                         
                     </td>
                 </tr>
@@ -70,7 +88,42 @@ function loadBooks(page = 1) {
         });
 }
 
+function loadCategory() {
 
+
+    fetch("index.php?action=loadcategories", {
+        method: "POST",
+    })
+        .then(response => response.json())
+        .then(resp => {
+            let tableBody = document.getElementById("categoryTableBody");
+            tableBody.innerHTML = "";
+
+            if (resp.success && resp.categories.length > 0) {
+                resp.categories.forEach(category => {
+                    let row = `
+                    <tr>
+                        <td>${category.category_name}</td>
+                        <td>${category.book_count}</td>
+                        <td>
+                         <div class="m-1">
+                            <button class="btn btn-danger my-1 btn-sm delete-category"
+                                data-category_id="${category.category_id}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>`;
+                 
+
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='10'>No issued books found</td></tr>";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching book data:", error);
+        });
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     // Handle book Edit Modal
@@ -92,12 +145,94 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
     });
+
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".activate")) {
+            let button = event.target.closest(".activate");
+            activateBook(button.dataset.book_id);
+
+
+        }
+    });
+
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".delete-category")) {
+            let button = event.target.closest(".delete-category");
+            deleteCategory(button.dataset.category_id);
+
+
+        }
+    });
 })
+
+function validateForm() {
+    let isValid = true;
+    let currentYear = new Date().getFullYear();
+
+    document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
+
+    let isbn = document.getElementById("isbn").value.trim();
+    if (isbn === "") {
+        document.getElementById("isbn-error").innerText = "ISBN is required.";
+        isValid = false;
+    }
+
+    let author = document.getElementById("author").value.trim();
+    if (author === "") {
+        document.getElementById("author-error").innerText = "Enter a valid author name.";
+        isValid = false;
+    }
+
+    let title = document.getElementById("title").value.trim();
+    if (title === "") {
+        document.getElementById("title-error").innerText = "Title is required.";
+        isValid = false;
+    }
+
+    let category = document.getElementById("category").value;
+    if (category === "") {
+        document.getElementById("category-error").innerText = "Select a category.";
+        isValid = false;
+    }
+
+
+    let language = document.getElementById("language").value;
+    if (language === "") {
+        document.getElementById("language-error").innerText = "Select a language.";
+        isValid = false;
+    }
+
+    let pub = document.getElementById("pub").value.trim();
+    if (!/^[0-9]{4}$/.test(pub) || pub < 1500 || pub > currentYear) {
+        document.getElementById("pub-error").innerText = "Enter a valid published year.";
+        isValid = false;
+    }
+
+    let qty = document.getElementById("qty").value.trim();
+    if (qty === "" || isNaN(qty) || qty <= 0) {
+        document.getElementById("qty-error").innerText = "Enter a valid quantity.";
+        isValid = false;
+    }
+
+    let des = document.getElementById("des").value.trim();
+    if (des.length < 10) {
+        document.getElementById("des-error").innerText = "Description must be at least 10 characters long.";
+        isValid = false;
+    }
+
+    let coverpage = document.getElementById("coverpage").value;
+    if (coverpage === "") {
+        document.getElementById("coverpage-error").innerText = "Please upload a cover page image.";
+        isValid = false;
+    }
+
+    return isValid;
+}
 
 function addBook() {
 
     validateForm();
-    if (validateForm()) {  
+    if (validateForm()) {
         let formData = new FormData();
 
         // Get input values
@@ -136,7 +271,6 @@ function addBook() {
                 Swal.fire("Error", "Something went wrong!", "error");
             });
     }
-
 }
 
 
@@ -156,6 +290,55 @@ function deactivateBook(book_id) {
                 });
             } else {
                 showAlert("Success", "Failed to deactivate book", "success");
+
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching book data:", error);
+        });
+}
+
+function activateBook(book_id) {
+    var formData = new FormData();
+    formData.append("book_id", book_id);
+
+    fetch("index.php?action=activatebook", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Success", "Failed to activate book", "success");
+
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching book data:", error);
+        });
+}
+
+function deleteCategory(category_id) {
+    alert(category_id);
+    var formData = new FormData();
+    formData.append("category_id", category_id);
+
+    fetch("index.php?action=deletecategory", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Success", "Failed to delete the category", "success");
 
             }
         })
@@ -314,70 +497,6 @@ function showImagePreview() {
     }
 }
 
-function validateForm() {
-    let isValid = true;
-    let currentYear = new Date().getFullYear();
-
-    document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
-
-    let isbn = document.getElementById("isbn").value.trim();
-    if (isbn === "") {
-        document.getElementById("isbn-error").innerText = "ISBN is required.";
-        isValid = false;
-    }
-
-    let author = document.getElementById("author").value.trim();
-    if (author === "") {
-        document.getElementById("author-error").innerText = "Enter a valid author name.";
-        isValid = false;
-    }
-
-    let title = document.getElementById("title").value.trim();
-    if (title === "") {
-        document.getElementById("title-error").innerText = "Title is required.";
-        isValid = false;
-    }
-
-    let category = document.getElementById("category").value;
-    if (category === "") {
-        document.getElementById("category-error").innerText = "Select a category.";
-        isValid = false;
-    }
-
-
-    let language = document.getElementById("language").value;
-    if (language === "") {
-        document.getElementById("language-error").innerText = "Select a language.";
-        isValid = false;
-    }
-
-    let pub = document.getElementById("pub").value.trim();
-    if (!/^[0-9]{4}$/.test(pub) || pub < 1500 || pub > currentYear) {
-        document.getElementById("pub-error").innerText = "Enter a valid published year.";
-        isValid = false;
-    }
-
-    let qty = document.getElementById("qty").value.trim();
-    if (qty === "" || isNaN(qty) || qty <= 0) {
-        document.getElementById("qty-error").innerText = "Enter a valid quantity.";
-        isValid = false;
-    }
-
-    let des = document.getElementById("des").value.trim();
-    if (des.length < 10) {
-        document.getElementById("des-error").innerText = "Description must be at least 10 characters long.";
-        isValid = false;
-    }
-
-    let coverpage = document.getElementById("coverpage").value;
-    if (coverpage === "") {
-        document.getElementById("coverpage-error").innerText = "Please upload a cover page image.";
-        isValid = false;
-    }
-
-    return isValid;
-}
-
 function updateBookDetails() {
     var book_id = document.getElementById("book_id").value;
     var isbn = document.getElementById("isbn_no").value;
@@ -501,9 +620,9 @@ function addCategory() {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                showAlert("Success", resp.message, "success");
-
-                categoryInput.value = "";
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
                 showAlert("Error", resp.message, "error");
 

@@ -1,5 +1,4 @@
 <?php
-session_start();
 require_once __DIR__ . '/../../main.php';
 
 class AuthController
@@ -12,23 +11,33 @@ class AuthController
         $this->authModel = new AuthModel();
     }
 
-    public static function login() {
+    public static function login()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Retrieve login credentials from the POST request
             $memberid = $_POST['memberid'];
             $memberpw = $_POST['memberpw'];
             $rememberme = isset($_POST['rememberme']) ? $_POST['rememberme'] : 0;
-    
+
+            // Validate the Member ID and Password using the AuthModel
             $userDetails = AuthModel::validateLogin($memberid, $memberpw);
-    
+
             if ($userDetails) {
+                session_regenerate_id(true); // Prevent session fixation
+
+                // Store user details in the session upon successful login
                 $_SESSION['member'] = [
                     'member_id' => $userDetails['member_id'],
                     'id' => $userDetails['id'],
                     'profile_img' => $userDetails['profile_img'],
                     'lname' => $userDetails['lname'],
-                    'fname' => $userDetails['fname']
+                    'fname' => $userDetails['fname'],
+                    'last_activity' => time() // Track last activity
+
                 ];
-    
+
+                // If "Remember Me" is checked, set cookies 
                 if ($rememberme) {
                     setcookie("memberid", $memberid, time() + (365 * 24 * 60 * 60), "/");
                     setcookie("memberpw", $memberpw, time() + (365 * 24 * 60 * 60), "/");
@@ -36,16 +45,19 @@ class AuthController
                     setcookie("memberid", "", time() - 3600, "/");
                     setcookie("memberpw", "", time() - 3600, "/");
                 }
-                
+
+                // Return a success response in JSON format
                 echo json_encode(["success" => true, "message" => "Login successful!"]);
                 exit;
             } else {
+
+                // If login fails, return an error response in JSON format
                 echo json_encode(["success" => false, "message" => "Invalid Member ID or Password."]);
                 exit;
             }
         }
     }
-    
+
     public static function sendOTP()
     {
         require_once Config::getServicePath('emailService.php');
@@ -198,15 +210,12 @@ class AuthController
 
             if ($emailSent) {
                 echo json_encode(["success" => true, "message" => "Email for reset password sent! Check Your email"]);
-
             } else {
                 echo json_encode(["success" => false, "message" => "Failed to send email."]);
-
             }
         } else {
-            
-            echo json_encode(["success" => false, "message" => "Invalid Request"]);
 
+            echo json_encode(["success" => false, "message" => "Invalid Request"]);
         }
     }
 
@@ -233,7 +242,6 @@ class AuthController
             exit();
         } else {
             echo json_encode(["success" => false, "message" => "Password reset failed."]);
-
         }
     }
 }

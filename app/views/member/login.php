@@ -26,9 +26,6 @@
 
 <body>
 
-    <?php
-    require_once Config::getViewPath("home", "header.view.php");
-    ?>
 
     <div class="container-fluid login-container">
         <div class="row mt-5 mb-5">
@@ -86,9 +83,6 @@
         </div>
     </div>
 
-    <?php
-    require_once Config::getViewPath("home", "footer-noscroll.view.php");
-    ?>
 
     <script src="<?php echo Config::getJsPath("memberLogin.js"); ?>"></script>
 

@@ -108,12 +108,12 @@
     <div class="text-white p-5 mt-3 Important">
         <h1 class="text-danger fs-1font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h1>
         <ol class="py-4 fs-5">
-        Pay the Membership Fee:
+        Membership Fee:
                 <ul class="m-3">
-                    <li>The annual membership fee is <span class="phone-number font-weight-bold">RS 1000</span></li>
+                    <li>The annual membership fee is <span class="phone-number font-weight-bold">RS <?= $fee ?></span></li>
                 </ul>
                 <ul class="m-3">
-                    <li>Make the payment online through the designated payment portal.</li>
+                    <li>Make the payment online through the designated payment portal at the end of the registration process.</li>
                 </ul>
         </ol>
     </div>

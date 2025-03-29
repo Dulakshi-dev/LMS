@@ -6,20 +6,31 @@ class MemberReservationModel
 {
     public static function reserveBook($book_id, $id)
     {
-        $rs = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` = '$id' AND `reservation_book_id` = '$book_id' AND (`status_id` = '1' OR `status_id` = '5')");
+        // Check if the member has already reserved this book and if it's active or pending
+        $rs = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` = '$id' 
+        AND `reservation_book_id` = '$book_id' AND (`status_id` = '1' OR `status_id` = '5')");
+
         if ($rs->num_rows > 0) {
             return ["success" => false, "message" => "Book already reserved!"];
         }
 
-        $rs2 = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` ='$id' AND (`status_id` = '1' OR `status_id` = '5') ");
-        if ($rs2->num_rows < 5) {
-            Database::insert("INSERT INTO `reservation` (`reservation_date`, `expiration_date`, `reservation_member_id`, `reservation_book_id`, `status_id`) 
+        // Check how many active reservations the member has
+        $rs2 = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` ='$id' 
+        AND (`status_id` = '1' OR `status_id` = '5') ");
+
+        if ($rs2->num_rows < 5) { // Limit reservation count to 5
+
+            // Insert a new reservation record with a 7-day expiration
+            Database::insert("INSERT INTO `reservation` (`reservation_date`, `expiration_date`, 
+            `reservation_member_id`, `reservation_book_id`, `status_id`) 
             VALUES (CURDATE(), DATE_ADD(CURDATE(), INTERVAL 7 DAY), '$id', '$book_id', '1')");
 
+            // Retrieve the available quantity of the book
             $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
             $data = $result->fetch_assoc();
             $available_qty = $data["available_qty"];
 
+            // Reduce the available quantity by 1 since the book is now reserved
             Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
 
             return ["success" => true, "message" => "Book reserved successfully!"];
@@ -30,14 +41,17 @@ class MemberReservationModel
 
     public static function addToWaitlist($book_id, $member_id)
     {
-        $rs = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` ='$member_id' AND `reservation_book_id` = '$book_id'");
+        // Check if the member has already reserved this book
+        $rs = Database::search("SELECT * FROM `reservation` WHERE `reservation_member_id` ='$member_id' 
+        AND `reservation_book_id` = '$book_id'");
 
         if ($rs->num_rows > 0) {
             return ["success" => false, "message" => "Book already reserved!"];
         }
 
-        Database::insert("INSERT INTO `reservation` (`reservation_date`, `reservation_member_id`, `reservation_book_id`, `status_id`) 
-        VALUES (CURDATE(), '$member_id','$book_id', '5')");
+        // Add the member to the waitlist since the book is unavailable
+        Database::insert("INSERT INTO `reservation` (`reservation_date`, `reservation_member_id`,
+        `reservation_book_id`, `status_id`) VALUES (CURDATE(), '$member_id','$book_id', '5')");
 
         return ["success" => true, "message" => "Book is currently unavailable. You have been added to the waitlist."];
     }
@@ -137,7 +151,7 @@ class MemberReservationModel
 
         if ($status_id == '1') {
             Database::ud("UPDATE `book` SET `available_qty`=$available_qty + 1 WHERE `book_id` = '$book_id'");
-        } 
+        }
 
         Database::ud("UPDATE `reservation` SET `status_id`='4' WHERE `reservation_id` = '$id'");
         return true;

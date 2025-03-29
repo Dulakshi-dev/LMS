@@ -1,6 +1,22 @@
 <?php
-require_once "../../main.php";
+
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php"); 
+    exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['staff']['last_activity'] = time();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,7 +38,18 @@ require_once "../../main.php";
         <div class="nav-bar vh-100">
             <?php include "dash_sidepanel.php"; ?>
         </div>
-        <div class="container-fluid bg-white m-5">
+        <div class="container-fluid">
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h1">
+                        Issued Books
+                    </span>
+                    <a href="#" class="text-decoration-none h5">
+                        <i class="fa fa-home"></i> Home
+                    </a>
+                </div>
+            </nav>
+            <div class="bg-white mx-5">
 
                 <div class="row m-3">
                     <div class="col-md-6 my-3">
@@ -34,33 +61,33 @@ require_once "../../main.php";
                     </div>
                 </div>
 
-            <div class="border border-secondary mb-4"></div>
-            <div class="px-1">
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>BorrowID</th>
-                            <th>Book ID</th>
-                            <th>Book Name</th>
-                            <th>Member ID</th>
-                            <th>Member Name</th>
-                            <th>Issue Date</th>
-                            <th>Due Date</th>
-                            <th>Return Date</th>
-                            <th>Fines</th>
-                            <th>Action</th>
+                <div class="border border-secondary mb-4"></div>
+                <div class="px-1">
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>BorrowID</th>
+                                <th>Book ID</th>
+                                <th>Book Name</th>
+                                <th>Member ID</th>
+                                <th>Member Name</th>
+                                <th>Issue Date</th>
+                                <th>Return/Due Date</th>
+                                <th>Fines</th>
+                                <th>Action</th>
 
-                        </tr>
-                    </thead>
-                    <tbody id="issueBookTableBody">
-                    
-                    </tbody>
-                </table>
+                            </tr>
+                        </thead>
+                        <tbody id="issueBookTableBody">
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <div id="pagination"></div>
+
 
             </div>
-            <div id="pagination"></div>
-
-         
         </div>
 
     </div>
@@ -74,36 +101,36 @@ require_once "../../main.php";
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                        <input type="text" class="d-none" id="borrowId" name="borrowId">
-                        <input type="text" class="d-none" id="bookId" name="bookId">
-                        <input type="text" class="d-none" id="memberId" name="memberId">
+                    <input type="text" class="d-none" id="borrowId" name="borrowId">
+                    <input type="text" class="d-none" id="bookId" name="bookId">
+                    <input type="text" class="d-none" id="memberId" name="memberId">
 
 
-                        <div class="mb-3 row align-items-center">
-                            <label for="dueDate" class="col-sm-4 col-form-label">Due Date</label>
-                            <div class="col-sm-8">
-                                <input type="date" class="form-control" id="dueDate" placeholder="Enter due date">
-                            </div>
-                            <span id="duedateerror" class="text-danger"></span>
+                    <div class="mb-3 row align-items-center">
+                        <label for="dueDate" class="col-sm-4 col-form-label">Due Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="dueDate" placeholder="Enter due date">
+                        </div>
+                        <span id="duedateerror" class="text-danger"></span>
 
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Enter return date" onchange="generateFine(<?= $fine ?>);">
                         </div>
-                        <div class="mb-3 row align-items-center">
-                            <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
-                            <div class="col-sm-8">
-                                <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Enter return date" onchange="generateFine();">
-                            </div>
-                            <span id="returndateerror" class="text-danger"></span>
+                        <span id="returndateerror" class="text-danger"></span>
 
+                    </div>
+                    <div class="mb-3 row align-items-center">
+                        <label for="amount" class="col-sm-4 col-form-label">Fines(Rs)</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="fines" name="fines">
                         </div>
-                        <div class="mb-3 row align-items-center">
-                            <label for="amount" class="col-sm-4 col-form-label">Fines(Rs)</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" id="fines" name="fines">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary" onclick="returnBook();">Return Book</button>
-                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-primary" onclick="returnBook();">Return Book</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -15,13 +15,17 @@ class AuthModel
 
     public static function validateLogin($memid, $password)
     {
-        $query = "SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$memid' AND `password` = '$password' ;";
+        // SQL query to retrieve user details 
+        $query = "SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` 
+        WHERE `member_id` = '$memid' AND `password` = '$password' ;";
         $result = Database::search($query);
 
+        // Check if a user record is found
         if ($result && $result->num_rows > 0) {
+            // Fetch and return user details as an associative array
             $user = $result->fetch_assoc();
             return $user;
-        }else{
+        } else {
             return false;
         }
     }
@@ -31,7 +35,6 @@ class AuthModel
 
         $id = Database::insert("INSERT INTO `member`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`date_joined`,`status_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email',CURDATE(),'3')");
         return $id;
-
     }
 
     public static function validateEmail($email, $vcode)
@@ -84,7 +87,4 @@ class AuthModel
             return false;
         }
     }
-
-        
-
 }

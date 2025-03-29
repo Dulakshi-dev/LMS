@@ -10,6 +10,8 @@ require_once Config::getControllerPath("circulationController.php");
 require_once Config::getControllerPath("profileController.php");
 require_once Config::getControllerPath("memberController.php");
 require_once Config::getControllerPath("reservationController.php");
+require_once Config::getControllerPath("librarySetupController.php");
+
 
 // Initialize the Router
 $router = new Router();
@@ -22,6 +24,7 @@ $circulationController = new CirculationController();
 $profileController = new ProfileController();
 $memberController = new MemberController();
 $reservationController = new ReservationController();
+$librarySetupController = new LibrarySetupController();
 
 // Define the routes and map them to controller methods
 $router->add('loginProcess', [$loginController, 'login']);
@@ -67,6 +70,23 @@ $router->add('deactivatemember', [$memberController, 'deactivateMember']);
 $router->add('rejectmember', [$memberController, 'rejectMember']);
 $router->add('loadmemberrequests', [$memberController, 'getMemberRequests']);
 $router->add('loadreservations', [$reservationController, 'getAllReservations']);
+$router->add('loadcategories', [$bookController, 'getAllCategories']);
+$router->add('activatebook', [$bookController, 'activateBook']);
+$router->add('deletecategory', [$bookController, 'deleteCategory']);
+$router->add('activatestaff', [$userController, 'activateUser']);
+$router->add('activatemember', [$memberController, 'activateMember']);
+$router->add('activaterequest', [$memberController, 'activateRequest']);
+$router->add('sendkey', [$userController, 'sendEnrollmentKey']);
+$router->add('changeopeninghours', [$librarySetupController, 'changeOpeningHours']);
+$router->add('changenewsupdates', [$librarySetupController, 'changeNewsUpdates']);
+$router->add('changelibraryinfo', [$librarySetupController, 'changeLibraryInfo']);
+$router->add('sendemailtoallstaff', [$librarySetupController, 'sendMailsToAllStaff']);
+$router->add('sendemailtoallmembers', [$librarySetupController, 'sendMailsToAllMembers']);
+$router->add('getopeninghours', [$librarySetupController, 'loadOpeningHours']); 
+$router->add('getlibraryinfo', [$librarySetupController, 'getLibraryInfo']);
+$router->add('servelogo', [$librarySetupController, 'serveLogo']);
+
+
 
 $router->add('login', function () {
     include Config::getViewPath("staff", "login.php");
@@ -92,7 +112,7 @@ $router->add('showforgotpw', function () {
 $router->add('showresetpw', function () {
     include Config::getViewPath("staff", "reset-password.php");
 });
-$router->add('bookcirculation', function () {
+$router->add('circulationmanagement', function () {
     include Config::getViewPath("staff", "circulation-management.php");
 });
 $router->add('showissuebook', function () {
@@ -110,7 +130,7 @@ $router->add('membermanagement', function () {
 });
 
 $router->add('staffmanagement', function () {
-    include Config::getViewPath("staff", "user-management.php");
+    include Config::getViewPath("staff", "staff-management.php");
 });
 
 $router->add('viewBooks', function () {
@@ -124,6 +144,27 @@ $router->add('viewissuebooks', function () {
 $router->add('viewmembers', function () {
     include Config::getViewPath("staff", "view-members.php");
 });
+
+$router->add('viewstaff', function () {
+    include Config::getViewPath("staff", "view-staff.php");
+});
+
+$router->add('viewdeactivatedstaff', function () {
+    include Config::getViewPath("staff", "view-deactive-staff.php");
+});
+
+$router->add('viewdeactivemembers', function () {
+    include Config::getViewPath("staff", "view-deactive-members.php");
+});
+
+$router->add('viewdeactivatedbooks', function () {
+    include Config::getViewPath("staff", "view-deactive-books.php");
+});
+
+$router->add('viewrejectedrequests', function () {
+    include Config::getViewPath("staff", "view-rejected-requests.php");
+});
+
 
 $router->add('viewmemberrequests', function () {
     include Config::getViewPath("staff", "view-member-requests.php");

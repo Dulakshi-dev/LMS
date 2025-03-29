@@ -1,3 +1,22 @@
+<?php
+
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php"); 
+    exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['staff']['last_activity'] = time();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,11 +29,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body>
-<?php require_once Config::getViewPath("staff", "dash_header.php"); ?>
+<body onload="loadCategory();">
+    <?php require_once Config::getViewPath("staff", "dash_header.php"); ?>
 
     <div class="d-flex bg-light">
-    <div class="nav-bar">
+        <div class="nav-bar">
             <?php require_once Config::getViewPath("staff", "dash_sidepanel.php"); ?>
         </div>
         <div class="box-0 container my-5">
@@ -22,20 +41,46 @@
                 <div class="text-center border-bottom border-danger border-4 mb-4 pb-3">
                     <h2>Add New Category</h2>
                 </div>
-                <form action="">
+                <div class="col-8 offset-2">
                     <div class="row">
-                        <div class="col-lg-12 col-md-6 col-sm-4 p-5">
-                            <label for="Category" class="form-label fw-bold fs-5 mb-2">Category Name</label>
-                            <input id="category" name="category" class="form-control" type="text" placeholder="Enter Category Name">
-                            <span id="Category-error" class="text-danger"></span>
-                            <div class="d-flex justify-content-end mt-4">
-                                <button type="button" class="btn btn-dark rounded-pill px-5" onclick="addCategory();">Add</button>
+                        <form action="">
+                            
+                                <div class="col-lg-12 col-md-6 col-sm-4 p-5">
+                                    <label for="Category" class="form-label fw-bold fs-5 mb-2">Category Name</label>
+                                    <input id="category" name="category" class="form-control" type="text" placeholder="Enter Category Name">
+                                    <span id="Category-error" class="text-danger"></span>
+                                    <div class="d-flex justify-content-end mt-4">
+                                        <button type="button" class="btn btn-dark rounded-pill px-5" onclick="addCategory();">Add</button>
 
-                            </div>
-                        </div>
+                                    </div>
+                                </div>
+                            
+
+                        </form>
+                    </div>
+                    <div class="row">
+
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>No of Books</th>
+
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryTableBody">
+
+                            </tbody>
+                        </table>
+
+
                     </div>
 
-                </form>
+                </div>
+
+
+
             </div>
         </div>
     </div>

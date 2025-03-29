@@ -1,7 +1,22 @@
 <?php
-require_once "../../main.php";
 
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php"); 
+    exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['staff']['last_activity'] = time();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,24 +50,29 @@ require_once "../../main.php";
                     <!-- Add Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-plus text-primary display-1"></i>
+                            <i class="fas fa-plus text-info display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Add Books</p>
                             <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=addBook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=addBook" class="btn btn-info col-lg-3 rounded-pill mt-2">Add</a>
                             </div>
-                            
+
                         </div>
                     </div>
 
                     <!-- View All Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-list text-success display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">View all Books</p>
+
+                            <i class="fas fa-list display-1" style="color: #2AC23A;"></i>
+                            <p class="fw-bold fs-5 mt-3">All Books</p>
                             <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=viewBooks" class="btn btn-success w-50 rounded-pill mt-2">View</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewBooks"
+                                    class="btn col-lg-3 rounded-pill mt-2"
+                                    style="background-color: #2AC23A;  color: white;">
+                                    View
+                                </a>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -62,21 +82,25 @@ require_once "../../main.php";
                             <i class="fas fa-layer-group text-warning display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Add New Category</p>
                             <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=addCategory" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=addCategory" class="btn btn-warning col-lg-3 rounded-pill mt-2">Add</a>
                             </div>
-                            
+
                         </div>
                     </div>
 
                     <!-- View Deactivated Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-book-open text-danger display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">View Deactivate Books</p>
+                            <i class="fas fa-book-open display-1" style="color: #FD0D0D;"></i>
+                            <p class="fw-bold fs-5 mt-3">Deactivated Books</p>
                             <div class="d-flex justify-content-center">
-                            <a href="" class="btn btn-danger w-50 rounded-pill mt-2">View</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedbooks"
+                                    class="btn col-sm-6 col-lg-3 rounded-pill mt-2"
+                                    style="background-color: #FD0D0D;  color: white;">
+                                    View
+                                </a>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>

@@ -19,25 +19,26 @@ class MemberReservationController
             $availability = $_POST['availability'];
             $member_id = $_SESSION["member"]["id"];
 
-            if ($availability == "Available") {
+            if ($availability == "Available") { // If the book is available
+
+                //call reserveBook in model
                 $result = MemberReservationModel::reserveBook($book_id, $member_id);
 
-                if ($result["success"]) {
+                if ($result["success"]) { // Check if reservation was successful
                     echo json_encode(["success" => true, "message" => "Book Reserved"]);
                     exit;
                 } else {
                     echo json_encode(["success" => false, "message" => "{$result['message']}"]);
                     exit;
                 }
-            } else {                   
-
+            } else {   // If the book is not available
+                //call the  addToWaitlist in model
                 $waitlistResult = MemberReservationModel::addToWaitlist($book_id, $member_id);
 
                 if ($waitlistResult["success"]) {
                     echo json_encode(["success" => true, "message" => "Added to waiting list. We will notify when book is available"]);
                 } else {
                     echo json_encode(["success" => false, "message" => "{$waitlistResult['message']}"]);
-
                 }
             }
         } else {

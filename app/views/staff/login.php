@@ -1,5 +1,6 @@
 <?php
 require_once "../../main.php";
+
 ?>
 
 <!DOCTYPE html>
@@ -31,9 +32,6 @@ require_once "../../main.php";
 </head>
 
 <body class="x">
-    <?php
-    require_once Config::getViewPath("home", "header.view.php");
-    ?>
 
 
     <div class="login-container my-5">
@@ -99,9 +97,6 @@ require_once "../../main.php";
             </div>
         </div>
     </div>
-
-    <?php
-    require_once Config::getViewPath("home", "footer.view.php");    ?>
 
     <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

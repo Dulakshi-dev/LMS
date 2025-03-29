@@ -67,22 +67,38 @@ class LoginModel
         return $newStaffID;
     }
 
-    public static function register($fname, $lname, $address, $phone, $email, $nic, $role, $password)
+    public static function register($fname, $lname, $address, $phone, $email, $nic, $role, $password, $key)
     {
-        if ($role == "Librarian") {
-            Database::insert("INSERT INTO `user`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','1')");
-            return true;
-        } else {
-            $id = Database::insert("INSERT INTO `user`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','2')");
-            $staffID = self::generateStaffID();
-
-            if ($id) {
-                Database::insert("INSERT INTO `login`(`user_id`, `password`, `userId`) VALUES ('$staffID', '$password', '$id')");
-                self::sendMail($id, $staffID);
+        if (self::validateKey($email, $key)) {
+            if ($role == "Librarian") {
+                Database::insert("INSERT INTO `user`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','1')");
                 return true;
             } else {
-                return false;
+                $id = Database::insert("INSERT INTO `user`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','2')");
+                $staffID = self::generateStaffID();
+    
+                if ($id) {
+                    Database::insert("INSERT INTO `login`(`user_id`, `password`, `userId`) VALUES ('$staffID', '$password', '$id')");
+                    self::sendMail($id, $staffID);
+                    return true;
+                } else {
+                    return false;
+                }
             }
+        } else {
+            return false;
+        }
+       
+    }
+
+    public static function validateKey($email, $key)
+    {
+        $rs = Database::search("SELECT * FROM staff_key WHERE email = '$email' AND key_value = '$key'");
+
+        if ($rs->num_rows > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -154,4 +170,6 @@ class LoginModel
             return false;
         }
     }
+
+
 }

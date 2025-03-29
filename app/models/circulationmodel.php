@@ -107,32 +107,46 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
 
     public static function issueBook($book_id, $member_id, $borrow_date, $due_date)
     {
-        $id_result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$member_id'");
+        //Verify if the member exists in the system
+        $id_result = Database::search("SELECT `id` FROM `member` 
+        INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$member_id'");
 
         if ($id_result->num_rows == 0) {
             return false;
         }
 
+        // Fetch the member ID from the database result
         $id_data = $id_result->fetch_assoc();
         $memberid = $id_data['id'];
 
-        $result = Database::search("SELECT * FROM `reservation` WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id` = '$memberid'");
+        //Check if the member has reserved this book
+        $result = Database::search("SELECT * FROM `reservation` 
+        WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id` = '$memberid'");
+
         $num = $result->num_rows;
 
+        // If the book is reserved by the member
         if ($num > 0) {
+            // Issue the book by inserting a record into the `borrow` table
             Database::insert("INSERT INTO `borrow`(`borrow_date`,`due_date`,`borrow_book_id`,`borrow_member_id`) 
                               VALUES('$borrow_date','$due_date','$book_id','$memberid')");
 
-            Database::ud("UPDATE `reservation` SET `status_id` = '2' WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id`='$memberid'");
-        } else {
+            // Update the reservation status to indicate the book has been borrowed
+            Database::ud("UPDATE `reservation` SET `status_id` = '2' 
+                        WHERE `reservation_book_id` = '$book_id' AND `reservation_member_id`='$memberid'");
+        } else { // If the book is not reserved, check availability
             $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
             $data = $result->fetch_assoc();
             $available_qty = $data["available_qty"];
 
+            // If copies are available
             if ($available_qty > 0) {
+
+                // Issue the book by inserting a record into the `borrow` table
                 Database::insert("INSERT INTO `borrow`(`borrow_date`,`due_date`,`borrow_book_id`,`borrow_member_id`) 
                                   VALUES('$borrow_date','$due_date','$book_id','$memberid')");
 
+                // Reduce the available quantity of the book by 1
                 Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
             } else {
                 return false;
@@ -144,27 +158,32 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
 
     public static function returnBook($borrow_id, $return_date, $book_id, $fines, $memberId)
     {
+        // Update the borrow record with the return date
         Database::ud("UPDATE `borrow` SET `return_date` = '$return_date' WHERE `borrow_id` = '$borrow_id'");
 
+        // If there is a fine, insert the fine record into the database
         if ($fines > 0) {
-            Database::insert("INSERT INTO `fines`(`amount`,`fine_borrow_id`,`fine_member_id`) VALUES('$fines','$borrow_id','$memberId')");
+            Database::insert("INSERT INTO `fines`(`amount`,`fine_borrow_id`,`fine_member_id`) 
+            VALUES('$fines','$borrow_id','$memberId')");
         }
 
+        // Get the current available quantity of the book
         $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
         $data = $result->fetch_assoc();
         $available_qty = $data["available_qty"];
 
+        // Increase the available quantity of the returned book
         Database::ud("UPDATE `book` SET `available_qty` = $available_qty + 1 WHERE `book_id` = '$book_id'");
         return true;
     }
 
     public static function notifyNextWaitlistMember($book_id)
     {
-        require_once Config::getServicePath('emailService.php');
+        require_once Config::getServicePath('emailService.php'); // Include the email service
 
+        // Retrieve the next member on the waitlist (oldest reservation first)
         $waitlist = Database::search("SELECT * FROM `reservation` 
-                                  WHERE `reservation_book_id` = '$book_id' 
-                                  AND `status_id` = 5
+                                  WHERE `reservation_book_id` = '$book_id' AND `status_id` = 5
                                   ORDER BY `reservation_date` ASC 
                                   LIMIT 1");
 
@@ -175,25 +194,27 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
 
             //Update reservation status to "reserved" 
             Database::ud("UPDATE `reservation` 
-                      SET `status_id` = 1, 
-                          `notified_date` = CURDATE(), 
-                          `expiration_date` = DATE_ADD(CURDATE(), INTERVAL 3 DAY) 
+                      SET `status_id` = 1,`notified_date` = CURDATE(),`expiration_date` = DATE_ADD(CURDATE(), INTERVAL 3 DAY) 
                       WHERE `reservation_id` = '$reservation_id'");
 
+            // Get book details
             $book = Database::search("SELECT `title`,`available_qty` FROM `book` WHERE `book_id` = '$book_id'")->fetch_assoc();
             $title = $book["title"];
             $available_qty = $book["available_qty"];
+
+            // Send email notification to the reserved member
             self::sendReservationEmail($book_id, $reserved_member_id, $title);
 
-
-
+            // Reduce the available book quantity as it is now reserved
             Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
             return ["success" => true, "message" => "Book status changed to reserved."];
-
         }
 
         return ["success" => false, "message" => "No waitlisted reservations found."];
     }
+
+
+
 
     private static function sendReservationEmail($book_id, $member_id, $title)
     {

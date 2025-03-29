@@ -5,6 +5,15 @@ $lname = $_SESSION["staff"]["lname"];
 $role_name = $_SESSION["staff"]["role_name"];
 $profile_img = $_SESSION["staff"]["profile_img"];
 
+
+$libraryData = LibrarySetupModel::getLibraryInfo();
+$libraryName = $libraryData['name']; 
+$libraryAddress = $libraryData['address']; 
+$libraryEmail = $libraryData['email']; 
+$libraryPhone = $libraryData['mobile']; 
+$logo = $libraryData['logo']; 
+$fee = $libraryData['membership_fee']; 
+$fine = $libraryData['fine_amount']; 
 ?>
 
 <!DOCTYPE html>
@@ -40,9 +49,10 @@ $profile_img = $_SESSION["staff"]["profile_img"];
     <header class="text-white">
         <div class="row bg-dark m-0 pt-2 align-items-center">
             <div class="col navbar navbar-expand-lg navbar-dark">
-                <h4 class="mx-2">Librarian Panel<button id="tog" class="navbar-toggler ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button></h4>
+            <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="<?php echo Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
+      </a>
+
             </div>
             <div class="col d-flex justify-content-end">
                 <nav>

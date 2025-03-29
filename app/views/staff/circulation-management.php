@@ -1,9 +1,22 @@
 <?php
-require_once "../../main.php";
 
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php"); 
+    exit;
+}
 
+// Session Timeout (30 minutes)
+if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php"); 
+    exit;
+}
 
+// Reset last activity time (only if user is active)
+$_SESSION['staff']['last_activity'] = time();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +42,7 @@ require_once "../../main.php";
             <div class="container-fluid mx-5 mb-5 bg-white">
                 <div class="row">
                     <nav class="navbar p-4 navbar-light bg-light">
-                        <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                        <span class="navbar-brand mb-0 h1">Circulation Management <small class="text-muted">control panel</small></span>
                         <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                     </nav>
                 </div>
@@ -38,10 +51,10 @@ require_once "../../main.php";
                     <!-- Add Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-book-open text-primary display-1"></i>
+                            <i class="fas fa-book-open text-info display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Issue Books</p>
                             <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=showissuebook" class="btn btn-primary w-50 rounded-pill mt-2">Add</a>
+                            <a href="<?php echo Config::indexPath() ?>?action=showissuebook" class="btn btn-info col-3 rounded-pill mt-2">Add</a>
                             </div>
                             
                         </div>
@@ -50,12 +63,16 @@ require_once "../../main.php";
                     <!-- View All Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                            <i class="fas fa-list text-danger display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">View Issued Books</p>
-                            <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=viewissuebooks" class="btn btn-danger w-50 rounded-pill mt-2">View</a>
-                            </div>
                             
+                            <i class="fas fa-list display-1" style="color: #2AC23A;"></i>
+                            <p class="fw-bold fs-5 mt-3">Issued Books</p>
+                            <div class="d-flex justify-content-center">
+                                <a href="<?php echo Config::indexPath() ?>?action=viewissuebooks"
+                                    class="btn col-lg-3 rounded-pill mt-2"
+                                    style="background-color: #2AC23A;  color: white;">
+                                    View
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -63,9 +80,9 @@ require_once "../../main.php";
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-cubes text-warning display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">View Reservation</p>
+                            <p class="fw-bold fs-5 mt-3">Reservation</p>
                             <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=viewreservations" class="btn btn-warning w-50 rounded-pill mt-2">View</a>
+                            <a href="<?php echo Config::indexPath() ?>?action=viewreservations" class="btn btn-warning col-3 rounded-pill mt-2">View</a>
                             </div>
                             
                         </div>

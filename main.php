@@ -2,6 +2,10 @@
 define('ROOT_PATH', realpath(__DIR__ ));
 require_once "database/connection.php";
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 // Contains all the global config
 class Config {
 
@@ -23,6 +27,10 @@ class Config {
         "book_covers" => Config::sourcePath ."\\storage\\book_covers\\",
         "staff_profile_img" => Config::sourcePath ."\\storage\\profile_img\\staff\\",
         "member_profile_img" => Config::sourcePath ."\\storage\\profile_img\\member\\",
+        "news_image" => Config::sourcePath ."\\storage\\news\\",
+        "logo" => Config::sourcePath ."\\storage\\logo\\",
+
+
 
     ];
 
@@ -89,6 +97,14 @@ class Config {
 
     public static function getMemberProfileImagePath(){
         return Config::$paths["member_profile_img"];
+    }
+
+    public static function getNewsImagePath(){
+        return Config::$paths["news_image"];
+    }
+
+    public static function getLogoPath(){
+        return Config::$paths["logo"];
     }
 }
 

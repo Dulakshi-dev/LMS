@@ -1,10 +1,23 @@
 <?php
-require_once "../../main.php";
+
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php"); 
+    exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['staff']['last_activity'] = time();
 
 $totalPages = $totalPages ?? 1;
 $page = $page ?? 1;
-
-
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +31,7 @@ $page = $page ?? 1;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body onload="loadUsers();">
+<body onload="loadUsers(1,'Active');">
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
@@ -34,15 +47,15 @@ $page = $page ?? 1;
             </div>
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
-                    <input id="memberId" name="memberId" class="form-control" type="text" placeholder="Type Membership ID">
+                    <input id="memberId" name="memberId" class="form-control" type="text" placeholder="Type Staff ID">
                 </div>
                 <div class="col-md-3 mt-2">
                     <input id="nic" name="nic" class="form-control" type="text" placeholder="Type NIC">
                 </div>
                 <div class="col-md-6 mt-2">
                     <div class="d-flex">
-                        <input id="userName" name="userName" class="form-control" type="text" placeholder="Type User Name">
-                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadUsers();"><i class="fa fa-search"></i></button>
+                        <input id="userName" name="userName" class="form-control" type="text" placeholder="Type Staff Name">
+                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadUsers(1,'Active');"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
                 </form>
@@ -52,7 +65,7 @@ $page = $page ?? 1;
                 <table class="table">
                     <thead class="thead-light text-center">
                         <tr>
-                            <th>Membership ID</th>
+                            <th>Staff ID</th>
                             <th>NIC</th>
                             <th>User's Name</th>
                             <th>Address</th>
@@ -61,8 +74,11 @@ $page = $page ?? 1;
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody id="userTableBody">
 
+                    <input type="email" id="e">
+                    <button onclick="sendKey();">Send Enrollment Key</button>
+
+                    <tbody id="userTableBody">
                     </tbody>
                 </table>
             </div>

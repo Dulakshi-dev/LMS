@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once __DIR__ . '/../../main.php';
 
 class LoginController
@@ -15,17 +15,17 @@ class LoginController
 
     public static function login()
     {
+    
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Retrieve login details from POST request
             $staffid = $_POST['staffid'];
             $password = $_POST['password'];
             $rememberme = isset($_POST['rememberme']) ? $_POST['rememberme'] : 0;
-
-            // Validate login credentials using the LoginModel
+    
             $userDetails = LoginModel::validateLogin($staffid, $password);
-
+    
             if ($userDetails) {
-                // Store user details in the session
+                session_regenerate_id(true); // Prevent session fixation
+    
                 $_SESSION['staff'] = [
                     'staff_id' => $userDetails['user_id'],
                     'id' => $userDetails['id'],
@@ -33,21 +33,20 @@ class LoginController
                     'role_id' => $userDetails['role_id'],
                     'profile_img' => $userDetails['profile_img'],
                     'lname' => $userDetails['lname'],
-                    'fname' => $userDetails['fname']
+                    'fname' => $userDetails['fname'],
+                    'last_activity' => time() // Track last activity
                 ];
-
-                // Load role-specific modules
+    
                 self::loadModules($_SESSION["staff"]["role_id"]);
-
-                // Handle the "Remember Me" feature using cookies
+    
                 if ($rememberme) {
                     setcookie("staffid", $staffid, time() + (60 * 60 * 24 * 365), "/");
                     setcookie("staffpw", $password, time() + (60 * 60 * 24 * 365), "/");
                 } else {
-                    setcookie("staffid", "", time() - 3600, "/"); // Delete cookie
-                    setcookie("staffpw", "", time() - 3600, "/"); // Delete cookie
+                    setcookie("staffid", "", time() - 3600, "/");
+                    setcookie("staffpw", "", time() - 3600, "/");
                 }
-                
+    
                 echo json_encode(["success" => true, "message" => "Login successful!"]);
                 exit;
             } else {
@@ -56,7 +55,7 @@ class LoginController
             }
         }
     }
-
+    
 
     public static function loadModules($role)
     {    
@@ -74,21 +73,20 @@ class LoginController
     public static function register()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $fname = $_POST['firstName'];
-            $lname = $_POST['lastName'];
+            $fname = $_POST['fname'];
+            $lname = $_POST['lname'];
             $address = $_POST['address'];
             $phone = $_POST['phone'];
             $email = $_POST['email'];
             $nic = $_POST['nic'];
             $role = $_POST['role'];
             $password = $_POST['password'];
+            $key = $_POST['key'];
 
-            $result = LoginModel::register($fname, $lname, $address, $phone, $email, $nic, $role, $password);
+            $result = LoginModel::register($fname, $lname, $address, $phone, $email, $nic, $role, $password, $key);
 
             if ($result) {
-                echo json_encode(["success" => true, "message" => "Successfully Registered."]);
-
-                header("Location: index.php");
+                echo json_encode(["success" => true, "message" => "Successfully Registered.Check the email for staff ID"]);
                 exit();
             } else {
                 echo json_encode(["success" => false, "message" => "Registration Failed."]);
@@ -173,4 +171,6 @@ class LoginController
             }
         }
     }
+
+ 
 }

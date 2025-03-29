@@ -8,8 +8,7 @@ function showAlert(title, message, type) {
     });
 }
 
-function loadUsers(page = 1) {
-
+function loadUsers(page = 1, status = "Active") {
     var userid = document.getElementById("memberId").value.trim();
     var nic = document.getElementById("nic").value.trim();
     var name = document.getElementById("userName").value.trim();
@@ -19,6 +18,7 @@ function loadUsers(page = 1) {
     formData.append("memberid", userid);
     formData.append("nic", nic);
     formData.append("username", name);
+    formData.append("status", status);
 
     fetch("index.php?action=loadusers", {
         method: "POST",
@@ -31,38 +31,46 @@ function loadUsers(page = 1) {
 
             if (resp.success && resp.users.length > 0) {
                 resp.users.forEach(user => {
-                    let row = `
-                    <tr>
-                        <td>${user.user_id}</td>
-                        <td>${user.nic}</td>
-                        <td>${user.fname} ${user.lname}</td>
-                        <td>${user.address}</td>
-                        <td>${user.mobile}</td>
-                        <td>${user.email}</td>
-                        <td>
-                        <div class="m-1">
+                    let actionButtons = "";
 
-                            <button class="btn btn-success my-1 btn-sm edit-user " 
-                                data-userid="${user.user_id}">
+                    if (status === "Active") {
+                        // Show Edit, Email, and Deactivate buttons for active users
+                        actionButtons = `
+                            <button class="btn btn-success my-1 btn-sm edit-user" data-userid="${user.user_id}">
                                 <i class="fa fa-edit"></i>
                             </button>
-
-                            <button class="btn btn-warning my-1 btn-sm send-mail" 
-                                data-userid="${user.user_id}">
+                            <button class="btn btn-warning my-1 btn-sm send-mail" data-userid="${user.user_id}">
                                 <i class="fa fa-envelope"></i>
                             </button>
-
-                            <button class="btn btn-danger my-1 btn-sm deactivate" 
-                                data-userid="${user.id}">
+                            <button class="btn btn-danger my-1 btn-sm deactivate" data-userid="${user.id}">
                                 <i class="fa fa-trash"></i>
                             </button>
-                            
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                    tableBody.innerHTML += row;
+                        `;
+                    } else {
+                        // Show Activate button for deactivated users
+                        actionButtons = `
+                            <button class="btn btn-success my-1 btn-sm activate" data-userid="${user.id}">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        `;
+                    }
 
+                    let row = `
+                        <tr>
+                            <td>${user.user_id}</td>
+                            <td>${user.nic}</td>
+                            <td>${user.fname} ${user.lname}</td>
+                            <td>${user.address}</td>
+                            <td>${user.mobile}</td>
+                            <td>${user.email}</td>
+                            <td>
+                                <div class="m-1">
+                                    ${actionButtons}
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
                 });
             } else {
                 tableBody.innerHTML = "<tr><td colspan='7'>No users found</td></tr>";
@@ -95,6 +103,13 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.target.closest(".deactivate")) {
             let button = event.target.closest(".deactivate");
             deactivateUser(button.dataset.userid);
+        }
+    });
+
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".activate")) {
+            let button = event.target.closest(".activate");
+            activateUser(button.dataset.userid);
 
 
         }
@@ -112,7 +127,7 @@ function deactivateUser(user_id) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                
+
                 showAlert("Success", resp.message, "success").then(() => {
                     location.reload();
                 });
@@ -318,25 +333,56 @@ function sendEmail() {
         });
 }
 
+function activateUser(user_id) {
+    alert(user_id);
+    var formData = new FormData();
+    formData.append("user_id", user_id);
 
-// function changeUserStatus(id) {
-//     var formData = new FormData();
-//     formData.append("id", id);
+    fetch("index.php?action=activatestaff", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Success", "Failed to activate Staff Member", "success");
 
-//     fetch("index.php?action=changeStatus", {
-//         method: "POST",
-//         body: formData,
-//     })
-//         .then(response => response.json())
-//         .then(resp => {
-//             if (resp.success) {
-//                 location.reload();
-//             } else {
-//                 alert("Failed to load user data. Please try again.");
-//             }
-//         })
-//         .catch(error => {
-//             console.error("Error fetching user data:", error);
-//         });
-// }
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+}
 
+function sendKey(){
+    var email = document.getElementById("e").value.trim();
+
+    var formData = new FormData();
+    formData.append("email", email);
+
+    
+    fetch("index.php?action=sendkey", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Error", resp.message, "error");
+
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            showAlert("Error", "An error occurred. Please try again.", "error");
+
+        });
+}

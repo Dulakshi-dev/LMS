@@ -20,6 +20,9 @@ function loadReservations(page = 1) {
 
             if (resp.success && resp.reservations.length > 0) {
                 resp.reservations.forEach(reservation => {
+                    let notifiedDate = reservation.notified_date 
+                    ? reservation.notified_date 
+                    : reservation.reservation_date;
                     let actionColumn = reservation.status === "Reserved"
                         ? `
                             <form action="index.php?action=showissuebook" method="POST">
@@ -37,7 +40,7 @@ function loadReservations(page = 1) {
                             <td>${reservation.reservation_book_id}</td>
                             <td>${reservation.title}</td>
                             <td>${reservation.reservation_date}</td>
-                            <td>${reservation.notified_date}</td>
+                            <td>${notifiedDate}</td>
                             <td>${reservation.expiration_date}</td>
                             <td>${actionColumn}</td>
                         </tr>

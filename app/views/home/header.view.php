@@ -1,3 +1,17 @@
+<?php
+require_once '../../main.php'; // Include database connection
+
+$libraryData = HomeModel::getLibraryInfo();
+$libraryName = $libraryData['name']; 
+$libraryAddress = $libraryData['address']; 
+$libraryEmail = $libraryData['email']; 
+$libraryPhone = $libraryData['mobile']; 
+$logo = $libraryData['logo']; 
+$fee = $libraryData['membership_fee']; 
+$fine = $libraryData['fine_amount']; 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +41,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-body m-0">
         <div class="container-fluid">
             <a class="navbar-brand m-0" href="#">
-                <img src="<?php echo Config::getImagePath("logo.png"); ?>" alt="library logo" width="80" height="60">
+                <img src="<?php echo Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

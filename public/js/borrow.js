@@ -28,20 +28,38 @@ function loadIssuedBooks(page = 1) {
 
             if (resp.success && resp.issuebooks.length > 0) {
                 resp.issuebooks.forEach(issuebook => {
+                    // Determine the value for the return/due date column
+                    let returnOrDueDate;
+                    let fines;
+                    if (issuebook.return_date) {
+                        returnOrDueDate = `<span class="text-success">Return: ${issuebook.return_date}</span>`;
+                        fines = issuebook.amount;
+                    } else {
+                        let dueDate = new Date(issuebook.due_date);
+                        let today = new Date();
+                        fines = `<p class="text-secondary">Not Returned</p>`;
+                        if (dueDate < today) {
+                           
+                            returnOrDueDate = `<span class="text-danger">Overdue: ${issuebook.due_date}</span>`;
+                        } else {
+
+                            returnOrDueDate = `<span class="text-warning">Due: ${issuebook.due_date}</span>`;
+                        }
+                    }
+
                     let row = `
                     <tr>
                         <td>${issuebook.borrow_id}</td>
                         <td>${issuebook.borrow_book_id}</td>
-                        <td>${issuebook.title} </td>
+                        <td>${issuebook.title}</td>
                         <td>${issuebook.member_id}</td>
                         <td>${issuebook.fname}</td>
                         <td>${issuebook.borrow_date}</td>
-                        <td>${issuebook.due_date}</td>
-                        <td>${issuebook.return_date}</td>
-                        <td>${issuebook.amount}</td>
+                        <td>${returnOrDueDate}</td>
+                        <td>${fines}</td>
                         <td>`;
 
-                    if (issuebook.return_date == null) {
+                    if (!issuebook.return_date) {
                         row += `<div class="m-1">
                             <button class="btn btn-success my-1 btn-sm return-book"
                                 data-due-date="${issuebook.due_date}"
@@ -52,7 +70,7 @@ function loadIssuedBooks(page = 1) {
                             </button>
                         </div>`;
                     } else {
-                        row += `<p class="text-danger">Book Returned</p>`;
+                        row += `<p class="text-success">Returned</p>`;
                     }
 
                     row += `</td></tr>`;
@@ -69,6 +87,7 @@ function loadIssuedBooks(page = 1) {
             console.error("Error fetching borrow data:", error);
         });
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     document.body.addEventListener("click", function (event) {
@@ -161,18 +180,13 @@ function loadMemberData() {
 }
 
 function issueBook() {
-    document.getElementById("book_id_error").innerText = "";
-    document.getElementById("member_id_error").innerText = "";
-    document.getElementById("issueDate_error").innerText = "";
-    document.getElementById("returnDate_error").innerText = "";
-
     // Get the values from the form fields
     var book_id = document.getElementById("book_id").value;
     var member_id = document.getElementById("member_id").value;
     var issueDate = document.getElementById("issueDate").value;
     var returnDate = document.getElementById("returnDate").value;
 
-    // Book ID validation
+    // Detail validation
     if (book_id.trim() === "") {
         document.getElementById("book_id_error").innerText = "Book ID is required.";
     } else if (member_id.trim() === "") {
@@ -197,7 +211,7 @@ function issueBook() {
         formData.append("borrow_date", document.getElementById("issueDate").value);
         formData.append("due_date", document.getElementById("returnDate").value);
 
-        // Send data to controller via AJAX
+        // Send data to controller 
         fetch("index.php?action=issuebook", {
             method: "POST",
             body: formData
@@ -219,7 +233,7 @@ function issueBook() {
     }
 }
 
-function generateFine() {
+function generateFine(finePerDay) {
 
     var dueDate = document.getElementById("dueDate").value;
     var returnDate = document.getElementById("returnDate").value;
@@ -231,7 +245,7 @@ function generateFine() {
     let timeDiff = returned - due;
     let daysLate = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
 
-    let fine = Math.max(daysLate * 5, 0);
+    let fine = Math.max(daysLate * finePerDay, 0);
 
     // Show alert based on fine amount
     if (fine > 0) {

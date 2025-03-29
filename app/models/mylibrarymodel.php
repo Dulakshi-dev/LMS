@@ -93,11 +93,15 @@ class MyLibraryModel
 
     public static function saveBook($book_id, $id)
     {
+        // Check if the book is already saved by the member
         $rs = Database::search("SELECT * FROM `member_saved_book` WHERE `saved_member_id` ='$id' AND `saved_book_id` = '$book_id'");
 
         if ($rs->num_rows > 0) {
+            // If the book is already saved, return false 
             return false;
         }
+        
+        // If the book is not already saved, insert it into the member's saved books list
         Database::insert("INSERT INTO `member_saved_book` (`saved_member_id`,`saved_book_id`) VALUES ('$id', '$book_id')");
 
         return true;
@@ -106,7 +110,6 @@ class MyLibraryModel
 
     public static function unSaveBook($book_id, $id)
     {
-
         Database::ud("DELETE FROM `member_saved_book` WHERE `saved_member_id` = '$id' AND `saved_book_id` = '$book_id'");
         return true;
     }

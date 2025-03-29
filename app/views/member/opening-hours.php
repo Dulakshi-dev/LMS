@@ -1,13 +1,3 @@
-<?php
-// Define variables for opening hours
-$weekdays_opening_hours = "8.00 am - 6.00 pm";
-$weekends_opening_hours = "8.00 am - 6.00 pm";
-$weekdays_lending_hours = "8.00 am - 6.00 pm";
-$weekends_lending_hours = "8.00 am - 6.00 pm";
-$weekdays_returning_hours = "8.00 am - 4.00 pm";
-$weekends_returning_hours = "8.00 am - 1.00 pm";
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,10 +9,17 @@ $weekends_returning_hours = "8.00 am - 1.00 pm";
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-light">
+<body class="bg-light" onload="loadOpeningHours();">
 
-    <?php
-    require_once Config::getViewPath("home", "header.view.php");
+<?php
+    // Check if the session exists to decide which header to include
+    if (isset($_SESSION['member'])) {
+        // Logged-in user: Include the header for logged-in users
+        require_once Config::getViewPath("member", "header.php");
+    } else {
+        // Not logged-in user: Include the header for guest users
+        require_once Config::getViewPath("home", "header.view.php");
+    }
     ?>
 
     <div class="container-fluid bg-dark text-white text-center d-flex align-items-center justify-content-center"
@@ -38,28 +35,29 @@ $weekends_returning_hours = "8.00 am - 1.00 pm";
         <h2 class="text-center pb-4">Library Opening & Service Hours</h2>
         <div class="my-4">
             <table class="table table-bordered table-striped text-center">
-                <thead class="table-dark fs-3">
+                <thead class="table-dark fs-4">
                     <tr>
-                        <th>Time</th>
-                        <th>Weekdays</th>
-                        <th>Weekends</th>
+                        <th>Day</th>
+                        <th>FROM</th>
+                        <th>TO</th>
                     </tr>
                 </thead>
+                
                 <tbody class="fs-5">
                     <tr>
-                        <td>Opening Hours</td>
-                        <td><?php echo $weekdays_opening_hours; ?></td>
-                        <td><?php echo $weekends_opening_hours; ?></td>
+                        <td>Week Days</td>
+                        <td id="weekdayfrom"></td>
+                        <td id="weekdayto"></td>
                     </tr>
                     <tr>
-                        <td class="text-primary">Lending Books</td>
-                        <td><?php echo $weekdays_lending_hours; ?></td>
-                        <td><?php echo $weekends_lending_hours; ?></td>
+                        <td class="text-primary">Week Ends</td>
+                        <td id="weekendfrom"></td>
+                        <td id="weekendto"></td>
                     </tr>
                     <tr>
-                        <td class="text-danger">Returning Books</td>
-                        <td><?php echo $weekdays_returning_hours; ?></td>
-                        <td><?php echo $weekends_returning_hours; ?></td>
+                        <td class="text-danger">Holidays</td>
+                        <td id="holidayfrom"></td>
+                        <td id="holidayto"></td>
                     </tr>
                 </tbody>
             </table>
@@ -71,7 +69,8 @@ $weekends_returning_hours = "8.00 am - 1.00 pm";
     require_once Config::getViewPath("home", "footer.view.php");
     ?>
 
-    <!-- Bootstrap JS -->
+<script src="<?php echo Config::getJsPath("home.js"); ?>"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

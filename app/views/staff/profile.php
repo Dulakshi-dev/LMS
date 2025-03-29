@@ -1,6 +1,22 @@
 <?php
 
-$user_id = $_SESSION["staff"]["staff_id"];
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php"); 
+    exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['staff']['last_activity'] = time();
+
+$user_id = $_SESSION["staff"]["staff_id"]; 
 $role_name = $_SESSION["staff"]["role_name"];
 
 ?>
@@ -41,7 +57,7 @@ $role_name = $_SESSION["staff"]["role_name"];
         <div class="container-fluid mx-5 mb-5 bg-white">
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                    <span class="navbar-brand mb-0 h1">Profile <small class="text-muted">control panel</small></span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                 </nav>
             </div>

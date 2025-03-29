@@ -28,7 +28,7 @@ $_SESSION['staff']['last_activity'] = time();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body onload="loadMembers(1,'Active');">
+<body onload="loadMembers(1,'Deactive');">
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
@@ -39,7 +39,7 @@ $_SESSION['staff']['last_activity'] = time();
 
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Active Members</span>
+                    <span class="navbar-brand mb-0 h1">Deactive Members</span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                 </nav>
             </div>
@@ -53,7 +53,7 @@ $_SESSION['staff']['last_activity'] = time();
                 <div class="col-md-6 mt-2">
                     <div class="d-flex">
                         <input name="userName" id="userName" class="form-control" type="text" placeholder="Type User Name">
-                        <button type="submit" name="search" class="btn btn-primary mx-3 px-3" onclick="loadMembers(1,'Active');"><i class="fa fa-search"></i></button>
+                        <button type="submit" name="search" class="btn btn-primary mx-3 px-3" onclick="loadMembers(1,'Deactive');"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>

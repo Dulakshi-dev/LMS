@@ -22,11 +22,13 @@ class MemberController
             $memberId = $_POST['memberid'] ?? null;
             $nic = $_POST['nic'] ?? null;
             $userName = $_POST['username'] ?? null;
+            $status = $_POST['status'] ?? 'Active';
+
 
             if (!empty($memberId) || !empty($nic) || !empty($userName)) {
-                $membersData = MemberModel::searchMembers($memberId, $nic, $userName, $page, $resultsPerPage);
+                $membersData = MemberModel::searchMembers($memberId, $nic, $userName,$status, $page, $resultsPerPage);
              }else {
-                $membersData = MemberModel::getAllMembers($page, $resultsPerPage);
+                $membersData = MemberModel::getAllMembers($page, $resultsPerPage, $status);
             }
         
             $members = $membersData['results'] ?? [];
@@ -55,11 +57,13 @@ class MemberController
             $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
             $nic = $_POST['nic'] ?? null;
             $userName = $_POST['username'] ?? null;
+            $status = $_POST['status'] ?? 'Pending';
+
 
             if (!empty($memberId) || !empty($nic) || !empty($userName)) {
-                $requestData = MemberModel::searchMemberRequests( $nic, $userName, $page, $resultsPerPage);
+                $requestData = MemberModel::searchMemberRequests( $nic, $userName,$status, $page, $resultsPerPage);
              }else {
-                $requestData = MemberModel::getAllMemberRequests($page, $resultsPerPage);
+                $requestData = MemberModel::getAllMemberRequests($page, $resultsPerPage, $status);
             }
         
             $requests = $requestData['results'] ?? [];
@@ -134,8 +138,6 @@ class MemberController
 
     public function loadMemberDetails()
     {
-
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $member_id = $_POST['member_id'];
 
@@ -250,5 +252,37 @@ class MemberController
         }
     }
 
-    
+    public function activateMember()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['memberid'];
+
+            $result = MemberModel::activateMember($id);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Member activated again"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Member not found."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+    public function activateRequest()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
+
+            $result = MemberModel::activateRequest($id);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Request activated again"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Request not found."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
 }

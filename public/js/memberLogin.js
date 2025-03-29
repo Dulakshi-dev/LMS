@@ -8,34 +8,37 @@ function showAlert(title, message, type) {
 }
 
 function login() {
+
+    // Get the values entered by the user
     let memberid = document.getElementById("memberid").value.trim();
     let memberpw = document.getElementById("password").value.trim();
-    let rememberMe = document.getElementById("rememberme").checked ? "1" : "0"; // Convert boolean to "1"/"0"
+    let rememberMe = document.getElementById("rememberme").checked ? "1" : "0"; 
 
-    if (memberid !== "") {
-        rememberMe.checked = true; // Auto-check the box if Member ID exists
-    }
-
+    // Regular expression pattern for validating Member ID format (e.g., M-123456)
     const memberidPattern = /^M-\d{6}$/;
+
+    // Validate fields
     if (memberid === "") {
         document.getElementById("memberidError").textContent = "Member ID Required";
         return false;
-    } else if(!memberid.match(memberidPattern)){
+    } else if (!memberid.match(memberidPattern)) {
         document.getElementById("memberidError").textContent = "Please enter a Valid Member ID (e.g., M-123456)";
         return false;
-    }else if (password === "") {
+    } else if (password === "") {
         document.getElementById("memberidError").textContent = "";
         document.getElementById("passwordError").textContent = "Password is Required.";
         return false;
     } else {
+        // Clear error messages if inputs are valid
         document.getElementById("passwordError").textContent = "";
         document.getElementById("memberidError").textContent = "";
 
         let formData = new FormData();
         formData.append("memberid", memberid);
         formData.append("memberpw", memberpw);
-        formData.append("rememberme", rememberMe); // Send as "1" or "0"
+        formData.append("rememberme", rememberMe);
 
+        // Send the login request to the server using fetch API
         fetch("index.php?action=memberlogin", {
             method: "POST",
             body: formData,
@@ -43,12 +46,14 @@ function login() {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
+                    // If login is successful, redirect to the dashboard
                     window.location.href = "index.php?action=dashboard";
                 } else {
                     showAlert("Error", resp.message, "error");
                 }
             })
             .catch(error => {
+                // Handle any errors that occur during the fetch request
                 showAlert("Error", "Error fetching user data: " + error, "error");
             });
     }

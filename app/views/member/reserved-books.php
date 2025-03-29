@@ -1,3 +1,23 @@
+<?php
+
+if (!isset($_SESSION['member'])) {
+  header("Location: index.php?action=login"); 
+  exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['member']['last_activity']) && (time() - $_SESSION['member']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php?action=login"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['member']['last_activity'] = time();
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

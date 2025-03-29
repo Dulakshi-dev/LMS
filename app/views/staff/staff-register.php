@@ -40,7 +40,6 @@
     <div class="container-fluid d-flex justify-content-left align-items-center my-5">
         <div class="box-1 p-5 text-dark mx-5 rounded-5 " style="width: 100%; max-width: 800px; ">
             <h2 class="text-center mb-4" style="color: rgb(37, 87, 162);">Staff Registration</h2>
-            <form id="registrationForm" action="<?php echo Config::indexPath() ?>?action=register" method="POST" novalidate>
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="firstName" class="form-label">First Name</label>
@@ -94,86 +93,38 @@
                         <label class="form-check-label" for="roleLibrarian">Librarian</label>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control rounded-pill" id="password" name="password" required>
+                        <span id="passwordError"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cpassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control rounded-pill" id="cpassword" name="cpassword" required>
+                        <span id="cpError"></span>
+                    </div>
+                </div>
+
                 <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn v-b w-50 rounded-pill w-25">Submit</button>
+                    <button type="button" class="btn v-b w-50 rounded-pill w-25" onclick="submit();">Submit</button>
                 </div>
             </form>
-
-
-
         </div>
 
         <div class="box-2 rounded-5 px-3 m-5 shadow-lg overflow-hidden" style="backdrop-filter: blur(3px);">
             <h2 class="text-center text-white m-4">Librarian Registration</h2>
-            <p class="p-3" style="color: rgb(37, 87, 162);">An enrollment key has been sent to the email address Please check your inbox for the key. </p>
-            <form class="p-3" id="enrollmentForm">
-                <input type="text" class="form-control rounded-pill" name="enrollmentKey" id="enrollmentKey" placeholder="Enter Enrollment Key">
+            <p class="p-3" style="color: rgb(37, 87, 162);">An enrollment key has been sent to the email address. Please check. </p>
+                <input type="password" class="form-control rounded-pill" name="enrollmentKey" id="enrollmentKey" placeholder="Enter Enrollment Key">
                 <span id="enrollmentKeyError" class="text-danger"></span>
                 <div class="text-center m-4">
-                    <button type="submit" class="btn w-50 mt-3 rounded-pill v-b">Verify Key</button>
+                    <button type="button" class="btn w-50 mt-3 rounded-pill v-b" onclick="register();">Verify Key</button>
                 </div>
-            </form>
+            
         </div>
     </div>
 
-    <script>
-        document.getElementById("registrationForm").addEventListener("submit", function(e) {
-            e.preventDefault();
 
-            document.querySelectorAll("span").forEach(span => span.textContent = "");
-
-            let isValid = true;
-
-            const firstName = document.getElementById("firstName").value.trim();
-            if (firstName === "") {
-                document.getElementById("firstNameError").textContent = "First Name is required.";
-                isValid = false;
-            }
-
-            const lastName = document.getElementById("lastName").value.trim();
-            if (lastName === "") {
-                document.getElementById("lastNameError").textContent = "Last Name is required.";
-                isValid = false;
-            }
-
-            const address = document.getElementById("address").value.trim();
-            if (address === "") {
-                document.getElementById("addressError").textContent = "Address is required.";
-                isValid = false;
-            }
-
-            const phone = document.getElementById("phone").value.trim();
-            if (!/^\d{10}$/.test(phone)) {
-                document.getElementById("phoneError").textContent = "Phone number must be 10 digits.";
-                isValid = false;
-            }
-
-            const email = document.getElementById("email").value.trim();
-            if (!/^\S+@\S+\.\S+$/.test(email)) {
-                document.getElementById("emailError").textContent = "Invalid email format.";
-                isValid = false;
-            }
-
-            const nic = document.getElementById("nic").value.trim();
-            if (!/^(?:\d{9}[VX]|\d{12})$/.test(nic)) {
-                document.getElementById("nicError").textContent = "NIC must be in the correct format (9 digits + V/X or 12 digits).";
-                isValid = false;
-            }
-
-            const roleSelected = document.querySelector('input[name="role"]:checked');
-            if (!roleSelected) {
-                document.getElementById("roleError").textContent = "Please select a role.";
-                isValid = false;
-            }
-
-            if (isValid) {
-                if (roleSelected) {
-                    document.querySelector(".box-1").style.display = "none";
-                    document.querySelector(".box-2").style.display = "block";
-                }
-            }
-        });
-    </script>
 
     <script src="<?php echo Config::getJsPath("staff-reg.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

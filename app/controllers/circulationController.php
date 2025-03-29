@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../../main.php';
 
-class CirculationController{
+class CirculationController
+{
 
     private $circulationModel;
 
@@ -16,20 +17,20 @@ class CirculationController{
         $resultsPerPage = 10;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1; 
+            $page = isset($_POST['page']) ? (int)$_POST['page'] : 1;
             $bookid = $_POST['bookid'] ?? null;
             $memberid = $_POST['memberid'] ?? null;
 
             if (!empty($bookid) || !empty($memberid)) {
                 $bookData = CirculationModel::searchBorrowData($bookid, $memberid, $page, $resultsPerPage);
-             }else {
+            } else {
                 $bookData = CirculationModel::getAllBorrowData($page, $resultsPerPage);
             }
 
             $issuebooks = $bookData['results'] ?? [];
             $total = $bookData['total'] ?? 0;
             $totalPages = ceil($total / $resultsPerPage);
-        
+
             echo json_encode([
                 "success" => true,
                 "issuebooks" => $issuebooks,
@@ -37,10 +38,8 @@ class CirculationController{
                 "totalPages" => $totalPages,
                 "currentPage" => $page
             ]);
-
-        }else{
+        } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
-
         }
     }
 
@@ -58,12 +57,11 @@ class CirculationController{
                     "isbn" => $bookData['isbn'],
                     "title" => $bookData['title'],
                     "author" => $bookData['author'],
-            
+
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "Book not found."]);
             }
-
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
@@ -81,13 +79,12 @@ class CirculationController{
                 echo json_encode([
                     "success" => true,
                     "nic" => $bookData['nic'],
-                    "name" => $bookData['fname']." ".$bookData['lname'],
-            
+                    "name" => $bookData['fname'] . " " . $bookData['lname'],
+
                 ]);
             } else {
                 echo json_encode(["success" => false, "message" => "Member not found."]);
             }
-
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
@@ -96,15 +93,20 @@ class CirculationController{
     public function issueBook()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            // Retrieve form data from the request
             $book_id = $_POST['book_id'];
             $member_id = $_POST['member_id'];
             $borrow_date = $_POST['borrow_date'];
             $due_date = $_POST['due_date'];
-          
+
+            // Call the model function to issue the book
             $result = CirculationModel::issueBook($book_id, $member_id, $borrow_date, $due_date);
-            if($result){
+            if ($result) {
+                // If book issuance is successful, return success response
                 echo json_encode(["success" => true, "message" => "Book Issued."]);
-            }else{
+            } else {
+                // If issuance fails, return an error response
                 echo json_encode(["success" => false, "message" => "Invalid request."]);
             }
         } else {
@@ -113,29 +115,28 @@ class CirculationController{
     }
 
     public function returnBook()
-{
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $borrow_id = $_POST['borrowId'];
-        $book_id = $_POST['bookId'];
-        $memberId = $_POST['memberId'];
-        $return_date = $_POST['returnDate'];
-        $fines = $_POST['fines'];
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-        $result = CirculationModel::returnBook($borrow_id, $return_date, $book_id, $fines, $memberId);
+            // Retrieve form data from the request
+            $borrow_id = $_POST['borrowId'];
+            $book_id = $_POST['bookId'];
+            $memberId = $_POST['memberId'];
+            $return_date = $_POST['returnDate'];
+            $fines = $_POST['fines'];
 
-        if ($result) {
+            // Call model function to process the return
+            $result = CirculationModel::returnBook($borrow_id, $return_date, $book_id, $fines, $memberId);
 
-            CirculationModel::notifyNextWaitlistMember($book_id);
-            echo json_encode(["success" => true, "message" => "Book Retruned."]);
-
+            if ($result) {
+                // Notify the next member in the waitlist (if applicable)
+                CirculationModel::notifyNextWaitlistMember($book_id);
+                echo json_encode(["success" => true, "message" => "Book Retruned."]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Failed to return book."]);
+            }
         } else {
-            echo json_encode(["success" => false, "message" => "Failed to return book."]);
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
-    } else {
-        echo json_encode(["success" => false, "message" => "Invalid request."]);
     }
 }
-
-
-}
-

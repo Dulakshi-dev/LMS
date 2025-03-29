@@ -17,7 +17,6 @@ if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['
 $_SESSION['staff']['last_activity'] = time();
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,18 +28,19 @@ $_SESSION['staff']['last_activity'] = time();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body onload="loadBooks(1,'Active');">
+<body onload="loadBooks(1,'Deactive');">
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
         <div class="nav-bar vh-100">
             <?php include "dash_sidepanel.php"; ?>
         </div>
+
         <div class="container-fluid">
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1">
-                         Active Books
+                        Deactive Books
                     </span>
                     <a href="#" class="text-decoration-none h5">
                         <i class="fa fa-home"></i> Home
@@ -59,7 +59,7 @@ $_SESSION['staff']['last_activity'] = time();
                     </div>
                     <div class="col-md-4 d-flex my-3">
                         <input id="isbn" name="isbn" type="text" class="form-control" placeholder="Type ISBN">
-                        <button class="btn btn-primary ml-3 px-4 ms-2" onclick="loadBooks(1,'Active');"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-primary ml-3 px-4 ms-2" onclick="loadBooks(1,'Deactive');"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
                 <div class="border border-secondary mb-4"></div>

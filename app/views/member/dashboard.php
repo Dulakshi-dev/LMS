@@ -1,6 +1,23 @@
 <?php
-require_once "../../main.php";
+
+if (!isset($_SESSION['member'])) {
+  header("Location: index.php?action=login"); 
+  exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['member']['last_activity']) && (time() - $_SESSION['member']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php?action=login"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['member']['last_activity'] = time();
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,11 +90,7 @@ require_once "../../main.php";
             </div>
           </div>
 
-          <div class="col-4 col-md-2 d-flex justify-content-end align-items-center ms-auto">
-            <a href="#" class="text-decoration-none text-dark  d-flex align-items-center">
-              <i class="fa fa-home me-1"></i> Dashboard
-            </a>
-          </div>
+         
         </div>
 
 

@@ -11,6 +11,8 @@ require_once Config::getControllerPath("borrowHistoryController.php");
 require_once Config::getControllerPath("memberReservationController.php");
 require_once Config::getControllerPath("myLibraryController.php");
 require_once Config::getControllerPath("PaymentController.php");
+require_once Config::getControllerPath("homeController.php");
+
 
 // Initialize the Router
 $router = new Router();
@@ -23,6 +25,7 @@ $borrowHistoryController = new BorrowHistoryController();
 $memberReservationController = new MemberReservationController();
 $myLibraryController = new MyLibraryController();
 $paymentController = new PaymentController();
+$homeController = new HomeController();
 
 $router->add('memberlogin', [$authController, 'login']);
 $router->add('loaddashboardbooks', [$memberBookController, 'getDashboardBooks']);
@@ -50,6 +53,14 @@ $router->add('serveimage', [$memberBookController, 'serveBookCover']);
 $router->add('getallcategories', [$memberBookController, 'getAllCategories']);
 $router->add('getlanguages', [$memberBookController, 'getLanguages']);
 $router->add('cancelreservation', [$memberReservationController, 'cancelReservation']); 
+$router->add('getopeninghours', [$homeController, 'loadOpeningHours']); 
+$router->add('getnewsupdates', [$homeController, 'loadNewsUpdates']); 
+$router->add('servenewsimage', [$homeController, 'serveNewsImage']);
+$router->add('getlibraryinfo', [$homeController, 'getLibraryInfo']); 
+$router->add('contactlibrary', [$homeController, 'sendEmailtoLibrary']); 
+$router->add('gettopbooks', [$homeController, 'loadTopBooks']); 
+$router->add('servelogo', [$homeController, 'serveLogo']);
+
 
 
 $router->add('home', function () {

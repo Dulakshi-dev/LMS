@@ -1,7 +1,26 @@
+
 <?php
+
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php"); 
+    exit;
+}
+
+// Session Timeout (30 minutes)
+if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
+    session_unset();  // Clear session data
+    session_destroy(); 
+    header("Location: index.php"); 
+    exit;
+}
+
+// Reset last activity time (only if user is active)
+$_SESSION['staff']['last_activity'] = time();
+
 $book_id = isset($_POST['book_id']) ? htmlspecialchars($_POST['book_id']) : '';
 $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) : '';
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +46,7 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
             <nav class="navbar py-4 navbar-light bg-light">
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1">
-                        Issue Book <small class="text-muted">Control Panel</small>
+                        Issue Book
                     </span>
                     <a href="#" class="text-decoration-none h5">
                         <i class="fa fa-home"></i> Home

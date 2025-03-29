@@ -1,6 +1,6 @@
 
 
-function viewallbooks(){
+function viewallbooks() {
     loadAllBooks();
     loadLanguages();
     loadAllCategories();
@@ -8,11 +8,11 @@ function viewallbooks(){
     document.getElementById("title").addEventListener("input", function () {
         loadAllBooks(1);
     });
-    
+
     document.getElementById("language").addEventListener("change", function () {
         loadAllBooks(1);
     });
-    
+
     document.getElementById("category").addEventListener("change", function () {
         loadAllBooks(1);
     });
@@ -92,29 +92,29 @@ function loadDashboardBooks() {
     fetch("index.php?action=loaddashboardbooks", {
         method: "POST",
     })
-    .then(response => response.json())
-    .then(resp => {
-        if (!resp.success || !resp.books) {
-            console.error("Error: No books data received");
-            return;
-        }
+        .then(response => response.json())
+        .then(resp => {
+            if (!resp.success || !resp.books) {
+                console.error("Error: No books data received");
+                return;
+            }
 
-        // Get containers for each category
-        let recommendedContainer = document.getElementById("recommendedBooks");
-        let latestContainer = document.getElementById("latestBooks");
-        let topContainer = document.getElementById("topBooks");
+            // Get containers for each category
+            let recommendedContainer = document.getElementById("recommendedBooks");
+            let latestContainer = document.getElementById("latestBooks");
+            let topContainer = document.getElementById("topBooks");
 
-        // Clear previous content
-        recommendedContainer.innerHTML = "";
-        latestContainer.innerHTML = "";
-        topContainer.innerHTML = "";
+            // Clear previous content
+            recommendedContainer.innerHTML = "";
+            latestContainer.innerHTML = "";
+            topContainer.innerHTML = "";
 
-        // Function to generate book cards
-        function generateBookCard(book) {
-            let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
-            let availability = book.available_qty > 0 ? "Available" : "Not Available";
+            // Function to generate book cards
+            function generateBookCard(book) {
+                let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
+                let availability = book.available_qty > 0 ? "Available" : "Not Available";
 
-            return `
+                return `
                 <div class="col-md-3 col-sm-6">
                   <div class="book-card">
                     <div class="book-image">
@@ -137,43 +137,43 @@ function loadDashboardBooks() {
                   </div>
                 </div>
             `;
-        }
+            }
 
-        // Populate Recommended Books
-        if (resp.books.recommended.length > 0) {
-            resp.books.recommended.forEach(book => {
-                recommendedContainer.innerHTML += generateBookCard(book);
-            });
-        } else {
-            recommendedContainer.innerHTML = "<p>No recommended books available</p>";
-        }
+            // Populate Recommended Books
+            if (resp.books.recommended.length > 0) {
+                resp.books.recommended.forEach(book => {
+                    recommendedContainer.innerHTML += generateBookCard(book);
+                });
+            } else {
+                recommendedContainer.innerHTML = "<p>No recommended books available</p>";
+            }
 
-        // Populate Latest Arrivals
-        if (resp.books.latest.length > 0) {
-            resp.books.latest.forEach(book => {
-                latestContainer.innerHTML += generateBookCard(book);
-            });
-        } else {
-            latestContainer.innerHTML = "<p>No latest books available</p>";
-        }
+            // Populate Latest Arrivals
+            if (resp.books.latest.length > 0) {
+                resp.books.latest.forEach(book => {
+                    latestContainer.innerHTML += generateBookCard(book);
+                });
+            } else {
+                latestContainer.innerHTML = "<p>No latest books available</p>";
+            }
 
-        // Populate Top Books
-        if (resp.books.top.length > 0) {
-            resp.books.top.forEach(book => {
-                topContainer.innerHTML += generateBookCard(book);
-            });
-        } else {
-            topContainer.innerHTML = "<p>No top books available</p>";
-        }
-    })
-    .catch(error => {
-        console.error("Error fetching book data:", error);
-    });
+            // Populate Top Books
+            if (resp.books.top.length > 0) {
+                resp.books.top.forEach(book => {
+                    topContainer.innerHTML += generateBookCard(book);
+                });
+            } else {
+                topContainer.innerHTML = "<p>No top books available</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching book data:", error);
+        });
 }
 
 document.addEventListener("click", function (event) {
-  
-    
+
+
     if (event.target.classList.contains("view-details")) {
         const button = event.target;
         const title = button.getAttribute('data-title');
@@ -225,66 +225,60 @@ document.addEventListener("click", function (event) {
         let bookDetailsCanvas = document.getElementById('bookDetailsCanvas');
         let offcanvasInstance = bootstrap.Offcanvas.getOrCreateInstance(bookDetailsCanvas);
         offcanvasInstance.show();
-        
+
     }
 });
 
-function reserve(book_id, availability){
+function reserve(book_id, availability) {
+
     var formData = new FormData();
     formData.append("book_id", book_id);
     formData.append("availability", availability);
 
-
+    // Send a POST request to the backend
     fetch("index.php?action=reserve", {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json())
+        .then(response => response.json()) // Convert response to JSON
         .then(resp => {
             if (resp.success) {
-                
+
                 showAlert("Success", resp.message, "success");
-                
+
             } else {
                 showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
-            console.error("Error reserving book:", error);
-           
-                showAlert("Error", "Something went wrong. Please try again", "error");
-
-           
+            console.error("Error reserving book:", error); // Log error to the console
+            showAlert("Error", "Something went wrong. Please try again", "error");
         });
 }
 
-function save(book_id){
+function save(book_id) {
     var formData = new FormData();
     formData.append("book_id", book_id);
 
+    // Send a POST request to the backend
     fetch("index.php?action=save", {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json())
+        .then(response => response.json()) // Convert response to JSON
         .then(resp => {
             if (resp.success) {
                 showAlert("Success", resp.message, "success");
-                
+
             } else {
                 showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
-            console.error("Error saving the book:", error);
-           
-                showAlert("Error", "Something went wrong. Please try again", "error");
-
-           
+            console.error("Error saving the book:", error); // Log error to the console
+            showAlert("Error", "Something went wrong. Please try again", "error");
         });
 }
-
-
 
 function showAlert(title, message, type) {
     return Swal.fire({

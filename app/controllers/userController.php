@@ -22,12 +22,14 @@ class UserController
             $memberId = $_POST['memberid'] ?? null;
             $nic = $_POST['nic'] ?? null;
             $userName = $_POST['username'] ?? null;
+            $status = $_POST['status'] ?? 'Active';
 
-            if (!empty($memberId) || !empty($nic) || !empty($userName)) {
-                $usersData = UserModel::searchUsers($memberId, $nic, $userName, $page, $resultsPerPage);
-             }else {
-                $usersData = UserModel::getAllUsers($page, $resultsPerPage);
-            }
+           
+        if (!empty($memberId) || !empty($nic) || !empty($userName)) {
+            $usersData = UserModel::searchUsers($memberId, $nic, $userName, $status, $page, $resultsPerPage);
+        } else {
+            $usersData = UserModel::getAllUsers($page, $resultsPerPage, $status);
+        }
         
             $users = $usersData['results'] ?? [];
             $total = $usersData['total'] ?? 0;
@@ -173,12 +175,48 @@ class UserController
             $result = UserModel::deactivateUser($id);
 
             if ($result) {
-                echo json_encode(["success" => true, "message" => "Membership deactivated"]);
+                echo json_encode(["success" => true, "message" => "Membership Deactivated"]);
             } else {
-                echo json_encode(["success" => false, "message" => "User not found."]);
+                echo json_encode(["success" => false, "message" => "User Not found."]);
             }
         } else {
             echo json_encode(["success" => false, "message" => "Invalid request."]);
         }
     }
+
+    public function activateUser()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['user_id'];
+
+            $result = UserModel::activateUser($id);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Staff Member Activated Again"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Staff Member not found."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+    public function sendEnrollmentKey()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $email = $_POST['email'];
+
+            $result = UserModel::sendEnrollmentKey($email);
+
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Enrollment Key Sent"]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Failed to send enrollment key."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+
 }

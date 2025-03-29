@@ -6,7 +6,8 @@ function showAlert(title, message, type) {
         confirmButtonText: 'OK'
     });
 }
-function loadMembers(page = 1) {
+
+function loadMembers(page = 1, status = "Active") {
 
     var memberid = document.getElementById("memberId").value.trim();
     var nic = document.getElementById("nic").value.trim();
@@ -17,6 +18,7 @@ function loadMembers(page = 1) {
     formData.append("memberid", memberid);
     formData.append("nic", nic);
     formData.append("username", name);
+    formData.append("status", status);
 
     fetch("index.php?action=loadmembers", {
         method: "POST",
@@ -29,18 +31,12 @@ function loadMembers(page = 1) {
 
             if (resp.success && resp.members.length > 0) {
                 resp.members.forEach(member => {
-                    let row = `
-                    <tr>
-                        <td>${member.member_id}</td>
-                        <td>${member.nic}</td>
-                        <td>${member.fname} ${member.lname}</td>
-                        <td>${member.address}</td>
-                        <td>${member.mobile}</td>
-                        <td>${member.email}</td>
-                        <td>
-                        <div class="m-1">
+                    let actionButtons = "";
 
-                            <button class="btn btn-success my-1 btn-sm edit-member " 
+                    if (status === "Active") {
+                        // Show Edit, Email, and Deactivate buttons for active users
+                        actionButtons = `
+                             <button class="btn btn-success my-1 btn-sm edit-member " 
                                 data-memberid="${member.member_id}">
                                 <i class="fa fa-edit"></i>
                             </button>
@@ -54,6 +50,30 @@ function loadMembers(page = 1) {
                                 data-memberid="${member.id}">
                                 <i class="fa fa-trash"></i>
                             </button>
+                        `;
+                    } else {
+                        // Show Activate button for deactivated users
+                        actionButtons = `
+                            <button class="btn btn-success my-1 btn-sm activate" data-memberid="${member.id}">
+                                <i class="fa fa-plus"></i>
+                            </button>
+
+                        `;
+                    }
+
+                    let row = `
+
+                    <tr>
+                        <td>${member.member_id}</td>
+                        <td>${member.nic}</td>
+                        <td>${member.fname} ${member.lname}</td>
+                        <td>${member.address}</td>
+                        <td>${member.mobile}</td>
+                        <td>${member.email}</td>
+                        <td>
+                        <div class="m-1">
+                        ${actionButtons}
+                    
                             
                             </div>
                         </td>
@@ -69,6 +89,82 @@ function loadMembers(page = 1) {
         })
         .catch(error => {
             console.error("Error fetching member data:", error);
+        });
+}
+
+function loadMemberRequests(page = 1, status = "Pending") {
+
+    var nic = document.getElementById("nic").value.trim();
+    var name = document.getElementById("userName").value.trim();
+
+    let formData = new FormData();
+    formData.append("page", page);
+    formData.append("nic", nic);
+    formData.append("username", name);
+    formData.append("status", status);
+
+    fetch("index.php?action=loadmemberrequests", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            let tableBody = document.getElementById("requestTableBody");
+            tableBody.innerHTML = "";
+
+            if (resp.success && resp.requests.length > 0) {
+                resp.requests.forEach(request => {
+
+                    let actionButtons = "";
+
+                    if (status === "Pending") {
+                        // Show Edit, Email, and Deactivate buttons for active users
+                        actionButtons = `
+                             <button class="btn btn-info my-1 btn-sm approve-request " 
+                                data-id="${request.id}">
+                                <i class="fa fa-check"></i>
+                            </button>
+
+                            <button class="btn btn-danger my-1 btn-sm reject" 
+                                data-id="${request.id}">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        `;
+                    } else {
+                        // Show Activate button for deactivated users
+                        actionButtons = `
+                            <button class="btn btn-success my-1 btn-sm activate-request" data-id="${request.id}">
+                                <i class="fa fa-plus"></i>
+                            </button>
+
+                        `;
+                    }
+                    let row = `
+                    <tr>
+                        <td>${request.nic}</td>
+                        <td>${request.fname} ${request.lname}</td>
+                        <td>${request.address}</td>
+                        <td>${request.mobile}</td>
+                        <td>${request.email}</td>
+                        <td>
+                        <div class="m-1">
+                        ${actionButtons}
+                           
+                    
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                    tableBody.innerHTML += row;
+
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='7'>No members found</td></tr>";
+            }
+            createPagination("pagination", resp.totalPages, page, "loadMemberRequests");
+        })
+        .catch(error => {
+            console.error("Error fetching request data:", error);
         });
 }
 
@@ -95,67 +191,16 @@ document.addEventListener("DOMContentLoaded", function () {
             deactivateMember(button.dataset.memberid);
         }
     });
-});
 
-function loadMemberRequests(page = 1) {
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".activate")) {
+            let button = event.target.closest(".activate");
+            activateMember(button.dataset.memberid);
 
-    var nic = document.getElementById("nic").value.trim();
-    var name = document.getElementById("userName").value.trim();
 
-    let formData = new FormData();
-    formData.append("page", page);
-    formData.append("nic", nic);
-    formData.append("username", name);
+        }
+    });
 
-    fetch("index.php?action=loadmemberrequests", {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.json())
-        .then(resp => {
-            let tableBody = document.getElementById("requestTableBody");
-            tableBody.innerHTML = "";
-
-            if (resp.success && resp.requests.length > 0) {
-                resp.requests.forEach(request => {
-                    let row = `
-                    <tr>
-                        <td>${request.nic}</td>
-                        <td>${request.fname} ${request.lname}</td>
-                        <td>${request.address}</td>
-                        <td>${request.mobile}</td>
-                        <td>${request.email}</td>
-                        <td>
-                        <div class="m-1">
-
-                            <button class="btn btn-info my-1 btn-sm approve-request " 
-                                data-id="${request.id}">
-                                <i class="fa fa-check"></i>
-                            </button>
-
-                            <button class="btn btn-danger my-1 btn-sm reject" 
-                                data-id="${request.id}">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                            
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                    tableBody.innerHTML += row;
-
-                });
-            } else {
-                tableBody.innerHTML = "<tr><td colspan='7'>No members found</td></tr>";
-            }
-            createPagination("pagination", resp.totalPages, page, "loadMemberRequests");
-        })
-        .catch(error => {
-            console.error("Error fetching request data:", error);
-        });
-}
-
-document.addEventListener("DOMContentLoaded", function () {
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".approve-request")) {
             let button = event.target.closest(".approve-request");
@@ -168,12 +213,18 @@ document.addEventListener("DOMContentLoaded", function () {
         if (event.target.closest(".reject")) {
             let button = event.target.closest(".reject");
             rejectMemberRequest(button.dataset.id);
-           
+        
+        }
+    });
+
+    document.body.addEventListener("click", function (event) {
+        if (event.target.closest(".activate-request")) {
+            let button = event.target.closest(".activate-request");
+            activateRequest(button.dataset.id);
 
         }
     });
 });
-
 
 function approveMembership(id){
     var formData = new FormData();
@@ -319,7 +370,6 @@ function updateUserDetails() {
             console.error("Error fetching user data:", error);
         });
 }
-
 
 function loadMailData(member_id) {
 
@@ -470,4 +520,52 @@ function sendEmail() {
         });
 }
 
+function activateMember(memberid) {
+    var formData = new FormData();
+    formData.append("memberid", memberid);
+
+    fetch("index.php?action=activatemember", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Error", "Failed to activate Member", "error");
+
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+}
+
+function activateRequest(id) {
+    alert(id);
+    var formData = new FormData();
+    formData.append("id", id);
+
+    fetch("index.php?action=activaterequest", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Error", "Failed to Accept Request", "Error");
+
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching user data:", error);
+        });
+}
 

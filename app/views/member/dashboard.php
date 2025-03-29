@@ -131,8 +131,8 @@ require_once "../../main.php";
 
     <div class="offcanvas-body">
       <div class="d-flex justify-content-end ">
-        <button style="background: none; border: none; padding: 0; cursor: pointer;">
-          <i id="save-btn" class="fa fa-bookmark text-white fs-4"></i>
+        <button style="background: none; border: none; padding: 0; cursor: pointer;" class="">
+          <i id="save-btn" class="fa fa-bookmark text-warning fs-4"></i>
         </button>
       </div>
       <div class="book-details">

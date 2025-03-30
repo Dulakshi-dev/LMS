@@ -284,9 +284,10 @@ function loadMailData(user_id) {
 }
 
 function sendEmail() {
+    var name = document.getElementById("name").value.trim();
+    var email = document.getElementById("emailadd").value.trim();
     var subject = document.getElementById("subject").value.trim();
     var message = document.getElementById("message").value.trim();
-
     var subjectError = document.getElementById("subjectError");
     var messageError = document.getElementById("messageError");
 
@@ -314,6 +315,9 @@ function sendEmail() {
     var formData = new FormData();
     formData.append("subject", subject);
     formData.append("message", message);
+    formData.append("name", name);
+    formData.append("email", email);
+
 
     // Create XMLHttpRequest to send data to server
     fetch("index.php?action=sendMail", {
@@ -323,7 +327,9 @@ function sendEmail() {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                showAlert("Success", resp.message, "success");
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
                 showAlert("Error", resp.message, "error");
             }

@@ -45,7 +45,7 @@ require_once "../../main.php";
         <h2 class="fs-1 mb-4" style="color: red;">Our Goal</h2>
         <div class="row align-items-center mb-4">
             <div class="col-md-6">
-                <p class="fs-5">At [Library Name], our goal is to create a user-friendly and efficient platform that simplifies library management and enhances the experience of accessing our vast collection of resources. Our system is designed to streamline the cataloging, borrowing, and returning of books, making it easier for library staff to manage inventory and for patrons to find the materials they need.</p>
+                <p class="fs-5">At <?= $libraryName ?>, our goal is to create a user-friendly and efficient platform that simplifies library management and enhances the experience of accessing our vast collection of resources. Our system is designed to streamline the cataloging, borrowing, and returning of books, making it easier for library staff to manage inventory and for patrons to find the materials they need.</p>
             </div>
             <div class="col-md-6 d-flex justify-content-end">
                 <img src="<?php echo Config::getImagePath("home-goal.jpg"); ?>" alt="Library Image 1" style="height: 500px;" class="img-fluid rounded">

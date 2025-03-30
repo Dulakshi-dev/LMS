@@ -23,37 +23,45 @@ class AuthController
             // Validate the Member ID and Password using the AuthModel
             $userDetails = AuthModel::validateLogin($memberid, $memberpw);
 
-            if ($userDetails) {
-                session_regenerate_id(true); // Prevent session fixation
-
-                // Store user details in the session upon successful login
-                $_SESSION['member'] = [
-                    'member_id' => $userDetails['member_id'],
-                    'id' => $userDetails['id'],
-                    'profile_img' => $userDetails['profile_img'],
-                    'lname' => $userDetails['lname'],
-                    'fname' => $userDetails['fname'],
-                    'last_activity' => time() // Track last activity
-
-                ];
-
-                // If "Remember Me" is checked, set cookies 
-                if ($rememberme) {
-                    setcookie("memberid", $memberid, time() + (365 * 24 * 60 * 60), "/");
-                    setcookie("memberpw", $memberpw, time() + (365 * 24 * 60 * 60), "/");
-                } else {
-                    setcookie("memberid", "", time() - 3600, "/");
-                    setcookie("memberpw", "", time() - 3600, "/");
-                }
-
-                // Return a success response in JSON format
-                echo json_encode(["success" => true, "message" => "Login successful!"]);
+            // Check if the user is inactive
+            if (isset($userDetails['status_id']) && $userDetails['status_id'] == '2') {
+                echo json_encode(["success" => false, "message" => 'deactivated']);
+                exit;
+            } else if (isset($userDetails['status_id']) && $userDetails['status_id'] == '5') {
+                echo json_encode(["success" => false, "message" => 'expired']);
                 exit;
             } else {
+                // Check if login was successful
+                if ($userDetails) {
+                    session_regenerate_id(true); // Prevent session fixation
 
-                // If login fails, return an error response in JSON format
-                echo json_encode(["success" => false, "message" => "Invalid Member ID or Password."]);
-                exit;
+                    // Store user details in the session upon successful login
+                    $_SESSION['member'] = [
+                        'member_id' => $userDetails['member_id'],
+                        'id' => $userDetails['id'],
+                        'profile_img' => $userDetails['profile_img'],
+                        'lname' => $userDetails['lname'],
+                        'fname' => $userDetails['fname'],
+                        'last_activity' => time() // Track last activity
+                    ];
+
+                    // If "Remember Me" is checked, set cookies 
+                    if ($rememberme) {
+                        setcookie("memberid", $memberid, time() + (365 * 24 * 60 * 60), "/");
+                        setcookie("memberpw", $memberpw, time() + (365 * 24 * 60 * 60), "/");
+                    } else {
+                        setcookie("memberid", "", time() - 3600, "/");
+                        setcookie("memberpw", "", time() - 3600, "/");
+                    }
+
+                    // Return a success response in JSON format
+                    echo json_encode(["success" => true, "message" => "Login successful!"]);
+                    exit;
+                } else {
+                    // If login fails, return an error response in JSON format
+                    echo json_encode(["success" => false, "message" => "Invalid Member ID or Password."]);
+                    exit;
+                }
             }
         }
     }

@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\Exception;
 require_once Config::getMailPath("PHPMailer.php");
 require_once Config::getMailPath("SMTP.php");
 require_once Config::getMailPath("Exception.php");
-
+require_once Config::getModelPath('homemodel.php');
 
 
 class EmailService
@@ -15,34 +15,40 @@ class EmailService
     {
         $mail = new PHPMailer(true);
 
-        $libraryData = HomeModel::getLibraryInfo();
-
-        $libraryName = $libraryData['name']; 
-        $libraryEmail = $libraryData['email']; 
-
         try {
-            // Server settings
+            // Fetch library email details
+            $libraryData = HomeModel::getLibraryInfo();
+            $libraryName = $libraryData['name'];
+            $libraryEmail = $libraryData['email'];
+
+            // SMTP server settings
             $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com'; // Replace with your SMTP server
+            $mail->Host = 'smtp.gmail.com'; 
             $mail->SMTPAuth = true;
             $mail->Username = $libraryEmail; 
-            $mail->Password = 'ovvrqsxjkwcqmqdv';//app password 
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS; 
-            $mail->Port = 465; 
+            $mail->Password = 'ovvrqsxjkwcqmqdv'; // Replace with actual App Password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; // Use TLS instead of SSL
+            $mail->Port = 587; // Use Port 587 (more stable than 465)
 
-            // Recipients
-            $mail->setFrom($libraryEmail, $libraryName); 
-            $mail->addAddress($recipientEmail); 
+            // Debugging logs (enable for troubleshooting)
+            $mail->SMTPDebug = 2;  // Change to 0 for production
+            $mail->Debugoutput = function ($str, $level) {
+                error_log("PHPMailer [$level]: $str");
+            };
 
-            // Content
+            // Email details
+            $mail->setFrom($libraryEmail, $libraryName);
+            $mail->addAddress($recipientEmail);
             $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body = $body;
 
+            // Send the email
             $mail->send();
             return true;
         } catch (Exception $e) {
-            return false; // Log or handle error as needed
+            error_log("Email failed: " . $mail->ErrorInfo);
+            return false;
         }
     }
 }

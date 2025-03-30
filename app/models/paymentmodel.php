@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '../../../database/connection.php';
+require_once config::getdbPath();
 
 class PaymentModel
 {
@@ -14,6 +14,7 @@ class PaymentModel
 
             Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `member_id`) 
             VALUES ('1000', '$transaction_id', NOW(), $next_due_date, '$id');");
+
             return true;
         } else {
             Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `member_id`) 
@@ -91,6 +92,6 @@ WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY
 
     private static function deactivateMembership($id)
     {
-        Database::ud("UPDATE `member` SET `status_id` = '2' WHERE `id` = '$id'");
+        Database::ud("UPDATE `member` SET `status_id` = '5' WHERE `id` = '$id'");
     }
 }

@@ -45,10 +45,17 @@ function login() {
         })
             .then(response => response.json())
             .then(resp => {
+
                 if (resp.success) {
-                    // If login is successful, redirect to the dashboard
                     window.location.href = "index.php?action=dashboard";
-                } else {
+
+                }else if(resp.message == "deactivated"){
+                    window.location.href = "index.php?action=deactivated";
+
+                }else if(resp.message == "expired"){
+                    window.location.href = "index.php?action=expired";
+
+                }else{
                     showAlert("Error", resp.message, "error");
                 }
             })

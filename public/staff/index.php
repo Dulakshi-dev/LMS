@@ -11,6 +11,8 @@ require_once Config::getControllerPath("profileController.php");
 require_once Config::getControllerPath("memberController.php");
 require_once Config::getControllerPath("reservationController.php");
 require_once Config::getControllerPath("librarySetupController.php");
+require_once Config::getControllerPath("dashboardController.php");
+
 
 
 // Initialize the Router
@@ -25,6 +27,9 @@ $profileController = new ProfileController();
 $memberController = new MemberController();
 $reservationController = new ReservationController();
 $librarySetupController = new LibrarySetupController();
+$dashboardController = new DashboardController();
+
+
 
 // Define the routes and map them to controller methods
 $router->add('loginProcess', [$loginController, 'login']);
@@ -85,6 +90,9 @@ $router->add('sendemailtoallmembers', [$librarySetupController, 'sendMailsToAllM
 $router->add('getopeninghours', [$librarySetupController, 'loadOpeningHours']); 
 $router->add('getlibraryinfo', [$librarySetupController, 'getLibraryInfo']);
 $router->add('servelogo', [$librarySetupController, 'serveLogo']);
+$router->add('getchartdata', [$dashboardController, 'getUserChartData']);
+$router->add('getcounts', [$dashboardController, 'getDshboardCounts']);
+$router->add('gettopbooks', [$dashboardController, 'loadTopBooks']); 
 
 
 

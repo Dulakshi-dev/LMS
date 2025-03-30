@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -30,23 +30,21 @@ $_SESSION['staff']['last_activity'] = time();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
-
-        .box-1{
+        .box-1 {
             background: rgba(26, 50, 65, 1);
             color: white;
         }
-        .box-2{
-            height: 400px;
-            width: 550px;
-            border-radius: 20px;
+
+        .box-2 {
+            background: rgba(92, 176, 255, 0.63);
         }
-        
-        .box-3{
+
+        .box-3 {
             height: 200px;
             width: 150px;
         }
-        
-        .box-4{
+
+        .box-4 {
             height: 400px;
             width: 750px;
             background: rgba(26, 50, 65, 1);
@@ -65,131 +63,123 @@ $_SESSION['staff']['last_activity'] = time();
         <div class="container-fluid mb-5 bg-white">
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Staff Management <small class="text-muted">control panel</small></span>
+                    <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                 </nav>
             </div>
             <div class="p-2 mt-3">
-                <div class="row">
-                    <div class="col-lg-3">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-2">
                         <div class="d-flex justify-content-between p-2 box-1 rounded">
-                            <div>
-                                <h1>120</h1>
-                                <p>Issued Books</p>
+                            <div class=ms-4>
+                                <h1 class="text-info" id="books"></h1>
+                                <p class="text-info">Books</p>
                             </div>
                             <div>
-                            <i class="fa fa-bolt"></i>
+                                <i class="fa fa-book-open text-info" style="font-size: 30px;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="d-flex justify-content-between p-2 box-1 rounded">
-                            <div>
-                                <h1>120</h1>
-                                <p>Issued Books</p>
+                            <div class=ms-4>
+                                <h1 class="text-info" id="members"></h1>
+                                <p class="text-info">Members</p>
                             </div>
                             <div>
-                            <i class="fa fa-bolt"></i>
+                                <i class="fa fa-users text-info" style="font-size: 30px;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="d-flex justify-content-between p-2 box-1 rounded">
-                            <div>
-                                <h1>120</h1>
-                                <p>Issued Books</p>
+                            <div class=ms-4>
+                                <h1 class="text-info" id="issuedBooks"></h1>
+                                <p class="text-info">Issued Books</p>
                             </div>
                             <div>
-                            <i class="fa fa-bolt"></i>
+                                <i class="fa fa-share-square text-info" style="font-size: 30px;"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="d-flex justify-content-between p-2 box-1 rounded">
-                            <div>
-                                <h1>120</h1>
-                                <p>Issued Books</p>
+                            <div class=ms-4>
+                                <h1 class="text-info" id="reservations"></h1>
+                                <p class="text-info">Reservations</p>
                             </div>
                             <div>
-                            <i class="fa fa-bolt"></i>
+                                <i class="fa fa-calendar-check text-info" style="font-size: 30px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="d-flex justify-content-between p-2 box-1 rounded">
+                            <div class=ms-4>
+                                <h1 class="text-info" id="totalfines"></h1>
+                                <p class="text-info">Fines</p>
+                            </div>
+                            <div>
+                                <i class="fa fa-coins text-info" style="font-size: 30px;"></i>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row gap-5 my-5 align-items-center justify-content-center">
-                    <div class="col-lg-5 bg-light ">
-                        <div class=" mt-4 box-2 p-3">
+
+                    <div class="col-6 bg-light rounded-5">
+                        <div class=" mt-4 p-3 d-flex justify-content-center">
+                            <canvas id="lineChart" width="1500" height="1000"></canvas>
 
                         </div>
                     </div>
-                    <div class="col-lg-5 bg-light">
-                        <div class=" mt-4 box-2 p-3">
+                    <div class="col-4 bg-light rounded-5">
+                        <div class=" mt-4 p-3 d-flex justify-content-center">
+                            <canvas id="pieChart"></canvas>
 
                         </div>
                     </div>
                 </div>
 
-                <div class="row gap-3 align-items-center mt-5 justify-content-center">
-                    <h3>Top choices</h3>
-                    <div class="col-lg-2 col-md-3 col-sm-2 text-center bg-light">
-                        <div class="">
-                            <img class="box-3" src="<?php echo Config::getImagePath("stafflog.jpg"); ?>" alt="">
-                        </div>
-                        <div>
-                            <p>Author name</p>
+                <div class="row mt-5 justify-content-center">
+                    <div class="col-12 text-center">
+                        <h3>Top choices</h3>
+                    </div>
+                    <div class="col-md-12 offset-md-2">
+                        <div class="row justify-content-center" id="topBookBody">
+                            <!-- Book items will be inserted here by JavaScript -->
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-3 col-sm-2 text-center bg-light">
-                        <div class="">
-                            <img class="box-3" src="<?php echo Config::getImagePath("stafflog.jpg"); ?>" alt="">
-                        </div>
-                        <div>
-                            <p>Author name</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-2 text-center bg-light">
-                        <div class="">
-                            <img class="box-3" src="<?php echo Config::getImagePath("stafflog.jpg"); ?>" alt="">
-                        </div>
-                        <div>
-                            <p>Author name</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-2 text-center bg-light">
-                        <div class="">
-                            <img class="box-3" src="<?php echo Config::getImagePath("stafflog.jpg"); ?>" alt="">
-                        </div>
-                        <div>
-                            <p>Author name</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-2 text-center bg-light">
-                        <div class="">
-                            <img class="box-3" src="<?php echo Config::getImagePath("stafflog.jpg"); ?>" alt="">
-                        </div>
-                        <div>
-                            <p>Author name</p>
-                        </div>
-                    </div>
-                    
-                    
-                    
                 </div>
 
-                <div class="d-flex align-items-center mt-5 justify-content-center">
-                    <div class="mt-4">
-                        <div class="box-4">
-                            
+
+
+                <div class="row gap-5 my-5 align-items-center justify-content-center">
+
+                    <div class="col-6 bg-light rounded-5">
+                        <div class=" mt-4  p-3 d-flex justify-content-center">
+                            <canvas id="barChart" width="600" height="400"></canvas>
+
+                        </div>
+                    </div>
+                    <div class="col-4 bg-light rounded-5">
+                        <div class=" mt-4 p-3 d-flex justify-content-center">
+                            <canvas id="polarChart"></canvas>
+
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
 
     </div>
+
+    <script src="<?php echo Config::getJsPath("dashboard.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

@@ -7,32 +7,39 @@ class MemberModel
 
     public static function getAllMembers($page, $resultsPerPage, $status = 'Active')
     {
-        $statusId = ($status === 'Active') ? 1 : 2;
-
+        if ($status === 'Active') {
+            $statusId = 1;
+        } else {
+            // For deactive status, check for both status_id 2 and 5
+            $statusId = "2,5";
+        }
+    
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalMembers = self::getTotalMembers($statusId);
-
-        $rs = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`status_id` FROM `member`
-JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` 
-WHERE `status_id` = '$statusId' LIMIT $resultsPerPage OFFSET $pageResults");
-
+    
+        // Adjust query based on the status
+        $rs = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`status_id` 
+                                FROM `member`
+                                JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` 
+                                WHERE FIND_IN_SET(`status_id`, '$statusId') 
+                                LIMIT $resultsPerPage OFFSET $pageResults");
+    
         $members = [];
-
+    
         while ($row = $rs->fetch_assoc()) {
             $members[] = $row;
         }
+    
         return [
             'total' => $totalMembers,
             'results' => $members
         ];
     }
-
+    
     private static function getTotalMembers($statusId)
     {
         $result = Database::search("SELECT COUNT(*) AS total 
-FROM `member`
-JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` 
-WHERE `status_id` = '$statusId';");
+FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE FIND_IN_SET(`status_id`, '$statusId') ");
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }

@@ -8,32 +8,26 @@ class PaymentService
     private $merchantId;
     private $merchantSecret;
     private $sandboxUrl;
-    private $libraryName;
-    private $libraryAddress;
-    private $libraryEmail;
-    private $libraryPhone;
-    private $libraryLogo;
-    private $libraryFee;
-    private $libraryFine;
 
-    public function __construct($libraryData)
+    public function __construct()
     {
         $this->merchantId = "1227820"; // Your PayHere Merchant ID
         $this->merchantSecret = "MjkxNDc2MDQyOTIzOTM4NDQ5NDUzNTY2NzU3ODU0MTAxMTY3Njg1OA"; // Your PayHere Merchant Secret Key
         $this->sandboxUrl = "https://sandbox.payhere.lk/pay/checkout"; // Sandbox URL
-        $this->libraryName = $libraryData['name'];
-        $this->libraryAddress = $libraryData['address'];
-        $this->libraryEmail = $libraryData['email'];
-        $this->libraryPhone = $libraryData['mobile'];
-        $this->libraryLogo = $libraryData['logo'];
-        $this->libraryFee = $libraryData['membership_fee'];
-        $this->libraryFine = $libraryData['fine_amount'];    }
+     }
 
     public function createPayment()
     {
+        $libraryData = HomeModel::getLibraryInfo();
+        $libraryName = $libraryData['name']; 
+        $libraryAddress = $libraryData['address']; 
+        $libraryEmail = $libraryData['email']; 
+        $libraryPhone = $libraryData['mobile']; 
+        $libraryFee = $libraryData['membership_fee']; 
+
             $merchantId = "1227820"; 
             $merchantSecret = "MjkxNDc2MDQyOTIzOTM4NDQ5NDUzNTY2NzU3ODU0MTAxMTY3Njg1OA=="; 
-            $membershipFee = $this->libraryFee; // Fixed annual membership fee
+            $membershipFee = $libraryFee; // Fixed annual membership fee
             $currency = "LKR"; 
             $orderId = uniqid(); 
         
@@ -50,11 +44,11 @@ class PaymentService
             $payment["amount"] = number_format($membershipFee, 2, '.', ''); 
             $payment["currency"] = $currency; 
             $payment["hash"] = $hash; 
-            $payment["first_name"] = $this->libraryName; 
+            $payment["first_name"] = $libraryName; 
             $payment["last_name"] = ""; 
-            $payment["email"] = $this->libraryEmail; 
-            $payment["phone"] = $this->libraryPhone; 
-            $payment["address"] = $this->libraryAddress; 
+            $payment["email"] = $libraryEmail; 
+            $payment["phone"] = $libraryPhone; 
+            $payment["address"] = $libraryAddress; 
             $payment["city"] = "Colombo"; 
             $payment["country"] = "Sri Lanka"; 
         

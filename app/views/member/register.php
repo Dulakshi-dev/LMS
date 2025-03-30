@@ -88,8 +88,9 @@
         }
 
         .resend-text a {
-            color: #27ee55;
-            text-decoration: none;
+    color : grey; 
+    opacity : 0.5; 
+    text-decoration: none;
         }
 
         .phone-number {
@@ -201,7 +202,7 @@
                     <div id="Box4" class="d-none">
                         <h5 class="mb-2">Enter OTP</h5>
                         <p>We have sent an OTP to your email address</p>
-                        <p><span class="otp-timer text-warning">OTP expires in <span id="timer">1m : 52s</span></span></p>
+                        <p><span class="otp-timer">OTP expires in <span id="timer text-warning"></span></span></p>
                         <form id="loginForm3">
                             <div class="otp-inputs d-flex justify-content-between mb-4">
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp1">
@@ -211,7 +212,7 @@
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp5">
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp6">
                             </div>
-                            <p class="resend-text">Don't receive? <a href="#" class="" id="resend-link">Resend OTP</a></p>
+                            <p class="resend-text">Don't receive? <a href="#" class="" id="resend-link" onclick="resendOTP()">Resend OTP</a></p>
                             <div class="row">
                                 <div class="col">
                                     <button type="button" class="bt" id="backButton2" onclick="backToBox3()">BACK</button>

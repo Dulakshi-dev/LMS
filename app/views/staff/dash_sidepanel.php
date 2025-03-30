@@ -44,7 +44,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
                 <span class="navbar-toggler-icon"></span>
             </button>
         </h4>
-        <a href="" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a  href="<?php echo Config::indexPath() ?>?action=dashboard" class="nav-link text-white p-2 border-bottom align-items-center">
             <i class="fas fa-user mr-3"></i> Dashboard
         </a>
         <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">

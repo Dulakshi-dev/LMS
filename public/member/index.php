@@ -46,7 +46,7 @@ $router->add('save', [$myLibraryController, 'saveBook']);
 $router->add('savedbooks', [$myLibraryController, 'loadSavedBooks']); 
 $router->add('unsave', [$myLibraryController, 'unSaveBook']); 
 $router->add('payment_notify', [$paymentController, 'paymentNotify']);
-$router->add('insertPayment', [$paymentController, 'renewPayment']); 
+$router->add('renewmembership', [$paymentController, 'renewPayment']); 
 $router->add('forgotpassword', [$authController, 'forgotPassword']);
 $router->add('changepassword', [$authController, 'resetPassword']);
 $router->add('serveimage', [$memberBookController, 'serveBookCover']);
@@ -129,6 +129,14 @@ $router->add('showallbooks', function () {
 
 $router->add('reservedbooks', function () {
     include Config::getViewPath("member", "reserved-books.php");
+});
+
+$router->add('expired', function () {
+    include Config::getViewPath("member", "expired.php");
+});
+
+$router->add('deactivated', function () {
+    include Config::getViewPath("member", "deactivated.php");
 });
 
 // Get the action from the URL

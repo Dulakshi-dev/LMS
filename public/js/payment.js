@@ -50,6 +50,7 @@ window.onload = function () {
 };
 
 function proceedPayment(id) {
+   
     window.membershipId = id;
     fetch("index.php?action=showPayment", {
         method: "POST",
@@ -81,7 +82,7 @@ function renewMembership(transactionId, memberId) {
     formData.append("memberId", memberId);
 
 
-    fetch("index.php?action=insertPayment", {
+    fetch("index.php?action=renewmembership", {
         method: "POST",
         body: formData,
 

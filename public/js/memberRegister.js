@@ -52,7 +52,6 @@ function registerBox3() {
         document.getElementById("Emailerror").innerText = "Please enter a valid email address";
         return false;
     } else {
-
         document.getElementById("Emailerror").innerText = "";
 
         var formData = new FormData();
@@ -69,6 +68,9 @@ function registerBox3() {
 
                     document.getElementById("Box3").classList.add("d-none");
                     document.getElementById("Box4").classList.remove("d-none");
+
+                    // Start OTP Timer
+                    startOTPTimer(120); // 120 seconds (2 minutes)
                 } else {
                     showAlert("Error", resp.message, "error");
                 }
@@ -80,6 +82,44 @@ function registerBox3() {
         return false;
     }
 }
+
+function startOTPTimer(duration) {
+    let timerDisplay = document.getElementById("timer");
+    let resendLink = document.getElementById("resend-link");
+    let otpInputs = document.querySelectorAll(".otp-box");
+
+    let timeLeft = duration; 
+
+    // Disable OTP input initially
+    otpInputs.forEach(input => input.disabled = false);
+    resendLink.style.pointerEvents = "none"; // Disable resend link
+
+    let countdown = setInterval(() => {
+        let minutes = Math.floor(timeLeft / 60);
+        let seconds = timeLeft % 60;
+
+        // Format seconds to always show two digits
+        timerDisplay.innerText = `${minutes}m : ${seconds < 10 ? "0" : ""}${seconds}s`;
+
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timerDisplay.innerText = "OTP expired";
+            
+            // Disable OTP input fields
+            otpInputs.forEach(input => input.disabled = true);
+
+            // Enable resend OTP link
+            resendLink.style.pointerEvents = "auto";
+            resendLink.style.color = " #27ee55";
+        }
+        timeLeft--;
+    }, 1000);
+}
+
+function resendOTP(){
+    registerBox3();
+}
+
 
 function registerBox4() {
     var otp1 = document.getElementById("otp1").value;

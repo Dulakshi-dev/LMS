@@ -46,7 +46,7 @@ $router->add('save', [$myLibraryController, 'saveBook']);
 $router->add('savedbooks', [$myLibraryController, 'loadSavedBooks']); 
 $router->add('unsave', [$myLibraryController, 'unSaveBook']); 
 $router->add('payment_notify', [$paymentController, 'paymentNotify']);
-$router->add('renewmembership', [$paymentController, 'renewPayment']); 
+$router->add('renew', [$paymentController, 'renewPayment']); 
 $router->add('forgotpassword', [$authController, 'forgotPassword']);
 $router->add('changepassword', [$authController, 'resetPassword']);
 $router->add('serveimage', [$memberBookController, 'serveBookCover']);

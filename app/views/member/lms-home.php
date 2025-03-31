@@ -33,10 +33,10 @@
     <!-- Top Books Section -->
     <div class="container-fluid bg-light text-white py-5">
         <div class="row">
-            <h1 class="text-start ms-4 fw-bold"><span class="text-danger">Top</span> <span class="text-dark">Books</span> </h1>
+            <h1 class="text-start ms-4 fw-bold ms-5"><span class="text-danger">Top</span> <span class="text-dark">Books</span> </h1>
         </div>
         <div class="row justify-content-center mt-5">
-            <div class="div col-9" id="topBookBody">
+            <div class="div col-10 d-flex" id="topBookBody">
 
             </div>
 

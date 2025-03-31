@@ -202,7 +202,7 @@
                     <div id="Box4" class="d-none">
                         <h5 class="mb-2">Enter OTP</h5>
                         <p>We have sent an OTP to your email address</p>
-                        <p><span class="otp-timer">OTP expires in <span id="timer text-warning"></span></span></p>
+                        <p><span class="otp-timer">OTP expires in <span id="timer" class="text-warning"></span></span></p>
                         <form id="loginForm3">
                             <div class="otp-inputs d-flex justify-content-between mb-4">
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp1">

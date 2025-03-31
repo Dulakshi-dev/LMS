@@ -159,15 +159,16 @@ function loadTopBooks() {
                     let row = `
               
 
-                <div class="col-md-3 mb-4">
-                <div class="card">
-                    <img src="${coverImageUrl}" class="card-img-top" alt="Book 5">
-                    <div class="card-body">
-                        <h5 class="card-title">${book.title}</h5>
-                        <p class="card-text">${book.author}</p>
-                    </div>
-                </div>
-            </div>
+                <div class="col-md-3 mb-4 ms-3">
+    <div class="card" style="height: 500px;">
+        <img src="${coverImageUrl}" class="card-img-top" alt="Book 5" style="height: 400px; object-fit: cover;">
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-truncate">${book.title}</h5>
+            <p class="card-text">${book.author}</p>
+        </div>
+    </div>
+</div>
+
                 `;
 
                     body.innerHTML += row;

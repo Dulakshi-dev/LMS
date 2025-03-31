@@ -84,7 +84,7 @@ class HomeModel
             INNER JOIN borrow ON book.book_id = borrow.borrow_book_id
             GROUP BY book.book_id
             ORDER BY borrow_count DESC
-            LIMIT 6;");
+            LIMIT 4;");
     
         return $rs ?: null; // Return null if the query fails
     }

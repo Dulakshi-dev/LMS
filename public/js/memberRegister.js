@@ -193,8 +193,7 @@ window.onload = function () {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    showAlert("Success", resp.message, "success");
-
+                    register(transactionId);
                 } else {
                     showAlert("Error", resp.message, "error");
 
@@ -204,7 +203,6 @@ window.onload = function () {
             .catch(error => {
                 console.error("Error fetching user data:", error);
             });
-        register(transactionId);
         return false;
     };
 
@@ -268,7 +266,6 @@ function register(transactionId) {
     var email = document.getElementById("email").value;
     var fname = document.getElementById("Fname").value;
     var lname = document.getElementById("Lname").value;
-    var password = document.getElementById("Pword").value;
 
     var formData = new FormData();
     formData.append("nic", nic);
@@ -277,7 +274,6 @@ function register(transactionId) {
     formData.append("email", email);
     formData.append("fname", fname);
     formData.append("lname", lname);
-    formData.append("password", password);
     formData.append("transactionId", transactionId);
 
 

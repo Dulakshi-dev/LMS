@@ -66,8 +66,8 @@ $fine = $libraryData['fine_amount'];
 
                         <li class="list-inline-item d-flex align-items-center">
                             <a id="prof" class="text-white text-decoration-none d-flex align-items-center" href="#">
-                                <img src="" class="mr-2 rounded-circle" alt="" id="headerprofileimg" style="width: 40px; height: 40px;">
-                                <div class="text-left mx-3">
+                            <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" 
+                            alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">                                <div class="text-left mx-3">
                                     <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
                                     <small><?php echo $role_name; ?></small>
                                 </div>
@@ -82,7 +82,9 @@ $fine = $libraryData['fine_amount'];
         <div class="justify-content-end d-flex text-right">
             <div class="align-items-center bg-dark p-2 border" id="signup">
                 <div class="text-center text-white">
-                    <img src="img/use.jpg" class="bg-dark m-2" style="width: 40px; border-radius: 50%;" alt="">
+                    <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" 
+     alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+
                     <h4>Name - Librarian</h4>
                 </div>
                 <div class="">

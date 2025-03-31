@@ -1,16 +1,16 @@
 <?php
 
 if (!isset($_SESSION['member'])) {
-  header("Location: index.php?action=login"); 
+  header("Location: index.php?action=login");
   exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['member']['last_activity']) && (time() - $_SESSION['member']['last_activity'] > 1800)) {
-    session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php?action=login"); 
-    exit;
+  session_unset();  // Clear session data
+  session_destroy();
+  header("Location: index.php?action=login");
+  exit;
 }
 
 // Reset last activity time (only if user is active)
@@ -21,13 +21,13 @@ $lname = $_SESSION["member"]["lname"];
 $profile_img = $_SESSION["member"]["profile_img"];
 
 $libraryData = HomeModel::getLibraryInfo();
-$libraryName = $libraryData['name']; 
-$libraryAddress = $libraryData['address']; 
-$libraryEmail = $libraryData['email']; 
-$libraryPhone = $libraryData['mobile']; 
-$logo = $libraryData['logo']; 
-$fee = $libraryData['membership_fee']; 
-$fine = $libraryData['fine_amount']; 
+$libraryName = $libraryData['name'];
+$libraryAddress = $libraryData['address'];
+$libraryEmail = $libraryData['email'];
+$libraryPhone = $libraryData['mobile'];
+$logo = $libraryData['logo'];
+$fee = $libraryData['membership_fee'];
+$fine = $libraryData['fine_amount'];
 
 ?>
 
@@ -46,12 +46,12 @@ $fine = $libraryData['fine_amount'];
     rel="stylesheet" />
 </head>
 
-<body onload="loadprofileimg('<?php echo addslashes($profile_img); ?>');">
+<body>
 
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="<?php echo Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
+        <img src="<?php echo Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
       </a>
 
       <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
@@ -82,12 +82,10 @@ $fine = $libraryData['fine_amount'];
           </a>
         </div>
         <div class="d-flex align-items-center me-2 px-3">
-          <img
-            src=""
-            alt="User"
-            id="headerprofileimg"
-            class="rounded-circle me-2"
-            style="height: 40px; width: 40px;" />
+          
+            <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" 
+     alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+
           <span class="text-white px-2"><?php echo $fname . " " . $lname; ?></span>
         </div>
         <button

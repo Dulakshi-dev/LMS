@@ -23,8 +23,7 @@ window.onload = function () {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    showAlert("Success", resp.message, "success");
-
+                    renewMembership(transactionId, memberId);
                 } else {
                     showAlert("Error", resp.message, "error");
 
@@ -33,7 +32,6 @@ window.onload = function () {
             .catch(error => {
                 console.error("Error fetching user data:", error);
             });
-        renewMembership(transactionId, memberId);
         return false;
     };
 
@@ -76,22 +74,22 @@ function proceedPayment(id) {
 
 }
 
-function renewMembership(transactionId, memberId) {
+function renewMembership(transactionId, member_id) {
     var formData = new FormData();
     formData.append("transactionId", transactionId);
-    formData.append("memberId", memberId);
+    formData.append("memberId", member_id);
 
-
-    fetch("index.php?action=renewmembership", {
+    fetch("index.php?action=renew", {
         method: "POST",
         body: formData,
 
     })
-    
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                window.location.href = "index.php?action=login";
+                showAlert("Success", resp.message, "success").then(() => {
+                    window.location.href = "index.php?action=login";
+                });
             } else {
                 showAlert("Error", resp.message, "error");
             }

@@ -4,23 +4,36 @@ require_once config::getdbPath();
 
 class PaymentModel
 {
-    public static function insertPayment($transaction_id, $id)
+    public static function registerPayment($transaction_id, $id, $fee)
     {
-        $result = Database::search("SELECT `next_due_date` FROM `payment` WHERE `member_id` = '$id' ORDER BY `payed_at` DESC LIMIT 1");
+       
+            Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `member_id`) 
+VALUES ('$fee', '$transaction_id', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), '$id');");
+            return true;
+        
+    }
+
+    public static function renewPayment($transaction_id, $member_id, $fee)
+    {
+        $result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = '$member_id'");
+        $row = $result->fetch_assoc();
+        $id = $row['id'];
+
+        
         if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
+            $result2 = Database::search("SELECT `next_due_date` FROM `payment` WHERE `member_id` = '$id' ORDER BY `payed_at` DESC LIMIT 1");
+            $row = $result2->fetch_assoc();
             $due_date = $row['next_due_date'];
             $next_due_date = "DATE_ADD('$due_date', INTERVAL 1 YEAR)";
 
             Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `member_id`) 
-            VALUES ('1000', '$transaction_id', NOW(), $next_due_date, '$id');");
+VALUES ('$fee', '$transaction_id', NOW(), $next_due_date, '$id');");
+
 
             return true;
-        } else {
-            Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `member_id`) 
-VALUES ('1000', '$transaction_id', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), '$id');");
-            return true;
-        }
+        }else{
+            return false;
+        } 
     }
 
     public static function sendMembershipReminder()
@@ -42,12 +55,12 @@ WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY
 
     public static function sendExpirationReminder($email, $expirationDate)
     {
-        $rs = Database::search("SELECT * FROM `member` WHERE `email` = '$email'");
+        $rs = Database::search("SELECT `member_id`.`fname`,`lname` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `email` = '$email'");
         $row = $rs->fetch_assoc();
 
         require_once Config::getServicePath('emailService.php');
 
-        $id = $row["id"];
+        $id = $row["member_id"];
         $name = $row["fname"] . " " . $row["lname"];
         $subject = 'Annual membership fee reminder';
 

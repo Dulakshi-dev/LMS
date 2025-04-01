@@ -139,6 +139,11 @@ $router->add('deactivated', function () {
     include Config::getViewPath("member", "deactivated.php");
 });
 
+$router->add('aboutsoftware', function () {
+    include Config::getViewPath("member", "about_software.php");
+});
+
+
 // Get the action from the URL
 $action = $_GET['action'] ?? 'home';
 

@@ -237,10 +237,10 @@ $_SESSION['staff']['last_activity'] = time();
                         <div class="container-fluid">
                             <div class="row">
                                 <!-- First Email Section -->
-                                <div class="col-lg-5 col-sm-12 mt-4 p-4 border rounded book-car">
+                                <div class="col-lg-12 col-sm-12 mt-4 p-4 border rounded book-car">
                                     <h4 class="text-start"><i class="fa fa-envelope"></i> Send Email to All Staff Members</h4>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-5">
                                             <div class="d-flex align-items-center gap-3 mt-3">
                                                 <label for="title1" class="col-form-label fw-bold">Subject</label>
                                                 <input type="text" id="staffsubject" class="form-control">
@@ -248,8 +248,8 @@ $_SESSION['staff']['last_activity'] = time();
                                             <span class="text-danger" id="staffsuberror"></span>
                                         </div>
 
-                                        <div class="col-12">
-                                            <div class="d-flex align-items-center gap-2 mt-3">
+                                        <div class="col-7">
+                                            <div class="d-flex align-items-center gap-2">
                                                 <label for="description1" class="col-form-label fw-bold">Message</label>
                                                 <textarea class="form-control" id="staffmsg"></textarea>
                                             </div>
@@ -260,12 +260,14 @@ $_SESSION['staff']['last_activity'] = time();
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
                                 <!-- Second Email Section -->
-                                <div class="col-lg-5 offset-lg-2 col-sm-12 mt-4 p-4 border rounded book-car"> <!-- Added ms-lg-3 for spacing on large screens -->
+                                 <div class="row">
+                                <div class="col-lg-12 col-sm-12 mt-4 p-4 border rounded book-car"> <!-- Added ms-lg-3 for spacing on large screens -->
                                     <h4 class="text-start"><i class="fa fa-envelope"></i> Send Email to All Library Members</h4>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-5">
                                             <div class="d-flex align-items-center gap-3 mt-3">
                                                 <label for="title2" class="col-form-label fw-bold">Subject</label>
                                                 <input type="text" id="membersubject" class="form-control">
@@ -273,8 +275,8 @@ $_SESSION['staff']['last_activity'] = time();
                                             <span class="text-danger" id="title2Error"></span>
                                         </div>
 
-                                        <div class="col-12">
-                                            <div class="d-flex align-items-center gap-2 mt-3">
+                                        <div class="col-7">
+                                            <div class="d-flex align-items-center gap-2">
                                                 <label for="description2" class="col-form-label fw-bold">Message</label>
                                                 <textarea class="form-control" id="membermsg"></textarea>
                                             </div>

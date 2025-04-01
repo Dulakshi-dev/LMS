@@ -39,7 +39,7 @@ $member_id = $_SESSION["member"]["member_id"];
         <a href="<?php echo Config::indexPathMember() ?>?action=reservedbooks" class="list-group-item list-group-item-action">
           <i class="fas fa-eye m-2"></i> Reserved Books
         </a>
-        <a href="#" class="list-group-item list-group-item-action">
+        <a href="<?php echo Config::indexPathMember() ?>?action=aboutsoftware" class="list-group-item list-group-item-action">
           <i class="fas fa-info-circle m-2"></i> About Software
         </a>
       </div>

@@ -12,6 +12,7 @@ require_once Config::getControllerPath("memberController.php");
 require_once Config::getControllerPath("reservationController.php");
 require_once Config::getControllerPath("librarySetupController.php");
 require_once Config::getControllerPath("dashboardController.php");
+require_once Config::getControllerPath("staffPaymentController.php");
 
 
 
@@ -28,6 +29,7 @@ $memberController = new MemberController();
 $reservationController = new ReservationController();
 $librarySetupController = new LibrarySetupController();
 $dashboardController = new DashboardController();
+$staffPaymentController = new StaffPaymentController();
 
 
 
@@ -93,6 +95,7 @@ $router->add('servelogo', [$librarySetupController, 'serveLogo']);
 $router->add('getchartdata', [$dashboardController, 'getUserChartData']);
 $router->add('getcounts', [$dashboardController, 'getDshboardCounts']);
 $router->add('gettopbooks', [$dashboardController, 'loadTopBooks']); 
+$router->add('loadpayments', [$staffPaymentController, 'getAllPayments']);
 
 
 
@@ -180,6 +183,14 @@ $router->add('viewmemberrequests', function () {
 
 $router->add('viewreservations', function () {
     include Config::getViewPath("staff", "view-reservations.php");
+});
+
+$router->add('aboutsoftware', function () {
+    include Config::getViewPath("staff", "about_software.php");
+});
+
+$router->add('paymentmanagement', function () {
+    include Config::getViewPath("staff", "view-payments.php");
 });
 
 // Get the action from the URL

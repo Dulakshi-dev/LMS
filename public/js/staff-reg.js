@@ -32,8 +32,8 @@ function submit(){
     }
 
     const phone = document.getElementById("phone").value.trim();
-    if (!/^\d{10}$/.test(phone)) {
-        document.getElementById("phoneError").textContent = "Phone number must be 10 digits.";
+    if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(phone)) {
+        document.getElementById("phoneError").textContent = "Invalid Phone Number.";
         isValid = false;
     }
 
@@ -60,6 +60,7 @@ function submit(){
             document.querySelector(".box-2").style.display = "block";
         }
     }
+
 }
 
 function register(){

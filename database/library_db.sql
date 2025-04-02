@@ -84,7 +84,6 @@ CREATE TABLE `borrow` (
 
 LOCK TABLES `borrow` WRITE;
 /*!40000 ALTER TABLE `borrow` DISABLE KEYS */;
-INSERT INTO `borrow` VALUES (17,'2025-03-07','2025-03-14','2025-03-21','B-000001',1),(26,'2025-03-19','2025-04-02',NULL,'B-000002',1),(31,'2025-04-29','2025-03-29',NULL,'B-000001',16),(32,'2025-03-30','2025-03-30',NULL,'B-000005',17),(33,'2025-03-30','2025-03-30',NULL,'B-000007',17),(34,'2025-03-30','2025-03-30',NULL,'B-000006',16);
 /*!40000 ALTER TABLE `borrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -108,7 +107,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Fiction'),(2,'Philosophy'),(3,'Literature'),(4,'Poetry'),(5,'Romance'),(6,'Thriller'),(7,'Fantacy'),(12,'Comic');
+INSERT INTO `category` VALUES (1,'Fiction'),(2,'Philosophy'),(3,'Literature'),(4,'Poetry'),(6,'Thriller'),(7,'Fantacy'),(12,'Comic');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +137,6 @@ CREATE TABLE `fines` (
 
 LOCK TABLES `fines` WRITE;
 /*!40000 ALTER TABLE `fines` DISABLE KEYS */;
-INSERT INTO `fines` VALUES (4,35,17,1);
 /*!40000 ALTER TABLE `fines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +218,7 @@ CREATE TABLE `login` (
 
 LOCK TABLES `login` WRITE;
 /*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (6,'S-000001','Dcg$11029',14),(18,'S-000002','Abc$123',26);
+INSERT INTO `login` VALUES (6,'S-000001','Dcg$11029',14);
 /*!40000 ALTER TABLE `login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,7 +253,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'200180300611','Kamal','Rathnayake','0704567123','No, 134, cross road, Kurunagala','dulakshigamma@gmail.com','2025-03-07',NULL,'67c91b567efe0_download.jpeg',1),(16,'200345654345','Saman','Perera','0711234567','No 35/5, Araliya rd, Panaduar','iddcgammanpila@gmail.com','2025-02-12',NULL,NULL,1),(17,'200034543876','John','Doe','0703454234','No12 main road, Kandy','dulakshigamma@gmail.com','2025-04-19',NULL,NULL,2),(18,'200180300647','s','s','0704565434','m','dulakshigamma@gmail.com','2025-03-31',NULL,NULL,3);
+INSERT INTO `member` VALUES (1,'200180300611','Kamal','Rathnayake','0704567123','No, 134, cross road, Kurunagala','dulakshigamma@gmail.com','2025-03-07',NULL,'67c91b567efe0_download.jpeg',1);
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,7 +282,7 @@ CREATE TABLE `member_login` (
 
 LOCK TABLES `member_login` WRITE;
 /*!40000 ALTER TABLE `member_login` DISABLE KEYS */;
-INSERT INTO `member_login` VALUES (1,'M-000001','Dcg$11029',1),(16,'M-000002','Ab$112322',16),(25,'M-000003','ZoGq9@bRDA4X',17);
+INSERT INTO `member_login` VALUES (1,'M-000001','Dcg$11029',1);
 /*!40000 ALTER TABLE `member_login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -313,7 +311,6 @@ CREATE TABLE `member_saved_book` (
 
 LOCK TABLES `member_saved_book` WRITE;
 /*!40000 ALTER TABLE `member_saved_book` DISABLE KEYS */;
-INSERT INTO `member_saved_book` VALUES (11,1,'B-000005'),(12,1,'B-000006'),(13,1,'B-000009'),(16,1,'B-000003');
 /*!40000 ALTER TABLE `member_saved_book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,8 +324,9 @@ DROP TABLE IF EXISTS `module`;
 CREATE TABLE `module` (
   `module_id` int NOT NULL AUTO_INCREMENT,
   `module_name` varchar(45) NOT NULL,
+  `module_icon` text NOT NULL,
   PRIMARY KEY (`module_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +335,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES (1,'Staff Management'),(2,'Book Management'),(3,'Circulation Management'),(4,'Member Management');
+INSERT INTO `module` VALUES (1,'Staff Management','man.png'),(2,'Book Management','reading-book.png'),(3,'Circulation Management','book.png'),(4,'Member Management','team.png'),(5,'Payment Management','credit-card.png');
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,6 +364,33 @@ LOCK TABLES `news` WRITE;
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
 INSERT INTO `news` VALUES (1,'New Book Arrived','2025-03-28','The road by cormac maccarthy was arrived. Explore our collection for more actions.','box1.jpg');
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `notification`
+--
+
+DROP TABLE IF EXISTS `notification`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `notification` (
+  `notification_id` int NOT NULL AUTO_INCREMENT,
+  `message` text NOT NULL,
+  `status` varchar(45) NOT NULL,
+  `created_at` timestamp NOT NULL,
+  `receiver_id` varchar(45) NOT NULL,
+  PRIMARY KEY (`notification_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `notification`
+--
+
+LOCK TABLES `notification` WRITE;
+/*!40000 ALTER TABLE `notification` DISABLE KEYS */;
+INSERT INTO `notification` VALUES (1,'dd','unread','2025-04-01 17:32:22','M-000001'),(2,'Welcome to Shelf Loom!','read','2025-04-01 17:56:09','M-000001'),(3,'Your membership will expire soon.','read','2025-04-01 17:56:09','M-000001'),(4,'A new book has been added!','read','2025-04-01 17:56:09','M-000001');
+/*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -412,7 +437,7 @@ CREATE TABLE `payment` (
   UNIQUE KEY `trasaction_id_UNIQUE` (`transaction_id`),
   KEY `fk_payment_member1_idx` (`member_id`),
   CONSTRAINT `fk_payment_member1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -421,7 +446,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,1000,'67ea2d3eb4522','2025-03-31 11:21:20','2026-03-31 11:21:20',18),(2,1000,'67ea2d3er23456','2025-03-31 12:32:13','2025-03-31 12:32:17',1),(7,1000,'67ea4303236e9','2025-03-31 12:54:07','2026-03-31 12:32:17',1);
+INSERT INTO `payment` VALUES (8,1000,'1111','2025-04-01 19:58:17','2026-03-01 19:58:18',1);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -456,7 +481,6 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
-INSERT INTO `reservation` VALUES (40,'2025-03-17',1,'B-000005',2,NULL,'2025-03-24'),(41,'2025-03-18',1,'B-000001',2,NULL,'2025-03-25'),(42,'2025-03-18',1,'B-000005',3,NULL,'2025-03-25'),(43,'2025-03-18',1,'B-000002',1,NULL,'2025-03-25'),(44,'2025-03-19',1,'B-000003',4,NULL,'2025-03-26'),(46,'2025-03-20',1,'B-000005',1,NULL,'2025-03-27');
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,7 +556,7 @@ CREATE TABLE `role_has_module` (
 
 LOCK TABLES `role_has_module` WRITE;
 /*!40000 ALTER TABLE `role_has_module` DISABLE KEYS */;
-INSERT INTO `role_has_module` VALUES (1,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4);
+INSERT INTO `role_has_module` VALUES (1,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4),(1,5),(2,5);
 /*!40000 ALTER TABLE `role_has_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -558,7 +582,6 @@ CREATE TABLE `staff_key` (
 
 LOCK TABLES `staff_key` WRITE;
 /*!40000 ALTER TABLE `staff_key` DISABLE KEYS */;
-INSERT INTO `staff_key` VALUES (2,'dulakshigamma@gmail.com','B98EEDB09905D38F030A57FA48037F0A');
 /*!40000 ALTER TABLE `staff_key` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -619,7 +642,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (14,'200180300619','John','Doe','0701234584','No 12, main road, Kandy','dulakshigamma@gmail.com',NULL,'67c880b7bc614_download.jpeg',1,1),(26,'200856765345','Saman','Perera','0704567654','No 123, de Silva mw, Panadura','iddcgammanpila@gmail.com',NULL,NULL,2,1);
+INSERT INTO `user` VALUES (14,'200180300619','John','Doe','0701234584','No 12, main road, Kandy','dulakshigamma@gmail.com',NULL,'67c880b7bc614_download.jpeg',1,1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -636,4 +659,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-31 19:29:31
+-- Dump completed on 2025-04-02 22:48:38

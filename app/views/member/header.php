@@ -44,6 +44,17 @@ $fine = $libraryData['fine_amount'];
   <link
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     rel="stylesheet" />
+  <style>
+    .notification-item.unread {
+      font-weight: bold;
+      background-color: #f8d7da;
+      /* Light red for unread */
+    }
+
+    .notification-item.read {
+      opacity: 0.5;
+    }
+  </style>
 </head>
 
 <body>
@@ -77,14 +88,35 @@ $fine = $libraryData['fine_amount'];
       <div
         class="d-flex align-items-center">
         <div class="position-relative me-3">
-          <a class="text-white text-decoration-none" href="#">
+          <a class="text-white text-decoration-none" href="#" id="notification-bell">
             <i class="fa fa-bell mr-3"></i>
+            <span id="notification-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle" style="display: none;"></span>
           </a>
+
+
+
+          <!-- Dropdown for Notifications -->
+          <div id="notification-dropdown" class="dropdown-menu p-2" style="display: none; position: absolute; right: 0;">
+            <p class="dropdown-header">Notifications</p>
+            <div id="notification-list">
+              <?php foreach ($notifications as $notification): ?>
+                <div class="notification-item <?= $notification['status'] === 'unread' ? 'unread' : 'read' ?>"
+                  data-id="<?= $notification['id'] ?>"
+                  style="padding: 10px; border-bottom: 1px solid #ddd;">
+                  <?= $notification['message'] ?> <br>
+                  <small><?= $notification['created_at'] ?></small> <br>
+                  <strong>Status:</strong> <?= $notification['status'] ?> <!-- Debugging -->
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+
         </div>
+
         <div class="d-flex align-items-center me-2 px-3">
-          
-            <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" 
-     alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+
+          <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
+            alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
 
           <span class="text-white px-2"><?php echo $fname . " " . $lname; ?></span>
         </div>
@@ -102,7 +134,7 @@ $fine = $libraryData['fine_amount'];
 
     </div>
   </nav>
-  <script src="<?php echo Config::getJsPath("test.js"); ?>"></script>
+  <script src="<?php echo Config::getJsPath("notofication.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 

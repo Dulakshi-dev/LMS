@@ -177,13 +177,13 @@ FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WH
         $memberID = self::generateMemberID();
         $password = self::generatePassword();
 
-        self::sendMail($id, $memberID, $password);
+        self::sendPasswordResetMail($id, $memberID, $password);
         Database::insert("INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES('$memberID','$password','$id');");
 
         return true;
     }
 
-    public static function sendMail($id, $memberID, $password, $vcode = null)
+    public static function sendPasswordResetMail($id, $memberID, $password, $vcode = null)
     {
         $rs = Database::search("SELECT * FROM `member` WHERE `id` = '$id'");
         $row = $rs->fetch_assoc();
@@ -225,6 +225,39 @@ FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WH
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
         return $emailSent;
+    }
+
+    public static function sendMemberMail($name, $email, $subject, $msg){
+
+        $rs = Database::search("SELECT `member_id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE email = '$email'");
+        $row = $rs->fetch_assoc();
+        $member_id = $row["member_id"];
+
+        require_once Config::getServicePath('emailService.php');
+
+        $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
+        <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
+            <p>Dear ' . $name . ',</p>
+        <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+            <p>We are pleased to connect with you! Here’s some important information:</p>
+            <p>' . $msg . '</p>
+            <p>If you have any questions or issues, please reach out to us.</p>
+            <p>Call:[tel_num]</p>
+
+            <div style="margin-top: 20px;">
+                <p>Best regards,</p>
+                <p>Shelf Loom Team</p>
+            </div>
+        </div>';
+
+            $emailService = new EmailService();
+            $emailSent = $emailService->sendEmail($email, $subject, $body);
+            if ($emailSent){
+                $notification = new NotificationModel();
+                $notification->sendNotification($member_id, $msg);
+                return true;
+            }
+
     }
 
 
@@ -333,4 +366,7 @@ FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WH
         $rs = Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
         return true;
     }
+
+    
+    
 }

@@ -166,4 +166,56 @@ class HomeController
         echo "Image not found.";
         exit;
     }
+
+    public function loadNotification()
+    {    
+        if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $member_id = $_SESSION["member"]["member_id"];
+            $notifications = HomeModel::getNotifications($member_id);
+    
+            if ($notifications) {
+                echo json_encode(["success" => true, "notifications" => $notifications]);
+            } else {
+                echo json_encode(["success" => true, "notifications" => []]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }
+
+    public function markAsRead()
+    {    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $notification_id = $_POST['notification_id'];            
+            // Call the model function to update the status
+            $result = HomeModel::markAsRead($notification_id);
+    
+            if ($result) {
+                echo json_encode(["success" => true, "message" => "Notification marked as read."]);
+            } else {
+                echo json_encode(["success" => false, "message" => "Failed to mark as read."]);
+            }
+        } else {
+            echo json_encode(["success" => false, "message" => "Invalid request."]);
+        }
+    }  
+    
+    public function getUnreadCount()
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        if (!isset($_SESSION["member"]["member_id"])) {
+            echo json_encode(["success" => false, "count" => 0]);
+            return;
+        }
+
+        $member_id = $_SESSION["member"]["member_id"];
+        $count = HomeModel::getUnreadNotificationCount($member_id);
+
+        echo json_encode(["success" => true, "count" => $count]);
+    } else {
+        echo json_encode(["success" => false, "message" => "Invalid request."]);
+    }
+}
+
+    
 }

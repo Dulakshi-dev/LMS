@@ -60,6 +60,10 @@ $router->add('getlibraryinfo', [$homeController, 'getLibraryInfo']);
 $router->add('contactlibrary', [$homeController, 'sendEmailtoLibrary']); 
 $router->add('gettopbooks', [$homeController, 'loadTopBooks']); 
 $router->add('servelogo', [$homeController, 'serveLogo']);
+$router->add('loadnotifications', [$homeController, 'loadNotification']); 
+$router->add('markasread', [$homeController, 'markAsRead']); 
+$router->add('getunreadcount', [$homeController, 'getUnreadCount']); 
+
 
 
 

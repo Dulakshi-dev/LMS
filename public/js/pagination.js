@@ -5,7 +5,7 @@ function createPagination(containerId, totalPages, currentPage, onPageChange) {
     paginationContainer.innerHTML = ""; 
 
     let paginationHTML = `
-        <ul class="pagination d-flex justify-content-center">
+        <ul class="pagination d-flex justify-content-center mt-5">
             <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
                 <a class="page-link" href="javascript:void(0);" onclick="${onPageChange}(${currentPage - 1})">&laquo;</a>
             </li>`;

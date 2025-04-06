@@ -18,6 +18,8 @@ function viewallbooks() {
     });
 }
 
+
+
 function loadAllBooks(page = 1, language = null, category = null) {
     if (!language) {
         language = document.getElementById("language").value.trim();
@@ -372,3 +374,67 @@ function loadLanguages(selectedLanguageId = null) {
     });
 }
 
+function searchBook() {
+    
+    title = document.getElementById("title").value.trim();
+
+    if(title === ""){
+        document.getElementById("searchResults").classList.add("d-none");
+
+    }else{
+        document.getElementById("searchResults").classList.remove("d-none");
+
+    }
+    var formData = new FormData();
+    formData.append("title", title);
+
+    // Send a POST request to the backend
+    fetch("index.php?action=searchbook", {
+        method: "POST",
+        body: formData,
+    })
+        .then(response => response.json()) // Convert response to JSON
+        .then(resp => {
+            let body = document.getElementById("searchBody");
+            body.innerHTML = "";
+            if (resp.success && resp.books.length > 0) {
+                resp.books.forEach(book => {
+                    let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
+                    let availability = book.available_qty > 0 ? "Available" : "Not Available";
+
+                    let row = `
+                <div class="col-md-3 col-sm-6">
+                  <div class="book-card">
+                    <div class="book-image">
+                      <img src="${coverImageUrl}" alt="Book Cover">
+                    </div>
+                    <div class="p-3 d-flex justify-content-between align-items-center">
+                      <div class="text-start">
+                        <div class="book-title">${book.title}</div>
+                        <div>${book.author}</div>
+                      </div>
+                      <button class="btn btn-sm view-details" id="success"
+                        data-title="${book.title}"
+                        data-author="${book.author}"
+                        data-id="${book.book_id}"
+                        data-description="${book.description}"
+                        data-availability="${availability}">
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                `;
+
+                    body.innerHTML += row;
+                });
+            } else {
+                body.innerHTML = "<p>No books found</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Error saving the book:", error); // Log error to the console
+            showAlert("Error", "Something went wrong. Please try again", "error");
+        });
+
+}

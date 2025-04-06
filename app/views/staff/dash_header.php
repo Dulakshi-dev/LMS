@@ -1,5 +1,5 @@
 <?php
-require_once "../../main.php";
+require_once __DIR__ . '/../../../main.php';
 $fname = $_SESSION["staff"]["fname"];
 $lname = $_SESSION["staff"]["lname"];
 $role_name = $_SESSION["staff"]["role_name"];
@@ -7,13 +7,13 @@ $profile_img = $_SESSION["staff"]["profile_img"];
 
 
 $libraryData = LibrarySetupModel::getLibraryInfo();
-$libraryName = $libraryData['name']; 
-$libraryAddress = $libraryData['address']; 
-$libraryEmail = $libraryData['email']; 
-$libraryPhone = $libraryData['mobile']; 
-$logo = $libraryData['logo']; 
-$fee = $libraryData['membership_fee']; 
-$fine = $libraryData['fine_amount']; 
+$libraryName = $libraryData['name'];
+$libraryAddress = $libraryData['address'];
+$libraryEmail = $libraryData['email'];
+$libraryPhone = $libraryData['mobile'];
+$logo = $libraryData['logo'];
+$fee = $libraryData['membership_fee'];
+$fine = $libraryData['fine_amount'];
 ?>
 
 <!DOCTYPE html>
@@ -45,14 +45,13 @@ $fine = $libraryData['fine_amount'];
     </style>
 </head>
 
-<body id="body" onload="loadprofileimg('<?php echo addslashes($profile_img); ?>');">
+<body id="body">
     <header class="text-white">
         <div class="row bg-dark m-0 pt-2 align-items-center">
             <div class="col navbar navbar-expand-lg navbar-dark">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="<?php echo Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
-      </a>
-
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="<?php echo Config::indexPath() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
+                </a>
             </div>
             <div class="col d-flex justify-content-end">
                 <nav>
@@ -66,8 +65,9 @@ $fine = $libraryData['fine_amount'];
 
                         <li class="list-inline-item d-flex align-items-center">
                             <a id="prof" class="text-white text-decoration-none d-flex align-items-center" href="#">
-                            <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" 
-                            alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">                                <div class="text-left mx-3">
+                                <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
+                                    alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+                                <div class="text-left mx-3">
                                     <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
                                     <small><?php echo $role_name; ?></small>
                                 </div>
@@ -82,8 +82,8 @@ $fine = $libraryData['fine_amount'];
         <div class="justify-content-end d-flex text-right">
             <div class="align-items-center bg-dark p-2 border" id="signup">
                 <div class="text-center text-white">
-                    <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" 
-     alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+                    <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
+                        alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
 
                     <h4>Name - Librarian</h4>
                 </div>
@@ -95,7 +95,6 @@ $fine = $libraryData['fine_amount'];
         </div>
 
     </header>
-    <script src="<?php echo Config::getJsPath("test.js"); ?>"></script>
 </body>
 
 </html>

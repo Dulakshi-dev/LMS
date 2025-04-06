@@ -97,6 +97,8 @@ function forgotpw() {
 
     if (email === "") {
         response.innerHTML = "Please enter the email";
+    }else if(!/^\S+@\S+\.\S+$/.test(email)){
+        response.innerHTML = "Invalid email address";
     }else{
         var formData = new FormData();
         formData.append("email", email);
@@ -173,4 +175,48 @@ function resetpassword() {
             });
 
     }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const passwordInput = document.getElementById("pw");
+    const rulesContainer = document.getElementById("passwordRulesContainer");
+
+    // Only continue if both elements exist
+    if (!passwordInput || !rulesContainer) return;
+
+    passwordInput.addEventListener("focus", () => {
+        rulesContainer.style.display = "block";
+    });
+
+    passwordInput.addEventListener("blur", () => {
+        setTimeout(() => {
+            rulesContainer.style.display = "none";
+        }, 200);
+    });
+
+    passwordInput.addEventListener("input", () => {
+        const password = passwordInput.value;
+
+        const rules = {
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            digit: /[0-9]/.test(password),
+            special: /[\W_]/.test(password)
+        };
+
+        updateRule("rule-length", rules.length);
+        updateRule("rule-uppercase", rules.uppercase);
+        updateRule("rule-lowercase", rules.lowercase);
+        updateRule("rule-digit", rules.digit);
+        updateRule("rule-special", rules.special);
+    });
+});
+
+function updateRule(id, isValid) {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    element.classList.toggle("text-danger", !isValid);
+    element.classList.toggle("text-success", isValid);
 }

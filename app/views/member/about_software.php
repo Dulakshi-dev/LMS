@@ -59,10 +59,6 @@ $_SESSION['member']['last_activity'] = time();
                         <li>Search for books by title, author, language or category</li>
                         <li>Receive notifications about due dates and new arrivals</li>
                         <li>Receive notifications about membership renewal</li>
-
-
-
-
                     </ul>
 
                     <h4>How to Use the System?</h4>

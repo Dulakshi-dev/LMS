@@ -11,7 +11,7 @@ function showAlert(title, message, type) {
 
 function loadProfileData(id) {
     var formData = new FormData();
-    formData.append("user_id", id);
+    formData.append("staff_id", id);
 
     fetch("index.php?action=loadUserData", {
         method: "POST",
@@ -37,7 +37,7 @@ function loadProfileData(id) {
                     profileImgElement.src = "index.php?action=serveprofimage&image=" + profimg;
                 }
             } else {
-                showAlert("Error",  resp.error, "error");
+                showAlert("Error", resp.message, "error");
 
             }
         })
@@ -62,7 +62,7 @@ function updateProfileDetails(event) {
     var lname = document.getElementById("lname").value;
     var phone = document.getElementById("phone").value;
     var address = document.getElementById("address").value;
-    var profimg = document.getElementById("uploadprofimg").files[0]; 
+    var profimg = document.getElementById("uploadprofimg").files[0];
 
     var isValid = true;
 
@@ -82,11 +82,8 @@ function updateProfileDetails(event) {
     if (phone.trim() === "") {
         document.getElementById("phone_error").innerText = "Mobile number is required.";
         isValid = false;
-    }
-
-    // Validate Phone
-    if (!/^\d{10}$/.test(phone)) {
-        document.getElementById("phone_error").textContent = "Phone number must be 10 digits.";
+    } else if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(phone)) {
+        document.getElementById("phone_error").innerText = "Invalid Mobile Number.";
         isValid = false;
     }
 
@@ -120,7 +117,9 @@ function updateProfileDetails(event) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                showAlert("Success", resp.message, "success");
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
             } else {
                 showAlert("Error", resp.message, "error");
             }
@@ -129,7 +128,6 @@ function updateProfileDetails(event) {
             console.error("Error fetching user data:", error);
         });
 }
-
 
 function showProfilePreview() {
     var file = document.getElementById('uploadprofimg').files[0];
@@ -222,7 +220,7 @@ function saveNewPassword(user_id) {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                   
+
                     showAlert("Success", resp.message, "success").then(() => {
                         location.reload();
                     });

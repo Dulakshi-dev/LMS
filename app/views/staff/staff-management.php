@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -53,6 +53,38 @@ $_SESSION['staff']['last_activity'] = time();
                     </nav>
                 </div>
 
+                <div class="row m-4">
+                    <div class="col-md-2">
+                        <p class="mr-3 fw-bold">New Staff Member?</p>
+                    </div>
+                    <div class="col-md-4 ">
+                        <input class="form-control" type="email" id="email" placeholder="Enter the email">
+                        <span id="emailError" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-md-1 ">
+                        <label class="form-label ms-4">Select Role</label>
+
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="roleLibraryStaff" name="role" value="Library Staff" required>
+                            <label class="form-check-label" for="roleLibraryStaff">Library Staff</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="roleLibrarian" name="role" value="Librarian" required>
+                            <label class="form-check-label" for="roleLibrarian">Librarian</label>
+                        </div>
+                        <span id="roleError" class="text-danger"></span>
+
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-dark" onclick="sendKey();">Send Enrollment Key</button>
+                    </div>
+                </div>
+
+
+
                 <div class="row g-5 m-5 justify-content-center">
 
 
@@ -75,7 +107,7 @@ $_SESSION['staff']['last_activity'] = time();
                     <!-- Add New Category -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
-                        <i class="fas fa-user-minus text-warning display-1"></i>
+                            <i class="fas fa-user-minus text-warning display-1"></i>
                             <p class="fw-bold fs-5 mt-3">View Detective Staff</p>
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning col-3 rounded-pill mt-2">Issue</a>
@@ -84,12 +116,14 @@ $_SESSION['staff']['last_activity'] = time();
                         </div>
                     </div>
 
-            
+
 
                 </div>
             </div>
         </div>
     </div>
+    <script src="<?php echo Config::getJsPath("staff.js"); ?>"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>

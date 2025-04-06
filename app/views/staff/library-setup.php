@@ -177,6 +177,8 @@ $_SESSION['staff']['last_activity'] = time();
                                         <img id="logoPreview" src="" alt="Library Logo" class="mt-3" style="width: 150px; height: auto; display: none;">
 
                                         <input type="file" id="logo" class="form-control" onchange="previewLogo(event)">
+                                        <input type="hidden" id="currentLogo" name="currentLogo" value="">
+
                                     </div>
                                     <span class="text-danger" id="logoError"></span>
 
@@ -242,7 +244,7 @@ $_SESSION['staff']['last_activity'] = time();
                                     <div class="row">
                                         <div class="col-5">
                                             <div class="d-flex align-items-center gap-3 mt-3">
-                                                <label for="title1" class="col-form-label fw-bold">Subject</label>
+                                                <label for="staffsubject" class="col-form-label fw-bold">Subject</label>
                                                 <input type="text" id="staffsubject" class="form-control">
                                             </div>
                                             <span class="text-danger" id="staffsuberror"></span>
@@ -250,7 +252,7 @@ $_SESSION['staff']['last_activity'] = time();
 
                                         <div class="col-7">
                                             <div class="d-flex align-items-center gap-2">
-                                                <label for="description1" class="col-form-label fw-bold">Message</label>
+                                                <label for="staffmsg" class="col-form-label fw-bold">Message</label>
                                                 <textarea class="form-control" id="staffmsg"></textarea>
                                             </div>
                                             <span class="text-danger" id="description1Error"></span>
@@ -269,7 +271,7 @@ $_SESSION['staff']['last_activity'] = time();
                                     <div class="row">
                                         <div class="col-5">
                                             <div class="d-flex align-items-center gap-3 mt-3">
-                                                <label for="title2" class="col-form-label fw-bold">Subject</label>
+                                                <label for="membersubject" class="col-form-label fw-bold">Subject</label>
                                                 <input type="text" id="membersubject" class="form-control">
                                             </div>
                                             <span class="text-danger" id="title2Error"></span>
@@ -277,7 +279,7 @@ $_SESSION['staff']['last_activity'] = time();
 
                                         <div class="col-7">
                                             <div class="d-flex align-items-center gap-2">
-                                                <label for="description2" class="col-form-label fw-bold">Message</label>
+                                                <label for="membermsg" class="col-form-label fw-bold">Message</label>
                                                 <textarea class="form-control" id="membermsg"></textarea>
                                             </div>
                                             <span class="text-danger" id="description2Error"></span>

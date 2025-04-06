@@ -221,9 +221,6 @@ function loadTopBooks() {
                             </div>
                         </div>
                     </div>
-
-
-
                     `;
 
                     row += bookCard;  // Add book to row
@@ -242,4 +239,14 @@ function loadTopBooks() {
         .catch(error => {
             console.error("Error fetching book data:", error);
         });
+}
+
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
 }

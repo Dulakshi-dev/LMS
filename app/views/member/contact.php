@@ -78,14 +78,19 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Full Name</label>
                             <input type="text" class="form-control" id="name" required>
+                            <p class="text-danger" id="nameerror"></p>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label">Your Email</label>
                             <input type="email" class="form-control" id="emailadd" required>
+                            <p class="text-danger" id="emailerror"></p>
+
                         </div>
                         <div class="mb-3">
                             <label for="message" class="form-label">Type Your Message</label>
                             <textarea class="form-control" id="message" rows="4" required></textarea>
+                            <p class="text-danger" id="msgerror"></p>
+
                         </div>
                         <button type="button" class="btn btn-primary" onclick="sendContactMail();">Send</button>
                 

@@ -112,7 +112,47 @@ function showAlert(title, message, type) {
     });
 }
 
+function validateContactData() {
+    // Clear previous error messages
+    document.getElementById("nameerror").textContent = "";
+    document.getElementById("emailerror").textContent = "";
+    document.getElementById("msgerror").textContent = "";
+
+    // Get the values entered by the user
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("emailadd").value.trim();
+    let message = document.getElementById("message").value.trim();
+
+    // Flag to track if the form is valid
+    let isValid = true;
+
+    // Validate Full Name
+    if (name === "") {
+        document.getElementById("nameerror").textContent = "Full Name is required.";
+        isValid = false;
+    }
+
+    // Validate Email Address
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById("emailerror").textContent = "Invalid email.";
+        isValid = false;
+    }
+
+    // Validate Message
+    if (message === "") {
+        document.getElementById("msgerror").textContent = "Message is required.";
+        isValid = false;
+    }
+
+    return isValid; // Return the validation status
+}
+
 function sendContactMail() {
+    // Validate form data
+    if (!validateContactData()) {
+        return; // Stop if the form is not valid
+    }
+
     var name = document.getElementById("name").value.trim();
     var email = document.getElementById("emailadd").value.trim();
     var msg = document.getElementById("message").value.trim();
@@ -130,16 +170,21 @@ function sendContactMail() {
         .then(resp => {
             if (resp.success) {
                 showAlert("Success", resp.message, "success").then(() => {
-                    location.reload();
+                    // You could optionally clear the form here instead of reloading
+                    document.getElementById("name").value = "";
+                    document.getElementById("emailadd").value = "";
+                    document.getElementById("message").value = "";
                 });
             } else {
-                showAlert("Error", "Failed to Send Your Massage", "error");
+                showAlert("Error", "Failed to Send Your Message", "error");
             }
         })
         .catch(error => {
             console.error("Error fetching user data:", error);
+            showAlert("Error", "There was a problem with the request.", "error");
         });
 }
+
 
 function loadTopBooks() {
 

@@ -62,9 +62,9 @@ function updateProfileDetails() {
     var phone = document.getElementById("phone").value;
     var address = document.getElementById("address").value;
     var email = document.getElementById("email").value;
-    var profimg = document.getElementById("uploadprofimg").files[0]; 
+    var profimg = document.getElementById("uploadprofimg").files[0];
 
-    
+
     // Initialize error flag
     var valid = true;
 
@@ -89,7 +89,7 @@ function updateProfileDetails() {
     }
 
     // Validate Mobile
-    if (phone.trim() === "" || !/^\d{10}$/.test(phone)) {
+    if (phone.trim() === "" || !/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(phone)) {
         document.getElementById("phoneerror").innerText = "Valid phone number is required (10 digits).";
         valid = false;
     }
@@ -118,17 +118,19 @@ function updateProfileDetails() {
             method: "POST",
             body: formData,
         })
-        .then(response => response.json())
-        .then(resp => {
-            if (resp.success) {
-                location.reload();
-            } else {
-                alert("Failed to update user data. Please try again.");
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching user data:", error);
-        });
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    showAlert("Success", resp.message, "success").then(() => {
+                        location.reload();
+                    });                
+                } else {
+                    alert("Failed to update user data. Please try again.");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching user data:", error);
+            });
     }
 }
 

@@ -308,31 +308,46 @@ function updateUserDetails() {
     var isValid = true;
 
     // NIC validation (Assuming NIC is 10 or 12 characters long)
-    if (nic === "" || !/^\d{10}|\d{12}$/.test(nic)) {
-        document.getElementById("nicError").innerText = "Invalid NIC. Must be 10 or 12 digits.";
+    if (nic === "") {
+        document.getElementById("nicError").innerText = "Enter the NIC number";
+        isValid = false;
+    }else  if (!/^(?:\d{9}[VXvx]|\d{12})$/.test(nic)) {
+        document.getElementById("nicError").innerText = "Invalid NIC.";
         isValid = false;
     }
 
     // Username validation (Non-empty, alphabets only)
-    if (username === "" || !/^[a-zA-Z\s]+$/.test(username)) {
-        document.getElementById("usernameError").innerText = "Invalid name. Only letters are allowed.";
+    if (username === "") {
+        document.getElementById("usernameError").innerText = "Enter the user name.";
+        isValid = false;
+    }else if(!/^[a-zA-Z\s]+$/.test(username)) {
+        document.getElementById("usernameError").innerText = "Invalid name.";
         isValid = false;
     }
 
     // Email validation
-    if (email === "" || !/^\S+@\S+\.\S+$/.test(email)) {
-        document.getElementById("emailError").innerText = "Invalid email format.";
+    if (email === "") {
+        document.getElementById("emailError").innerText = "Enter the email.";
+        isValid = false;
+    }else if (!/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById("emailError").innerText = "Invalid email address.";
         isValid = false;
     }
 
     // Phone number validation (10-digit number)
-    if (phone === "" || !/^\d{10}$/.test(phone)) {
-        document.getElementById("phoneError").innerText = "Invalid phone number. Must be 10 digits.";
+    if (phone === "") {
+        document.getElementById("phoneError").innerText = "Enter the mobile number.";
+        isValid = false;
+    }else if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(phone)) {
+        document.getElementById("phoneError").innerText = "Invalid mibile number.";
         isValid = false;
     }
 
     // Address validation (Minimum 5 characters)
-    if (address === "" || address.length < 5) {
+    if (address === "") {
+        document.getElementById("addressError").innerText = "Enter the address.";
+        isValid = false;
+    }else if (address.length < 5) {
         document.getElementById("addressError").innerText = "Address must be at least 5 characters.";
         isValid = false;
     }
@@ -499,7 +514,7 @@ function sendEmail() {
     formData.append("subject", subject);
     formData.append("message", message);
 
-    fetch("index.php?action=sendMail", {
+    fetch("index.php?action=sendMailMember", {
         method: "POST",
         body: formData,
     })

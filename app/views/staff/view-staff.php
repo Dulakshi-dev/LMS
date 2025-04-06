@@ -58,7 +58,6 @@ $page = $page ?? 1;
                         <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadUsers(1,'Active');"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
-                </form>
             </div>
 
             <div class="px-1">
@@ -75,8 +74,6 @@ $page = $page ?? 1;
                         </tr>
                     </thead>
 
-                    <input type="email" id="e">
-                    <button onclick="sendKey();">Send Enrollment Key</button>
 
                     <tbody id="userTableBody">
                     </tbody>
@@ -102,7 +99,7 @@ $page = $page ?? 1;
                 <div class="p-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="membershipID">Membership ID</label>
+                            <label for="userID">Membership ID</label>
                             <input type="text" class="form-control" id="userID" value="" disabled>
                         </div>
                         <div class="col-md-6">
@@ -181,7 +178,7 @@ $page = $page ?? 1;
 
 
     <!-- Bootstrap and JavaScript -->
-    <script src="<?php echo Config::getJsPath("user.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("staff.js"); ?>"></script>
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

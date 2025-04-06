@@ -1,16 +1,16 @@
 <?php
 
 if (!isset($_SESSION['member'])) {
-  header("Location: index.php?action=login"); 
+  header("Location: index.php?action=login");
   exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['member']['last_activity']) && (time() - $_SESSION['member']['last_activity'] > 1800)) {
-    session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php?action=login"); 
-    exit;
+  session_unset();  // Clear session data
+  session_destroy();
+  header("Location: index.php?action=login");
+  exit;
 }
 
 // Reset last activity time (only if user is active)
@@ -85,23 +85,35 @@ $_SESSION['member']['last_activity'] = time();
 
           <div class="col-lg-4 col-md-8">
             <div class="d-flex gap-2">
-              <input type="text" class="form-control" placeholder="Search your favourite Book">
-              <button class="btn"><i class="fa fa-search"></i></button>
+              <input id="title" type="text" class="form-control" placeholder="Search your favourite Book" oninput="searchBook();">
             </div>
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end">
+          <a href="<?php echo Config::indexPathMember() ?>?action=showallbooks" class="text-decoration-none me-5">
+            See All Books <i class="fa fa-angle-right"></i>
+          </a>
+        </div>
+      </div>
+      <div class="row">
 
-         
+        <div class="col-md-12 d-none" id="searchResults">
+          <div class="bg-light rounded p-4 mb-5">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5>Search Results</h5>
+            </div>
+            <div class="row g-4" id="searchBody">
+
+            </div>
+          </div>
         </div>
 
-
-      </div>
-
-      <div class="row">
         <div class="col-md-12 ">
           <div class="bg-light rounded p-4 mb-5">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h5>Recommended</h5>
-              <a href="<?php echo Config::indexPathMember() ?>?action=showallbooks" class="text-decoration-none">See All <i class="fa fa-angle-right"></i></a>
             </div>
             <div class="row g-4" id="recommendedBooks">
 
@@ -182,7 +194,7 @@ $_SESSION['member']['last_activity'] = time();
       const rbox2 = document.getElementById("rbox-2");
 
       reserveBtn.addEventListener("click", function() {
-rbox2.classList.remove("d-none");
+        rbox2.classList.remove("d-none");
         reserveBtn.style.display = "none";
       });
 

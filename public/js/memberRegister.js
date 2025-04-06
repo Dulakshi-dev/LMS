@@ -11,11 +11,13 @@ function showAlert(title, message, type) {
 function registerBox1() {
     var nic = document.getElementById("NICNumber").value;
 
-    if (nic === "" || !/^(?:\d{10}|\d{12})$/.test(nic)) {
-        document.getElementById("nicnumerror").innerText = "Invalid NIC. Must be 10 or 12 digits.";
+    if (nic === "") {
+        document.getElementById("nicnumerror").innerText = "NIC Required.";
         return false;
-    }
-    else {
+    }else if(!/^(?:\d{9}[VX]|\d{12})$/.test(nic)){
+        document.getElementById("nicnumerror").innerText = "Invalid NIC.";
+        return false;
+    } else {
         document.getElementById("nicnumerror").innerText = "";
 
         document.getElementById("Box1").classList.add("d-none");
@@ -31,8 +33,11 @@ function registerBox2() {
     if (Address === "") {
         document.getElementById("Addresserror").innerText = "Please enter Address";
         return false;
-    } else if (PhoneNumber === "" || !/^(0[1-9][0-9]{8})$/.test(PhoneNumber)) {
-        document.getElementById("Pnumerror").innerText = "Please enter a valid mobile number";
+    } else if (PhoneNumber === "") {
+        document.getElementById("Pnumerror").innerText = "Please enter mobile number";
+        return false;
+    }else if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(PhoneNumber)) {
+        document.getElementById("Pnumerror").innerText = "Invalid mobile number";
         return false;
     } else {
         document.getElementById("Addresserror").innerText = "";
@@ -48,8 +53,11 @@ function registerBox2() {
 function registerBox3() {
     var email = document.getElementById("email").value;
 
-    if (email === "" || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i.test(email)) {
-        document.getElementById("Emailerror").innerText = "Please enter a valid email address";
+    if (email === "") {
+        document.getElementById("Emailerror").innerText = "Please enter the email address";
+        return false;
+    }else if (!/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById("Emailerror").innerText = "Invalid email address";
         return false;
     } else {
         document.getElementById("Emailerror").innerText = "";

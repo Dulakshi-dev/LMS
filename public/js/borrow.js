@@ -181,57 +181,91 @@ function loadMemberData() {
 
 function issueBook() {
     // Get the values from the form fields
-    var book_id = document.getElementById("book_id").value;
-    var member_id = document.getElementById("member_id").value;
-    var issueDate = document.getElementById("issueDate").value;
-    var returnDate = document.getElementById("returnDate").value;
+    const memberidPattern = /^M-\d{6}$/;
+    const bookidPattern = /^B-\d{6}$/;
+
+    var book_id = document.getElementById("book_id").value.trim();
+    var member_id = document.getElementById("member_id").value.trim();
+    var issueDate = document.getElementById("issueDate").value.trim();
+    var returnDate = document.getElementById("returnDate").value.trim();
 
     // Detail validation
-    if (book_id.trim() === "") {
+    var isValid = true;
+
+    // Reset all error messages
+    document.getElementById("book_id_error").innerText = "";
+    document.getElementById("member_id_error").innerText = "";
+    document.getElementById("issueDate_error").innerText = "";
+    document.getElementById("returnDate_error").innerText = "";
+
+    // Validate form fields
+    if (book_id === "") {
         document.getElementById("book_id_error").innerText = "Book ID is required.";
-    } else if (member_id.trim() === "") {
+        isValid = false;
+    }else if(!book_id.match(bookidPattern)){
+        document.getElementById("book_id_error").innerText = "Invalid Book ID.";
+        isValid = false;
+
+    }
+
+    if (member_id === "") {
         document.getElementById("member_id_error").innerText = "Membership ID is required.";
         isValid = false;
-    } if (issueDate.trim() === "") {
-        document.getElementById("issueDate_error").innerText = "Issue date is required.";
+    }else if(!member_id.match(memberidPattern)){
+        document.getElementById("member_id_error").innerText = "Invalid Membership ID.";
+        isValid = false;
 
-    } if (returnDate.trim() === "") {
-        document.getElementById("returnDate_error").innerText = "Due date is required.";
-    } else {
-        let formData = new FormData();
-
-        // Collect input values
-        formData.append("book_id", document.getElementById("book_id").value);
-        formData.append("member_id", document.getElementById("member_id").value);
-        formData.append("isbn", document.getElementById("isbn").value);
-        formData.append("nic", document.getElementById("nic").value);
-        formData.append("title", document.getElementById("title").value);
-        formData.append("memName", document.getElementById("memName").value);
-        formData.append("author", document.getElementById("author").value);
-        formData.append("borrow_date", document.getElementById("issueDate").value);
-        formData.append("due_date", document.getElementById("returnDate").value);
-
-        // Send data to controller 
-        fetch("index.php?action=issuebook", {
-            method: "POST",
-            body: formData
-        })
-            .then(response => response.json())
-            .then(resp => {
-                if (resp.success) {
-                    showAlert("Success", resp.message, "success").then(() => {
-                        location.reload();
-                    });
-                } else {
-                    Swal.fire("Error", resp.message, "error"); // Show error message
-                }
-            })
-            .catch(error => {
-                console.error("Error issuing book:", error);
-                Swal.fire("Error", "Something went wrong!", "error");
-            });
     }
+
+
+    if (issueDate === "") {
+        document.getElementById("issueDate_error").innerText = "Issue date is required.";
+        isValid = false;
+    }
+    if (returnDate === "") {
+        document.getElementById("returnDate_error").innerText = "Due date is required.";
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return;  // Stop form submission if validation fails
+    }
+
+    // Create a new FormData object
+    let formData = new FormData();
+
+    // Collect input values
+    formData.append("book_id", book_id);
+    formData.append("member_id", member_id);
+    formData.append("isbn", document.getElementById("isbn").value);
+    formData.append("nic", document.getElementById("nic").value);
+    formData.append("title", document.getElementById("title").value);
+    formData.append("memName", document.getElementById("memName").value);
+    formData.append("author", document.getElementById("author").value);
+    formData.append("borrow_date", issueDate);
+    formData.append("due_date", returnDate);
+
+    // Send data to controller 
+    fetch("index.php?action=issuebook", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(resp => {
+        if (resp.success) {
+            showAlert("Success", resp.message, "success").then(() => {
+                location.reload();
+            });
+        } else {
+            Swal.fire("Error", resp.message, "error"); // Show error message
+        }
+    })
+    .catch(error => {
+        console.error("Error issuing book:", error);
+        Swal.fire("Error", "Something went wrong!", "error");
+    });
 }
+
 
 function generateFine(finePerDay) {
 

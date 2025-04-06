@@ -32,8 +32,6 @@ require_once "../../main.php";
 </head>
 
 <body class="x">
-
-
     <div class="login-container my-5">
         <h1 class="text-dark text-center">Hi! Welcome Back</h1>
         <div class="row p-4 justify-content-center align-items-center">
@@ -70,8 +68,8 @@ require_once "../../main.php";
 
 
                     <div class="col mt-3">
-                        <input type="checkbox" name="rememberme" id="rememberme">
-                        <label for="rememberme">Remember me</label>
+                    <input type="checkbox" name="rememberme" id="rememberme" <?php echo isset($_COOKIE["staffid"]) ? "checked" : ""; ?>>
+                    <label for="rememberme">Remember me</label>
                     </div>
 
                     <div class="mt-1 bg-danger-subtle p-1 rounded-3 d-none" id="errormsgdiv">

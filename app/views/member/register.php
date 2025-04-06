@@ -8,7 +8,7 @@
 
     <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <Style>
+    <style>
         .Important {
             background-color: rgb(88, 84, 76);
         }
@@ -60,8 +60,6 @@
             background-color: #141414;
         }
 
-
-
         .otp-inputs {
             display: flex;
             justify-content: space-between;
@@ -88,9 +86,9 @@
         }
 
         .resend-text a {
-    color : grey; 
-    opacity : 0.5; 
-    text-decoration: none;
+            color: grey;
+            opacity: 0.5;
+            text-decoration: none;
         }
 
         .phone-number {
@@ -109,13 +107,13 @@
     <div class="text-white p-5 mt-3 Important">
         <h1 class="text-danger fs-1font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h1>
         <ol class="py-4 fs-5">
-        Membership Fee:
-                <ul class="m-3">
-                    <li>The annual membership fee is <span class="phone-number font-weight-bold">RS <?= $fee ?></span></li>
-                </ul>
-                <ul class="m-3">
-                    <li>Make the payment online through the designated payment portal at the end of the registration process.</li>
-                </ul>
+            Membership Fee:
+            <ul class="m-3">
+                <li>The annual membership fee is <span class="phone-number font-weight-bold">RS <?= $fee ?></span></li>
+            </ul>
+            <ul class="m-3">
+                <li>Make the payment online through the designated payment portal at the end of the registration process.</li>
+            </ul>
         </ol>
     </div>
 
@@ -185,7 +183,7 @@
                                     <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email">
                                     <div id="Emailerror" class="text-danger"></div>
                                 </div>
-                                
+
                             </div>
                             <div class="row">
                                 <div class="col">
@@ -240,7 +238,7 @@
                                     <input type="text" class="form-control" id="Lname" placeholder="Enter Last Name">
                                     <div id="Lerror" class="text-danger"></div>
                                 </div>
-                                
+
                             </div>
                             <div>
                                 <input type="checkbox" id="agreeCheckbox">
@@ -249,7 +247,7 @@
                             <div class="row text-center">
                                 <div class="col text-white">
                                     <button id="btn5" type="button" class="bt mt-2" onclick="registerBox5()">Proceed to payment</button>
-                                 
+
                                 </div>
                             </div>
                         </form>
@@ -264,10 +262,11 @@
     ?>
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo Config::getJsPath("memberRegister.js"); ?>"></script>
     <script src="https://www.payhere.lk/lib/payhere.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 
 </html>

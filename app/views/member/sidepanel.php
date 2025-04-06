@@ -55,7 +55,7 @@ $member_id = $_SESSION["member"]["member_id"];
             style="height: 40px; width: 40px;" />
           <p class="mb-0"><?php echo $fname . " " . $lname; ?></p>
         </div>
-        <div class="d-flex"><a href="#" class="btn btn-outline-dark btn-sm mt-4 w-50 d-flex align-items-center">
+        <div class="d-flex"><a href="index.php?action=logout" class="btn btn-outline-dark btn-sm mt-4 w-50 d-flex align-items-center">
             <i class="fas fa-sign-out-alt mx-2"></i>
             Log Out
           </a></div>

@@ -47,7 +47,6 @@ $fine = $libraryData['fine_amount'];
   <style>
     .notification-item.unread {
       font-weight: bold;
-      background-color: #f8d7da;
       /* Light red for unread */
     }
 
@@ -93,23 +92,17 @@ $fine = $libraryData['fine_amount'];
             <span id="notification-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle" style="display: none;"></span>
           </a>
 
-
+          <!-- Dropdown for Notifications -->
+          
 
           <!-- Dropdown for Notifications -->
-          <div id="notification-dropdown" class="dropdown-menu p-2" style="display: none; position: absolute; right: 0;">
+          <div id="notification-dropdown" class="dropdown-menu p-2" style="display: none; position: absolute; right: 0; max-height: 300px; overflow-y: auto;">
             <p class="dropdown-header">Notifications</p>
-            <div id="notification-list">
-              <?php foreach ($notifications as $notification): ?>
-                <div class="notification-item <?= $notification['status'] === 'unread' ? 'unread' : 'read' ?>"
-                  data-id="<?= $notification['id'] ?>"
-                  style="padding: 10px; border-bottom: 1px solid #ddd;">
-                  <?= $notification['message'] ?> <br>
-                  <small><?= $notification['created_at'] ?></small> <br>
-                  <strong>Status:</strong> <?= $notification['status'] ?> <!-- Debugging -->
-                </div>
-              <?php endforeach; ?>
-            </div>
+            <div id="notification-list"></div>
+            <p>Check your emails for full message.</p>
           </div>
+
+
 
         </div>
 
@@ -134,7 +127,7 @@ $fine = $libraryData['fine_amount'];
 
     </div>
   </nav>
-  <script src="<?php echo Config::getJsPath("notofication.js"); ?>"></script>
+  <script src="<?php echo Config::getJsPath("notification.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 

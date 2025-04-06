@@ -86,7 +86,7 @@ $member_id = $_SESSION["member"]["member_id"];
               <div class="row">
                 <div class="col-lg-6 col-sm-6 mb-3">
                   <label for="nic">NIC</label>
-                  <input id="nic" name="nic" class="form-control" type="text">
+                  <input id="nic" name="nic" class="form-control" type="text" disabled>
                   <span class="text-danger" id="nicerror"></span>
                 </div>
                 <div class="col-lg-6 col-sm-6 mb-3">

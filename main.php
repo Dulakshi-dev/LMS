@@ -45,14 +45,15 @@ class Config {
     public static function getViewPath(String $entity, String $view){
         return Config::$paths["views"] . $entity . "\\" . $view;
     }
- 
-    public static function getControllerPath(String $controller){
-        return Config::$paths["controllers"] . $controller;
+
+    public static function getControllerPath(String $entity, String $controller){
+        return Config::$paths["controllers"] . $entity . "\\" . $controller;
     }
 
-    public static function getModelPath(String $model){
-        return Config::$paths["models"] . $model;
+    public static function getModelPath(String $entity, String $model){
+        return Config::$paths["models"] . $entity . "\\" . $model;
     }
+ 
     
     public static function getImagePath(String $image){
         return Config::$paths["images"] . $image;

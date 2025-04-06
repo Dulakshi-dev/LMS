@@ -3,25 +3,24 @@
 // Include the Router and other necessary files
 require_once '../../router.php';
 require_once '../../main.php';
-require_once Config::getControllerPath("loginController.php");
-require_once Config::getControllerPath("userController.php");
-require_once Config::getControllerPath("bookController.php");
-require_once Config::getControllerPath("circulationController.php");
-require_once Config::getControllerPath("profileController.php");
-require_once Config::getControllerPath("memberController.php");
-require_once Config::getControllerPath("reservationController.php");
-require_once Config::getControllerPath("librarySetupController.php");
-require_once Config::getControllerPath("dashboardController.php");
-require_once Config::getControllerPath("staffPaymentController.php");
-
-
+require_once Config::getControllerPath("staff","authController.php");
+require_once Config::getControllerPath("staff","staffController.php");
+require_once Config::getControllerPath("staff","bookController.php");
+require_once Config::getControllerPath("staff","circulationController.php");
+require_once Config::getControllerPath("staff","profileController.php");
+require_once Config::getControllerPath("staff","memberController.php");
+require_once Config::getControllerPath("staff","reservationController.php");
+require_once Config::getControllerPath("staff","librarySetupController.php");
+require_once Config::getControllerPath("staff","dashboardController.php");
+require_once Config::getControllerPath("staff","paymentController.php");
+require_once Config::getControllerPath("staff","notificationController.php");
 
 // Initialize the Router
 $router = new Router();
 
 // Create controller instances
-$loginController = new LoginController();
-$userController = new UserController();
+$authController = new AuthController();
+$staffController = new StaffController();
 $bookController = new BookController();
 $circulationController = new CirculationController();
 $profileController = new ProfileController();
@@ -29,21 +28,19 @@ $memberController = new MemberController();
 $reservationController = new ReservationController();
 $librarySetupController = new LibrarySetupController();
 $dashboardController = new DashboardController();
-$staffPaymentController = new StaffPaymentController();
-
-
+$paymentController = new PaymentController();
+$notificationController = new NotificationController();
 
 // Define the routes and map them to controller methods
-$router->add('loginProcess', [$loginController, 'login']);
-$router->add('logout', [$loginController, 'logout']);
-$router->add('loadusers', [$userController, 'loadUsers']);
-
-//$router->add('staffmanagement', [$userController, 'loadUsers']);
-$router->add('loadUserData', [$userController, 'loadUserDetails']); 
-$router->add('updateUser', [$userController, 'UpdateUserDetails']);
-$router->add('loadMailData', [$userController, 'loadMailData']); 
-$router->add('sendMail', [$userController, 'sendMail']); 
-$router->add('deactivateuser', [$userController, 'deactivateUser']);
+$router->add('loginProcess', [$authController, 'login']);
+$router->add('logout', [$authController, 'logout']);
+$router->add('loadusers', [$staffController, 'loadStaff']);
+$router->add('loadUserData', [$staffController, 'loadStaffDetails']); 
+$router->add('updateUser', [$staffController, 'UpdateStaffDetails']);
+$router->add('loadMailData', [$staffController, 'loadMailData']); 
+$router->add('sendMailMember', [$memberController, 'sendMail']); 
+$router->add('sendMailStaff', [$staffController, 'sendMail']); 
+$router->add('deactivateuser', [$staffController, 'deactivateStaff']);
 $router->add('addBookData', [$bookController, 'addBookData']);
 $router->add('loadBooks', [$bookController, 'getAllBooks']);
 $router->add('loadBookData', [$bookController, 'loadBookDetails']);
@@ -51,9 +48,9 @@ $router->add('addCategoryData', [$bookController, 'addCategory']);
 $router->add('updateBook', [$bookController, 'updateBookDetails']); 
 $router->add('searchBooks', [$bookController, 'searchBooks']);
 $router->add('deactivatebook', [$bookController, 'deactivateBook']);
-$router->add('register', [$loginController, 'register']);
-$router->add('forgotpassword', [$loginController, 'forgotPassword']);
-$router->add('resetpassword', [$loginController, 'resetPassword']);
+$router->add('register', [$authController, 'register']);
+$router->add('forgotpassword', [$authController, 'forgotPassword']);
+$router->add('resetpassword', [$authController, 'resetPassword']);
 $router->add('loadborrowbookdata', [$circulationController, 'loadBookDetails']);
 $router->add('loadborrowmemberdata', [$circulationController, 'loadMemberDetails']);
 $router->add('issuebook', [$circulationController, 'issueBook']);
@@ -80,10 +77,10 @@ $router->add('loadreservations', [$reservationController, 'getAllReservations'])
 $router->add('loadcategories', [$bookController, 'getAllCategories']);
 $router->add('activatebook', [$bookController, 'activateBook']);
 $router->add('deletecategory', [$bookController, 'deleteCategory']);
-$router->add('activatestaff', [$userController, 'activateUser']);
+$router->add('activatestaff', [$staffController, 'activateStaff']);
 $router->add('activatemember', [$memberController, 'activateMember']);
 $router->add('activaterequest', [$memberController, 'activateRequest']);
-$router->add('sendkey', [$userController, 'sendEnrollmentKey']);
+$router->add('sendkey', [$staffController, 'sendEnrollmentKey']);
 $router->add('changeopeninghours', [$librarySetupController, 'changeOpeningHours']);
 $router->add('changenewsupdates', [$librarySetupController, 'changeNewsUpdates']);
 $router->add('changelibraryinfo', [$librarySetupController, 'changeLibraryInfo']);
@@ -93,11 +90,9 @@ $router->add('getopeninghours', [$librarySetupController, 'loadOpeningHours']);
 $router->add('getlibraryinfo', [$librarySetupController, 'getLibraryInfo']);
 $router->add('servelogo', [$librarySetupController, 'serveLogo']);
 $router->add('getchartdata', [$dashboardController, 'getUserChartData']);
-$router->add('getcounts', [$dashboardController, 'getDshboardCounts']);
+$router->add('getcounts', [$dashboardController, 'getDashboardCounts']);
 $router->add('gettopbooks', [$dashboardController, 'loadTopBooks']); 
-$router->add('loadpayments', [$staffPaymentController, 'getAllPayments']);
-
-
+$router->add('loadpayments', [$paymentController, 'getAllPayments']);
 
 $router->add('login', function () {
     include Config::getViewPath("staff", "login.php");
@@ -175,7 +170,6 @@ $router->add('viewdeactivatedbooks', function () {
 $router->add('viewrejectedrequests', function () {
     include Config::getViewPath("staff", "view-rejected-requests.php");
 });
-
 
 $router->add('viewmemberrequests', function () {
     include Config::getViewPath("staff", "view-member-requests.php");

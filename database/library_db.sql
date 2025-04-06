@@ -52,7 +52,7 @@ CREATE TABLE `book` (
 
 LOCK TABLES `book` WRITE;
 /*!40000 ALTER TABLE `book` DISABLE KEYS */;
-INSERT INTO `book` VALUES ('B-000001','978-0061120084','To Kill a Mockingbird','Harper Lee','1960','A story about racial injustice and the loss of innocence in a small town in the southern United States.','67c8038bdde32_1.jpg',1,1,1,1,2),('B-000002','978-8193182085','Siluvai','Sudha Murugan','2007','A poignant Tamil novel about family bonds and the conflicts within, delving into human emotions and life struggles.','67c804747bf16_3.jpeg',15,15,3,1,3),('B-000003','9552023785','තුංමං හන්දිය','Mahagama Sekara','2008','The story revolves around a simple yet profound narrative of a young boy and his emotional journey as he struggles with the challenges of life, relationships, and societal expectations. The book explores themes of love, innocence, and the quest for identity, drawing readers into the poignant experiences of the protagonist. ','67c8061619930_4.jpeg',20,20,4,1,1),('B-000004','978-0451205767','The Godfather','Mario Puzo','1969','A powerful crime drama set around the Corleone family, touching upon themes of loyalty, crime, and the Mafia.','67c806db3ead7_5.jpeg',10,9,6,2,2),('B-000005','978-0618640157','The Lord of the Rings','Tolkien','2000','An epic high-fantasy novel following Frodo’s quest to destroy the One Ring.','67c847cb1a418_7.jpg',5,1,7,1,2),('B-000006','978-0439708180','Harry Potter and the Sorcerer’s Stone','JKRowling','2000','The first book in the Harry Potter series, following a young wizard’s journey at Hogwarts.','67c8485c54f35_8.jpeg',3,0,7,1,2),('B-000007','978-0-618-25727-9','Unfinished Tales','Tolkien','2012','Includes incomplete and alternative versions of stories, providing deeper insights into Tolkien’s world-building. Edited by his son, Christopher Tolkien, the book explores untold histories of Middle-earth, including the backstory of Gandalf and the origins of the Istari (wizards), as well as events from The Silmarillion and The Lord of the Rings.','67c849c33633a_9.jpeg',4,2,7,1,2),('B-000008','978-624-99968-0-7','DUO','Surath de Mel','2023','\"Duo\" explores the profound impact of Sri Lanka\'s turbulent history on individual lives. The novel delves into the protracted civil war in the north and the 1988-89 insurgency in the south, highlighting how these events eroded the social fabric of Sinhala Buddhist society. Through the experiences of characters like Uma, Depika, and Sarah, de Mel portrays the indelible consequences of these conflicts, offering readers a contemplative and immersive experience. ','67c84ba158b92_6.jpg',10,6,1,1,1),('B-000009','0-307-26543-9','The Road','Cormac McCarthy','2012','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','67c8584f79780_10.jpg',10,7,1,1,2);
+INSERT INTO `book` VALUES ('B-000001','978-0061120084','To Kill a Mockingbird','Harper Lee','1960','A story about racial injustice and the loss of innocence in a small town in the southern United States.','67c8038bdde32_1.jpg',1,0,1,1,2),('B-000002','978-8193182085','Siluvai','Sudha Murugan','2007','A poignant Tamil novel about family bonds and the conflicts within, delving into human emotions and life struggles.','67c804747bf16_3.jpeg',15,15,3,1,3),('B-000003','9552023785','තුංමං හන්දිය','Mahagama Sekara','2008','The story revolves around a simple yet profound narrative of a young boy and his emotional journey as he struggles with the challenges of life, relationships, and societal expectations. The book explores themes of love, innocence, and the quest for identity, drawing readers into the poignant experiences of the protagonist.','67c8061619930_4.jpeg',20,20,4,1,1),('B-000004','978-0451205767','The Godfather','Mario Puzo','1969','A powerful crime drama set around the Corleone family, touching upon themes of loyalty, crime, and the Mafia.','67c806db3ead7_5.jpeg',10,9,6,1,2),('B-000005','978-0618640157','The Lord of the Rings','Tolkien','2000','An epic high-fantasy novel following Frodo’s quest to destroy the One Ring.','67c847cb1a418_7.jpg',6,5,7,1,2),('B-000006','978-0439708180','Harry Potter and the Sorcerer’s Stone','JKRowling','2000','The first book in the Harry Potter series, following a young wizard’s journey at Hogwarts.','67c8485c54f35_8.jpeg',3,3,7,1,2),('B-000007','978-0-618-25727-9','Unfinished Tales','Tolkien','2012','Includes incomplete and alternative versions of stories, providing deeper insights into Tolkien’s world-building. Edited by his son, Christopher Tolkien, the book explores untold histories of Middle-earth, including the backstory of Gandalf and the origins of the Istari (wizards), as well as events from The Silmarillion and The Lord of the Rings.','67c849c33633a_9.jpeg',3,2,7,1,2),('B-000008','978-624-99968-0-7','DUO','Surath de Mel','2023','\"Duo\" explores the profound impact of Sri Lanka\'s turbulent history on individual lives. The novel delves into the protracted civil war in the north and the 1988-89 insurgency in the south, highlighting how these events eroded the social fabric of Sinhala Buddhist society. Through the experiences of characters like Uma, Depika, and Sarah, de Mel portrays the indelible consequences of these conflicts, offering readers a contemplative and immersive experience. ','67c84ba158b92_6.jpg',10,6,1,1,1),('B-000009','0-307-26543-9','The Road','Cormac McCarthy','2012','The Road is a 2006 post-apocalyptic novel by American writer Cormac McCarthy. The book details the grueling journey of a father and his young son over several months across a landscape blasted by an unspecified cataclysm that has destroyed industrial civilization and nearly all life.','67c8584f79780_10.jpg',10,6,1,1,2),('B-000010','9780718157838','Me Before You','Jojo Moyes','2012','ouisa Clark takes a job caring for Will Traynor, a once-active man left paralyzed after an accident. Their relationship blossoms in unexpected ways, teaching them both about love, courage, and the value of life even when the odds seem impossible.','67f225a3d8c8e_11.jpg',2,2,13,1,2);
 /*!40000 ALTER TABLE `book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -75,7 +75,7 @@ CREATE TABLE `borrow` (
   KEY `fk_borrow_member1_idx` (`borrow_member_id`),
   CONSTRAINT `fk_borrow_book1` FOREIGN KEY (`borrow_book_id`) REFERENCES `book` (`book_id`),
   CONSTRAINT `fk_borrow_member1` FOREIGN KEY (`borrow_member_id`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,6 +84,7 @@ CREATE TABLE `borrow` (
 
 LOCK TABLES `borrow` WRITE;
 /*!40000 ALTER TABLE `borrow` DISABLE KEYS */;
+INSERT INTO `borrow` VALUES (35,'2025-04-04','2025-04-04','2025-04-06','B-000007',1),(36,'2025-04-07','2025-04-21',NULL,'B-000001',1),(37,'2025-04-06','2025-04-20',NULL,'B-000009',1);
 /*!40000 ALTER TABLE `borrow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,7 +99,7 @@ CREATE TABLE `category` (
   `category_id` int NOT NULL AUTO_INCREMENT,
   `category_name` varchar(45) NOT NULL,
   PRIMARY KEY (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +108,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'Fiction'),(2,'Philosophy'),(3,'Literature'),(4,'Poetry'),(6,'Thriller'),(7,'Fantacy'),(12,'Comic');
+INSERT INTO `category` VALUES (1,'Fiction'),(2,'Philosophy'),(3,'Literature'),(4,'Poetry'),(6,'Thriller'),(7,'Fantacy'),(12,'Comic'),(13,'Romance');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -128,7 +129,7 @@ CREATE TABLE `fines` (
   KEY `fk_fines_member1_idx` (`fine_member_id`),
   CONSTRAINT `fk_fines_borrow1` FOREIGN KEY (`fine_borrow_id`) REFERENCES `borrow` (`borrow_id`),
   CONSTRAINT `fk_fines_member1` FOREIGN KEY (`fine_member_id`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,6 +138,7 @@ CREATE TABLE `fines` (
 
 LOCK TABLES `fines` WRITE;
 /*!40000 ALTER TABLE `fines` DISABLE KEYS */;
+INSERT INTO `fines` VALUES (9,10,35,1);
 /*!40000 ALTER TABLE `fines` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -195,34 +197,6 @@ INSERT INTO `library_info` VALUES (1,'SHELF LOOM','logo.png','University of Sri 
 UNLOCK TABLES;
 
 --
--- Table structure for table `login`
---
-
-DROP TABLE IF EXISTS `login`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `login` (
-  `login_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` varchar(12) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `userId` int NOT NULL,
-  PRIMARY KEY (`login_id`),
-  KEY `fk_login_user1_idx` (`userId`),
-  CONSTRAINT `fk_login_user1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `login`
---
-
-LOCK TABLES `login` WRITE;
-/*!40000 ALTER TABLE `login` DISABLE KEYS */;
-INSERT INTO `login` VALUES (6,'S-000001','Dcg$11029',14);
-/*!40000 ALTER TABLE `login` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `member`
 --
 
@@ -234,7 +208,7 @@ CREATE TABLE `member` (
   `nic` varchar(12) NOT NULL,
   `fname` varchar(45) NOT NULL,
   `lname` varchar(45) NOT NULL,
-  `mobile` varchar(10) NOT NULL,
+  `mobile` varchar(12) NOT NULL,
   `address` varchar(100) NOT NULL,
   `email` varchar(60) NOT NULL,
   `date_joined` date NOT NULL,
@@ -244,7 +218,7 @@ CREATE TABLE `member` (
   PRIMARY KEY (`id`),
   KEY `fk_member_status1_idx` (`status_id`),
   CONSTRAINT `fk_member_status1` FOREIGN KEY (`status_id`) REFERENCES `status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -253,7 +227,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'200180300611','Kamal','Rathnayake','0704567123','No, 134, cross road, Kurunagala','dulakshigamma@gmail.com','2025-03-07',NULL,'67c91b567efe0_download.jpeg',1);
+INSERT INTO `member` VALUES (1,'200180300611','Kamal','Rathnayake','0704567123','No, 134, cross road, Kurunagala','dulakshigamma@gmail.com','2025-03-07',NULL,'67c91b567efe0_download.jpeg',1),(19,'200178377654','mm','ll','0711232124','mmddd','dulakshmma@gmail.com','2025-04-04',NULL,NULL,1);
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -273,7 +247,7 @@ CREATE TABLE `member_login` (
   UNIQUE KEY `member_id_UNIQUE` (`member_id`),
   KEY `fk_member_login_member1_idx` (`memberId`),
   CONSTRAINT `fk_member_login_member1` FOREIGN KEY (`memberId`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -282,7 +256,7 @@ CREATE TABLE `member_login` (
 
 LOCK TABLES `member_login` WRITE;
 /*!40000 ALTER TABLE `member_login` DISABLE KEYS */;
-INSERT INTO `member_login` VALUES (1,'M-000001','Dcg$11029',1);
+INSERT INTO `member_login` VALUES (1,'M-000001','Dcg$11029',1),(26,'M-000002',']*W2o}J<i<&F',19);
 /*!40000 ALTER TABLE `member_login` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,7 +276,7 @@ CREATE TABLE `member_saved_book` (
   KEY `fk_member_has_book_member1_idx` (`saved_member_id`),
   CONSTRAINT `fk_member_has_book_book1` FOREIGN KEY (`saved_book_id`) REFERENCES `book` (`book_id`),
   CONSTRAINT `fk_member_has_book_member1` FOREIGN KEY (`saved_member_id`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -311,6 +285,7 @@ CREATE TABLE `member_saved_book` (
 
 LOCK TABLES `member_saved_book` WRITE;
 /*!40000 ALTER TABLE `member_saved_book` DISABLE KEYS */;
+INSERT INTO `member_saved_book` VALUES (18,1,'B-000005');
 /*!40000 ALTER TABLE `member_saved_book` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -380,7 +355,7 @@ CREATE TABLE `notification` (
   `created_at` timestamp NOT NULL,
   `receiver_id` varchar(45) NOT NULL,
   PRIMARY KEY (`notification_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -389,7 +364,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (1,'dd','unread','2025-04-01 17:32:22','M-000001'),(2,'Welcome to Shelf Loom!','read','2025-04-01 17:56:09','M-000001'),(3,'Your membership will expire soon.','read','2025-04-01 17:56:09','M-000001'),(4,'A new book has been added!','read','2025-04-01 17:56:09','M-000001');
+INSERT INTO `notification` VALUES (1,'dd','read','2025-04-01 17:32:22','M-000001'),(2,'Welcome to Shelf Loom!','read','2025-04-01 17:56:09','M-000001'),(3,'Your membership will expire soon.','read','2025-04-01 17:56:09','M-000001'),(4,'A new book has been added!','read','2025-04-01 17:56:09','M-000001'),(5,'$subject','read','2025-04-03 05:14:14','M-000001'),(6,'$subject','read','2025-04-03 07:02:44','M-000001'),(7,'fffffff','read','2025-04-03 07:33:49','M-000001'),(8,'Send Mail','unread','2025-04-03 17:05:28','M-000001'),(9,'d','unread','2025-04-06 16:19:09','M-000001'),(10,'Send Mail','unread','2025-04-06 16:21:59','M-000001');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -437,7 +412,7 @@ CREATE TABLE `payment` (
   UNIQUE KEY `trasaction_id_UNIQUE` (`transaction_id`),
   KEY `fk_payment_member1_idx` (`member_id`),
   CONSTRAINT `fk_payment_member1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,7 +421,7 @@ CREATE TABLE `payment` (
 
 LOCK TABLES `payment` WRITE;
 /*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (8,1000,'1111','2025-04-01 19:58:17','2026-03-01 19:58:18',1);
+INSERT INTO `payment` VALUES (8,1000,'1111','2025-04-01 19:58:17','2026-03-01 19:58:18',1),(9,1000,'67f0063fecb2d','2025-04-04 21:48:58','2026-04-04 21:48:58',19);
 /*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -472,7 +447,7 @@ CREATE TABLE `reservation` (
   CONSTRAINT `fk_reservation_member1` FOREIGN KEY (`reservation_member_id`) REFERENCES `member` (`id`),
   CONSTRAINT `fk_reservation_reservation_status1` FOREIGN KEY (`status_id`) REFERENCES `reservation_status` (`status_id`),
   CONSTRAINT `fk_resevation_book1` FOREIGN KEY (`reservation_book_id`) REFERENCES `book` (`book_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -481,6 +456,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
+INSERT INTO `reservation` VALUES (47,'2025-04-04',1,'B-000009',2,NULL,'2025-04-11'),(48,'2025-04-04',1,'B-000007',4,NULL,'2025-04-11');
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -561,6 +537,43 @@ INSERT INTO `role_has_module` VALUES (1,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `staff`
+--
+
+DROP TABLE IF EXISTS `staff`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `staff` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nic` varchar(12) NOT NULL,
+  `fname` varchar(45) NOT NULL,
+  `lname` varchar(45) NOT NULL,
+  `mobile` varchar(12) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `email` varchar(45) NOT NULL,
+  `vcode` text,
+  `profile_img` text,
+  `role_id` int NOT NULL,
+  `status_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_user_role1_idx` (`role_id`),
+  KEY `fk_user_status1_idx` (`status_id`),
+  CONSTRAINT `fk_user_role1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
+  CONSTRAINT `fk_user_status1` FOREIGN KEY (`status_id`) REFERENCES `status` (`status_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `staff`
+--
+
+LOCK TABLES `staff` WRITE;
+/*!40000 ALTER TABLE `staff` DISABLE KEYS */;
+INSERT INTO `staff` VALUES (1,'200180400345','Doe','John','0701234567','ss','ss@gmail.com',NULL,'67f2190a8c800_download.jpeg',1,1),(2,'200180300611','Test1','Test2','0704567123','Main road, Kandy','dulakshigamma@gmail.com','67f2106d17500',NULL,2,1);
+/*!40000 ALTER TABLE `staff` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `staff_key`
 --
 
@@ -571,9 +584,12 @@ CREATE TABLE `staff_key` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(45) NOT NULL,
   `key_value` varchar(255) NOT NULL,
+  `role_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `key_value_UNIQUE` (`key_value`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  UNIQUE KEY `key_value_UNIQUE` (`key_value`),
+  KEY `fk_staff_key_role1_idx` (`role_id`),
+  CONSTRAINT `fk_staff_key_role1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -582,7 +598,36 @@ CREATE TABLE `staff_key` (
 
 LOCK TABLES `staff_key` WRITE;
 /*!40000 ALTER TABLE `staff_key` DISABLE KEYS */;
+INSERT INTO `staff_key` VALUES (3,'dulakshigamma@gmail.com','B06F220789EDCD8FC6B95A7DCB7C3EC5',2),(4,'','E1D9D36E0EDD55CC70149B51569BFA77',2),(5,'','54EBB20E4B8DB8B4BF97DE18AF6C5FFE',2);
 /*!40000 ALTER TABLE `staff_key` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `staff_login`
+--
+
+DROP TABLE IF EXISTS `staff_login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `staff_login` (
+  `login_id` int NOT NULL AUTO_INCREMENT,
+  `staff_id` varchar(12) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `staffId` int NOT NULL,
+  PRIMARY KEY (`login_id`),
+  KEY `fk_login_user1_idx` (`staffId`),
+  CONSTRAINT `fk_login_user1` FOREIGN KEY (`staffId`) REFERENCES `staff` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `staff_login`
+--
+
+LOCK TABLES `staff_login` WRITE;
+/*!40000 ALTER TABLE `staff_login` DISABLE KEYS */;
+INSERT INTO `staff_login` VALUES (1,'S-000001','Dcg$11029',1),(2,'S-000002','Asd!1234',2);
+/*!40000 ALTER TABLE `staff_login` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -610,43 +655,6 @@ INSERT INTO `status` VALUES (1,'Active'),(2,'Deactive'),(3,'Pending'),(4,'Reject
 UNLOCK TABLES;
 
 --
--- Table structure for table `user`
---
-
-DROP TABLE IF EXISTS `user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `user` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nic` varchar(12) NOT NULL,
-  `fname` varchar(45) NOT NULL,
-  `lname` varchar(45) NOT NULL,
-  `mobile` varchar(10) NOT NULL,
-  `address` varchar(100) NOT NULL,
-  `email` varchar(45) NOT NULL,
-  `vcode` text,
-  `profile_img` text,
-  `role_id` int NOT NULL,
-  `status_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_user_role1_idx` (`role_id`),
-  KEY `fk_user_status1_idx` (`status_id`),
-  CONSTRAINT `fk_user_role1` FOREIGN KEY (`role_id`) REFERENCES `role` (`role_id`),
-  CONSTRAINT `fk_user_status1` FOREIGN KEY (`status_id`) REFERENCES `status` (`status_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `user`
---
-
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (14,'200180300619','John','Doe','0701234584','No 12, main road, Kandy','dulakshigamma@gmail.com',NULL,'67c880b7bc614_download.jpeg',1,1);
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping routines for database 'library_db'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -659,4 +667,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-02 22:48:38
+-- Dump completed on 2025-04-06 22:50:17

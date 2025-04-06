@@ -6,7 +6,10 @@ use PHPMailer\PHPMailer\Exception;
 require_once Config::getMailPath("PHPMailer.php");
 require_once Config::getMailPath("SMTP.php");
 require_once Config::getMailPath("Exception.php");
-require_once Config::getModelPath('homemodel.php');
+require_once Config::getMailPath("emailTemplate.php");
+
+
+require_once Config::getModelPath('member','homemodel.php');
 
 
 class EmailService

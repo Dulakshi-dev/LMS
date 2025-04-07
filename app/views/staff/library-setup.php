@@ -40,10 +40,18 @@ $_SESSION['staff']['last_activity'] = time();
     <div class="d-flex">
 
 
-        <div class="nav-bar">
-            <?php require_once Config::getViewPath("staff", "dash_sidepanel.php"); ?>
+    <div>
+            <!-- Large and Medium Screens -->
+            <div class="d-none d-md-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
+
+            <!-- Small Screens Only -->
+            <div class="d-block d-md-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid ">
             <div class=" bg-light">
                 <div class="p-5">
                     <section>

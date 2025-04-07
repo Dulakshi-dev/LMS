@@ -28,7 +28,11 @@ $_SESSION['staff']['last_activity'] = time();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style>
+    <style>html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
         .box-1 {
             background: rgba(26, 50, 65, 1);
             color: white;
@@ -49,6 +53,8 @@ $_SESSION['staff']['last_activity'] = time();
             background: rgba(26, 50, 65, 1);
             border-radius: 10px;
         }
+        
+
     </style>
 </head>
 
@@ -70,14 +76,14 @@ $_SESSION['staff']['last_activity'] = time();
         </div>
 
 
-        <div class="container-fluid mb-5 bg-white">
-            <div class="row">
+        <div class="container-fluid mb-5 bg-white ">
+            <div class="">
                 <nav class="navbar p-4 navbar-light bg-light">
                     <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                 </nav>
             </div>
-            <div class="p-2 mt-3">
+            <div class="mt-3">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-2 col-md-6">
                         <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
@@ -140,13 +146,14 @@ $_SESSION['staff']['last_activity'] = time();
 
                     <div class="col-md-6 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4 p-3 d-flex justify-content-center">
-                            <canvas id="lineChart" width="1500" height="1000"></canvas>
+                        <canvas id="lineChart" class="w-100 h-auto"></canvas>
 
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4 p-3 d-flex justify-content-center">
-                            <canvas id="pieChart"></canvas>
+                            <canvas id="pieChart" class="w-100 h-auto"></canvas>
+
 
                         </div>
                     </div>
@@ -169,13 +176,13 @@ $_SESSION['staff']['last_activity'] = time();
 
                     <div class="col-md-6 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4  p-3 d-flex justify-content-center">
-                            <canvas id="barChart" width="600" height="400"></canvas>
+                            <canvas id="barChart" class="w-100 h-auto"></canvas>
 
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4 p-3 d-flex justify-content-center">
-                            <canvas id="polarChart"></canvas>
+                            <canvas id="polarChart" class="w-100 h-auto"></canvas>
 
                         </div>
                     </div>

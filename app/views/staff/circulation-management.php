@@ -35,11 +35,19 @@ $_SESSION['staff']['last_activity'] = time();
     <div id="box1">
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
-            <div class="nav-bar vh-100">
+        <div>
+            <!-- Large and Medium Screens -->
+            <div class="d-none d-md-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="container-fluid mx-5 mb-5 bg-white">
+            <!-- Small Screens Only -->
+            <div class="d-block d-md-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
+        </div>
+
+            <div class="container-fluid mx-5 mb-5 bg-white ">
                 <div class="row">
                     <nav class="navbar p-4 navbar-light bg-light">
                         <span class="navbar-brand mb-0 h1">Circulation Management <small class="text-muted">control panel</small></span>

@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -30,8 +30,16 @@ $_SESSION['staff']['last_activity'] = time();
 <body>
     <?php include "dash_header.php"; ?>
     <div class="d-flex bg-light">
-        <div class="nav-bar vh-100">
-            <?php include "dash_sidepanel.php"; ?>
+    <div>
+            <!-- Large and Medium Screens -->
+            <div class="d-none d-md-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
+
+            <!-- Small Screens Only -->
+            <div class="d-block d-md-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
         </div>
         <div class="container mt-3">
             <div class="card">
@@ -56,7 +64,7 @@ $_SESSION['staff']['last_activity'] = time();
 
                     <h4>Getting Started:</h4>
                     <ul>
-                    <li>Register by entering the personal details and the enrollment key provided.</li>
+                        <li>Register by entering the personal details and the enrollment key provided.</li>
                         <li>Log in using your staff credentials.</li>
                         <li>Use profile section to update profile data and reset password.</li>
                         <li>Navigate to the dashboard to access various modules.</li>

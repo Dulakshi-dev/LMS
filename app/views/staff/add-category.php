@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -33,10 +33,18 @@ $_SESSION['staff']['last_activity'] = time();
     <?php require_once Config::getViewPath("staff", "dash_header.php"); ?>
 
     <div class="d-flex bg-light">
-        <div class="nav-bar">
-            <?php require_once Config::getViewPath("staff", "dash_sidepanel.php"); ?>
+        <div>
+            <!-- Large and Medium Screens -->
+            <div class="d-none d-md-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
+
+            <!-- Small Screens Only -->
+            <div class="d-block d-md-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
         </div>
-        <div class="box-0 container my-5">
+        <div class="box-0 container my-5 ">
             <div class="bg-white vh-100">
                 <div class="text-center border-bottom border-danger border-4 mb-4 pb-3">
                     <h2>Add New Category</h2>
@@ -44,17 +52,17 @@ $_SESSION['staff']['last_activity'] = time();
                 <div class="col-8 offset-2">
                     <div class="row">
                         <form action="">
-                            
-                                <div class="col-lg-12 col-md-6 col-sm-4 p-5">
-                                    <label for="Category" class="form-label fw-bold fs-5 mb-2">Category Name</label>
-                                    <input id="category" name="category" class="form-control" type="text" placeholder="Enter Category Name">
-                                    <span id="Category-error" class="text-danger"></span>
-                                    <div class="d-flex justify-content-end mt-4">
-                                        <button type="button" class="btn btn-dark rounded-pill px-5" onclick="addCategory();">Add</button>
 
-                                    </div>
+                            <div class="col-lg-12 col-md-6 col-sm-4 p-5">
+                                <label for="Category" class="form-label fw-bold fs-5 mb-2">Category Name</label>
+                                <input id="category" name="category" class="form-control" type="text" placeholder="Enter Category Name">
+                                <span id="Category-error" class="text-danger"></span>
+                                <div class="d-flex justify-content-end mt-4">
+                                    <button type="button" class="btn btn-dark rounded-pill px-5" onclick="addCategory();">Add</button>
+
                                 </div>
-                            
+                            </div>
+
 
                         </form>
                     </div>

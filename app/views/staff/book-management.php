@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -34,18 +34,18 @@ $_SESSION['staff']['last_activity'] = time();
     <div id="box1">
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
-        <div>
-            <div class="nav-bar d-none d-lg-block">
-                <?php include "dash_sidepanel.php"; ?>
+            <div>
+                <!-- Large and Medium Screens -->
+                <div class="d-none d-md-block">
+                    <?php include "dash_sidepanel.php"; ?>
+                </div>
+
+                <!-- Small Screens Only -->
+                <div class="d-block d-md-none">
+                    <?php include "small_sidepanel.php"; ?>
+                </div>
             </div>
-
-            <div class="nav-bar d-block d-lg-none">
-                <?php include "small_sidepanel.php"; ?>
-            </div>
-
-        </div>
-
-            <div class="container-fluid mx-5 mb-5 bg-white">
+            <div class="container-fluid mx-5 mb-5 bg-white ">
                 <div class="row">
                     <nav class="navbar p-4 navbar-light bg-light">
                         <span class="navbar-brand mb-0 h1">Book Management <small class="text-muted">control panel</small></span>

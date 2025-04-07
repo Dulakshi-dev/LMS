@@ -7,7 +7,7 @@ class PaymentModel
     public static function registerPayment($transaction_id, $id, $fee)
     {
        
-            Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `member_id`) 
+            Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `memberId`) 
 VALUES ('$fee', '$transaction_id', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), '$id');");
             return true;
         
@@ -21,12 +21,12 @@ VALUES ('$fee', '$transaction_id', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), '$id
 
         
         if ($result->num_rows > 0) {
-            $result2 = Database::search("SELECT `next_due_date` FROM `payment` WHERE `member_id` = '$id' ORDER BY `payed_at` DESC LIMIT 1");
+            $result2 = Database::search("SELECT `next_due_date` FROM `payment` WHERE `memberId` = '$id' ORDER BY `payed_at` DESC LIMIT 1");
             $row = $result2->fetch_assoc();
             $due_date = $row['next_due_date'];
             $next_due_date = "DATE_ADD('$due_date', INTERVAL 1 YEAR)";
 
-            Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `member_id`) 
+            Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `memberId`) 
 VALUES ('$fee', '$transaction_id', NOW(), $next_due_date, '$id');");
 
 
@@ -40,7 +40,7 @@ VALUES ('$fee', '$transaction_id', NOW(), $next_due_date, '$id');");
     {
         $resultOneWeek = Database::search("SELECT member.email, payment.next_due_date
 FROM member
-JOIN payment ON member.id = payment.member_id
+JOIN payment ON member.id = payment.memberId
 WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY 
    OR DATE(payment.next_due_date) = CURDATE() + INTERVAL 1 MONTH;");
 
@@ -96,10 +96,10 @@ WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY
     {
         $today = date('Y-m-d');
 
-        $result = Database::search("SELECT `member_id` FROM `payment` JOIN `member` ON `payment`.`member_id` = `member`.`id` WHERE DATE(`payment`.`next_due_date`) < '$today';");
+        $result = Database::search("SELECT `memberId` FROM `payment` JOIN `member` ON `payment`.`memberId` = `member`.`id` WHERE DATE(`payment`.`next_due_date`) < '$today';");
         
         while ($row = $result->fetch_assoc()) {
-            $member_id = $row['member_id'];
+            $member_id = $row['memberId'];
             self::deactivateMembership($member_id);        }
     }
 

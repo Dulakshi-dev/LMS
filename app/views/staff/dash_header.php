@@ -5,7 +5,6 @@ $lname = $_SESSION["staff"]["lname"];
 $role_name = $_SESSION["staff"]["role_name"];
 $profile_img = $_SESSION["staff"]["profile_img"];
 
-
 $libraryData = LibrarySetupModel::getLibraryInfo();
 $libraryName = $libraryData['name'];
 $libraryAddress = $libraryData['address'];
@@ -22,11 +21,9 @@ $fine = $libraryData['fine_amount'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Library Staff Header</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         nav ul li a img {
             height: 40px;
@@ -34,18 +31,37 @@ $fine = $libraryData['fine_amount'];
             border-radius: 50%;
         }
 
-        .con {
+        .profile-dropdown {
+            position: absolute;
+            right: 20px;
+            top: 70px;
             width: 250px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
         }
 
-        #signup {
-            display: none;
-            position: absolute;
+        .profile-dropdown.show {
+            display: block;
         }
+
+        .profile-dropdown .dropdown-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .profile-dropdown .dropdown-body {
+            padding: 15px;
+        }
+
     </style>
 </head>
 
-<body id="body">
+<body>
     <header class="text-white">
         <div class="row bg-dark m-0 pt-2 align-items-center">
             <div class="col navbar navbar-expand-lg navbar-dark">
@@ -55,22 +71,21 @@ $fine = $libraryData['fine_amount'];
             </div>
             <div class="col d-flex justify-content-end">
                 <nav>
-                    <ul class="inline d-flex align-items-center">
-
-                        <li class="list-inline-item">
+                    <ul class="inline d-flex align-items-center list-unstyled mb-0">
+                        <li class="list-inline-item me-3">
                             <a class="text-white text-decoration-none" href="#">
-                                <i class="fa fa-bell mr-3"></i>
+                                <i class="fas fa-bell"></i>
                             </a>
                         </li>
-
-                        <li class="list-inline-item d-flex align-items-center">
-                            <a id="prof" class="text-white text-decoration-none d-flex align-items-center" href="#">
+                        <li class="list-inline-item">
+                            <a id="profileDropdownToggle" class="text-white text-decoration-none d-flex align-items-center" href="#" role="button">
                                 <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
-                                    alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+                                    alt="User" class="rounded-circle me-2" style="height: 40px; width: 40px;">
                                 <div class="text-left mx-3">
                                     <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
                                     <small><?php echo $role_name; ?></small>
                                 </div>
+                                <i class="fas fa-caret-down ms-2"></i>
                             </a>
                         </li>
                     </ul>
@@ -79,22 +94,54 @@ $fine = $libraryData['fine_amount'];
         </div>
 
         <!-- Dropdown Content -->
-        <div class="justify-content-end d-flex text-right">
-            <div class="align-items-center bg-dark p-2 border" id="signup">
-                <div class="text-center text-white">
-                    <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
-                        alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
-
-                    <h4>Name - Librarian</h4>
-                </div>
-                <div class="">
-                    <button type="button" class="btn btn-primary px-3 mx-2">Profile</button>
-                    <button type="button" class="btn btn-primary mx-2">Sign Out</button>
+        <div class="profile-dropdown" id="profileDropdown">
+            <div class="dropdown-header">
+                <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
+                    alt="User" class="rounded-circle mb-2" style="height: 60px; width: 60px;">
+                <h5 class="mb-1"><?php echo $fname . " " . $lname; ?></h5>
+                <small class="text-muted"><?php echo $role_name; ?></small>
+            </div>
+            <div class="dropdown-body">
+                <div class="d-grid gap-2">
+                    <a href="<?php echo Config::indexPath() ?>?action=profile" class="btn btn-outline-primary">
+                        <i class="fas fa-user me-2"></i> My Profile
+                    </a>
+                    <a href="logout.php" class="btn btn-outline-danger">
+                        <i class="fas fa-sign-out-alt me-2"></i> Sign Out
+                    </a>
                 </div>
             </div>
         </div>
-
     </header>
-</body>
 
+    <!-- Bootstrap JS and Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggle = document.getElementById('profileDropdownToggle');
+            const dropdownMenu = document.getElementById('profileDropdown');
+            
+            // Toggle dropdown on click
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                dropdownMenu.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdownToggle.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+            
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        });
+    </script>
+</body>
 </html>

@@ -212,7 +212,7 @@ function loadTopBooks() {
                     let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
                     let bookCard = `
 
-                    <div class="col-md-2 mb-4">
+                    <div class="col-md-3 col-sm-12 col-lg-2 mb-4">
                         <div class="card h-100 d-flex flex-column">
                             <img src="${coverImageUrl}" class="card-img-top img-fluid" alt="Book Cover" style="height: 230px; object-fit: cover;">
                             <div class="card-body d-flex flex-column justify-content-between">

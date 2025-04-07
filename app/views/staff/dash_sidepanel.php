@@ -1,92 +1,78 @@
 <?php
-
 if (!isset($_SESSION["staff"])) {
     header("Location: login.php");
     exit();
 }
+
 $role_name = $_SESSION["staff"]["role_name"];
 
-if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
-    $modules = $_SESSION["modules"];
-} else {
-    $modules = ["No modules available"];
-}
-$current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
+$modules = $_SESSION["modules"] ?? [["name" => "No modules available", "icon" => "default.png"]];
+$current_action = $_GET['action'] ?? 'dashboard';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <style>
-        #sidepanel {
-            display: block;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sidebar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    #sidepanel {
+      width: 250px;
+      min-height: 100vh;
+    }
 
-        @media (max-width: 992px) {
-            #sidepanel {
-                display: none;
-            }
-        }
-    </style>
+    @media (max-width: 992px) {
+      #sidepanel {
+        display: none;
+      }
+    }
+
+    .nav-link.active {
+      background-color: #0d6efd !important;
+      color: white !important;
+    }
+  </style>
 </head>
 
 <body>
 
-    <div id="sidepanel" class=" bg-dark text-white" style="width: 250px; height: 100%;">
+  <div id="sidepanel" class="bg-dark text-white d-flex flex-column p-2">
+    <h4 class="mx-2"><?= $role_name == "Librarian" ? "Librarian Panel" : "Staff Panel"; ?></h4>
 
-        <?php
-        if ($role_name == "Librarian") {
-        ?>
-            <h4 class="mx-2">Librarian Panel </h4>
-        <?php
-        } else {
-        ?>
-            <h4 class="mx-2">Staff Panel </h4>
-        <?php
-        }
-        ?>
-        <button id="tog" class="navbar-toggler ml-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <a href="<?php echo Config::indexPath() ?>?action=dashboard"
+      class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'dashboard' ? 'active' : ''; ?>">
+      <i class="fa fa-gauge me-2"></i> Dashboard
+    </a>
 
-        <a href="<?php echo Config::indexPath() ?>?action=dashboard" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'dashboard') ? 'bg-primary text-primary' : ''; ?>">
-            <i class="fa fa-gauge ms-1 me-2" style="font-size: 18px;"></i> Dashboard
-        </a>
-        <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'Profile') ? 'bg-primary text-primary' : ''; ?>">
-            <i class="fas fa-user ms-1 me-2" style="font-size: 18px;"></i> My Profile
-        </a>
-        <?php
-        foreach ($modules as $module) {
-            $action = strtolower(str_replace(' ', '', $module["name"]));
-            $iconPath = Config::getImagePath($module["icon"]); // Ensure this function is correctly defined
+    <a href="<?php echo Config::indexPath() ?>?action=profile"
+      class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'profile' ? 'active' : ''; ?>">
+      <i class="fas fa-user me-2"></i> My Profile
+    </a>
 
-        ?>
-            <a href="<?php echo Config::indexPath() ?>?action=<?php echo htmlspecialchars($action); ?>"
-                class="nav-link p-2 text-white border-bottom align-items-center d-flex <?php echo ($current_action == '<?php echo htmlspecialchars($action); ?>') ? 'bg-primary text-primary' : ''; ?>">
-                <img src="<?php echo htmlspecialchars($iconPath); ?>"
-                    alt="Module Icon" width="24" height="24" class="me-2">
-                <span><?php echo htmlspecialchars($module["name"]); ?></span>
-            </a>
-        <?php
-        }
-        ?>
+    <?php foreach ($modules as $module): 
+      $action = strtolower(str_replace(' ', '', $module["name"]));
+      $iconPath = Config::getImagePath($module["icon"]);
+    ?>
+      <a href="<?= Config::indexPath() ?>?action=<?= htmlspecialchars($action); ?>"
+        class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == $action ? 'active' : ''; ?>">
+        <img src="<?= htmlspecialchars($iconPath); ?>" alt="Module Icon" width="24" height="24" class="me-2">
+        <?= htmlspecialchars($module["name"]); ?>
+      </a>
+    <?php endforeach; ?>
 
+    <a href="<?php echo Config::indexPath() ?>?action=libsetup"
+      class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'libsetup' ? 'active' : ''; ?>">
+      <i class="fa-solid fa-university me-2"></i> Library Setup
+    </a>
 
+    <a href="<?php echo Config::indexPath() ?>?action=aboutsoftware"
+      class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'active' : ''; ?>">
+      <i class="fa-solid fa-laptop-code me-2"></i> About Software
+    </a>
+  </div>
 
-        <a href="<?php echo Config::indexPath() ?>?action=libsetup" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'libsetup') ? 'bg-primary text-success' : ''; ?>">
-        <i class="fa-solid fa-university ms-1 me-2" style="font-size: 18px;"></i> Library Setup
-        </a>
-        <a href="<?php echo Config::indexPath() ?>?action=aboutsoftware" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'aboutsoftware') ? 'bg-primary text-warning' : ''; ?>">
-            <i class="fa-solid fa-laptop-code me-2" style="font-size: 18px;"></i> About Software
-        </a>
-
-    </div>
 </body>
-
 </html>

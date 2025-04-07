@@ -56,9 +56,18 @@ $_SESSION['staff']['last_activity'] = time();
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex mx-auto">
-        <div class="nav-bar">
-            <?php include "dash_sidepanel.php"; ?>
+
+        <div>
+            <div class="nav-bar d-none d-lg-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
+
+            <div class="nav-bar d-block d-lg-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
+
         </div>
+
         <div class="container-fluid mb-5 bg-white">
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
@@ -125,15 +134,15 @@ $_SESSION['staff']['last_activity'] = time();
                     </div>
                 </div>
 
-                <div class="row gap-5 my-5 align-items-center justify-content-center">
+                <div class="row gap-5 my- p-2 align-items-center justify-content-center">
 
-                    <div class="col-6 bg-light rounded-5">
+                    <div class="col-md-6 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4 p-3 d-flex justify-content-center">
                             <canvas id="lineChart" width="1500" height="1000"></canvas>
 
                         </div>
                     </div>
-                    <div class="col-4 bg-light rounded-5">
+                    <div class="col-md-4 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4 p-3 d-flex justify-content-center">
                             <canvas id="pieChart"></canvas>
 
@@ -145,7 +154,7 @@ $_SESSION['staff']['last_activity'] = time();
                     <div class="col-12 text-center">
                         <h3>Top choices</h3>
                     </div>
-                    <div class="col-md-12 offset-md-2">
+                    <div class="col-md-12">
                         <div class="row justify-content-center" id="topBookBody">
                             <!-- Book items will be inserted here by JavaScript -->
                         </div>
@@ -154,15 +163,15 @@ $_SESSION['staff']['last_activity'] = time();
 
 
 
-                <div class="row gap-5 my-5 align-items-center justify-content-center">
+                <div class="row gap-5 p-2 my-5 align-items-center justify-content-center">
 
-                    <div class="col-6 bg-light rounded-5">
+                    <div class="col-md-6 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4  p-3 d-flex justify-content-center">
                             <canvas id="barChart" width="600" height="400"></canvas>
 
                         </div>
                     </div>
-                    <div class="col-4 bg-light rounded-5">
+                    <div class="col-md-4 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4 p-3 d-flex justify-content-center">
                             <canvas id="polarChart"></canvas>
 

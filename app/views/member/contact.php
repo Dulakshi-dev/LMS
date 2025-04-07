@@ -29,7 +29,7 @@
             <p>If you have any questions or inquiries, feel free to reach out to us.</p>
         </div>
 
-        <div class="container d-flex flex-column flex-md-row justify-content-between py-5">
+        <div class="container d-flex flex-column flex-md-row justify-content-between py-5 gap-4">
             <!-- Contact Information -->
             <div class="col-md-4">
                 <div class="card shadow-sm mb-3">

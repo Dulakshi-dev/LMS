@@ -11,6 +11,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 } else {
     $modules = ["No modules available"];
 }
+$current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
 ?>
 
 <!DOCTYPE html>
@@ -54,10 +55,10 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <a href="<?php echo Config::indexPath() ?>?action=dashboard" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a href="<?php echo Config::indexPath() ?>?action=dashboard" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'dashboard') ? 'bg-primary text-primary' : ''; ?>">
             <i class="fa fa-gauge ms-1 me-2" style="font-size: 18px;"></i> Dashboard
         </a>
-        <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a href="<?php echo Config::indexPath() ?>?action=profile" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'Profile') ? 'bg-primary text-primary' : ''; ?>">
             <i class="fas fa-user ms-1 me-2" style="font-size: 18px;"></i> My Profile
         </a>
         <?php
@@ -67,7 +68,7 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 
         ?>
             <a href="<?php echo Config::indexPath() ?>?action=<?php echo htmlspecialchars($action); ?>"
-                class="nav-link p-2 text-white border-bottom align-items-center d-flex">
+                class="nav-link p-2 text-white border-bottom align-items-center d-flex <?php echo ($current_action == '<?php echo htmlspecialchars($action); ?>') ? 'bg-primary text-primary' : ''; ?>">
                 <img src="<?php echo htmlspecialchars($iconPath); ?>"
                     alt="Module Icon" width="24" height="24" class="me-2">
                 <span><?php echo htmlspecialchars($module["name"]); ?></span>
@@ -78,10 +79,10 @@ if (isset($_SESSION["modules"]) && !empty($_SESSION["modules"])) {
 
 
 
-        <a href="<?php echo Config::indexPath() ?>?action=libsetup" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a href="<?php echo Config::indexPath() ?>?action=libsetup" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'libsetup') ? 'bg-primary text-success' : ''; ?>">
         <i class="fa-solid fa-university ms-1 me-2" style="font-size: 18px;"></i> Library Setup
         </a>
-        <a href="<?php echo Config::indexPath() ?>?action=aboutsoftware" class="nav-link text-white p-2 border-bottom align-items-center">
+        <a href="<?php echo Config::indexPath() ?>?action=aboutsoftware" class="nav-link text-white p-2 border-bottom align-items-center <?php echo ($current_action == 'aboutsoftware') ? 'bg-primary text-warning' : ''; ?>">
             <i class="fa-solid fa-laptop-code me-2" style="font-size: 18px;"></i> About Software
         </a>
 

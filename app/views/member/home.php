@@ -41,7 +41,27 @@ require_once "../../main.php";
         <h1 class="display-1 fw-bold">Welcome to</h1>
     </section>
 
-    <div class="container my-5">
+    <div class="container mx-auto my-5 d-block d-md-none">
+        <h2 class="fs-1 mb-4" style="color: red;">Our Goal</h2>
+        <div class="row align-items-center mb-4">
+            <div class="col-md-6">
+                <p class="">At <?= $libraryName ?>, our goal is to create a user-friendly and efficient platform that simplifies library management and enhances the experience of accessing our vast collection of resources. Our system is designed to streamline the cataloging, borrowing, and returning of books, making it easier for library staff to manage inventory and for patrons to find the materials they need.</p>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center">
+                <img src="<?php echo Config::getImagePath("home-goal.jpg"); ?>" alt="Library Image 1" style="height: 400px;" class="img-fluid rounded">
+            </div>
+        </div>
+        <div class="row align-items-center mt-4">
+            <div class="col-md-6 order-md-2">
+                <p class="">Whether you're searching for the latest bestseller, researching a topic, or simply exploring new genres, our library management system ensures a seamless and enjoyable experience for all users. Join us in fostering a love for reading and learning in our community.</p>
+            </div>
+            <div class="col-md-6 order-md-1 d-flex justify-content-center">
+                <img src="<?php echo Config::getImagePath("home-goal2.jpg"); ?>" alt="Library Image 2" style="height: 400px;" class="img-fluid rounded">
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mx-auto my-5 d-none d-md-block">
         <h2 class="fs-1 mb-4" style="color: red;">Our Goal</h2>
         <div class="row align-items-center mb-4">
             <div class="col-md-6">

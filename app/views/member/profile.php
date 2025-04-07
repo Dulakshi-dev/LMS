@@ -1,16 +1,16 @@
 <?php
 
 if (!isset($_SESSION['member'])) {
-  header("Location: index.php?action=login"); 
+  header("Location: index.php?action=login");
   exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['member']['last_activity']) && (time() - $_SESSION['member']['last_activity'] > 1800)) {
-    session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php?action=login"); 
-    exit;
+  session_unset();  // Clear session data
+  session_destroy();
+  header("Location: index.php?action=login");
+  exit;
 }
 
 // Reset last activity time (only if user is active)
@@ -31,22 +31,22 @@ $member_id = $_SESSION["member"]["member_id"];
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body class="bg-light">
-<script>
-        window.addEventListener('load', function() {
-            loadProfileData('<?php echo $member_id; ?>');
-        });
-    </script>
+<body class="bg-white">
+  <script>
+    window.addEventListener('load', function() {
+      loadProfileData('<?php echo $member_id; ?>');
+    });
+  </script>
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
     <!-- Side Panel -->
-    <div class="nav-bar d-none d-md-block">
+    <div class="nav-bar d-none w-25 d-md-block">
       <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
     </div>
 
 
-    <div class="flex-grow-1 flex-column bg-white m-5" id="box1">
+    <div class="flex-grow-1 flex-column bg-light m-3 m-md-5" id="box1">
       <div class="container my-4">
         <div class="row">
           <div class="col-12 text-center border-bottom border-danger border-4 mb-4">
@@ -55,7 +55,7 @@ $member_id = $_SESSION["member"]["member_id"];
         </div>
 
         <div class="row">
-          <div class="col-md-3 text-center p-4">
+          <div class="col-sm-12 col-lg-3 text-center p-4">
             <div class="mb-4">
               <img id="profileimg" style="height: 250px; width: 250px; border-radius: 50%;" src="" alt="Profile Picture">
             </div>
@@ -67,8 +67,9 @@ $member_id = $_SESSION["member"]["member_id"];
               <input id="member_id" name="member_id" type="text" class="form-control" disabled>
             </div>
           </div>
+          <hr class="d-block d-md-none">
 
-          <div class="col-md-9 p-4">
+          <div class="col-md-9 mx-auto px-lg-5">
             <form>
               <div class="row">
                 <div class="col-lg-6 col-sm-6 mb-3">
@@ -106,8 +107,8 @@ $member_id = $_SESSION["member"]["member_id"];
                 <span class="text-danger" id="addresserror"></span>
               </div>
 
-              <div class="d-flex justify-content-end mt-4">
-                <button type="button" class="btn btn-danger mx-2" onclick="goToChangePassword(event)">Reset Password</button>
+              <div class="d-flex justify-content-end gap-2 pt-lg-4 mt-3">
+                <button type="button" class="btn btn-danger" onclick="goToChangePassword(event)">Reset Password</button>
                 <button type="button" class="btn btn-primary px-5" onclick="updateProfileDetails()">Save</button>
               </div>
             </form>

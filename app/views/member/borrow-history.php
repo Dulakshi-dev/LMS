@@ -68,7 +68,7 @@ $_SESSION['member']['last_activity'] = time();
 
   <div class="d-flex">
     <!-- Side Panel -->
-    <div class="nav-bar d-none d-md-block">
+    <div class="nav-bar d-none w-25 d-md-block">
       <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
     </div>
     <div class="container bg-white mt-4 p-4 rounded shadow-sm vh-100">
@@ -90,22 +90,25 @@ $_SESSION['member']['last_activity'] = time();
       </div>
 
       <!-- Table -->
-      <table class="table table-bordered text-center">
+      <div class="table-responsive">
+    <table class="table table-bordered text-center">
         <thead class="table-light">
-          <tr>
-            <th>Borrow ID</th>
-            <th>Book ID</th>
-            <th>Book</th>
-            <th>Book Name</th>
-            <th>Issued Date</th>
-            <th>Date Due</th>
-            <th>Date Returned</th>
-          </tr>
+            <tr>
+                <th>Borrow ID</th>
+                <th>Book ID</th>
+                <th>Book</th>
+                <th>Book Name</th>
+                <th>Issued Date</th>
+                <th>Date Due</th>
+                <th>Date Returned</th>
+            </tr>
         </thead>
         <tbody id="bookTableBody">
-
+            <!-- Table rows will be inserted dynamically here -->
         </tbody>
-      </table>
+    </table>
+</div>
+
 
       <!-- Pagination -->
       <div class="d-flex justify-content-between align-items-center entries offset-5">

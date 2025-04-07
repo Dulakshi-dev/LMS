@@ -1,16 +1,16 @@
 <?php
 
 if (!isset($_SESSION['member'])) {
-  header("Location: index.php?action=login"); 
+  header("Location: index.php?action=login");
   exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['member']['last_activity']) && (time() - $_SESSION['member']['last_activity'] > 1800)) {
-    session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php?action=login"); 
-    exit;
+  session_unset();  // Clear session data
+  session_destroy();
+  header("Location: index.php?action=login");
+  exit;
 }
 
 // Reset last activity time (only if user is active)
@@ -35,7 +35,7 @@ $_SESSION['member']['last_activity'] = time();
 
   <div class="d-flex">
     <!-- Side Panel -->
-    <div class="nav-bar d-none d-md-block">
+    <div class="nav-bar d-none w-25 d-md-block">
       <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
     </div>
     <div class="container bg-white mt-4 p-4 rounded shadow-sm">
@@ -47,22 +47,24 @@ $_SESSION['member']['last_activity'] = time();
       </div>
 
       <!-- Table -->
-      <table class="table table-bordered text-center">
-        <thead class="table-light">
-          <tr>
-            <th>#</th>
-            <th>Book ID</th>
-            <th>Book</th>
-            <th>Book Name</th>
-            <th>Reservation Date</th>
-            <th>Expiration Date</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="reservationTableBody">
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-bordered text-center">
+          <thead class="table-light">
+            <tr>
+              <th>#</th>
+              <th>Book ID</th>
+              <th>Book</th>
+              <th>Book Name</th>
+              <th>Reservation Date</th>
+              <th>Expiration Date</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="reservationTableBody">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 

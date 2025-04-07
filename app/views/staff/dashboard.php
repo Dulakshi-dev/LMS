@@ -55,7 +55,7 @@ $_SESSION['staff']['last_activity'] = time();
 <body>
     <?php include "dash_header.php"; ?>
 
-    <div class="d-flex">
+    <div class="d-flex mx-auto">
         <div class="nav-bar">
             <?php include "dash_sidepanel.php"; ?>
         </div>
@@ -68,8 +68,8 @@ $_SESSION['staff']['last_activity'] = time();
             </div>
             <div class="p-2 mt-3">
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-2">
-                        <div class="d-flex justify-content-between p-2 box-1 rounded">
+                    <div class="col-lg-2 col-md-6">
+                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
                             <div class=ms-4>
                                 <h1 class="text-info" id="books"></h1>
                                 <p class="text-info">Books</p>
@@ -79,8 +79,8 @@ $_SESSION['staff']['last_activity'] = time();
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
-                        <div class="d-flex justify-content-between p-2 box-1 rounded">
+                    <div class="col-lg-2 col-md-6">
+                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
                             <div class=ms-4>
                                 <h1 class="text-info" id="members"></h1>
                                 <p class="text-info">Members</p>
@@ -90,8 +90,8 @@ $_SESSION['staff']['last_activity'] = time();
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
-                        <div class="d-flex justify-content-between p-2 box-1 rounded">
+                    <div class="col-lg-2 col-md-6">
+                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
                             <div class=ms-4>
                                 <h1 class="text-info" id="issuedBooks"></h1>
                                 <p class="text-info">Issued Books</p>
@@ -101,8 +101,8 @@ $_SESSION['staff']['last_activity'] = time();
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2">
-                        <div class="d-flex justify-content-between p-2 box-1 rounded">
+                    <div class="col-lg-2 col-md-6">
+                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
                             <div class=ms-4>
                                 <h1 class="text-info" id="reservations"></h1>
                                 <p class="text-info">Reservations</p>
@@ -113,7 +113,7 @@ $_SESSION['staff']['last_activity'] = time();
                         </div>
                     </div>
                     <div class="col-lg-2">
-                        <div class="d-flex justify-content-between p-2 box-1 rounded">
+                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
                             <div class=ms-4>
                                 <h1 class="text-info" id="totalfines"></h1>
                                 <p class="text-info">Fines</p>

@@ -17,36 +17,75 @@ $current_action = $_GET['action'] ?? 'dashboard';
   <title>Sidebar</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
   <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
     #sidepanel {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 50px;
-      min-height: 100vh;
+      height: 100vh;
+      background-color: #212529;
+      color: white;
+      z-index: 1000;
       transition: width 0.3s;
     }
-    
+
     #sidepanel:hover {
       width: 200px;
     }
-    
+
     #sidepanel:hover .nav-text {
       display: inline-block !important;
     }
-    
+
     .nav-link {
       white-space: nowrap;
       overflow: hidden;
     }
-    
+
     .nav-icon {
       width: 24px;
       text-align: center;
     }
+
+    .nav-text {
+      display: none;
+    }
+
+    /* Push main content away to avoid being hidden */
+    .main-content {
+      margin-left: 50px;
+      transition: margin-left 0.3s;
+    }
+
+    /* Optional: shift slightly on hover if you want */
+    #sidepanel:hover ~ .main-content {
+      margin-left: 50px; /* stays the same; content won’t move */
+    }
+
+
+  /* Make the side panel sticky for small screens */
+@media (max-width: 767px) {
+  #sidepanel {
+    position: sticky;
+    top: 70px; /* Adjust this value based on the height of your header */
+  }
+}
+
+
   </style>
 </head>
 
 <body>
 
-  <div id="sidepanel" class="bg-dark text-white d-flex flex-column p-2">
+  <!-- Side Panel -->
+  <div id="sidepanel" class="d-flex flex-column p-2">
     <!-- Role Indicator -->
     <div class="text-center mb-4 py-2 border-bottom">
       <span class="fw-bold fs-5"><?= $role_name == "Librarian" ? "L" : "S"; ?></span>
@@ -58,7 +97,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
       <div class="nav-icon">
         <i class="fas fa-gauge"></i>
       </div>
-      <span class="nav-text ms-2 d-none">Dashboard</span>
+      <span class="nav-text ms-2">Dashboard</span>
     </a>
 
     <!-- Profile -->
@@ -67,7 +106,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
       <div class="nav-icon">
         <i class="fas fa-user"></i>
       </div>
-      <span class="nav-text ms-2 d-none">Profile</span>
+      <span class="nav-text ms-2">Profile</span>
     </a>
 
     <!-- Dynamic Modules -->
@@ -80,7 +119,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
         <div class="nav-icon">
           <img src="<?= htmlspecialchars($iconPath); ?>" alt="Module Icon" width="20">
         </div>
-        <span class="nav-text ms-2 d-none"><?= htmlspecialchars($module["name"]); ?></span>
+        <span class="nav-text ms-2"><?= htmlspecialchars($module["name"]); ?></span>
       </a>
     <?php endforeach; ?>
 
@@ -90,7 +129,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
       <div class="nav-icon">
         <i class="fas fa-university"></i>
       </div>
-      <span class="nav-text ms-2 d-none">Library Setup</span>
+      <span class="nav-text ms-2">Library Setup</span>
     </a>
 
     <!-- About Software -->
@@ -99,21 +138,23 @@ $current_action = $_GET['action'] ?? 'dashboard';
       <div class="nav-icon">
         <i class="fas fa-laptop-code"></i>
       </div>
-      <span class="nav-text ms-2 d-none">About</span>
+      <span class="nav-text ms-2">About</span>
     </a>
-    
-    <!-- Spacer to push content up -->
+
+    <!-- Spacer to push logout to bottom -->
     <div class="mt-auto"></div>
-    
+
     <!-- Logout -->
     <a href="logout.php"
-       class="nav-link rounded  d-flex align-items-center text-white">
+       class="nav-link rounded d-flex align-items-center text-white">
       <div class="nav-icon">
         <i class="fas fa-sign-out-alt"></i>
       </div>
-      <span class="nav-text ms-2 d-none">Logout</span>
+      <span class="nav-text ms-2">Logout</span>
     </a>
   </div>
+
+
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

@@ -38,10 +38,18 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
     <div class="d-flex">
 
 
-        <div class="nav-bar">
-            <?php include "dash_sidepanel.php"; ?>
+    <div>
+            <!-- Large and Medium Screens -->
+            <div class="d-none d-md-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
+
+            <!-- Small Screens Only -->
+            <div class="d-block d-md-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
         </div>
-        <div class="form w-100 bg-light px-5">
+        <div class="form w-100 bg-light px-5 ">
             <!-- Navbar -->
             <nav class="navbar py-4 navbar-light bg-light">
                 <div class="container-fluid">

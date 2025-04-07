@@ -36,14 +36,15 @@ $_SESSION['staff']['last_activity'] = time();
 
     <div class="d-flex bg-light">
     <div>
-            <div class="nav-bar d-none d-lg-block">
+            <!-- Large and Medium Screens -->
+            <div class="d-none d-md-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="nav-bar d-block d-lg-none">
+            <!-- Small Screens Only -->
+            <div class="d-block d-md-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
-
         </div>
         <div class="container-fluid">
             <nav class="navbar navbar-light bg-light">
@@ -56,7 +57,7 @@ $_SESSION['staff']['last_activity'] = time();
                     </a>
                 </div>
             </nav>
-            <div class="bg-white mx-5">
+            <div class="bg-white mx-5 ">
 
                 <div class="row m-3">
                     <div class="col-md-6 my-3">

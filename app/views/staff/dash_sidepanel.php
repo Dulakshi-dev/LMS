@@ -19,13 +19,13 @@ $current_action = $_GET['action'] ?? 'dashboard';
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
-    #sidepanel {
+    #sidepanel1 {
       width: 250px;
       min-height: 100vh;
     }
 
     @media (max-width: 992px) {
-      #sidepanel {
+      #sidepanel1 {
         display: none;
       }
     }
@@ -39,7 +39,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
 
 <body>
 
-  <div id="sidepanel" class="bg-dark text-white d-flex flex-column p-2">
+  <div id="sidepanel1" class="bg-dark text-white d-flex flex-column p-2">
     <h4 class="mx-2"><?= $role_name == "Librarian" ? "Librarian Panel" : "Staff Panel"; ?></h4>
 
     <a href="<?php echo Config::indexPath() ?>?action=dashboard"

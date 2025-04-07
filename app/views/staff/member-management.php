@@ -41,19 +41,26 @@ $_SESSION['staff']['last_activity'] = time();
     <div id="box1">
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
-            <div class="nav-bar vh-100">
+        <div>
+            <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="container-fluid mx-5 mb-5 bg-white">
+            <div class="nav-bar d-block d-lg-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
+
+        </div>
+
+            <div class="container-fluid mx-auto m-md-4 mb-5 bg-white">
                 <div class="row">
-                    <nav class="navbar p-4 navbar-light bg-light">
+                    <nav class="navbar p-1 my-1 fl p-md-4 navbar-light bg-light">
                         <span class="navbar-brand mb-0 h1">Member Management <small class="text-muted">control panel</small></span>
-                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> </a>
                     </nav>
                 </div>
 
-                <div class="row g-5 m-5 justify-content-center">
+                <div class="row g-5 m-1 m-md-5 justify-content-center">
                     <!-- Add Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">

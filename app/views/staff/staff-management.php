@@ -41,15 +41,22 @@ $_SESSION['staff']['last_activity'] = time();
     <div id="box1">
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
-            <div class="nav-bar vh-100">
+        <div>
+            <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="container-fluid mx-5 mb-5 bg-white">
+            <div class="nav-bar d-block d-lg-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
+
+        </div>
+
+            <div class="container-fluid mx-md-5 mb-5 bg-white">
                 <div class="row">
-                    <nav class="navbar p-4 navbar-light bg-light">
+                    <nav class="navbar p-2 p-md-4 navbar-light bg-light">
                         <span class="navbar-brand mb-0 h1">Staff Management <small class="text-muted">control panel</small></span>
-                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
                     </nav>
                 </div>
 
@@ -63,7 +70,7 @@ $_SESSION['staff']['last_activity'] = time();
 
                     </div>
                     <div class="col-md-1 ">
-                        <label class="form-label ms-4">Select Role</label>
+                        <label class="form-label -4">Select Role</label>
 
                     </div>
                     <div class="col-md-2">
@@ -78,14 +85,14 @@ $_SESSION['staff']['last_activity'] = time();
                         <span id="roleError" class="text-danger"></span>
 
                     </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-dark" onclick="sendKey();">Send Enrollment Key</button>
+                    <div class="col-md-3 text-end">
+                        <button class="btn btn-dark" onclick="sendKey();"><i class="fas fa-paper-plane me-2"></i>Send Key</button>
                     </div>
                 </div>
 
 
 
-                <div class="row g-5 m-5 justify-content-center">
+                <div class="row g-5 m-1 m-md-5 justify-content-center">
 
 
                     <!-- View All Books -->

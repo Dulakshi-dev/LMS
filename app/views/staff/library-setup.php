@@ -40,17 +40,24 @@ $_SESSION['staff']['last_activity'] = time();
     <div class="d-flex">
 
 
-        <div class="nav-bar">
-            <?php require_once Config::getViewPath("staff", "dash_sidepanel.php"); ?>
+    <div>
+            <div class="nav-bar d-none d-lg-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
+
+            <div class="nav-bar d-block d-lg-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
+
         </div>
         <div class="container-fluid">
             <div class=" bg-light">
-                <div class="p-5">
+                <div class="m-2 pt-3">
                     <section>
                         <div class="container-fluid p-4 border rounded book-car">
                             <h4 class="text-start"><i class="fa fa-clock-o"></i> Time Setup</h4>
                             <div class="row ">
-                                <div class="col-md-2 mt-3 col-12 ms-5">
+                                <div class="col-md-2 mt-3 col-12">
                                     <div><label class="fw-bold mb-5">Week Days</label></div>
                                     <div><label class="fw-bold mb-5">Week Ends</label></div>
                                     <div><label class="fw-bold mb-5">Holidays</label></div>

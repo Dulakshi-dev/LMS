@@ -30,8 +30,15 @@ $_SESSION['staff']['last_activity'] = time();
 <body>
     <?php include "dash_header.php"; ?>
     <div class="d-flex bg-light">
-        <div class="nav-bar vh-100">
-            <?php include "dash_sidepanel.php"; ?>
+    <div>
+            <div class="nav-bar d-none d-lg-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
+
+            <div class="nav-bar d-block d-lg-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
+
         </div>
         <div class="container mt-3">
             <div class="card">

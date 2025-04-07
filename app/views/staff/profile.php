@@ -63,11 +63,11 @@ $role_name = $_SESSION["staff"]["role_name"];
 
         </div>
 
-        <div class="container-fluid mx-5 mb-5 bg-white">
+        <div class="container-fluid mx-md-5 mb-5 bg-white">
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
                     <span class="navbar-brand mb-0 h1">Profile <small class="text-muted">control panel</small></span>
-                    <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+                    <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
                 </nav>
             </div>
             <div id="box1">
@@ -77,7 +77,7 @@ $role_name = $_SESSION["staff"]["role_name"];
                             <h2 class="p-2">Update Details</h2>
                         </div>
                         <div class="row">
-                            <div class="col-md-4 text-center">
+                            <div class="col-lg-4 col-md-12 text-center">
                                 <div class="m-4">
                                     <img class="rounded-circle" id="profileimg" style="height: 200px; width: 200px;" src="" alt="Profile Picture">
                                 </div>

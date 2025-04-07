@@ -45,15 +45,15 @@ $_SESSION['staff']['last_activity'] = time();
 
         </div>
 
-            <div class="container-fluid mx-5 mb-5 bg-white">
+            <div class="container-fluid mx-md-5 mb-5 bg-white">
                 <div class="row">
-                    <nav class="navbar p-4 navbar-light bg-light">
+                    <nav class="navbar p-1 p-md-4 navbar-light bg-light">
                         <span class="navbar-brand mb-0 h1">Book Management <small class="text-muted">control panel</small></span>
-                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
                     </nav>
                 </div>
 
-                <div class="row g-5 m-5 justify-content-center">
+                <div class="row g-5 m-1 m-md-5 justify-content-center">
                     <!-- Add Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">

@@ -407,11 +407,11 @@ CREATE TABLE `payment` (
   `transaction_id` varchar(50) NOT NULL,
   `payed_at` datetime NOT NULL,
   `next_due_date` datetime NOT NULL,
-  `member_id` int NOT NULL,
+  `memberId` int NOT NULL,
   PRIMARY KEY (`payment_id`),
   UNIQUE KEY `trasaction_id_UNIQUE` (`transaction_id`),
-  KEY `fk_payment_member1_idx` (`member_id`),
-  CONSTRAINT `fk_payment_member1` FOREIGN KEY (`member_id`) REFERENCES `member` (`id`)
+  KEY `fk_payment_member1_idx` (`memberId`),
+  CONSTRAINT `fk_payment_member1` FOREIGN KEY (`memberId`) REFERENCES `member` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -667,4 +667,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-06 22:50:17
+-- Dump completed on 2025-04-07 10:37:31

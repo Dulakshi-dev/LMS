@@ -22,7 +22,7 @@ class PaymentModel
 
         $rs = Database::search("SELECT `transaction_id`,`member_login`.`member_id`,`amount`,`payed_at`,`next_due_date` 
                                 FROM `payment`
-                                JOIN `member` ON `member`.`id`=`payment`.`member_id`
+                                JOIN `member` ON `member`.`id`=`payment`.`memberId`
                                 JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
                                 LIMIT $resultsPerPage OFFSET $pageResults");
 
@@ -42,7 +42,7 @@ class PaymentModel
     {
         $result = Database::search("SELECT COUNT(*) AS total 
                                 FROM `payment`
-                                JOIN `member` ON `member`.`id`=`payment`.`member_id`
+                                JOIN `member` ON `member`.`id`=`payment`.`memberId`
                                 JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`");
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
@@ -56,7 +56,7 @@ class PaymentModel
 
         $sql = "SELECT `transaction_id`,`member_login`.`member_id`,`amount`,`payed_at`,`next_due_date` 
                                 FROM `payment`
-                                JOIN `member` ON `member`.`id`=`payment`.`member_id`
+                                JOIN `member` ON `member`.`id`=`payment`.`memberId`
                                 JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";
 
         if (!empty($memberId)) {
@@ -81,7 +81,7 @@ class PaymentModel
     {
         $countQuery = "SELECT COUNT(*) as total 
                                 FROM `payment`
-                                JOIN `member` ON `member`.`id`=`payment`.`member_id`
+                                JOIN `member` ON `member`.`id`=`payment`.`memberId`
                                 JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE 1";
 
         if (!empty($memberId)) {

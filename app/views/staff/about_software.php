@@ -31,7 +31,6 @@ $_SESSION['staff']['last_activity'] = time();
     <?php include "dash_header.php"; ?>
     <div class="d-flex bg-light">
     <div>
-<<<<<<< HEAD
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -40,17 +39,6 @@ $_SESSION['staff']['last_activity'] = time();
                 <?php include "small_sidepanel.php"; ?>
             </div>
 
-=======
-            <!-- Large and Medium Screens -->
-            <div class="d-none d-md-block">
-                <?php include "dash_sidepanel.php"; ?>
-            </div>
-
-            <!-- Small Screens Only -->
-            <div class="d-block d-md-none">
-                <?php include "small_sidepanel.php"; ?>
-            </div>
->>>>>>> 5b87d0577e93adbf30f6317020be100339061c6e
         </div>
         <div class="container mt-3">
             <div class="card">

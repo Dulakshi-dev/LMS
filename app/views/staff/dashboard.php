@@ -63,16 +63,15 @@ $_SESSION['staff']['last_activity'] = time();
 
     <div class="d-flex mx-auto">
 
-        <div>
-            <!-- Large and Medium Screens -->
-            <div class="d-none d-md-block">
+    <div>
+            <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <!-- Small Screens Only -->
-            <div class="d-block d-md-none">
+            <div class="nav-bar d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
+
         </div>
 
 

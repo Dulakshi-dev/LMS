@@ -1,22 +1,22 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php");
+    header("Location: index.php"); 
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy();
-    header("Location: index.php");
+    session_destroy(); 
+    header("Location: index.php"); 
     exit;
 }
 
 // Reset last activity time (only if user is active)
 $_SESSION['staff']['last_activity'] = time();
 
-$user_id = $_SESSION["staff"]["staff_id"];
+$user_id = $_SESSION["staff"]["staff_id"]; 
 $role_name = $_SESSION["staff"]["role_name"];
 
 ?>
@@ -31,11 +31,6 @@ $role_name = $_SESSION["staff"]["role_name"];
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
         #box1 {
             display: block;
         }
@@ -57,23 +52,18 @@ $role_name = $_SESSION["staff"]["role_name"];
 
     <div class="d-flex bg-light">
 
-    <div>
-            <!-- Large and Medium Screens -->
-            <div class="d-none d-md-block">
+        <div>
+            <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <!-- Small Screens Only -->
-            <div class="d-block d-md-none">
+            <div class="nav-bar d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
+
         </div>
 
-<<<<<<< HEAD
         <div class="container-fluid mx-md-5 mb-5 bg-white">
-=======
-        <div class="container-fluid mx-5 mb-5 bg-white ">
->>>>>>> 5b87d0577e93adbf30f6317020be100339061c6e
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
                     <span class="navbar-brand mb-0 h1">Profile <small class="text-muted">control panel</small></span>

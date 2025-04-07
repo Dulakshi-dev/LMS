@@ -36,7 +36,6 @@ $_SESSION['staff']['last_activity'] = time();
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
         <div>
-<<<<<<< HEAD
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -48,20 +47,6 @@ $_SESSION['staff']['last_activity'] = time();
         </div>
 
             <div class="container-fluid mx-md-5 mb-5 bg-white">
-=======
-            <!-- Large and Medium Screens -->
-            <div class="d-none d-md-block">
-                <?php include "dash_sidepanel.php"; ?>
-            </div>
-
-            <!-- Small Screens Only -->
-            <div class="d-block d-md-none">
-                <?php include "small_sidepanel.php"; ?>
-            </div>
-        </div>
-
-            <div class="container-fluid mx-5 mb-5 bg-white ">
->>>>>>> 5b87d0577e93adbf30f6317020be100339061c6e
                 <div class="row">
                     <nav class="navbar p-md-4 navbar-light bg-light">
                         <span class="navbar-brand mb-0 h1">Circulation Management <small class="text-muted">control panel</small></span>

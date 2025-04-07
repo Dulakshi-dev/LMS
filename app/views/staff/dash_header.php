@@ -83,9 +83,9 @@ $fine = $libraryData['fine_amount'];
                                     alt="User" class="rounded-circle me-2" style="height: 40px; width: 40px;">
                                 <div class="text-left mx-3">
                                     <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
-                                    <small><?php echo $role_name; ?></small>
+                                    <small><?php echo $role_name; ?> <i class="fas fa-caret-down ms-2"></i></small>
                                 </div>
-                                <i class="fas fa-caret-down ms-2"></i>
+                                
                             </a>
                         </li>
                     </ul>

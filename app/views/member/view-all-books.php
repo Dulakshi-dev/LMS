@@ -67,8 +67,13 @@ $_SESSION['member']['last_activity'] = time();
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
-    <div class="nav-bar">
-      <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
+  <div>
+      <div class="nav-bar d-block d-lg-none">
+        <?php require_once Config::getViewPath("member", "sm_sidepanel.php"); ?>
+      </div>
+      <div class="nav-bar d-none d-lg-block">
+        <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
+      </div>
     </div>
 
     <div class="container-fluid p-4">

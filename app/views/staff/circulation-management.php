@@ -49,7 +49,7 @@ $_SESSION['staff']['last_activity'] = time();
             <div class="container-fluid mx-md-5 mb-5 bg-white">
                 <div class="row">
                     <nav class="navbar p-md-4 navbar-light bg-light">
-                        <span class="navbar-brand mb-0 h1">Circulation Management <small class="text-muted">control panel</small></span>
+                        <span class="h5 mb-0 ">Circulation Management <small class="text-muted">control panel</small></span>
                         <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
                     </nav>
                 </div>

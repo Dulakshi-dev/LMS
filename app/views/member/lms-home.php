@@ -31,7 +31,7 @@
     <!-- Hero Section -->
     <div class="container-fluid px-0 mx-auto">
         <div class="row g-0">
-            <div class="col-12" style="background-image: url('<?php echo Config::getImagePath("test.jpg"); ?>'); height: 90vh; min-height: 600px; background-size: cover; background-position: center; background-repeat: no-repeat;">
+            <div class="col-12" style="background-image: url('<?php echo Config::getImagePath("test.jpg"); ?>'); height: 90vh; min-height: 500px; background-size: cover; background-position: center; background-repeat: no-repeat;">
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-12 col-lg-6 offset-lg-6 text-center text-lg-start">
@@ -60,7 +60,7 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-12">
-                    <div class="scrollable-books row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg- g-4" id="topBookBody">
+                    <div class="row g-4" id="topBookBody">
                         <!-- Books will be loaded here by JavaScript -->
                         <!-- Each book card should be wrapped in a div with class "col book-card" -->
                     </div>

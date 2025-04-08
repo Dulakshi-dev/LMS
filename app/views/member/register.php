@@ -104,9 +104,18 @@
     require_once Config::getViewPath("home", "header.view.php");
     ?>
     <!-- Important Notes Section -->
-    <div class="text-white p-5 mt-3 Important">
-        <h1 class="text-danger fs-1font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h1>
-        <ol class="py-4 fs-5">
+    <div class="text-white p-2 p-md-5 mt-3 Important">
+        <h1 class="text-danger fs-1 font-weight-bold p-4">Important Notes for <span class="text-dark">Membership Registration:</span></h1>
+        <ol class="py-4 fs-5 d-none d-md-block">
+            Membership Fee:
+            <ul class="m-3">
+                <li>The annual membership fee is <span class="phone-number font-weight-bold">RS <?= $fee ?></span></li>
+            </ul>
+            <ul class="m-3">
+                <li>Make the payment online through the designated payment portal at the end of the registration process.</li>
+            </ul>
+        </ol>
+        <ol class="py-1 d-block d-md-none">
             Membership Fee:
             <ul class="m-3">
                 <li>The annual membership fee is <span class="phone-number font-weight-bold">RS <?= $fee ?></span></li>
@@ -118,15 +127,20 @@
     </div>
 
     <!-- Registration Info Section -->
-    <div class="text-center p-5 bg-white text-dark">
+    <div class="text-center p-5 d-none d-md-block bg-white text-dark">
         <div class="line long-line m-2"></div>
         <div class="line short-line"></div>
-        <h5>Register today to access our extensive collection of books and other resources</h5>
+        <h5 class="">Register today to access our extensive collection of books and other resources</h5>
+    </div>
+    <div class="text-center p-2 bg-white d-block d-md-none text-dark">
+        <div class="line long-line m-2"></div>
+        <div class="line short-line"></div>
+        <p class="">Register today to access our extensive collection of books and other resources</p>
     </div>
 
     <!-- Registration Form Section -->
     <div class="bg-white background-container p-5">
-        <div class="container p-4 my-2 col-md-6">
+        <div class="container p-4 my-2 col-md-12 col-lg-6">
             <div class="row">
                 <div class="text-white login-form">
                     <!-- Box 1: Membership ID and NIC Number -->
@@ -148,27 +162,25 @@
 
                     <!-- Box 2: Address and Phone Number -->
                     <div id="Box2" class="d-none">
-                        <h5 class="mb-1">Enter <b>Address</b> and <b>Phone Number</b> :</h5>
+                        <h5 class="mb-3">Enter <b>Address</b> and <b>Phone Number</b></h5>
+
                         <form id="loginForm2">
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="Address" class="my-2">Address :</label>
+                            <div class="row mb-4">
+                                <div class="col-md-6 mb-3 mb-md-0">
+                                    <label for="Address" class="form-label">Address</label>
                                     <input type="text" class="form-control" id="Address" placeholder="Enter Address">
-                                    <div id="Addresserror" class="text-danger"></div>
+                                    <div id="Addresserror" class="text-danger small mt-1"></div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="PhoneNumber" class="my-2">Phone Number :</label>
+                                    <label for="PhoneNumber" class="form-label">Phone Number</label>
                                     <input type="text" class="form-control" id="PhoneNumber" placeholder="Enter Phone Number">
-                                    <div id="Pnumerror" class="text-danger"></div>
+                                    <div id="Pnumerror" class="text-danger small mt-1"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <button type="button" class="bt" id="backButton1" onclick="backToBox1()">BACK</button>
-                                </div>
-                                <div class="col d-flex justify-content-end">
-                                    <button id="btn2" type="button" class="bt" onclick="registerBox2()">NEXT</button>
-                                </div>
+
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="bt " id="backButton1" onclick="backToBox1()">Back</button>
+                                <button type="button" class="bt" id="btn2" onclick="registerBox2()">Next</button>
                             </div>
                         </form>
                     </div>
@@ -180,18 +192,17 @@
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="membershipID" class="my-2">Email :</label>
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email">
+                                    <input type="text" class="form-control my-2" id="email" name="email" placeholder="Enter Email">
                                     <div id="Emailerror" class="text-danger"></div>
                                 </div>
 
                             </div>
-                            <div class="row">
-                                <div class="col">
+                            <div class="d-flex justify-content-end gap-1">
+                                
                                     <button type="button" class="bt" id="backButton3" onclick="backToBox2()">BACK</button>
-                                </div>
-                                <div class="col d-flex justify-content-end">
+                              
                                     <button id="btn4" type="button" class="bt" onclick="registerBox3()">NEXT</button>
-                                </div>
+                                
                             </div>
                         </form>
                     </div>
@@ -211,13 +222,10 @@
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp6">
                             </div>
                             <p class="resend-text">Don't receive? <a href="#" class="" id="resend-link" onclick="resendOTP()">Resend OTP</a></p>
-                            <div class="row">
-                                <div class="col">
+                            <div class="d-flex justify-content-between">
                                     <button type="button" class="bt" id="backButton2" onclick="backToBox3()">BACK</button>
-                                </div>
-                                <div class="col d-flex justify-content-end">
                                     <button id="btn3" type="button" class="bt" onclick="registerBox4()">NEXT</button>
-                                </div>
+                                
                             </div>
                         </form>
                     </div>
@@ -246,7 +254,7 @@
                             </div>
                             <div class="row text-center">
                                 <div class="col text-white">
-                                    <button id="btn5" type="button" class="bt mt-2" onclick="registerBox5()">Proceed to payment</button>
+                                    <button id="btn5" type="button" class="bt mt-2" onclick="registerBox5()"> payment</button>
 
                                 </div>
                             </div>

@@ -106,7 +106,7 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
 
     <!-- User Profile -->
     <a href="<?= Config::indexPathMember() ?>?action=profile"
-       class="nav-link rounded border-bottom border-top border-3  py-1 my-2 d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link rounded border-bottom border-top border-3  py-1 my-2 d-flex align-items-center <?= $current_action == 'profile' ? 'bg-dark text-white' : 'text-dark'; ?>">
        <div class="d-flex  align-items-center mb-2">
       <img src="" alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 30px; width: 30px;" />
       <span class="nav-text ms-2 d-none"><?= $fname . " " . $lname; ?></span>

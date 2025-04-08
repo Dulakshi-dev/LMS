@@ -79,10 +79,10 @@ $member_id = $_SESSION["member"]["member_id"]
 
     <div class="d-flex">
     <div>
-      <div class="nav-bar d-block d-md-none">
+      <div class="nav-bar d-block d-lg-none">
         <?php require_once Config::getViewPath("member", "sm_sidepanel.php"); ?>
       </div>
-      <div class="nav-bar d-none w-25 d-md-block">
+      <div class="nav-bar d-none d-lg-block">
         <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
       </div>
     </div>

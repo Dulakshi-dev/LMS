@@ -33,30 +33,29 @@ $_SESSION['staff']['last_activity'] = time();
 
     <div class="d-flex bg-light">
     <div>
-            <!-- Large and Medium Screens -->
-            <div class="d-none d-md-block">
+            <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <!-- Small Screens Only -->
-            <div class="d-block d-md-none">
+            <div class="nav-bar d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
+
         </div>
 
-        <div class="container-fluid">
+        <div class="container-fluid w-75">
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1">
                         Deactive Books
                     </span>
                     <a href="#" class="text-decoration-none h5">
-                        <i class="fa fa-home"></i> Home
+                        <i class="fa fa-home"></i> 
                     </a>
                 </div>
             </nav>
 
-            <div class="bg-white mx-5 ">
+            <div class="bg-white ">
 
                 <div class="row m-3">
                     <div class="col-md-4 my-3">
@@ -71,7 +70,7 @@ $_SESSION['staff']['last_activity'] = time();
                     </div>
                 </div>
                 <div class="border border-secondary mb-4"></div>
-                <div class="px-1">
+                <div class="px-1 table-responsive">
                     <table class="table">
                         <thead class="thead-light">
                             <tr>

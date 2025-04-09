@@ -33,19 +33,18 @@ $_SESSION['staff']['last_activity'] = time();
     <?php include "dash_header.php"; ?>
     <div class="d-flex bg-light">
     <div>
-            <!-- Large and Medium Screens -->
-            <div class="d-none d-md-block">
+            <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <!-- Small Screens Only -->
-            <div class="d-block d-md-none">
+            <div class="nav-bar d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
+
         </div>
-        <div class="box-0 container m-5 ">
-            <div class="bg-white ">
-                <div class="text-center border-bottom border-danger border-4 mb-4 pb-3">
+        <div class="box-0 container m-md-5 ">
+            <div class="bg-white p-2">
+                <div class="text-center border-bottom border-danger border-4 mb-4 mt-2 pb-3">
                     <h2>Add Books</h2>
                 </div>
                 <div class="row add-book-form">
@@ -58,7 +57,7 @@ $_SESSION['staff']['last_activity'] = time();
                             <span id="coverpage-error" class="text-danger"></span>
                         </div>
                     </div>
-                    <div class="col-md-9 px-5">
+                    <div class="col-md-9 px-md-5">
                         <div class="row">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>

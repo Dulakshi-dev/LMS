@@ -63,7 +63,7 @@ $_SESSION['member']['last_activity'] = time();
   </style>
 </head>
 
-<body class="bg-light" onload="loadBorrowBooks();">
+<body class="bg-white" onload="loadBorrowBooks();">
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
@@ -76,28 +76,36 @@ $_SESSION['member']['last_activity'] = time();
         <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
       </div>
     </div>
-    <div class="container bg-white mt-4 p-4 rounded shadow-sm vh-100">
+    <div class="container bg-light mt-md-4 p-md-4 w-75 rounded shadow-sm vh-100">
       <!-- Header -->
       <div class="d-flex justify-content-end align-items-center mb-4">
         <a href="#" class="page-link">
-          <i class="fa fa-home"></i> Home
+          <i class="fa fa-home"></i> 
         </a>
       </div>
 
       <!-- Search Bar -->
-      <div class="input-group mb-5">
-        <input id="bookid" type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
-        <input id="title" type="text" class="form-control mx-2" placeholder="Type Book Name" aria-label="Book Name">
-        <input id="category" type="text" class="form-control" placeholder="Type Category" aria-label="Category">
-        <button class="btn btn-primary ms-2" onclick="loadBorrowBooks();">
-          <i class="fa fa-search"></i> Search
-        </button>
-      </div>
+      <div class="row mb-5 g-3">
+                <div class="col-12 col-md-4">
+                    <input id="bookid" type="text" class="form-control" placeholder="Type Book ID" aria-label="Book ID">
+                </div>
+                <div class="col-12 col-md-4">
+                    <input id="title" type="text" class="form-control" placeholder="Type Book Name" aria-label="Book Name">
+                </div>
+                <div class="col-10 col-md-3">
+                    <input id="category" type="text" class="form-control" placeholder="Type Category" aria-label="Category">
+                </div>
+                <div class=" col-1 d-grid">
+                    <button class="btn btn-primary" onclick="loadSavedBooks();">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
 
       <!-- Table -->
       <div class="table-responsive">
     <table class="table table-bordered text-center">
-        <thead class="table-light">
+        <thead class="table-white">
             <tr>
                 <th>Borrow ID</th>
                 <th>Book ID</th>

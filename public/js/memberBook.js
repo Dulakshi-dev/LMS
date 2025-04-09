@@ -409,7 +409,7 @@ function searchBook() {
             book.available_qty > 0 ? "Available" : "Not Available";
 
           let row = `
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-4 col-sm-6">
                   <div class="book-card">
                     <div class="book-image">
                       <img src="${coverImageUrl}" alt="Book Cover">

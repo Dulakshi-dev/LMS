@@ -30,7 +30,7 @@ $_SESSION['member']['last_activity'] = time();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body class="bg-light">
+<body class="bg-white">
   <?php require_once Config::getViewPath("member", "header.php"); ?>
 
   <div class="d-flex">
@@ -43,18 +43,18 @@ $_SESSION['member']['last_activity'] = time();
         <?php require_once Config::getViewPath("member", "sidepanel.php"); ?>
       </div>
     </div>
-    <div class="container bg-white mt-4 p-4 rounded shadow-sm">
+    <div class="container bg-light w-75 mt-md-4 p-md-4 rounded shadow-sm">
       <!-- Header -->
       <div class="d-flex justify-content-end align-items-center mb-4">
         <a href="#" class="page-link">
-          <i class="fa fa-home"></i> Home
+          <i class="fa fa-home"></i>
         </a>
       </div>
 
       <!-- Table -->
       <div class="table-responsive">
         <table class="table table-bordered text-center">
-          <thead class="table-light">
+          <thead class="table-white">
             <tr>
               <th>#</th>
               <th>Book ID</th>

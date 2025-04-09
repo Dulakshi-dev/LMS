@@ -70,30 +70,56 @@ class AuthModel
         return $newStaffID;
     }
 
+    public static function validateRegDetails($nic, $email)
+    {
+        $nicCheck = Database::search("SELECT * FROM `member` WHERE `nic` = '$nic'");
+        $emailCheck = Database::search("SELECT * FROM `member` WHERE `email` = '$email'");
+
+        if ($nicCheck->num_rows > 0 && $emailCheck->num_rows > 0) {
+            return "Both NIC and Email are already registered.";
+        } elseif ($nicCheck->num_rows > 0) {
+            return "NIC is already registered.";
+        } elseif ($emailCheck->num_rows > 0) {
+            return "Email is already registered.";
+        } else {
+            return true;  // No match for both NIC and Email
+        }
+    }
+
+
     public static function register($fname, $lname, $address, $phone, $email, $nic, $role_id, $password, $key)
     {
-        if (self::validateKey($email, $key, $role_id)) {
+        $keyValidation = self::validateKey($email, $key, $role_id);
 
-            $id = Database::insert("INSERT INTO `staff`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','$role_id')");
+        if ($keyValidation) {
+            $id = Database::insert("INSERT INTO `staff`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) 
+ VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','$role_id')");
             $staffID = self::generateStaffID();
+
             Database::insert("INSERT INTO `staff_login`(`staff_id`, `password`, `staffId`) VALUES ('$staffID', '$password', '$id')");
             self::sendMail($id, $staffID);
+
             return true;
-        } else {
+        }else{
             return false;
         }
     }
+
 
     public static function validateKey($email, $key, $role_id)
     {
-        $rs = Database::search("SELECT * FROM staff_key WHERE email = '$email' AND key_value = '$key' AND role_id = '$role_id'");
 
-        if ($rs->num_rows > 0) {
+        $query = "SELECT * FROM staff_key WHERE email = '$email' AND key_value = '$key' AND role_id = '$role_id'";
+        $result = Database::search($query);
+
+        if ($result->num_rows > 0) {
             return true;
         } else {
             return false;
         }
     }
+
+
 
     public static function sendMail($id, $staff_id)
     {

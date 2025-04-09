@@ -35,7 +35,9 @@ class AuthModel
         return $id;
     }
 
-    public static function validateEmail($email, $vcode)
+
+
+    public static function verifyEmail($email, $vcode)
     {
         $rs = Database::search("SELECT * FROM `member` WHERE `email` = '$email'");
 
@@ -48,6 +50,29 @@ class AuthModel
             return false;
         }
     }
+
+    public static function validateEmail($email)
+    {
+        $rs = Database::search("SELECT * FROM `member` WHERE `email` = '$email'");
+
+        if ($rs->num_rows > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static function validateNIC($nic)
+    {
+        $rs = Database::search("SELECT * FROM `member` WHERE `nic` = '$nic'");
+
+        if ($rs->num_rows > 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 
     public static function changePasswordwithvcode($password, $vcode)
     {

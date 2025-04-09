@@ -36,7 +36,9 @@ $router->add('updateprofile', [$profileController, 'updateProfile']);
 $router->add('serveprofimage', [$profileController, 'serveProfileImage']);
 $router->add('validatecurrentpw', [$profileController, 'validateCurrentPassword']); 
 $router->add('savenewpw', [$profileController, 'resetPassword']); 
-$router->add('sendotp', [$authController, 'sendOTP']); 
+$router->add('validateemail', [$authController, 'sendOTP']); 
+$router->add('validatenic', [$authController, 'validatenic']); 
+
 $router->add('verifyotp', [$authController, 'verifyOTP']); 
 $router->add('loadBorrowHistory', [$borrowHistoryController, 'loadBorrowBooks']); 
 $router->add('showPayment', [$paymentController, 'proceedPayment']); 

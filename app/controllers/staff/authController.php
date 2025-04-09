@@ -61,6 +61,23 @@ class AuthController extends Controller
         }
     }
 
+    public function validatedetails()
+    {
+        if ($this->isPost()) {
+            $nic = $this->getPost('nic');
+            $email = $this->getPost('email');
+
+            $result = AuthModel::validateRegDetails($nic, $email);
+
+            if ($result === true) {
+                $this->jsonResponse(["message" => "Success."]);
+            } else {
+                $this->jsonResponse(["message" => $result], false);
+            }
+        }
+    }
+
+
     public function register()
     {
         if ($this->isPost()) {
@@ -75,19 +92,20 @@ class AuthController extends Controller
             $key = $this->getPost('key');
 
             if ($role === 'Librarian') {
-                $role_id = 1; 
+                $role_id = 1;
             } else {
                 $role_id = 2;
             }
-    
+
 
             $result = AuthModel::register($fname, $lname, $address, $phone, $email, $nic, $role_id, $password, $key);
 
             if ($result) {
-                $this->jsonResponse(["message" => "Successfully Registered. Check the email for staff ID"]);
+                $this->jsonResponse(["message" => "Successfully Registered. Check the email for your staff ID"]);
             } else {
-                $this->jsonResponse(["message" => "Registration Failed. Invalid Enrollment Key or Role selection"], false);
+                $this->jsonResponse(["message" => "Invalid enrollment details. Please check your email, role, or enrollment key."], false);
             }
+            
         }
     }
 
@@ -107,7 +125,7 @@ class AuthController extends Controller
         }
     }
 
-    public function sendResetLink($email, $vcode)             
+    public function sendResetLink($email, $vcode)
 
     {
         require_once Config::getServicePath('emailService.php');
@@ -158,7 +176,8 @@ class AuthController extends Controller
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_start();
         session_unset();
         session_destroy();

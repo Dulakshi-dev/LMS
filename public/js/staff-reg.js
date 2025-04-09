@@ -54,8 +54,6 @@ function updateRule(id, condition) {
     }
 }
 
-
-
 function submit() {
     // Clear all previous errors
     document.querySelectorAll("span").forEach(span => span.textContent = "");
@@ -147,12 +145,37 @@ function submit() {
 
     // Final check
     if (isValid) {
-        document.querySelector(".box-2").style.display = "block";
+
+
+        var formData = new FormData();
+        formData.append("email", email);
+        formData.append("nic", nic);
+
+        fetch("index.php?action=validatedetails", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    document.querySelector(".box-2").style.display = "block";
+
+
+                } else {
+                    showAlert("Error", resp.message, "error");
+
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                showAlert("Error", "An error occurred. Please try again.", "error");
+
+            });
     }
 }
 
-function register(){
-    
+function register() {
+
     var fname = document.getElementById("firstName").value.trim();
     var lname = document.getElementById("lastName").value.trim();
     var address = document.getElementById("address").value.trim();
@@ -183,9 +206,9 @@ function register(){
         .then(resp => {
             if (resp.success) {
                 showAlert("Success", resp.message, "success").then(() => {
-                    location.href="index.php";
+                    location.href = "index.php";
                 });
-                
+
             } else {
                 showAlert("Error", resp.message, "error");
 

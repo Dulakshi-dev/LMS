@@ -72,16 +72,18 @@ class AuthController extends Controller
 
         if ($this->isPost()) {
             $email = $this->getPost('email');
+            $result = self::validateemail($email);
 
-            $otp = rand(100000, 999999);
+            if ($result) {
+                $otp = rand(100000, 999999);
 
-            $_SESSION['otp'] = $otp;
-            $_SESSION['otp_expiry'] = time() + (5 * 60); // Current time + 5 minutes
-            $_SESSION['otp_email'] = $email; // Store email for verification
+                $_SESSION['otp'] = $otp;
+                $_SESSION['otp_expiry'] = time() + (5 * 60); // Current time + 5 minutes
+                $_SESSION['otp_email'] = $email; // Store email for verification
 
-            $subject = "Email Verification";
+                $subject = "Email Verification";
 
-            $body = '
+                $body = '
                 <h4 style="font-size: 30px; color: black; font-weight: bold; text-align: center;">ONE Time Passcode</h4> 
 
                 <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
@@ -98,15 +100,49 @@ class AuthController extends Controller
                     </div>
                 </div>';
 
-            $emailService = new EmailService();
-            $emailSent = $emailService->sendEmail($email, $subject, $body);
-            if ($emailSent) {
-                $this->jsonResponse(["message" => "OTP sent. Check your email!"]);
-            } else {
-                $this->jsonResponse(["message" => "Failed to send email."], false);
+                $emailService = new EmailService();
+                $emailSent = $emailService->sendEmail($email, $subject, $body);
+                if ($emailSent) {
+                    $this->jsonResponse(["message" => "OTP sent. Check your email!"]);
+                } else {
+                    $this->jsonResponse(["message" => "Failed to send email."], false);
+                }
+            }else{
+                $this->jsonResponse(["message" => "This email is already registered."], false);
+
             }
         } else {
             $this->jsonResponse(["message" => "Invalid Request"], false);
+        }
+    }
+
+    public function validateemail()
+    {
+        if ($this->isPost()) {
+            $email = $this->getPost('email');
+
+            $result = AuthModel::validateEmail($email);
+
+            if ($result) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public function validatenic()
+    {
+        if ($this->isPost()) {
+            $nic = $this->getPost('nic');
+
+            $result = AuthModel::validateNIC($nic);
+
+            if ($result) {
+                $this->jsonResponse(["message" => "Success."]);
+            } else {
+                $this->jsonResponse(["message" => "NIC already registered."], false);
+            }
         }
     }
 
@@ -162,7 +198,7 @@ class AuthController extends Controller
             $email = $this->getPost('email');
             $vcode = uniqid();
 
-            $result = AuthModel::validateEmail($email, $vcode);
+            $result = AuthModel::verifyEmail($email, $vcode);
 
             if ($result) {
                 self::sendResetLink($email, $vcode);
@@ -171,6 +207,8 @@ class AuthController extends Controller
             }
         }
     }
+
+
 
     public static function sendResetLink($email, $vcode)
     {
@@ -229,7 +267,8 @@ class AuthController extends Controller
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_start();
         session_unset();
         session_destroy();

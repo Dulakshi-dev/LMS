@@ -14,14 +14,33 @@ function registerBox1() {
     if (nic === "") {
         document.getElementById("nicnumerror").innerText = "NIC Required.";
         return false;
-    }else if(!/^(?:\d{9}[VX]|\d{12})$/.test(nic)){
+    } else if (!/^(?:\d{9}[VX]|\d{12})$/.test(nic)) {
         document.getElementById("nicnumerror").innerText = "Invalid NIC.";
         return false;
     } else {
         document.getElementById("nicnumerror").innerText = "";
 
-        document.getElementById("Box1").classList.add("d-none");
-        document.getElementById("Box2").classList.remove("d-none");
+        var formData = new FormData();
+        formData.append("nic", nic);
+
+        fetch("index.php?action=validatenic", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    document.getElementById("Box1").classList.add("d-none");
+                    document.getElementById("Box2").classList.remove("d-none");
+
+                } else {
+                    showAlert("Error", resp.message, "error");
+                }
+            })
+            .catch(error => {
+                console.error("Error fetching user data:", error);
+            });
+
         return false;
     }
 }
@@ -36,7 +55,7 @@ function registerBox2() {
     } else if (PhoneNumber === "") {
         document.getElementById("Pnumerror").innerText = "Please enter mobile number";
         return false;
-    }else if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(PhoneNumber)) {
+    } else if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(PhoneNumber)) {
         document.getElementById("Pnumerror").innerText = "Invalid mobile number";
         return false;
     } else {
@@ -56,16 +75,23 @@ function registerBox3() {
     if (email === "") {
         document.getElementById("Emailerror").innerText = "Please enter the email address";
         return false;
-    }else if (!/^\S+@\S+\.\S+$/.test(email)) {
+
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
         document.getElementById("Emailerror").innerText = "Invalid email address";
         return false;
+
     } else {
+
         document.getElementById("Emailerror").innerText = "";
+
+        var spinner = document.getElementById("emailSpinner");
+        spinner.classList.remove("d-none");
+        document.getElementById("btn4").classList.add("d-none");
 
         var formData = new FormData();
         formData.append("email", email);
 
-        fetch("index.php?action=sendotp", {
+        fetch("index.php?action=validateemail", {
             method: "POST",
             body: formData,
         })
@@ -96,7 +122,7 @@ function startOTPTimer(duration) {
     let resendLink = document.getElementById("resend-link");
     let otpInputs = document.querySelectorAll(".otp-box");
 
-    let timeLeft = duration; 
+    let timeLeft = duration;
 
     // Disable OTP input initially
     otpInputs.forEach(input => input.disabled = false);
@@ -112,7 +138,7 @@ function startOTPTimer(duration) {
         if (timeLeft <= 0) {
             clearInterval(countdown);
             timerDisplay.innerText = "OTP expired";
-            
+
             // Disable OTP input fields
             otpInputs.forEach(input => input.disabled = true);
 
@@ -124,10 +150,9 @@ function startOTPTimer(duration) {
     }, 1000);
 }
 
-function resendOTP(){
+function resendOTP() {
     registerBox3();
 }
-
 
 function registerBox4() {
     var otp1 = document.getElementById("otp1").value;
@@ -178,6 +203,11 @@ function backToBox2() {
 
 // Function to navigate back to Box 3
 function backToBox3() {
+
+    var spinner = document.getElementById("emailSpinner");
+    spinner.classList.add("d-none");
+    document.getElementById("btn4").classList.remove("d-none");
+
     document.getElementById("Box4").classList.add("d-none");
     document.getElementById("Box3").classList.remove("d-none");
 }
@@ -223,12 +253,30 @@ window.onload = function () {
         showAlert("Error", "Payment failed: " + error, "error");
 
     };
+
+    // Auto move focus for OTP boxes
+    document.querySelectorAll(".otp-box").forEach((input, index, inputs) => {
+        input.addEventListener("input", (e) => {
+            const value = e.target.value;
+            if (value.length === 1 && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && e.target.value === "" && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+    });
+
 };
 
 function registerBox5() {
-
     var Fname = document.getElementById("Fname").value;
     var Lname = document.getElementById("Lname").value;
+    var agreeCheckbox = document.getElementById("agreeCheckbox").checked; // Check if the checkbox is checked
+
     if (Fname === "" || Lname === "") {
         if (Fname === "") {
             document.getElementById("Ferror").innerText = "First name is required";
@@ -243,6 +291,9 @@ function registerBox5() {
         }
 
         return false;
+    } else if (!agreeCheckbox) { // Check if the checkbox is not checked
+        document.getElementById("checkboxerror").innerText = "You must agree to the terms and conditions to proceed";
+        return false;
     } else {
         fetch("index.php?action=showPayment", {
             method: "POST",
@@ -256,7 +307,6 @@ function registerBox5() {
                     payhere.startPayment(resp.payment);
                 } else {
                     showAlert("Error", "Payment Error: " + resp.error, "error");
-
                 }
             })
             .catch(error => {
@@ -293,7 +343,7 @@ function register(transactionId) {
         .then(response => response.json())
         .then(resp => {
             if (resp.success) {
-                
+
                 showAlert("Success", resp.message, "success").then(() => {
                     window.location.href = "index.php?action=login";
                 });

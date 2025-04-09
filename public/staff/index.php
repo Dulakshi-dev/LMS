@@ -50,6 +50,8 @@ $router->add('searchBooks', [$bookController, 'searchBooks']);
 $router->add('deactivatebook', [$bookController, 'deactivateBook']);
 $router->add('register', [$authController, 'register']);
 $router->add('forgotpassword', [$authController, 'forgotPassword']);
+$router->add('validatedetails', [$authController, 'validatedetails']);
+
 $router->add('resetpassword', [$authController, 'resetPassword']);
 $router->add('loadborrowbookdata', [$circulationController, 'loadBookDetails']);
 $router->add('loadborrowmemberdata', [$circulationController, 'loadMemberDetails']);

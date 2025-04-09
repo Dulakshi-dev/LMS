@@ -149,13 +149,16 @@
                         <form id="loginForm1">
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <label for="nicNumber" class="my-2">NIC Number :</label>
+                                    <label for="NICNumber" class="my-2">NIC Number :</label>
                                     <input type="text" class="form-control" id="NICNumber" name="NICNumber" placeholder="Enter NIC Number">
                                     <div id="nicnumerror" class="text-danger"></div>
                                 </div>
                             </div>
                             <div class="text-end mt-4">
                                 <button id="btn1" type="button" class="bt text-white" onclick="registerBox1()">NEXT</button>
+
+
+
                             </div>
                         </form>
                     </div>
@@ -181,28 +184,37 @@
                             <div class="d-flex justify-content-between">
                                 <button type="button" class="bt " id="backButton1" onclick="backToBox1()">Back</button>
                                 <button type="button" class="bt" id="btn2" onclick="registerBox2()">Next</button>
+
+
+
                             </div>
                         </form>
                     </div>
 
                     <!-- Box 3: Email and Receipt Upload -->
                     <div id="Box3" class="d-none">
-                        <h5 class="mb-1">Enter your <b>Email</b> and upload your <b>Receipt</b> :</h5>
+                        <h5 class="mb-1">Enter your <b>Email</b></h5>
                         <form id="loginForm4">
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <label for="membershipID" class="my-2">Email :</label>
                                     <input type="text" class="form-control my-2" id="email" name="email" placeholder="Enter Email">
                                     <div id="Emailerror" class="text-danger"></div>
                                 </div>
 
                             </div>
-                            <div class="d-flex justify-content-end gap-1">
-                                
-                                    <button type="button" class="bt" id="backButton3" onclick="backToBox2()">BACK</button>
-                              
-                                    <button id="btn4" type="button" class="bt" onclick="registerBox3()">NEXT</button>
-                                
+                            <div class="d-flex justify-content-between">
+
+                                <button type="button" class="bt" id="backButton3" onclick="backToBox2()">BACK</button>
+                                <button id="btn4" type="button" class="bt" onclick="registerBox3()">NEXT</button>
+
+                                <div id="emailSpinner" class="text-center mt-3 d-flex d-none">
+                                    <div class="spinner-grow text-light" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <p class="text-white ms-2">Sending OTP...</p>
+                                </div>
+
+
                             </div>
                         </form>
                     </div>
@@ -214,6 +226,7 @@
                         <p><span class="otp-timer">OTP expires in <span id="timer" class="text-warning"></span></span></p>
                         <form id="loginForm3">
                             <div class="otp-inputs d-flex justify-content-between mb-4">
+
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp1">
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp2">
                                 <input type="text" maxlength="1" class="form-control text-center otp-box" id="otp3">
@@ -223,14 +236,12 @@
                             </div>
                             <p class="resend-text">Don't receive? <a href="#" class="" id="resend-link" onclick="resendOTP()">Resend OTP</a></p>
                             <div class="d-flex justify-content-between">
-                                    <button type="button" class="bt" id="backButton2" onclick="backToBox3()">BACK</button>
-                                    <button id="btn3" type="button" class="bt" onclick="registerBox4()">NEXT</button>
-                                
+                                <button type="button" class="bt" id="backButton2" onclick="backToBox3()">BACK</button>
+                                <button id="btn3" type="button" class="bt" onclick="registerBox4()">NEXT</button>
+
                             </div>
                         </form>
                     </div>
-
-
 
                     <!-- Box 5: Registration Details -->
                     <div id="Box5" class="d-none">
@@ -250,12 +261,13 @@
                             </div>
                             <div>
                                 <input type="checkbox" id="agreeCheckbox">
-                                <label for="">I agree the terms and conditions</label>
+                                <label>I agree the terms and conditions</label>
+                                <div id="checkboxerror" class="text-danger"></div>
+
                             </div>
                             <div class="row text-center">
                                 <div class="col text-white">
                                     <button id="btn5" type="button" class="bt mt-2" onclick="registerBox5()"> payment</button>
-
                                 </div>
                             </div>
                         </form>

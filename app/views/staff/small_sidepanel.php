@@ -25,7 +25,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
     }
     
     #sidepanel:hover {
-      width: 200px;
+      width: 220px;
     }
     
     #sidepanel:hover .nav-text {
@@ -41,12 +41,15 @@ $current_action = $_GET['action'] ?? 'dashboard';
       width: 24px;
       text-align: center;
     }
+    .bg{
+            background: rgba(26, 50, 65, 1);
+        }
   </style>
 </head>
 
 <body>
 
-  <div id="sidepanel" class="bg-dark text-white d-flex flex-column p-2">
+  <div id="sidepanel" class="bg text-white d-flex flex-column p-2">
     <!-- Role Indicator -->
     <div class="text-center mb-4 py-2 border-bottom">
       <span class="fw-bold fs-5"><?= $role_name == "Librarian" ? "L" : "S"; ?></span>

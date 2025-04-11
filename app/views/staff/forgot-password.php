@@ -42,8 +42,8 @@ require_once Config::getViewPath("home", "header.view.php");
     ?>
 
     <div class="container">
-        <div class="row  p-5  mt-4 justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4 text-white login-form ">
+        <div class="row p-2 pt-md-5 mt-4 d-flex align-items-center justify-content-center">
+            <div class="col-12 col-md-8 col-lg-4 text-white login-form ">
                 <h1 class="text-center pb-3">Forgot Pasword</h1>
                 <span class="bg-danger text-dark text-center" id="doesnt"></span>
 
@@ -51,7 +51,7 @@ require_once Config::getViewPath("home", "header.view.php");
                     <input class="form-control mt-3" placeholder="Enter your Email" type="email" name="email" id="email">
                     <div id="responseMessage"></div>
 
-                    <button class="btn btn-primary mt-4 w-100" onclick="forgotpw();">Continue</button>
+                    <button class="btn btn-primary mt-4 w-100 rounded-pill" onclick="forgotpw();">Continue</button>
             </div>
         </div>
     </div>

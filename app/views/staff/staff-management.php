@@ -62,15 +62,15 @@ $_SESSION['staff']['last_activity'] = time();
 
                 <div class="row m-4">
                     <div class="col-md-2">
-                        <p class="mr-3 fw-bold">New Staff Member?</p>
+                        <p class="mr-3 fw-bold mt-1">New Staff Member?</p>
                     </div>
                     <div class="col-md-4 ">
                         <input class="form-control" type="email" id="email" placeholder="Enter the email">
                         <span id="emailError" class="text-danger"></span>
 
                     </div>
-                    <div class="col-md-1 ">
-                        <label class="form-label -4">Select Role</label>
+                    <div class="col-md-2 ">
+                        <label class="form-label mt-1">Select Role</label>
 
                     </div>
                     <div class="col-md-2">
@@ -85,7 +85,7 @@ $_SESSION['staff']['last_activity'] = time();
                         <span id="roleError" class="text-danger"></span>
 
                     </div>
-                    <div class="col-md-3 text-end">
+                    <div class="col-md-2 text-end">
                         <button class="btn btn-dark" onclick="sendKey();"><i class="fas fa-paper-plane me-2"></i>Send Key</button>
                     </div>
                 </div>

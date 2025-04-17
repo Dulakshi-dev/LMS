@@ -14,6 +14,8 @@ require_once Config::getControllerPath("staff","librarySetupController.php");
 require_once Config::getControllerPath("staff","dashboardController.php");
 require_once Config::getControllerPath("staff","paymentController.php");
 require_once Config::getControllerPath("staff","notificationController.php");
+require_once Config::getControllerPath("staff","reportController.php");
+
 
 // Initialize the Router
 $router = new Router();
@@ -30,17 +32,27 @@ $librarySetupController = new LibrarySetupController();
 $dashboardController = new DashboardController();
 $paymentController = new PaymentController();
 $notificationController = new NotificationController();
+$reportController = new ReportController();
+
 
 // Define the routes and map them to controller methods
 $router->add('loginProcess', [$authController, 'login']);
 $router->add('logout', [$authController, 'logout']);
+$router->add('register', [$authController, 'register']);
+$router->add('forgotpassword', [$authController, 'forgotPassword']);
+$router->add('validatedetails', [$authController, 'validatedetails']);
+$router->add('resetpassword', [$authController, 'resetPassword']);
+
 $router->add('loadusers', [$staffController, 'loadStaff']);
 $router->add('loadUserData', [$staffController, 'loadStaffDetails']); 
 $router->add('updateUser', [$staffController, 'UpdateStaffDetails']);
 $router->add('loadMailData', [$staffController, 'loadMailData']); 
-$router->add('sendMailMember', [$memberController, 'sendMail']); 
 $router->add('sendMailStaff', [$staffController, 'sendMail']); 
 $router->add('deactivateuser', [$staffController, 'deactivateStaff']);
+$router->add('activatestaff', [$staffController, 'activateStaff']);
+$router->add('sendkey', [$staffController, 'sendEnrollmentKey']);
+
+
 $router->add('addBookData', [$bookController, 'addBookData']);
 $router->add('loadBooks', [$bookController, 'getAllBooks']);
 $router->add('loadBookData', [$bookController, 'loadBookDetails']);
@@ -48,24 +60,25 @@ $router->add('addCategoryData', [$bookController, 'addCategory']);
 $router->add('updateBook', [$bookController, 'updateBookDetails']); 
 $router->add('searchBooks', [$bookController, 'searchBooks']);
 $router->add('deactivatebook', [$bookController, 'deactivateBook']);
-$router->add('register', [$authController, 'register']);
-$router->add('forgotpassword', [$authController, 'forgotPassword']);
-$router->add('validatedetails', [$authController, 'validatedetails']);
+$router->add('serveimage', [$bookController, 'serveBookCover']);
+$router->add('getallcategories', [$bookController, 'getAllCategories']);
+$router->add('getlanguages', [$bookController, 'getLanguages']);
+$router->add('loadcategories', [$bookController, 'getAllCategories']);
+$router->add('activatebook', [$bookController, 'activateBook']);
+$router->add('deletecategory', [$bookController, 'deleteCategory']);
 
-$router->add('resetpassword', [$authController, 'resetPassword']);
 $router->add('loadborrowbookdata', [$circulationController, 'loadBookDetails']);
 $router->add('loadborrowmemberdata', [$circulationController, 'loadMemberDetails']);
 $router->add('issuebook', [$circulationController, 'issueBook']);
 $router->add('loadissuedbooks', [$circulationController, 'getAllBorrowBooks']);
 $router->add('returnbook', [$circulationController, 'returnBook']);
-$router->add('serveimage', [$bookController, 'serveBookCover']);
+$router->add('searchBorrowBooks', [$circulationController, 'searchBorrowBooks']);
+
 $router->add('updateprofile', [$profileController, 'updateProfile']);
 $router->add('serveprofimage', [$profileController, 'serveProfileImage']);
 $router->add('validatecurrentpw', [$profileController, 'validateCurrentPassword']); 
 $router->add('savenewpw', [$profileController, 'resetPassword']); 
-$router->add('searchBorrowBooks', [$circulationController, 'searchBorrowBooks']);
-$router->add('getallcategories', [$bookController, 'getAllCategories']);
-$router->add('getlanguages', [$bookController, 'getLanguages']);
+
 $router->add('loadmembers', [$memberController, 'getAllMembers']);
 $router->add('loadMemberData', [$memberController, 'loadMemberDetails']); 
 $router->add('updateMember', [$memberController, 'UpdateMemberDetails']);
@@ -75,14 +88,12 @@ $router->add('approvemembership', [$memberController, 'approveMembership']);
 $router->add('deactivatemember', [$memberController, 'deactivateMember']);
 $router->add('rejectmember', [$memberController, 'rejectMember']);
 $router->add('loadmemberrequests', [$memberController, 'getMemberRequests']);
-$router->add('loadreservations', [$reservationController, 'getAllReservations']);
-$router->add('loadcategories', [$bookController, 'getAllCategories']);
-$router->add('activatebook', [$bookController, 'activateBook']);
-$router->add('deletecategory', [$bookController, 'deleteCategory']);
-$router->add('activatestaff', [$staffController, 'activateStaff']);
+$router->add('sendMailMember', [$memberController, 'sendMail']); 
 $router->add('activatemember', [$memberController, 'activateMember']);
 $router->add('activaterequest', [$memberController, 'activateRequest']);
-$router->add('sendkey', [$staffController, 'sendEnrollmentKey']);
+
+$router->add('loadreservations', [$reservationController, 'getAllReservations']);
+
 $router->add('changeopeninghours', [$librarySetupController, 'changeOpeningHours']);
 $router->add('changenewsupdates', [$librarySetupController, 'changeNewsUpdates']);
 $router->add('changelibraryinfo', [$librarySetupController, 'changeLibraryInfo']);
@@ -91,10 +102,15 @@ $router->add('sendemailtoallmembers', [$librarySetupController, 'sendMailsToAllM
 $router->add('getopeninghours', [$librarySetupController, 'loadOpeningHours']); 
 $router->add('getlibraryinfo', [$librarySetupController, 'getLibraryInfo']);
 $router->add('servelogo', [$librarySetupController, 'serveLogo']);
+
 $router->add('getchartdata', [$dashboardController, 'getUserChartData']);
 $router->add('getcounts', [$dashboardController, 'getDashboardCounts']);
 $router->add('gettopbooks', [$dashboardController, 'loadTopBooks']); 
+
 $router->add('loadpayments', [$paymentController, 'getAllPayments']);
+
+$router->add('printactivestaffreport', [$reportController, 'generateStaffReport']);
+
 
 $router->add('login', function () {
     include Config::getViewPath("staff", "login.php");
@@ -187,6 +203,10 @@ $router->add('aboutsoftware', function () {
 
 $router->add('paymentmanagement', function () {
     include Config::getViewPath("staff", "view-payments.php");
+});
+
+$router->add('activestaffreport', function () {
+    include Config::getViewPath("staff", "active-staff-report.php");
 });
 
 // Get the action from the URL

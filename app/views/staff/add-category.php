@@ -54,7 +54,7 @@ $_SESSION['staff']['last_activity'] = time();
                         <form action="">
 
                             <div class="col-lg-12 col-md-6 col-sm-4 p-5">
-                                <label for="Category" class="form-label fw-bold fs-5 mb-2">Category Name</label>
+                                <label for="category" class="form-label fw-bold fs-5 mb-2">Category Name</label>
                                 <input id="category" name="category" class="form-control" type="text" placeholder="Enter Category Name">
                                 <span id="Category-error" class="text-danger"></span>
                                 <div class="d-flex justify-content-end mt-4">

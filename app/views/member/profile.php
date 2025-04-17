@@ -129,7 +129,7 @@ $member_id = $_SESSION["member"]["member_id"];
         <h3 class="pb-3">Change Password</h3>
         <form id="currentPasswordForm" method="POST">
           <div class="row d-flex mt-5">
-            <div class="col-12 col-md-4 mb-2"><label for="current-password">Current Password</label></div>
+            <div class="col-12 col-md-4 mb-2"><label for="currentpassword">Current Password</label></div>
             <div class="col-12 col-md-8">
               <input id="currentpassword" name="currentpassword" class="form-control" type="password">
             </div>

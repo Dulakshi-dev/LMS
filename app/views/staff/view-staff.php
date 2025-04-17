@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -35,7 +35,7 @@ $page = $page ?? 1;
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
-    <div>
+        <div>
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -48,9 +48,15 @@ $page = $page ?? 1;
         <div class="container-fluid w-75 mb-5 bg-white ">
             <div class="row">
                 <nav class="navbar p-md-4 navbar-light bg-light">
-                    <span class="mb-0 h5">Staff Management <small class="text-muted">control panel</small></span>
+                    <span class="mb-0 h5">Active Staff Members</span>
+                    <a href="index.php?action=activestaffreport" class="btn btn-outline-secondary">
+                        <i class="fa fa-file-pdf-o"></i> Generate Report
+                    </a>
+
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> </a>
                 </nav>
+
+
             </div>
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
@@ -81,9 +87,9 @@ $page = $page ?? 1;
                         </tr>
                     </thead>
 
-
                     <tbody id="userTableBody">
                     </tbody>
+
                 </table>
             </div>
 

@@ -11,7 +11,7 @@ function login() {
 
     // Get the values entered by the user
     let memberid = document.getElementById("memberid").value.trim();
-    let memberpw = document.getElementById("password").value.trim();
+    let memberpw = document.getElementById("memberpw").value.trim();
     let rememberMe = document.getElementById("rememberme").checked ? "1" : "0"; 
 
     // Regular expression pattern for validating Member ID format (e.g., M-123456)

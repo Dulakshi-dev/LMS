@@ -27,8 +27,6 @@
 </head>
 
 <body>
-
-
     <div class="container-fluid">
         <div class="row mt-5 mb-5">
             <div class="col-12 col-lg-3 d-flex align-items-center justify-content-center">
@@ -53,7 +51,7 @@
                     <div class="form-group mt-3">
                         <label for="memberpw">Password</label>
                         <div class="input-group">
-                            <input class="form-control " placeholder="Enter your password" type="password" name="password" id="password" value="<?php echo $memberpw; ?>">
+                            <input class="form-control " placeholder="Enter your password" type="password" name="memberpw" id="memberpw" value="<?php echo $memberpw; ?>">
                             <span class="input-group-text" id="passwordToggle" style="cursor: pointer;">
                                 <i class="fas fa-eye" id="passwordIcon"></i>
                             </span>
@@ -61,12 +59,10 @@
                         <span class="error text-danger" id="passwordError"></span>
                     </div>
 
-
                     <div class="row mt-2">
                         <div class="col">
                             <input type="checkbox" name="rememberme" id="rememberme" <?php echo $rememberChecked; ?>>
                             <label for="rememberme">Remember me</label>
-
                         </div>
                         <div class="col d-flex justify-content-end">
                             <a href="<?php echo Config::indexPathMember() ?>?action=showforgotpw" class="text-decoration-none forgot-password">Forgot Password?</a>

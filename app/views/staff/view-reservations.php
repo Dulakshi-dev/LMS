@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -32,7 +32,7 @@ $_SESSION['staff']['last_activity'] = time();
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
-    <div>
+        <div>
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -51,16 +51,27 @@ $_SESSION['staff']['last_activity'] = time();
             </div>
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
-                        <input name="memberId" id="memberid" class="form-control" type="text" placeholder="Type Membership ID">
+                    <input name="memberId" id="memberid" class="form-control" type="text" placeholder="Type Membership ID">
                 </div>
                 <div class="col-md-3 mt-2">
                     <input name="book_id" id="bookid" class="form-control" type="text" placeholder="Type Book ID">
                 </div>
-                <div class="col-md-6 mt-2">
+                <div class="col-md-4 mt-2">
                     <div class="d-flex">
                         <input name="title" id="title" class="form-control" type="text" placeholder="Type Book Title">
-                        <button type="button" name="search" class="btn btn-primary mx-3 px-3"  onclick="loadReservations();"><i class="fa fa-search"></i></button>
+                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadReservations();"><i class="fa fa-search"></i></button>
                     </div>
+                </div>
+
+                <div class="div col-md-2 d-flex mt-1">
+                    <select class="form-select" id="statusSelection">
+                        <option value="all">All</option>
+                        <option value="Reserved">Reserved</option>
+                        <option value="Collected">Collected</option>
+                        <option value="Waitlst">Wait List</option>
+                        <option value="Expired">Expired</option>
+                        <option value="Canceled">Canceled</option>
+                    </select>
                 </div>
             </div>
 

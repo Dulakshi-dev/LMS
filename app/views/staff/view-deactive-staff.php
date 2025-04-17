@@ -51,7 +51,7 @@ $page = $page ?? 1;
         <div class="container-fluid mb-5 bg-white w-75 ">
             <div class="row">
                 <nav class="navbar p-md-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Staff Management <small class="text-muted">control panel</small></span>
+                    <span class="navbar-brand mb-0 h1">Deactive Staff Members</span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
                 </nav>
             </div>

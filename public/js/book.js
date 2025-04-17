@@ -1,13 +1,4 @@
 
-function showAlert(title, message, type) {
-    return Swal.fire({
-        title: title,
-        text: message,
-        icon: type, // 'success', 'error', 'warning', 'info', 'question'
-        confirmButtonText: 'OK'
-    });
-}
-
 function loadBooks(page = 1, status = "Active") {
     var bookid = document.getElementById("bookid").value.trim();
     var title = document.getElementById("bname").value.trim();
@@ -126,6 +117,9 @@ function loadCategory() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+    loadAllCategories(null, 'category1');  
+    loadLanguages(null, 'language1');  
+
     // Handle book Edit Modal
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".edit-book")) {
@@ -273,7 +267,6 @@ function addBook() {
     }
 }
 
-
 function deactivateBook(book_id) {
     var formData = new FormData();
     formData.append("book_id", book_id);
@@ -347,13 +340,13 @@ function deleteCategory(category_id) {
         });
 }
 
-function loadAllCategories(selectedCategoryId = null) {
+function loadAllCategories(selectedCategoryId = null, dropdownId = 'category1') {
     return new Promise((resolve, reject) => {
         fetch('index.php?action=getallcategories')
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    const categoryDropdown = document.getElementById('category');
+                    const categoryDropdown = document.getElementById(dropdownId);
                     categoryDropdown.innerHTML = '';
 
                     // Add the "Select Category" option first
@@ -370,6 +363,7 @@ function loadAllCategories(selectedCategoryId = null) {
                         option.value = category.category_id;
                         option.textContent = category.category_name;
 
+                        // If a selectedCategoryId is passed, set the corresponding category as selected
                         if (selectedCategoryId && category.category_id == selectedCategoryId) {
                             option.selected = true;
                         }
@@ -390,14 +384,13 @@ function loadAllCategories(selectedCategoryId = null) {
     });
 }
 
-
-function loadLanguages(selectedLanguageId = null) {
+function loadLanguages(selectedLanguageId = null, dropdownId = 'language1') {
     return new Promise((resolve, reject) => {
         fetch('index.php?action=getlanguages')
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    const languageDropdown = document.getElementById('language');
+                    const languageDropdown = document.getElementById(dropdownId);
                     languageDropdown.innerHTML = '';
 
                     const defaultOption = document.createElement('option');
@@ -433,7 +426,6 @@ function loadLanguages(selectedLanguageId = null) {
     });
 }
 
-
 function loadBookDataUpdate(book_id) {
     const formData = new FormData();
     formData.append('book_id', book_id);
@@ -454,7 +446,7 @@ function loadBookDataUpdate(book_id) {
                 document.getElementById('des').value = resp.description;
 
 
-                loadAllCategories(resp.category_id)
+                loadAllCategories(resp.category_id, 'category2')
                     .then(() => {
                         // Categories are now loaded, and the correct category is pre-selected
                     })
@@ -464,7 +456,7 @@ function loadBookDataUpdate(book_id) {
 
                     });
 
-                loadLanguages(resp.language_id)
+                loadLanguages(resp.language_id, 'language2')
                     .then(() => {
                         // languages are now loaded, and the correct category is pre-selected
                     })
@@ -484,7 +476,6 @@ function loadBookDataUpdate(book_id) {
 
         });
 }
-
 
 function showImagePreview() {
     var file = document.getElementById('coverpage').files[0];
@@ -589,7 +580,6 @@ function updateBookDetails() {
     }
 }
 
-
 function clearErrors() {
     document.getElementById("isbn_error").textContent = "";
     document.getElementById("title_error").textContent = "";
@@ -633,4 +623,13 @@ function addCategory() {
             showAlert("Error", "An error occurred. Please try again.", "error");
 
         });
+}
+
+function showAlert(title, message, type) {
+    return Swal.fire({
+        title: title,
+        text: message,
+        icon: type, // 'success', 'error', 'warning', 'info', 'question'
+        confirmButtonText: 'OK'
+    });
 }

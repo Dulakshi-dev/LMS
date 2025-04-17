@@ -81,7 +81,7 @@
                             <p class="text-danger" id="nameerror"></p>
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Your Email</label>
+                            <label for="emailadd" class="form-label">Your Email</label>
                             <input type="email" class="form-control" id="emailadd" required>
                             <p class="text-danger" id="emailerror"></p>
 

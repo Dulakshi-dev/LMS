@@ -98,7 +98,7 @@ $role_name = $_SESSION["staff"]["role_name"];
                                         <span id="fname_error" class="text-danger"></span>
                                     </div>
                                     <div class="col form-group">
-                                        <label for="last-name">Last Name</label>
+                                        <label for="lname">Last Name</label>
                                         <input id="lname" name="lname" class="form-control" type="text">
                                         <span id="lname_error" class="text-danger"></span>
                                     </div>
@@ -145,7 +145,7 @@ $role_name = $_SESSION["staff"]["role_name"];
                     <h3 class="pb-3">Change Password</h3>
                     <form id="currentPasswordForm" method="POST">
                         <div class="row d-flex mt-5">
-                            <div class="col-12 col-md-4 mb-2"><label for="current-password">Current Password</label></div>
+                            <div class="col-12 col-md-4 mb-2"><label for="currentpassword">Current Password</label></div>
                             <div class="col-12 col-md-8">
                                 <input id="currentpassword" name="currentpassword" class="form-control" type="password">
                             </div>

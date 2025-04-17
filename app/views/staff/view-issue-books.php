@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -35,7 +35,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 
     <div class="d-flex bg-light">
-    <div>
+        <div>
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -59,13 +59,26 @@ $_SESSION['staff']['last_activity'] = time();
             <div class="bg-white ">
 
                 <div class="row m-3">
-                    <div class="col-md-6 my-3">
+                    <div class="col-md-4 my-3">
                         <input id="memberid" name="memberid" type="text" class="form-control" placeholder="Enter Member ID">
                     </div>
-                    <div class="col-md-6 d-flex my-3">
+                    <div class="col-md-4 d-flex my-3">
                         <input id="bookid" name="bookid" type="text" class="form-control mx-3" placeholder="Enter Book ID">
-                        <button class="btn btn-primary ml-3 px-4" onclick="loadIssuedBooks()"><i class="fa fa-search px-2"></i></button>
                     </div>
+                    <div class="col-md-2 d-flex my-3">
+                        <button class="btn btn-primary ml-3 ms-4" onclick="loadIssuedBooks()"><i class="fa fa-search px-2"></i></button>
+
+                    </div>
+                    <div class="div col-md-2 d-flex my-3">
+                        <select class="form-select" id="statusSelection">
+                            <option value="status1">All</option>
+                            <option value="status2">Returned</option>
+                            <option value="status3">Borrowed</option>
+                            <option value="status4">Over Due</option>
+                        </select>
+                    </div>
+
+
                 </div>
 
                 <div class="border border-secondary mb-4"></div>
@@ -130,7 +143,7 @@ $_SESSION['staff']['last_activity'] = time();
 
                     </div>
                     <div class="mb-3 row align-items-center">
-                        <label for="amount" class="col-sm-4 col-form-label">Fines(Rs)</label>
+                        <label for="fines" class="col-sm-4 col-form-label">Fines(Rs)</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" id="fines" name="fines">
                         </div>

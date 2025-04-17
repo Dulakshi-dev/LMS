@@ -11,85 +11,95 @@ function showAlert(title, message, type) {
 function loadIssuedBooks(page = 1) {
     var memberid = document.getElementById("memberid").value.trim();
     var bookid = document.getElementById("bookid").value.trim();
+    var status = document.getElementById("statusSelection").value; // Get dropdown value
 
     let formData = new FormData();
     formData.append("page", page);
     formData.append("memberid", memberid);
     formData.append("bookid", bookid);
+    formData.append("status", status); // Append the selected status
 
     fetch("index.php?action=loadissuedbooks", {
         method: "POST",
         body: formData,
     })
-        .then(response => response.json())
-        .then(resp => {
-            let tableBody = document.getElementById("issueBookTableBody");
-            tableBody.innerHTML = "";
+    .then(response => response.json())
+    .then(resp => {
+        let tableBody = document.getElementById("issueBookTableBody");
+        tableBody.innerHTML = "";
 
-            if (resp.success && resp.issuebooks.length > 0) {
-                resp.issuebooks.forEach(issuebook => {
-                    // Determine the value for the return/due date column
-                    let returnOrDueDate;
-                    let fines;
-                    if (issuebook.return_date) {
-                        returnOrDueDate = `<span class="text-success">Return: ${issuebook.return_date}</span>`;
-                        fines = issuebook.amount;
+        if (resp.success && resp.issuebooks.length > 0) {
+            resp.issuebooks.forEach(issuebook => {
+                let returnOrDueDate;
+                let fines;
+
+                if (issuebook.return_date) {
+                    returnOrDueDate = `<span class="text-success">Return: ${issuebook.return_date}</span>`;
+                    fines = issuebook.amount;
+                } else {
+                    let dueDate = new Date(issuebook.due_date);
+                    let today = new Date();
+                    fines = `<p class="text-secondary">Not Returned</p>`;
+
+                    if (dueDate < today) {
+                        returnOrDueDate = `<span class="text-danger">Overdue: ${issuebook.due_date}</span>`;
                     } else {
-                        let dueDate = new Date(issuebook.due_date);
-                        let today = new Date();
-                        fines = `<p class="text-secondary">Not Returned</p>`;
-                        if (dueDate < today) {
-                           
-                            returnOrDueDate = `<span class="text-danger">Overdue: ${issuebook.due_date}</span>`;
-                        } else {
-
-                            returnOrDueDate = `<span class="text-warning">Due: ${issuebook.due_date}</span>`;
-                        }
+                        returnOrDueDate = `<span class="text-warning">Due: ${issuebook.due_date}</span>`;
                     }
+                }
 
-                    let row = `
-                    <tr>
-                        <td>${issuebook.borrow_id}</td>
-                        <td>${issuebook.borrow_book_id}</td>
-                        <td>${issuebook.title}</td>
-                        <td>${issuebook.member_id}</td>
-                        <td>${issuebook.fname}</td>
-                        <td>${issuebook.borrow_date}</td>
-                        <td>${returnOrDueDate}</td>
-                        <td>${fines}</td>
-                        <td>`;
+                let row = `
+                <tr>
+                    <td>${issuebook.borrow_id}</td>
+                    <td>${issuebook.borrow_book_id}</td>
+                    <td>${issuebook.title}</td>
+                    <td>${issuebook.member_id}</td>
+                    <td>${issuebook.fname}</td>
+                    <td>${issuebook.borrow_date}</td>
+                    <td>${returnOrDueDate}</td>
+                    <td>${fines}</td>
+                    <td>`;
 
-                    if (!issuebook.return_date) {
-                        row += `<div class="m-1">
-                            <button class="btn btn-success my-1 btn-sm return-book"
-                                data-due-date="${issuebook.due_date}"
-                                data-borrow-id="${issuebook.borrow_id}"
-                                data-book-id="${issuebook.borrow_book_id}"
-                                data-member-id="${issuebook.borrow_member_id}">
-                                <i class="fa fa-edit"></i>
-                            </button>
-                        </div>`;
-                    } else {
-                        row += `<p class="text-success">Returned</p>`;
-                    }
+                if (!issuebook.return_date) {
+                    row += `<div class="m-1">
+                        <button class="btn btn-success my-1 btn-sm return-book"
+                            data-due-date="${issuebook.due_date}"
+                            data-borrow-id="${issuebook.borrow_id}"
+                            data-book-id="${issuebook.borrow_book_id}"
+                            data-member-id="${issuebook.borrow_member_id}">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </div>`;
+                } else {
+                    row += `<p class="text-success">Returned</p>`;
+                }
 
-                    row += `</td></tr>`;
+                row += `</td></tr>`;
 
-                    tableBody.innerHTML += row;
-                });
-            } else {
-                tableBody.innerHTML = "<tr><td colspan='10'>No issued books found</td></tr>";
-            }
+                tableBody.innerHTML += row;
+            });
+        } else {
+            tableBody.innerHTML = "<tr><td colspan='10'>No issued books found</td></tr>";
+        }
 
-            createPagination("pagination", resp.totalPages, page, "loadIssuedBooks");
-        })
-        .catch(error => {
-            console.error("Error fetching borrow data:", error);
-        });
+        createPagination("pagination", resp.totalPages, page, "loadIssuedBooks");
+    })
+    .catch(error => {
+        console.error("Error fetching borrow data:", error);
+    });
 }
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Check if the "statusSelection" element exists before adding the event listener
+    const statusSelection = document.getElementById("statusSelection");
+    if (statusSelection) {
+        statusSelection.addEventListener("change", function() {
+            loadIssuedBooks(); 
+        });
+    }
+
+    // Handle "return-book" button click across the document
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".return-book")) {
             let button = event.target.closest(".return-book");
@@ -97,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
 
 function returnButtonClick(button) {
     const dueDate = button.getAttribute("data-due-date");

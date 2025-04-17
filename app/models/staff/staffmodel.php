@@ -102,7 +102,6 @@ class StaffModel
         return $rs->fetch_assoc();
     }
 
-
     public static function UpdateStaffDetails($user_id, $fname, $lname, $email, $phone, $address, $nic)
     {
 
@@ -116,7 +115,6 @@ class StaffModel
                 WHERE `staff_id` = '$user_id'");
         return true;
     }
-
 
     public static function loadMailDetails($id)
     {

@@ -18,6 +18,7 @@ class CirculationModel
     {
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalBooks = self::getTotalBorrowData();
+        
         $rs = Database::search("SELECT * FROM `borrow` 
 INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
 INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
@@ -47,25 +48,43 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
         return $row['total'] ?? 0;
     }
 
-    public static function searchBorrowData($bookid, $memberid, $page, $resultsPerPage)
+    public static function searchBorrowData($bookid, $memberid, $status, $page, $resultsPerPage)
     {
         $pageResults = ($page - 1) * $resultsPerPage;
-        $totalSearch = self::getTotalSearchResults($bookid, $memberid);
-
+        $totalSearch = self::getTotalSearchResults($bookid, $memberid, $status);
+    
         $sql = "SELECT * FROM `borrow` 
-INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
-INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
-INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
-LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
-
+        INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
+        INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
+        INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
+        LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
+        WHERE 1";
+    
         if (!empty($bookid)) {
             $sql .= " AND `book_id` LIKE '%$bookid%'";
         }
         if (!empty($memberid)) {
             $sql .= " AND `member_id` LIKE '%$memberid%'";
         }
-        $sql .= "LIMIT $resultsPerPage OFFSET $pageResults";
-
+    
+        // Dynamically determine status
+        switch ($status) {
+            case 'status2': // Returned
+                $sql .= " AND `return_date` IS NOT NULL";
+                break;
+            case 'status3': // Due
+                $sql .= " AND `return_date` IS NULL AND `due_date` >= CURDATE()";
+                break;
+            case 'status4': // Over Due
+                $sql .= " AND `return_date` IS NULL AND `due_date` < CURDATE()";
+                break;
+            default:
+                // status1 or empty → All, no additional condition
+                break;
+        }
+    
+        $sql .= " ORDER BY `borrow`.`borrow_id` DESC LIMIT $resultsPerPage OFFSET $pageResults";
+    
         $rs = Database::search($sql);
         $books = [];
         while ($row = $rs->fetch_assoc()) {
@@ -73,26 +92,45 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
         }
         return ['results' => $books, 'total' => $totalSearch];
     }
+    
 
-    private static function getTotalSearchResults($bookid, $memberid)
+    private static function getTotalSearchResults($bookid, $memberid, $status)
     {
-        $countQuery = "SELECT COUNT(*) as total FROM `borrow` 
-INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
-INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
-INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
-LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id` WHERE 1";
-
+        $countQuery = "SELECT COUNT(*) AS total FROM `borrow` 
+        INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
+        INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
+        INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
+        LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
+        WHERE 1";
+    
         if (!empty($bookid)) {
             $countQuery .= " AND `book_id` LIKE '%$bookid%'";
         }
         if (!empty($memberid)) {
             $countQuery .= " AND `member_id` LIKE '%$memberid%'";
         }
-
+    
+        // Apply the same status filter logic
+        switch ($status) {
+            case 'status2': // Returned
+                $countQuery .= " AND `return_date` IS NOT NULL";
+                break;
+            case 'status3': // Due
+                $countQuery .= " AND `return_date` IS NULL AND `due_date` >= CURDATE()";
+                break;
+            case 'status4': // Over Due
+                $countQuery .= " AND `return_date` IS NULL AND `due_date` < CURDATE()";
+                break;
+            default:
+                // status1 or empty → All, no condition
+                break;
+        }
+    
         $result = Database::search($countQuery);
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
+    
 
     public static function getBookDetails($id)
     {

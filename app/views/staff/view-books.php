@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -33,7 +33,7 @@ $_SESSION['staff']['last_activity'] = time();
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
-    <div>
+        <div>
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -47,7 +47,7 @@ $_SESSION['staff']['last_activity'] = time();
             <nav class="navbar navbar-light bg-light">
                 <div class="container-fluid">
                     <span class="navbar-brand mb-0 h1">
-                         Active Books
+                        Active Books
                     </span>
                     <a href="#" class="text-decoration-none h5">
                         <i class="fa fa-home"></i>
@@ -69,6 +69,21 @@ $_SESSION['staff']['last_activity'] = time();
                         <button class="btn btn-primary ml-3 px-4 ms-2" onclick="loadBooks(1,'Active');"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
+
+                <div class="row align-items-center mb-3">
+                    <div class="offset-lg-1 col-5 col-md-5 d-flex justify-content-end">
+                        <select class="form-select" id="category1">
+                            <option value="">...</option>
+                        </select>
+                    </div>
+                    <div class="col-5 col-md-5 d-flex justify-content-end">
+                        <select class="form-select" id="language1">
+                            <option value="">...</option>
+                        </select>
+                    </div>
+                </div>
+
+
                 <div class="border border-secondary mb-4"></div>
                 <div class="px-1 table-responsive">
                     <table class="table">
@@ -88,17 +103,13 @@ $_SESSION['staff']['last_activity'] = time();
                             </tr>
                         </thead>
                         <tbody id="bookTableBody">
-
                         </tbody>
                     </table>
-
                 </div>
                 <div id="pagination"></div>
             </div>
         </div>
     </div>
-
-
 
     <div class="modal fade" id="updateBookDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -136,14 +147,14 @@ $_SESSION['staff']['last_activity'] = time();
                         <div class="row">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="category" class="form-label">Book Category</label>
-                                <select class="form-select" id="category">
+                                <select class="form-select" id="category2">
                                     <option value="">...</option>
                                 </select>
                                 <span id="category_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="language" class="form-label">Language</label>
-                                <select class="form-select" id="language">
+                                <select class="form-select" id="language2">
                                     <option value="">...</option>
                                 </select>
                                 <span id="language_error" class="text-danger"></span> <!-- Error message span -->

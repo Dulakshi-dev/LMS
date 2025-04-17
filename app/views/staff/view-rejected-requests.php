@@ -102,7 +102,7 @@ $_SESSION['staff']['last_activity'] = time();
                 <div class="p-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="membershipID">Membership ID</label>
+                            <label for="userID">Membership ID</label>
                             <input type="text" class="form-control" id="userID" value="" disabled>
                         </div>
                         <div class="col-md-6">

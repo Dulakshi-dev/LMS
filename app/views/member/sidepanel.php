@@ -14,7 +14,7 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard'; // Get
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body onload="loadprofileimg('<?php echo addslashes($profile_img); ?>');">
+<body>
 
   <div class="d-flex">
     <!-- Sidebar -->
@@ -54,7 +54,6 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard'; // Get
     </div>
   </div>
 
-  <script src="<?php echo Config::getJsPath("test.js"); ?>"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 

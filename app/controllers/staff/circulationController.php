@@ -14,25 +14,25 @@ class CirculationController extends Controller
     public function getAllBorrowBooks()
     {
         $resultsPerPage = 10;
-
-        // Check if it's a POST request
+    
         if ($this->isPost()) {
             $page = (int)$this->getPost('page', 1);
             $bookid = $this->getPost('bookid');
             $memberid = $this->getPost('memberid');
-
-            // Perform search or get all borrow data
-            if (!empty($bookid) || !empty($memberid)) {
-                $bookData = CirculationModel::searchBorrowData($bookid, $memberid, $page, $resultsPerPage);
+            $status = $this->getPost('status', 'status1'); // default to "All"
+    
+            if (!empty($bookid) || !empty($memberid) || $status !== 'status1') {
+                // Pass status to the search function
+                $bookData = CirculationModel::searchBorrowData($bookid, $memberid, $status, $page, $resultsPerPage);
             } else {
+                // Default all data
                 $bookData = CirculationModel::getAllBorrowData($page, $resultsPerPage);
             }
-
+    
             $issuebooks = $bookData['results'] ?? [];
             $total = $bookData['total'] ?? 0;
             $totalPages = ceil($total / $resultsPerPage);
-
-            // Send the response in JSON format
+    
             $this->jsonResponse([
                 'issuebooks' => $issuebooks,
                 'total' => $total,
@@ -43,6 +43,7 @@ class CirculationController extends Controller
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
+    
 
     public function loadBookDetails()
     {

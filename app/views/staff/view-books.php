@@ -27,6 +27,11 @@ $_SESSION['staff']['last_activity'] = time();
     <title>User Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .nav-bar {
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body onload="loadBooks(1,'Active');">
@@ -44,6 +49,7 @@ $_SESSION['staff']['last_activity'] = time();
 
         </div>
         <div class="container-fluid w-75 ">
+
             <div class="row">
                 <nav class="navbar p-md-4 navbar-light bg-light w-100">
                     <div class="d-flex align-items-center w-100 justify-content-between">

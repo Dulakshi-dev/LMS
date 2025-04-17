@@ -18,19 +18,25 @@ $current_action = $_GET['action'] ?? 'dashboard';
   <title>Sidebar</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <style>
+
+<style>
     #sidepanel1 {
-      width: 250px;
-      min-height: 100vh;
+        width: 250px;
+        min-height: 100vh;
+        position: sticky;
+        top: 0;
     }
+
     .nav-link.active {
-      background-color: #0d6efd !important;
-      color: white !important;
+        background-color: #0d6efd !important;
+        color: white !important;
     }
-    .bg{
-            background: rgba(26, 50, 65, 1);
-        }
-  </style>
+
+    .bg {
+        background: rgba(26, 50, 65, 1);
+    }
+</style>
+
 </head>
 
 <body>

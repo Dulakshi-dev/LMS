@@ -22,6 +22,8 @@ $current_action = $_GET['action'] ?? 'dashboard';
       width: 50px;
       min-height: 100vh;
       transition: width 0.3s;
+      position: sticky;
+      top: 0;
     }
     
     #sidepanel:hover {

@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../../main.php';
-require 'vendor/autoload.php';
+// require 'vendor/autoload.php';
 
 use Dompdf\Dompdf;
 

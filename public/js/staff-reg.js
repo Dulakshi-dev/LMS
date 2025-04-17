@@ -158,7 +158,6 @@ function submit() {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    document.querySelector(".box-1").style.display = "none";
                     document.querySelector(".box-2").style.display = "block";
 
 

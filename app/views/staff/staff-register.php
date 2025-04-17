@@ -31,13 +31,9 @@
             background: rgb(37, 87, 162);
             color: white;
         }
-
-        .box-2 {
+        
+        .box-2{
             display: none;
-        }
-
-        .box-1{
-            display: block;
         }
 
 
@@ -62,7 +58,17 @@
 
 <body>
     <div class="container-fluid vh-100 d-md-flex justify-content-left align-items-center my-5">
-        <div class="box-1 p-5 text-dark mx-md-5 rounded-5 " style="width: 100%; max-width: 800px; ">
+        <div class="box-2 rounded-5 px-3 my-5 shadow-lg overflow-hidden" style="backdrop-filter: blur(3px);">
+            <h2 class="text-center text-white m-4">Librarian Registration</h2>
+            <p class="p-3" style="color: rgb(37, 87, 162);">An enrollment key has been sent to the email address. Please check. </p>
+            <input type="password" class="form-control rounded-pill" name="enrollmentKey" id="enrollmentKey" placeholder="Enter Enrollment Key">
+            <span id="enrollmentKeyError" class="text-danger"></span>
+            <div class="text-center m-4">
+                <button type="button" class="btn w-50 mt-3 rounded-pill v-b" onclick="register();">Verify</button>
+            </div>
+
+        </div>
+        <div class="box-1 p-3 text-dark mx-md-5 rounded-5 " style="width: 100%; max-width: 800px; ">
             <h2 class="text-center mb-4" style="color: rgb(37, 87, 162);">Staff Registration</h2>
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -150,16 +156,7 @@
             </form>
         </div>
 
-        <div class="box-2 rounded-5 px-3 m-5 shadow-lg overflow-hidden" style="backdrop-filter: blur(3px);">
-            <h2 class="text-center text-white m-4">Librarian Registration</h2>
-            <p class="p-3" style="color: rgb(37, 87, 162);">An enrollment key has been sent to the email address. Please check. </p>
-            <input type="password" class="form-control rounded-pill" name="enrollmentKey" id="enrollmentKey" placeholder="Enter Enrollment Key">
-            <span id="enrollmentKeyError" class="text-danger"></span>
-            <div class="text-center m-4">
-                <button type="button" class="btn w-50 mt-3 rounded-pill v-b" onclick="register();">Verify Key</button>
-            </div>
-
-        </div>
+        
     </div>
 
 

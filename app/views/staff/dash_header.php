@@ -57,13 +57,16 @@ $fine = $libraryData['fine_amount'];
         .profile-dropdown .dropdown-body {
             padding: 15px;
         }
+        .bg{
+            background: rgba(26, 50, 65, 1);
+        }
 
     </style>
 </head>
 
 <body>
     <header class="text-white">
-        <div class="row bg-dark m-0 pt-2 align-items-center">
+        <div class="row m-0 pt-2 bg align-items-center">
             <div class="col navbar navbar-expand-lg navbar-dark">
                 <a class="navbar-brand d-flex align-items-center" href="#">
                     <img src="<?php echo Config::indexPath() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">

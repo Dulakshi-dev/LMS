@@ -8,20 +8,7 @@
     <title>LMS | Home</title>
     <style>
         /* Custom style for horizontal scrolling on mobile */
-        @media (max-width: 992px) {
-            .scrollable-books {
-                display: flex;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 15px;
-            }
-            .book-card {
-                flex: 0 0 auto;
-                width: 250px;
-                margin-right: 15px;
-            }
-        }
+       
     </style>
 </head>
 
@@ -58,7 +45,7 @@
                     <h1 class="fw-bold"><span class="text-danger">Top</span> <span class="text-dark">Books</span></h1>
                 </div>
             </div>
-            <div class="row justify-content-center">
+            <div class="row">
                 <div class="col-12">
                     <div class="row g-4" id="topBookBody">
                         <!-- Books will be loaded here by JavaScript -->
@@ -71,7 +58,10 @@
 
     <div class="container-fluid p-1">
     <div class="row g-0">
-        <div class="col-12" style="height: 100vh; width:100%; min-height: 40vh; background-image: url('<?php echo Config::getImagePath("quotes.jpg"); ?>'); background-size: cover; background-position: center;">
+        <div class="col-12 d-none d-md-block" style="height: 100vh; width:100%; background-image: url('<?php echo Config::getImagePath("quotes.jpg"); ?>'); background-size: cover; background-position: center;">
+            <!-- Empty div - just shows the background image -->
+        </div>
+        <div class="col-12 d-md-none" style="height: 50vh; width:100%; background-image: url('<?php echo Config::getImagePath("quotes.jpg"); ?>'); background-size: cover; background-position: center;">
             <!-- Empty div - just shows the background image -->
         </div>
     </div>

@@ -92,7 +92,10 @@
                             <p class="text-danger" id="msgerror"></p>
 
                         </div>
-                        <button type="button" class="btn btn-primary" onclick="sendContactMail();">Send</button>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-primary px-5" onclick="sendContactMail();">Send</button>
+                        </div>
+                        
                 
                 </div>
             </div>

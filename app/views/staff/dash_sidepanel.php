@@ -23,23 +23,19 @@ $current_action = $_GET['action'] ?? 'dashboard';
       width: 250px;
       min-height: 100vh;
     }
-
-    @media (max-width: 992px) {
-      #sidepanel1 {
-        display: none;
-      }
-    }
-
     .nav-link.active {
       background-color: #0d6efd !important;
       color: white !important;
     }
+    .bg{
+            background: rgba(26, 50, 65, 1);
+        }
   </style>
 </head>
 
 <body>
 
-  <div id="sidepanel1" class="bg-dark text-white d-flex flex-column p-2">
+  <div id="sidepanel1" class="bg text-white d-flex flex-column p-2">
     <h4 class="mx-2"><?= $role_name == "Librarian" ? "Librarian Panel" : "Staff Panel"; ?></h4>
 
     <a href="<?php echo Config::indexPath() ?>?action=dashboard"

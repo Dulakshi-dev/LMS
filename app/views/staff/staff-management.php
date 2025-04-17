@@ -31,7 +31,7 @@ $_SESSION['staff']['last_activity'] = time();
         .box {
             height: 400px;
             width: 500px;
-            background-color: rgb(33, 33, 69);
+            background: rgba(26, 50, 65, 1);
         }
     </style>
 </head>
@@ -97,12 +97,12 @@ $_SESSION['staff']['last_activity'] = time();
 
                     <!-- View All Books -->
                     <div class="col-sm-12 col-md-6">
-                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
+                        <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-list display-1" style="color: #2AC23A;"></i>
                             <p class="fw-bold fs-5 mt-3">View Staff</p>
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewstaff"
-                                    class="btn col-3 rounded-pill mt-2"
+                                    class="btn rounded-pill px-5 mt-2"
                                     style="background-color: #2AC23A;  color: white;">
                                     View
                                 </a>
@@ -113,11 +113,11 @@ $_SESSION['staff']['last_activity'] = time();
 
                     <!-- Add New Category -->
                     <div class="col-sm-12 col-md-6">
-                        <div class="card text-white bg-dark text-center shadow-lg rounded-4 py-5">
+                        <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-user-minus text-warning display-1"></i>
                             <p class="fw-bold fs-5 mt-3">View Detective Staff</p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning col-3 rounded-pill mt-2">Issue</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning px-5 rounded-pill mt-2">Issue</a>
                             </div>
 
                         </div>

@@ -43,3 +43,24 @@ function loadPayments(page = 1) {
             console.error("Error fetching payment data:", error);
         });
 }
+
+function generatePaymentReport() {
+    const table = document.getElementById("paymentTable");
+    const clonedTable = table.cloneNode(true);
+
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Payment Report");
+    formData.append("filename", "payment_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+    });
+}

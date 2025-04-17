@@ -20,10 +20,12 @@ class BookController extends Controller
             $bookid = $this->getPost('bookid');
             $title = $this->getPost('title');
             $isbn = $this->getPost('isbn');
+            $category_id = $this->getPost('category');
+            $language_id = $this->getPost('language');
             $status = $this->getPost('status', 'Active');
 
-            if (!empty($bookid) || !empty($title) || !empty($isbn)) {
-                $bookData = BookModel::searchBooks($bookid, $title, $isbn, $status, $page, $resultsPerPage);
+            if (!empty($bookid) || !empty($title) || !empty($isbn) || !empty($category_id) || !empty($language_id)) {
+                $bookData = BookModel::searchBooks($bookid, $title, $isbn, $category_id, $language_id, $status, $page, $resultsPerPage);
             } else {
                 $bookData = BookModel::getAllBooks($page, $resultsPerPage, $status);
             }

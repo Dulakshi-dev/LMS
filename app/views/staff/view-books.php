@@ -44,49 +44,55 @@ $_SESSION['staff']['last_activity'] = time();
 
         </div>
         <div class="container-fluid w-75 ">
-            <nav class="navbar navbar-light bg-light">
-                <div class="container-fluid">
-                    <span class="navbar-brand mb-0 h1">
-                        Active Books
-                    </span>
-                    <a href="#" class="text-decoration-none h5">
-                        <i class="fa fa-home"></i>
-                    </a>
-                </div>
-            </nav>
+            <div class="row">
+                <nav class="navbar p-md-4 navbar-light bg-light w-100">
+                    <div class="d-flex align-items-center w-100 justify-content-between">
+                        <span class="mb-0 h5">Active Books</span>
+
+                        <div class="d-flex align-items-center">
+                            <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateActiveBookReport();">
+                                <i class="fa fa-print"></i> Generate Report
+                            </button>
+
+                            <a href="#" class="text-decoration-none h5">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
 
             <div class="bg-white">
 
+                <div class="row align-items-center">
+                    <div class="col-5 col-md-5 d-flex justify-content-end mt-3 ms-5">
+                        <select class="form-select" id="category1" onchange="loadBooks(1, 'Active');">
+                            <option value="">...</option>
+                        </select>
+                    </div>
+                    <div class="col-5 col-md-5 d-flex justify-content-end mt-3">
+                        <select class="form-select" id="language1" onchange="loadBooks(1, 'Active');">
+                            <option value="">...</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="row m-3">
-                    <div class="col-md-4 my-3">
+                    <div class="col-md-4 ">
                         <input id="bookid" name="bookid" type="text" class="form-control" placeholder="Type Book ID">
                     </div>
-                    <div class="col-md-4 d-flex my-3">
+                    <div class="col-md-4 d-flex ">
                         <input id="bname" name="title" type="text" class="form-control" placeholder="Type Book Name">
                     </div>
-                    <div class="col-md-4 d-flex my-3">
+                    <div class="col-md-4 d-flex ">
                         <input id="isbn" name="isbn" type="text" class="form-control" placeholder="Type ISBN">
                         <button class="btn btn-primary ml-3 px-4 ms-2" onclick="loadBooks(1,'Active');"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
 
-                <div class="row align-items-center mb-3">
-                    <div class="offset-lg-1 col-5 col-md-5 d-flex justify-content-end">
-                        <select class="form-select" id="category1">
-                            <option value="">...</option>
-                        </select>
-                    </div>
-                    <div class="col-5 col-md-5 d-flex justify-content-end">
-                        <select class="form-select" id="language1">
-                            <option value="">...</option>
-                        </select>
-                    </div>
-                </div>
-
-
                 <div class="border border-secondary mb-4"></div>
                 <div class="px-1 table-responsive">
-                    <table class="table">
+                    <table class="table" id="bookTable">
                         <thead class="thead-light">
                             <tr>
                                 <th>Book ID</th>

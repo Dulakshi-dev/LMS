@@ -64,10 +64,11 @@ function loadUsers(page = 1, status = "Active") {
                             <td>${user.mobile}</td>
                             <td>${user.email}</td>
                             <td>
-                                <div class="m-1">
+                                <div class="action-buttons m-1">
                                     ${actionButtons}
                                 </div>
                             </td>
+
                         </tr>
                     `;
                     tableBody.innerHTML += row;
@@ -115,6 +116,84 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+function generateActiveStaffReport() {
+    const table = document.getElementById("staffTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Remove all action buttons
+    clonedTable.querySelectorAll(".action-buttons").forEach(el => el.remove());
+
+    // Remove the last column (assuming Actions is the last column)
+    const headerRow = clonedTable.querySelector("thead tr");
+    const totalColumns = headerRow.children.length;
+
+    // Remove last <th>
+    headerRow.deleteCell(totalColumns - 1);
+
+    // Remove last <td> from each row
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    // Continue with report generation
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Active Staff Report");
+    formData.append("filename", "active_staff_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+    });
+}
+
+function generateDeactiveStaffReport() {
+    const table = document.getElementById("staffTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Remove all action buttons
+    clonedTable.querySelectorAll(".action-buttons").forEach(el => el.remove());
+
+    // Remove the last column (assuming Actions is the last column)
+    const headerRow = clonedTable.querySelector("thead tr");
+    const totalColumns = headerRow.children.length;
+
+    // Remove last <th>
+    headerRow.deleteCell(totalColumns - 1);
+
+    // Remove last <td> from each row
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    // Continue with report generation
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Deactive Staff Report");
+    formData.append("filename", "deactive_staff_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+    });
+}
 
 function deactivateUser(user_id) {
     var formData = new FormData();
@@ -210,14 +289,14 @@ function updateUserDetails() {
         isValid = false;
     }
 
-    
+
 
     var emailPattern = /^\S+@\S+\.\S+$/;
     if (!emailPattern.test(email)) {
         emailError.innerText = "Invalid email address";
         isValid = false;
     }
-    
+
     // Phone number validation (Assuming it should be 10 digits)
     var phonePattern = /^(?:\+94|0)([1-9][0-9])\d{7}$/;
     if (phone === "") {
@@ -411,18 +490,22 @@ function sendKey() {
         method: "POST",
         body: formData,
     })
-    .then(response => response.json())
-    .then(resp => {
-        if (resp.success) {
-            showAlert("Success", resp.message, "success").then(() => {
-                location.reload();
-            });
-        } else {
-            showAlert("Error", resp.message, "error");
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        showAlert("Error", "An error occurred. Please try again.", "error");
-    });
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Error", resp.message, "error");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            showAlert("Error", "An error occurred. Please try again.", "error");
+        });
 }
+
+
+
+

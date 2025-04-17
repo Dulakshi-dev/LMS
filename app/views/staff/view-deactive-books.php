@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -32,7 +32,7 @@ $_SESSION['staff']['last_activity'] = time();
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
-    <div>
+        <div>
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -44,18 +44,37 @@ $_SESSION['staff']['last_activity'] = time();
         </div>
 
         <div class="container-fluid w-75">
-            <nav class="navbar navbar-light bg-light">
-                <div class="container-fluid">
-                    <span class="navbar-brand mb-0 h1">
-                        Deactive Books
-                    </span>
-                    <a href="#" class="text-decoration-none h5">
-                        <i class="fa fa-home"></i> 
-                    </a>
-                </div>
-            </nav>
+            <div class="row">
+                <nav class="navbar p-md-4 navbar-light bg-light w-100">
+                    <div class="d-flex align-items-center w-100 justify-content-between">
+                        <span class="mb-0 h5">Deactive Books</span>
+
+                        <div class="d-flex align-items-center">
+                            <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateDeactiveBookReport();">
+                                <i class="fa fa-print"></i> Generate Report
+                            </button>
+
+                            <a href="#" class="text-decoration-none h5">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
 
             <div class="bg-white ">
+            <div class="row align-items-center">
+                <div class="col-5 col-md-5 d-flex justify-content-end mt-3 ms-5">
+                    <select class="form-select" id="category1" onchange="loadBooks(1, 'Deactive');">
+                        <option value="">...</option>
+                    </select>
+                </div>
+                <div class="col-5 col-md-5 d-flex justify-content-end mt-3">
+                    <select class="form-select" id="language1" onchange="loadBooks(1, 'Deactive');">
+                        <option value="">...</option>
+                    </select>
+                </div>
+            </div>
 
                 <div class="row m-3">
                     <div class="col-md-4 my-3">
@@ -71,7 +90,7 @@ $_SESSION['staff']['last_activity'] = time();
                 </div>
                 <div class="border border-secondary mb-4"></div>
                 <div class="px-1 table-responsive">
-                    <table class="table">
+                    <table class="table" id="bookTable">
                         <thead class="thead-light">
                             <tr>
                                 <th>Book ID</th>

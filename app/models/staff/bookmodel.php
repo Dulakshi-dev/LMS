@@ -10,7 +10,7 @@ class BookModel
 
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalBooks = self::getTotalBooks($statusId);
-        
+
         $rs = Database::search("SELECT * FROM book 
         INNER JOIN category ON book.category_id = category.category_id 
         INNER JOIN `status` ON book.status_id = status.status_id 
@@ -40,7 +40,7 @@ class BookModel
         return $row['total'] ?? 0;
     }
 
-    public static function searchBooks($bookid, $title, $isbn, $status = 'Active', $page, $resultsPerPage)
+    public static function searchBooks($bookid, $title, $isbn,$category_id, $language_id, $status = 'Active', $page, $resultsPerPage)
     {
         $statusId = ($status === 'Active') ? 1 : 2;
         $pageResults = ($page - 1) * $resultsPerPage;
@@ -52,6 +52,12 @@ class BookModel
         INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
         WHERE `book`.`status_id`='$statusId' AND 1";
 
+        if (!empty($category_id)) {
+            $sql .= " AND `book`.`category_id`='$category_id'";
+        }
+        if (!empty($language_id)) {
+            $sql .= " AND `book`.`language_id`='$language_id'";
+        }
         if (!empty($bookid)) {
             $sql .= " AND `book_id` LIKE '%$bookid%'";
         }
@@ -79,6 +85,12 @@ class BookModel
         INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
         WHERE `book`.`status_id`='$statusId' AND 1";
 
+        if (!empty($category_id)) {
+            $countQuery .= " AND `book`.`category_id`='$category_id'";
+        }
+        if (!empty($language_id)) {
+            $countQuery .= " AND `book`.`language_id`='$language_id'";
+        }
         if (!empty($bookid)) {
             $countQuery .= " AND `book_id` LIKE '%$bookid%'";
         }
@@ -108,13 +120,13 @@ class BookModel
                   FROM category
                   LEFT JOIN book ON category.category_id = book.category_id
                   GROUP BY category.category_id, category.category_name";
-    
+
         // Execute the query
         $result = Database::search($query);
-    
+
         // Initialize an array to store categories with their book count
         $categories = [];
-    
+
         // If there are results, loop through and fetch each category with book count
         if ($result && $result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -125,11 +137,11 @@ class BookModel
                 ];
             }
         }
-    
+
         // Return the categories with book counts
         return $categories;
     }
-    
+
 
     public static function getLanguages()
     {
@@ -153,17 +165,17 @@ class BookModel
         $row = $rs->fetch_assoc();
         $old_qty = $row['qty'];
         $old_available_qty = $row['available_qty'];  // Corrected here to use available_qty
-    
+
         // Calculate the difference in quantity
         $qty_difference = $quantity - $old_qty;
-    
+
         // Update available_qty based on the difference
         if ($qty_difference > 0) {
             $new_available_qty = $old_available_qty + $qty_difference;
         } else {
-            $new_available_qty = $old_available_qty - abs($qty_difference); 
+            $new_available_qty = $old_available_qty - abs($qty_difference);
         }
-    
+
         // Update the book details in the database
         Database::ud("UPDATE book SET
             `isbn` = '$isbn',
@@ -176,10 +188,10 @@ class BookModel
             `language_id` = '$language', 
             `description` = '$description'
             WHERE `book_id` = '$book_id'");
-    
+
         return true;
     }
-    
+
 
     public static function addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $coverpage)
     {

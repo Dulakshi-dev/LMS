@@ -44,7 +44,7 @@ function loadReservations(page = 1) {
                         <td>${reservation.reservation_date}</td>
                         <td>${notifiedDate}</td>
                         <td>${reservation.expiration_date}</td>
-                        <td>${actionColumn}</td>
+                        <td class="action-buttons">${actionColumn}</td>
                     </tr>
                 `;
 
@@ -76,5 +76,45 @@ function showAlert(title, message, type) {
         text: message,
         icon: type, // 'success', 'error', 'warning', 'info', 'question'
         confirmButtonText: 'OK'
+    });
+}
+
+
+function generateReservedBookReport() {
+    const table = document.getElementById("reserveBookTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Remove all action buttons
+    clonedTable.querySelectorAll(".action-buttons").forEach(el => el.remove());
+
+    // Remove the last column (assuming Actions is the last column)
+    const headerRow = clonedTable.querySelector("thead tr");
+    const totalColumns = headerRow.children.length;
+
+    // Remove last <th>
+    headerRow.deleteCell(totalColumns - 1);
+
+    // Remove last <td> from each row
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    // Continue with report generation
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Reserved Books Report");
+    formData.append("filename", "reserved_books_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
     });
 }

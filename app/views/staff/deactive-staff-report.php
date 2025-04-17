@@ -31,7 +31,7 @@ $page = $page ?? 1;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body onload="loadUsers(1,'Active');">
+<body onload="loadUsers(1,'Deactive');">
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
@@ -49,6 +49,7 @@ $page = $page ?? 1;
             <div class="row">
                 <nav class="navbar p-md-4 navbar-light bg-light">
                     <span class="mb-0 h5">Active Staff Members</span>
+                    
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> </a>
                 </nav>
             </div>
@@ -63,7 +64,7 @@ $page = $page ?? 1;
                 <div class="col-md-6 mt-2">
                     <div class="d-flex">
                         <input id="userName" name="userName" class="form-control" type="text" placeholder="Type Staff Name">
-                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadUsers(1,'Active');"><i class="fa fa-search"></i></button>
+                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadUsers(1,'Deactive');"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
             </div>
@@ -72,7 +73,7 @@ $page = $page ?? 1;
                 <div class="row d-flex my-4 mx-4">
                     <h4 class="col-6">Active Staff Report</h4>
                     <div class="col-6 text-end">
-                        <button id="printActiveStaffReport" class="btn btn-outline-secondary">
+                        <button id="generateReport" class="btn btn-outline-secondary">
                             <i class="fa fa-print"></i> Print Report
                         </button>
                     </div>

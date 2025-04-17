@@ -44,9 +44,20 @@ $_SESSION['staff']['last_activity'] = time();
         </div>
         <div class="container-fluid w-75 mb-5 bg-white ">
             <div class="row">
-                <nav class="navbar p-4 navbar-light bg-light">
-                    <span class=" mb-0 h5">Reservations</span>
-                    <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
+                <nav class="navbar p-md-4 navbar-light bg-light w-100">
+                    <div class="d-flex align-items-center w-100 justify-content-between">
+                        <span class="mb-0 h5">Issued Books</span>
+
+                        <div class="d-flex align-items-center">
+                            <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateReservedBookReport();">
+                                <i class="fa fa-print"></i> Generate Report
+                            </button>
+
+                            <a href="#" class="text-decoration-none h5">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </div>
+                    </div>
                 </nav>
             </div>
             <div class="row m-4">
@@ -77,7 +88,7 @@ $_SESSION['staff']['last_activity'] = time();
 
             <div class="px-1 table-responsive">
                 <!-- Table -->
-                <table class="table table-bordered text-center">
+                <table class="table table-bordered text-center" id="reserveBookTable">
                     <thead class="table-light">
                         <tr>
                             <th>#</th>

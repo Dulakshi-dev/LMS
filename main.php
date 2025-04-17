@@ -30,14 +30,12 @@ class Config {
         "news_image" => Config::sourcePath ."\\storage\\news\\",
         "logo" => Config::sourcePath ."\\storage\\logo\\",
 
-
-
     ];
 
     public static $database = [
         "host" => "localhost", 
         "username" => "root", 
-        "password" => "",
+        "password" => "Dg$11029",
         "dbname" => "library_db",
         "port" => "3306"
     ];

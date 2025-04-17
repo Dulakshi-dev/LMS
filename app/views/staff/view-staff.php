@@ -47,17 +47,24 @@ $page = $page ?? 1;
         </div>
         <div class="container-fluid w-75 mb-5 bg-white ">
             <div class="row">
-                <nav class="navbar p-md-4 navbar-light bg-light">
-                    <span class="mb-0 h5">Active Staff Members</span>
-                    <a href="index.php?action=activestaffreport" class="btn btn-outline-secondary">
-                        <i class="fa fa-file-pdf-o"></i> Generate Report
-                    </a>
+                <nav class="navbar p-md-4 navbar-light bg-light w-100">
+                    <div class="d-flex align-items-center w-100 justify-content-between">
+                        <span class="mb-0 h5">Active Staff Members</span>
 
-                    <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> </a>
+                        <div class="d-flex align-items-center">
+                            <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateActiveStaffReport();">
+                                <i class="fa fa-print"></i> Generate Report
+                            </button>
+
+                            <a href="#" class="text-decoration-none h5">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </div>
+                    </div>
                 </nav>
-
-
             </div>
+
+
             <div class="row m-4">
                 <div class="col-md-3 mt-2">
                     <input id="memberId" name="memberId" class="form-control" type="text" placeholder="Type Staff ID">
@@ -74,7 +81,7 @@ $page = $page ?? 1;
             </div>
 
             <div class="px-1 table-responsive">
-                <table class="table">
+                <table class="table" id="staffTable">
                     <thead class="thead-light text-center">
                         <tr>
                             <th>Staff ID</th>

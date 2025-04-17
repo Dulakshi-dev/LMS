@@ -46,16 +46,23 @@ $_SESSION['staff']['last_activity'] = time();
 
         </div>
         <div class="container-fluid w-75">
-            <nav class="navbar navbar-light mt-2 bg-light">
-                <div class="container-fluid">
-                    <span class="mb-0 h5">
-                        Issued Books
-                    </span>
-                    <a href="#" class="text-decoration-none h5">
-                        <i class="fa fa-home"></i>
-                    </a>
-                </div>
-            </nav>
+            <div class="row">
+                <nav class="navbar p-md-4 navbar-light bg-light w-100">
+                    <div class="d-flex align-items-center w-100 justify-content-between">
+                        <span class="mb-0 h5">Issued Books</span>
+
+                        <div class="d-flex align-items-center">
+                            <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateIssuedBookReport();">
+                                <i class="fa fa-print"></i> Generate Report
+                            </button>
+
+                            <a href="#" class="text-decoration-none h5">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
             <div class="bg-white ">
 
                 <div class="row m-3">
@@ -83,7 +90,7 @@ $_SESSION['staff']['last_activity'] = time();
 
                 <div class="border border-secondary mb-4"></div>
                 <div class="px-1 table-responsive">
-                    <table class="table">
+                    <table class="table" id="issueBookTable">
                         <thead class="thead-light">
                             <tr>
                                 <th>BorrowID</th>

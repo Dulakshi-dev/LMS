@@ -1,5 +1,11 @@
 
-function loadBooks(page = 1, status = "Active") {
+function loadBooks(page = 1, status = "Active", language = null, category = null) {
+    if (!language) {
+        language = document.getElementById("language1").value.trim();
+    }
+    if (!category) {
+        category = document.getElementById("category1").value.trim();
+    }
     var bookid = document.getElementById("bookid").value.trim();
     var title = document.getElementById("bname").value.trim();
     var isbn = document.getElementById("isbn").value.trim();
@@ -10,7 +16,8 @@ function loadBooks(page = 1, status = "Active") {
     formData.append("title", title);
     formData.append("isbn", isbn);
     formData.append("status", status);
-
+    formData.append("language", language);
+    formData.append("category", category);
 
     fetch("index.php?action=loadBooks", {
         method: "POST",
@@ -51,7 +58,7 @@ function loadBooks(page = 1, status = "Active") {
                 <tr>
                     <td>${book.book_id}</td>
                     <td>${book.isbn}</td>
-                    <td><img src="${coverImageUrl}" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;"></td>
+                    <td class="book-cover"><img src="${coverImageUrl}" alt="Book Cover" style="width: 50px; height: 75px; object-fit: cover;"></td>
                     <td>${book.title}</td>
                     <td>${book.author}</td>
                     <td>${book.pub_year}</td>
@@ -60,10 +67,9 @@ function loadBooks(page = 1, status = "Active") {
                     <td>${book.qty}</td>
                     <td>${book.qty - book.available_qty}</td>
                     <td>
-                    <div class="m-1">
-                    ${actionButtons}
-                        
-                    </td>
+                     <div class="action-buttons m-1">
+                                    ${actionButtons}
+                                </div>
                 </tr>
                 `;
 
@@ -103,7 +109,7 @@ function loadCategory() {
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>`;
-                 
+
 
                     tableBody.innerHTML += row;
                 });
@@ -117,8 +123,8 @@ function loadCategory() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    loadAllCategories(null, 'category1');  
-    loadLanguages(null, 'language1');  
+    loadAllCategories(null, 'category1');
+    loadLanguages(null, 'language1');
 
     // Handle book Edit Modal
     document.body.addEventListener("click", function (event) {
@@ -632,4 +638,112 @@ function showAlert(title, message, type) {
         icon: type, // 'success', 'error', 'warning', 'info', 'question'
         confirmButtonText: 'OK'
     });
+}
+
+function generateActiveBookReport() {
+    const table = document.getElementById("bookTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Step 1: Identify the "Book Cover" column index
+    const headerRow = clonedTable.querySelector("thead tr");
+    let coverColumnIndex = -1;
+
+    for (let i = 0; i < headerRow.children.length; i++) {
+        if (headerRow.children[i].textContent.trim().toLowerCase() === "cover page") {
+            coverColumnIndex = i;
+            break;
+        }
+    }
+
+    // Step 2: Remove "Cover Page" header column
+    if (coverColumnIndex !== -1) {
+        headerRow.deleteCell(coverColumnIndex);
+
+        // Step 3: Remove "Cover Page" cell from each row
+        clonedTable.querySelectorAll("tbody tr").forEach(row => {
+            if (row.children.length > coverColumnIndex) {
+                row.deleteCell(coverColumnIndex);
+            }
+        });
+    }
+
+    // Step 4: Remove the last column (Actions)
+    const totalColumns = headerRow.children.length;
+    headerRow.deleteCell(totalColumns - 1);
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    // Step 5: Generate report
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Active Book Report");
+    formData.append("filename", "active_book_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
+}
+
+function generateDeactiveBookReport() {
+    const table = document.getElementById("bookTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Step 1: Identify the "Book Cover" column index
+    const headerRow = clonedTable.querySelector("thead tr");
+    let coverColumnIndex = -1;
+
+    for (let i = 0; i < headerRow.children.length; i++) {
+        if (headerRow.children[i].textContent.trim().toLowerCase() === "cover page") {
+            coverColumnIndex = i;
+            break;
+        }
+    }
+
+    // Step 2: Remove "Cover Page" header column
+    if (coverColumnIndex !== -1) {
+        headerRow.deleteCell(coverColumnIndex);
+
+        // Step 3: Remove "Cover Page" cell from each row
+        clonedTable.querySelectorAll("tbody tr").forEach(row => {
+            if (row.children.length > coverColumnIndex) {
+                row.deleteCell(coverColumnIndex);
+            }
+        });
+    }
+
+    // Step 4: Remove the last column (Actions)
+    const totalColumns = headerRow.children.length;
+    headerRow.deleteCell(totalColumns - 1);
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    // Step 5: Generate report
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Deactive Book Report");
+    formData.append("filename", "deactive_book_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
 }

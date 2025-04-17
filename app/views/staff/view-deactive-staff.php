@@ -1,17 +1,15 @@
-
-
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -38,7 +36,7 @@ $page = $page ?? 1;
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
-    <div>
+        <div>
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -50,9 +48,20 @@ $page = $page ?? 1;
         </div>
         <div class="container-fluid mb-5 bg-white w-75 ">
             <div class="row">
-                <nav class="navbar p-md-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Deactive Staff Members</span>
-                    <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> Home</a>
+                <nav class="navbar p-md-4 navbar-light bg-light w-100">
+                    <div class="d-flex align-items-center w-100 justify-content-between">
+                        <span class="mb-0 h5">Deactive Staff Members</span>
+
+                        <div class="d-flex align-items-center">
+                            <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateDeactiveStaffReport();">
+                                <i class="fa fa-print"></i> Generate Report
+                            </button>
+
+                            <a href="#" class="text-decoration-none h5">
+                                <i class="fa fa-home"></i>
+                            </a>
+                        </div>
+                    </div>
                 </nav>
             </div>
             <div class="row m-4">
@@ -72,7 +81,7 @@ $page = $page ?? 1;
             </div>
 
             <div class=" table-responsive">
-                <table class="table">
+                <table class="table" id="staffTable">
                     <thead class="thead-light text-center">
                         <tr>
                             <th>Satff ID</th>

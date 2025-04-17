@@ -109,7 +109,7 @@ $router->add('gettopbooks', [$dashboardController, 'loadTopBooks']);
 
 $router->add('loadpayments', [$paymentController, 'getAllPayments']);
 
-$router->add('printactivestaffreport', [$reportController, 'generateStaffReport']);
+$router->add('generatereport', [$reportController, 'generateReport']);
 
 
 $router->add('login', function () {
@@ -205,9 +205,6 @@ $router->add('paymentmanagement', function () {
     include Config::getViewPath("staff", "view-payments.php");
 });
 
-$router->add('activestaffreport', function () {
-    include Config::getViewPath("staff", "active-staff-report.php");
-});
 
 // Get the action from the URL
 $action = $_GET['action'] ?? 'login';

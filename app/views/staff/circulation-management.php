@@ -63,7 +63,7 @@ $_SESSION['staff']['last_activity'] = time();
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-book-open text-info display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">Issue Books</p>
+                            <p class="fw-bold fs-5 mt-3">Issue Book</p>
                             <div class="d-flex justify-content-center">
                             <a href="<?php echo Config::indexPath() ?>?action=showissuebook" class="btn btn-info px-5 rounded-pill mt-2">Add</a>
                             </div>

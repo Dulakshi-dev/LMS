@@ -71,7 +71,7 @@ function loadMembers(page = 1, status = "Active") {
                         <td>${member.mobile}</td>
                         <td>${member.email}</td>
                         <td>
-                        <div class="m-1">
+                        <div class="m-1 action-buttons">
                         ${actionButtons}
                     
                             
@@ -584,3 +584,116 @@ function activateRequest(id) {
         });
 }
 
+function generateActiveMemberReport() {
+    const table = document.getElementById("memberTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Remove all action buttons
+    clonedTable.querySelectorAll(".action-buttons").forEach(el => el.remove());
+
+    // Remove the last column (assuming Actions is the last column)
+    const headerRow = clonedTable.querySelector("thead tr");
+    const totalColumns = headerRow.children.length;
+
+    // Remove last <th>
+    headerRow.deleteCell(totalColumns - 1);
+
+    // Remove last <td> from each row
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Active Members Report");
+    formData.append("filename", "active_members_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+    });
+}
+
+function generateDeactiveMemberReport() {
+    const table = document.getElementById("memberTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Remove all action buttons
+    clonedTable.querySelectorAll(".action-buttons").forEach(el => el.remove());
+
+    // Remove the last column (assuming Actions is the last column)
+    const headerRow = clonedTable.querySelector("thead tr");
+    const totalColumns = headerRow.children.length;
+
+    // Remove last <th>
+    headerRow.deleteCell(totalColumns - 1);
+
+    // Remove last <td> from each row
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Deactive Members Report");
+    formData.append("filename", "deactive_members_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+    });
+}
+
+function generateRejectedUserReport() {
+    const table = document.getElementById("memberTable");
+    const clonedTable = table.cloneNode(true);
+
+    // Remove all action buttons
+    clonedTable.querySelectorAll(".action-buttons").forEach(el => el.remove());
+
+    // Remove the last column (assuming Actions is the last column)
+    const headerRow = clonedTable.querySelector("thead tr");
+    const totalColumns = headerRow.children.length;
+
+    // Remove last <th>
+    headerRow.deleteCell(totalColumns - 1);
+
+    // Remove last <td> from each row
+    clonedTable.querySelectorAll("tbody tr").forEach(row => {
+        if (row.children.length === totalColumns) {
+            row.deleteCell(totalColumns - 1);
+        }
+    });
+
+    const tableHTML = clonedTable.outerHTML;
+    let formData = new FormData();
+    formData.append("table_html", tableHTML);
+    formData.append("title", "Rejected Members Requests Report");
+    formData.append("filename", "rejected_member_requests_report.pdf");
+
+    fetch("index.php?action=generatereport", {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.blob())
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url);
+    });
+}

@@ -1,18 +1,18 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-    const generateBtn = document.getElementById("generateReport");
+    const generateActiveStaffReport = document.getElementById("printActiveStaffReport");
 
-    if (generateBtn) {
-        generateBtn.addEventListener("click", () => {
+    if (generateActiveStaffReport) {
+        generateActiveStaffReport.addEventListener("click", () => {
             const table = document.getElementById("stafftable");
-
-            console.log("Table:", table);  // Debugging line
 
             if (table) {
                 const tableHTML = table.outerHTML;
 
                 let formData = new FormData();
                 formData.append("table_html", tableHTML);
+                formData.append("title", "Active Staff Report");
+                formData.append("filename", "active_staff_report.pdf");
 
                 fetch("index.php?action=printactivestaffreport", {
                     method: "POST",
@@ -21,9 +21,36 @@ document.addEventListener("DOMContentLoaded", function () {
                     .then(response => response.blob())
                     .then(blob => {
                         const url = window.URL.createObjectURL(blob);
-                        window.open(url); // opens in new tab
-                        document.body.removeChild(a);
-                        window.URL.revokeObjectURL(url);
+                        window.open(url);
+                    });
+            } else {
+                console.error("Table with ID 'stafftable' not found.");
+            }
+        });
+    }
+
+    const generateDeactiveStaffReport = document.getElementById("printDeactiveStaffReport");
+
+    if (generateDeactiveStaffReport) {
+        generateDeactiveStaffReport.addEventListener("click", () => {
+            const table = document.getElementById("stafftable");
+
+            if (table) {
+                const tableHTML = table.outerHTML;
+
+                let formData = new FormData();
+                formData.append("table_html", tableHTML);
+                formData.append("title", "Deactive Staff Report");
+                formData.append("filename", "deactive_staff_report.pdf");
+
+                fetch("index.php?action=printreport", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        window.open(url);
                     });
             } else {
                 console.error("Table with ID 'stafftable' not found.");

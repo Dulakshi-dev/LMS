@@ -36,6 +36,10 @@
             display: none;
         }
 
+        .box-1{
+            display: block;
+        }
+
 
         #passwordRules li {
             color: red;
@@ -57,8 +61,8 @@
 </head>
 
 <body>
-    <div class="container-fluid d-flex justify-content-left align-items-center my-5">
-        <div class="box-1 p-5 text-dark mx-5 rounded-5 " style="width: 100%; max-width: 800px; ">
+    <div class="container-fluid vh-100 d-md-flex justify-content-left align-items-center my-5">
+        <div class="box-1 p-5 text-dark mx-md-5 rounded-5 " style="width: 100%; max-width: 800px; ">
             <h2 class="text-center mb-4" style="color: rgb(37, 87, 162);">Staff Registration</h2>
             <div class="row">
                 <div class="col-md-6 mb-3">

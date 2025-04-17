@@ -32,6 +32,9 @@ $_SESSION['staff']['last_activity'] = time();
             border-radius: 8px;
             box-shadow: 0px 4px 6px 3px rgba(0, 0, 0, 0.1);
         }
+        .nav-bar {
+            height: 100%;
+        }
     </style>
 </head>
 

@@ -38,6 +38,9 @@ $role_name = $_SESSION["staff"]["role_name"];
         #box2 {
             display: none;
         }
+        .nav-bar {
+            height: 100%;
+        }
     </style>
 </head>
 

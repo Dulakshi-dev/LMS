@@ -28,10 +28,12 @@ $_SESSION['staff']['last_activity'] = time();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style>html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
+    <style>
+        html,
+        body {
+            max-width: 100%;
+            overflow-x: hidden;
+        }
 
         .box-1 {
             background: rgba(26, 50, 65, 1);
@@ -53,8 +55,9 @@ $_SESSION['staff']['last_activity'] = time();
             background: rgba(26, 50, 65, 1);
             border-radius: 10px;
         }
-        
-
+        .nav-bar {
+            height: 100%;
+        }
     </style>
 </head>
 
@@ -63,7 +66,7 @@ $_SESSION['staff']['last_activity'] = time();
 
     <div class="d-flex mx-auto">
 
-    <div>
+        <div>
             <div class="nav-bar d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -145,7 +148,7 @@ $_SESSION['staff']['last_activity'] = time();
 
                     <div class="col-md-6 col-sm-12 bg-light rounded-5">
                         <div class=" mt-4 p-3 d-flex justify-content-center">
-                        <canvas id="lineChart" class="w-100 h-auto"></canvas>
+                            <canvas id="lineChart" class="w-100 h-auto"></canvas>
 
                         </div>
                     </div>

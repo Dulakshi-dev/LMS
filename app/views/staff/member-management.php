@@ -31,6 +31,9 @@ $_SESSION['staff']['last_activity'] = time();
         .bg{
             background: rgba(26, 50, 65, 1);
         }
+        .nav-bar {
+            height: 100%;
+        }
     </style>
 </head>
 

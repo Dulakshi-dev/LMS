@@ -79,7 +79,7 @@ $_SESSION['staff']['last_activity'] = time();
                             <p class="fw-bold fs-5 mt-3">Issued Books</p>
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewissuebooks"
-                                    class="btn col-lg-3 px-5 rounded-pill mt-2"
+                                    class="btn px-5 rounded-pill mt-2"
                                     style="background-color: #2AC23A;  color: white;">
                                     View
                                 </a>

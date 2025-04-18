@@ -32,13 +32,17 @@ $_SESSION['staff']['last_activity'] = time();
 <body onload="loadAllCategories(); loadLanguages();">
     <?php include "dash_header.php"; ?>
     <div class="d-flex bg-light">
-        <!-- Side Panel -->
-        <div class="d-none d-lg-block" style="flex-shrink: 0;">
-            <?php include "dash_sidepanel.php"; ?>
-        </div>
+    <div>
+            <div class="nav-bar d-none d-lg-block">
+                <?php include "dash_sidepanel.php"; ?>
+            </div>
 
-        <!-- Main Content Area -->
-        <div class="box-0 container m-md-5" style="flex-grow: 1;">
+            <div class="nav-bar d-block d-lg-none">
+                <?php include "small_sidepanel.php"; ?>
+            </div>
+
+        </div>
+        <div class="box-0 container m-md-5 ">
             <div class="bg-white p-2">
                 <div class="text-center border-bottom border-danger border-4 mb-4 mt-2 pb-3">
                     <h2>Add Books</h2>
@@ -112,9 +116,9 @@ $_SESSION['staff']['last_activity'] = time();
             </div>
         </div>
     </div>
-
-    <!-- JS Files -->
     <script src="<?php echo Config::getJsPath("book.js"); ?>"></script>
+
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

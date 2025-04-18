@@ -65,7 +65,7 @@ $_SESSION['staff']['last_activity'] = time();
                             <i class="fas fa-user-plus text-info display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Register Users</p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-info rounded-pill mt-2 px-4 col-lg-3">Register</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewmemberrequests" class="btn btn-info rounded-pill mt-2 px-4">Register</a>
                             </div>
 
                         </div>
@@ -78,7 +78,7 @@ $_SESSION['staff']['last_activity'] = time();
                             <p class="fw-bold fs-5 mt-3">Members</p>
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewmembers"
-                                    class="btn col-lg-3 px-5 rounded-pill mt-2"
+                                    class="btn px-5 rounded-pill mt-2"
                                     style="background-color: #2AC23A;  color: white;">
                                     View
                                 </a>
@@ -93,7 +93,7 @@ $_SESSION['staff']['last_activity'] = time();
                             <i class="fas fa-user-minus text-warning display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Deactive Members</p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivemembers" class="btn btn-warning col-lg-3 px-5 rounded-pill mt-2">View</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivemembers" class="btn btn-warning px-5 rounded-pill mt-2">View</a>
                             </div>
 
                         </div>
@@ -106,7 +106,7 @@ $_SESSION['staff']['last_activity'] = time();
                             <p class="fw-bold fs-5 mt-3">Rejected Users</p>
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewrejectedrequests"
-                                    class="btn px-5 col-lg-3 rounded-pill mt-2"
+                                    class="btn px-5 rounded-pill mt-2"
                                     style="background-color: #FD0D0D;  color: white;">
                                     View
                                 </a>

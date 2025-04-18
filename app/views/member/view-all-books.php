@@ -25,7 +25,7 @@ $_SESSION['member']['last_activity'] = time();
 <?php
 $pageTitle = "All Books";
 $pageCss = "member-all-books.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="viewallbooks();">
@@ -111,7 +111,7 @@ require_once Config::getViewPath("home","head.php");
       </div>
     </div>
   </div>
-  <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
+  <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
 
   <script src="<?php echo Config::getJsPath("memberBook.js"); ?>"></script>

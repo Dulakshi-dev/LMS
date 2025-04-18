@@ -1,18 +1,7 @@
 <?php
 $member_id = $_SESSION["member"]["member_id"];
-$current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard'; // Get current action or default to 'dashboard'
+$current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard'; 
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sidebar</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-</head>
 
 <body>
 
@@ -44,7 +33,8 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard'; // Get
       <!-- User Section -->
       <div class="mt-auto text-center">
         <div class="d-flex align-items-center">
-          <img src="" alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;" />
+        <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
+          alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 40px; width: 40px;">
           <p class="mb-0"><?php echo $fname . " " . $lname; ?></p>
         </div>
         <div class="d-flex"><a href="index.php?action=logout" class="btn btn-outline-dark btn-sm mt-4 d-flex align-items-center">
@@ -56,5 +46,3 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard'; // Get
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
-
-</html>

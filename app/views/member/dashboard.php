@@ -25,7 +25,7 @@ $_SESSION['member']['last_activity'] = time();
 <?php
 $pageTitle = "Dashboard";
 $pageCss = "member-dashboard.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 
@@ -170,7 +170,7 @@ require_once Config::getViewPath("home","head.php");
   </script>
 
 
-  <?php require_once Config::getViewPath("home", "footer.view.php"); ?>
+  <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

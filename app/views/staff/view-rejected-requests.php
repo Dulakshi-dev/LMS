@@ -22,7 +22,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Rejected Requests";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadMemberRequests(1,'Rejected');">
@@ -188,6 +188,7 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
 
     <!-- Bootstrap and JavaScript -->

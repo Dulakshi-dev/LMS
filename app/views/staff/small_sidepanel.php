@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SESSION["staff"])) {
-    header("Location: login.php");
-    exit();
+  header("Location: login.php");
+  exit();
 }
 
 $role_name = $_SESSION["staff"]["role_name"];
@@ -11,6 +11,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,27 +26,28 @@ $current_action = $_GET['action'] ?? 'dashboard';
       position: sticky;
       top: 0;
     }
-    
+
     #sidepanel:hover {
       width: 220px;
     }
-    
+
     #sidepanel:hover .nav-text {
       display: inline-block !important;
     }
-    
+
     .nav-link {
       white-space: nowrap;
       overflow: hidden;
     }
-    
+
     .nav-icon {
       width: 24px;
       text-align: center;
     }
-    .bg{
-            background: rgba(26, 50, 65, 1);
-        }
+
+    .bg {
+      background: rgba(26, 50, 65, 1);
+    }
   </style>
 </head>
 
@@ -59,7 +61,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
 
     <!-- Dashboard -->
     <a href="<?= Config::indexPath() ?>?action=dashboard"
-       class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'dashboard' ? 'active bg-primary' : 'text-white'; ?>">
+      class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'dashboard' ? 'active bg-primary' : 'text-white'; ?>">
       <div class="nav-icon">
         <i class="fas fa-gauge"></i>
       </div>
@@ -68,7 +70,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
 
     <!-- Profile -->
     <a href="<?= Config::indexPath() ?>?action=profile"
-       class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'profile' ? 'active bg-primary' : 'text-white'; ?>">
+      class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'profile' ? 'active bg-primary' : 'text-white'; ?>">
       <div class="nav-icon">
         <i class="fas fa-user"></i>
       </div>
@@ -81,7 +83,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
       $iconPath = Config::getImagePath($module["icon"]);
     ?>
       <a href="<?= Config::indexPath() ?>?action=<?= htmlspecialchars($action); ?>"
-         class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == $action ? 'active bg-primary' : 'text-white'; ?>">
+        class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == $action ? 'active bg-primary' : 'text-white'; ?>">
         <div class="nav-icon">
           <img src="<?= htmlspecialchars($iconPath); ?>" alt="Module Icon" width="20">
         </div>
@@ -91,7 +93,7 @@ $current_action = $_GET['action'] ?? 'dashboard';
 
     <!-- Library Setup -->
     <a href="<?= Config::indexPath() ?>?action=libsetup"
-       class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'libsetup' ? 'active bg-primary' : 'text-white'; ?>">
+      class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'libsetup' ? 'active bg-primary' : 'text-white'; ?>">
       <div class="nav-icon">
         <i class="fas fa-university"></i>
       </div>
@@ -100,27 +102,20 @@ $current_action = $_GET['action'] ?? 'dashboard';
 
     <!-- About Software -->
     <a href="<?= Config::indexPath() ?>?action=aboutsoftware"
-       class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'active bg-primary' : 'text-white'; ?>">
+      class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'active bg-primary' : 'text-white'; ?>">
       <div class="nav-icon">
         <i class="fas fa-laptop-code"></i>
       </div>
       <span class="nav-text ms-2 d-none">About</span>
     </a>
-    
+
     <!-- Spacer to push content up -->
     <div class="mt-auto"></div>
-    
-    <!-- Logout -->
-    <a href="logout.php"
-       class="nav-link rounded  d-flex align-items-center text-white">
-      <div class="nav-icon">
-        <i class="fas fa-sign-out-alt"></i>
-      </div>
-      <span class="nav-text ms-2 d-none">Logout</span>
-    </a>
+
   </div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

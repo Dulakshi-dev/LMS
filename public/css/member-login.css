@@ -1,5 +1,5 @@
 body {
-    background-image: url('<?php echo Config::getImagePath("signup.jpg"); ?>');
+    background-image: url('../images/signup.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

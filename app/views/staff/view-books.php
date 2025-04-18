@@ -23,7 +23,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Books";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadBooks(1,'Active');">
@@ -191,12 +191,13 @@ require_once Config::getViewPath("home","head.php");
 
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
 
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
 
-    <script src="<?php echo Config::getJsPath("book.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("staffBook.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

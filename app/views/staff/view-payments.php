@@ -22,7 +22,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Payments";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadPayments();">
@@ -90,6 +90,7 @@ require_once Config::getViewPath("home","head.php");
 
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("staffPayment.js"); ?>"></script>

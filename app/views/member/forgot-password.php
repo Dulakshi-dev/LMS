@@ -5,12 +5,12 @@
 <?php
 $pageTitle = "Forgot Password";
 $pageCss = "member-forgot-password.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
     <?php
-require_once Config::getViewPath("home", "header.view.php");
+require_once Config::getViewPath("guest", "header.view.php");
     ?>
 
     <div class="container">
@@ -28,7 +28,7 @@ require_once Config::getViewPath("home", "header.view.php");
         </div>
     </div>
     <?php
-    require_once Config::getViewPath("home", "footer-noscroll.view.php");
+    require_once Config::getViewPath("common", "footer-noscroll.view.php");
     ?>
 
 <script src="<?php echo Config::getJsPath("memberLogin.js"); ?>"></script>

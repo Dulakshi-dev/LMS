@@ -1,16 +1,18 @@
+<?php require_once __DIR__ . '/../../../main.php';?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <?php
 $pageTitle = "Register";
 $pageCss = "member-register.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
 
     <?php
-    require_once Config::getViewPath("home", "header.view.php");
+    require_once Config::getViewPath("guest", "header.view.php");
     ?>
     <!-- Important Notes Section -->
     <div class="text-white p-2 p-md-5 mt-3 Important">
@@ -48,7 +50,7 @@ require_once Config::getViewPath("home","head.php");
     </div>
 
     <!-- Registration Form Section -->
-    <div class="bg-white background-container p-5">
+    <div class="bg-white background-container p-5" >
         <div class="container p-4 my-2 col-md-12 col-lg-6">
             <div class="row">
                 <div class="text-white login-form">
@@ -187,7 +189,7 @@ require_once Config::getViewPath("home","head.php");
     </div>
 
     <?php
-    require_once Config::getViewPath("home", "footer.view.php");
+    require_once Config::getViewPath("common", "footer.view.php");
     ?>
 
 

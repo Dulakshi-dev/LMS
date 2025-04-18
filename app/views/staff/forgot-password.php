@@ -5,12 +5,12 @@
 <?php
 $pageTitle = "Forgot Password";
 $pageCss = "forgot-password.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
     <?php
-require_once Config::getViewPath("home", "header.view.php");
+require_once Config::getViewPath("guest", "header.view.php");
     ?>
 
     <div class="container">

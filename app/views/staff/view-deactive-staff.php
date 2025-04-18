@@ -26,7 +26,7 @@ $page = $page ?? 1;
 
 <?php
 $pageTitle = "Deactive Staff";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadUsers(1,'Deactive');">
@@ -100,6 +100,7 @@ require_once Config::getViewPath("home","head.php");
 
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("staff.js"); ?>"></script>

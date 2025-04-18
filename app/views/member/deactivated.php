@@ -13,7 +13,7 @@ $libraryPhone = $libraryData['mobile'];
 <?php
 $pageTitle = "Deactivated";
 $pageCss = "deactivated.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 

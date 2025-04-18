@@ -27,7 +27,7 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
 
 <?php
 $pageTitle = "Issue Book";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
@@ -145,6 +145,8 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+
     <script>
     document.addEventListener("DOMContentLoaded", function () {
     // Check if book_id and member_id are not empty before calling functions
@@ -160,7 +162,7 @@ require_once Config::getViewPath("home","head.php");
 
 
 
-    <script src="<?php echo Config::getJsPath("borrow.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("staffCirculation.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>

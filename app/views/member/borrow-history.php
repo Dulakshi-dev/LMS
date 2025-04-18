@@ -24,7 +24,7 @@ $_SESSION['member']['last_activity'] = time();
 <?php
 $pageTitle = "Borrow History";
 $pageCss = "borrow-history.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body class="bg-white" onload="loadBorrowBooks();">
@@ -95,61 +95,8 @@ require_once Config::getViewPath("home","head.php");
       </div>
     </div>
   </div>
+  <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
-
-  <!-- JavaScript -->
-  <!-- <script>
-    document.querySelectorAll('.notify-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelector('.box').style.display = 'flex';
-      });
-    });
-
-    document.querySelector('.btn-close').addEventListener('click', () => {
-      document.querySelector('.box').style.display = 'none';
-    });
-
-    function validateForm() {
-      let isValid = true;
-
-      // Clear previous error messages
-      document.querySelectorAll('.error').forEach(error => {
-        error.textContent = '';
-      });
-
-      // From email validation
-      const emailFrom = document.getElementById('emailFrom').value;
-      if (!emailFrom) {
-        document.getElementById('fromError').textContent = 'From email is required.';
-        isValid = false;
-      }
-
-      // To email validation
-      const emailTo = document.getElementById('emailTo').value;
-      if (!emailTo) {
-        document.getElementById('toError').textContent = 'To email is required.';
-        isValid = false;
-      }
-
-      // Subject validation
-      const emailSubject = document.getElementById('emailSubject').value;
-      if (!emailSubject) {
-        document.getElementById('subjectError').textContent = 'Subject is required.';
-        isValid = false;
-      }
-
-      // Message validation
-      const emailMessage = document.getElementById('emailMessage').value;
-      if (!emailMessage) {
-        document.getElementById('messageError').textContent = 'Message is required.';
-        isValid = false;
-      }
-
-      return isValid;
-    }
-  </script> -->
-
-  <!-- Bootstrap JS -->
   <script src="<?php echo Config::getJsPath("borrowHistory.js"); ?>"></script>
   <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>

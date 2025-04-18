@@ -71,23 +71,23 @@ $router->add('searchbook', [$bookController, 'getSearchResult']);
 
 
 $router->add('home', function () {
-    include Config::getViewPath("member", "home.php");
+    include Config::getViewPath("guest", "home.php");
 });
 
 $router->add('openhours', function () {
-    include Config::getViewPath("member", "opening-hours.php");
+    include Config::getViewPath("guest", "opening-hours.php");
 });
 
 $router->add('contact', function () {
-    include Config::getViewPath("member", "contact.php");
+    include Config::getViewPath("guest", "contact.php");
 });
 
 $router->add('about', function () {
-    include Config::getViewPath("member", "about.php");
+    include Config::getViewPath("guest", "about.php");
 });
 
 $router->add('lmshome', function () {
-    include Config::getViewPath("member", "lms-home.php");
+    include Config::getViewPath("guest", "lms-home.php");
 });
 
 $router->add('login', function () {

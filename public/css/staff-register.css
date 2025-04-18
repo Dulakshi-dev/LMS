@@ -5,7 +5,7 @@
 }
 
 body {
-    background-image: url('<?php echo Config::getImagePath("staff-reg back.jpg"); ?>');
+    background-image: url('../images/staff-reg back.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;

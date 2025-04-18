@@ -9,14 +9,6 @@ $modules = $_SESSION["modules"] ?? [["name" => "No modules available", "icon" =>
 $current_action = $_GET['action'] ?? 'dashboard';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sidebar</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
     #sidepanel1 {
@@ -35,8 +27,6 @@ $current_action = $_GET['action'] ?? 'dashboard';
         background: rgba(26, 50, 65, 1);
     }
 </style>
-
-</head>
 
 <body>
 
@@ -76,4 +66,3 @@ $current_action = $_GET['action'] ?? 'dashboard';
   </div>
 
 </body>
-</html>

@@ -22,7 +22,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Add Book";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadAllCategories(); loadLanguages();">
@@ -112,7 +112,10 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
-    <script src="<?php echo Config::getJsPath("book.js"); ?>"></script>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+
+    
+    <script src="<?php echo Config::getJsPath("staffBook.js"); ?>"></script>
 
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

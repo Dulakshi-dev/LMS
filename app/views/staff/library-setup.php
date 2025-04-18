@@ -23,7 +23,7 @@ $_SESSION['staff']['last_activity'] = time();
 <?php
 $pageTitle = "Library Setup";
 $pageCss = "library-setup.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadDetails();">
@@ -32,11 +32,11 @@ require_once Config::getViewPath("home","head.php");
 
 
     <div>
-            <div class="nav-bar d-none d-lg-block">
+            <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="nav-bar d-block d-lg-none">
+            <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
 
@@ -295,6 +295,8 @@ require_once Config::getViewPath("home","head.php");
         </div>
 
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+
     <script src="<?php echo Config::getJsPath("librarySetup.js"); ?>"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

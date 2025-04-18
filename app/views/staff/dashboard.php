@@ -23,28 +23,26 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Dashboard";
-$pageCss = "dashboard.css";
-require_once Config::getViewPath("home","head.php");?>
+$pageCss = "staff-dashboard.css";
+require_once Config::getViewPath("common", "head.php");
+?>
 
 <body>
 
     <?php include 'dash_header.php'; ?>
 
-    <div class="d-flex mx-auto">
+    <div class="d-flex min-vh-100">
 
-        <div>
-            <div class="h-100 d-none d-lg-block">
-                <?php include "dash_sidepanel.php"; ?>
-            </div>
+        <div class="bg text-white d-flex flex-column d-none d-lg-block" >
+            <?php include "dash_sidepanel.php"; ?>
+        </div>
 
-            <div class="h-100 d-block d-lg-none">
-                <?php include "small_sidepanel.php"; ?>
-            </div>
-
+        <div class="bg text-white d-flex flex-column d-block d-lg-none">
+            <?php include "small_sidepanel.php"; ?>
         </div>
 
 
-        <div class="container-fluid mb-5 bg-white ">
+        <div class="flex-grow-1 p-4 bg-white">
             <div class="">
                 <nav class="navbar p-4 navbar-light bg-light">
                     <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
@@ -159,10 +157,11 @@ require_once Config::getViewPath("home","head.php");?>
             </div>
 
         </div>
-
     </div>
+    </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
-    <script src="<?php echo Config::getJsPath("dashboard.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("staffDashboard.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

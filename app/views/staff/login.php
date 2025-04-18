@@ -9,7 +9,7 @@ require_once "../../main.php";
 <?php
 $pageTitle = "Login";
 $pageCss = "staff-login.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body class="x">
@@ -80,6 +80,8 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
+
     <script>
         document.getElementById('passwordToggle').addEventListener('click', function() {
             var passwordField = document.getElementById('password');
@@ -97,7 +99,7 @@ require_once Config::getViewPath("home","head.php");
         });
     </script>
 
-    <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("staffLogin.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>

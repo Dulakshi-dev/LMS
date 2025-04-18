@@ -12,7 +12,7 @@ $fee = $libraryData['membership_fee'];
 <?php
 $pageTitle = "Expired";
 $pageCss = "expired.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body class="d-flex justify-content-center align-items-center vh-100">
@@ -29,6 +29,8 @@ require_once Config::getViewPath("home","head.php");
         <!-- Button to show the input div -->
         <button class="btn btn-primary text-white rounded-pill w-50 mt-3 proceedbtn" id="proceedbtn" onclick="showMembershipInput()">Proceed to Payment</button>
     </div>
+    <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
+
 
     <script>
         function showMembershipInput() {

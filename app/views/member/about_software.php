@@ -23,7 +23,7 @@ $_SESSION['member']['last_activity'] = time();
 
 <?php
 $pageTitle = "About Software";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
@@ -92,7 +92,7 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
-
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 

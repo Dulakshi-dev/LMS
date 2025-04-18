@@ -22,7 +22,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Deactive Members";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadMembers(1,'Deactive');">
@@ -188,6 +188,7 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
 
     <!-- Bootstrap and JavaScript -->

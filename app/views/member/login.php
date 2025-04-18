@@ -4,7 +4,7 @@
 <?php
 $pageTitle = "Login";
 $pageCss = "member-login.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
@@ -64,6 +64,8 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
+
 
     <script>
         document.getElementById('passwordToggle').addEventListener('click', function() {

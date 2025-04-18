@@ -23,7 +23,7 @@ $_SESSION['staff']['last_activity'] = time();
 <?php
 $pageTitle = "Member Management";
 $pageCss = "member-management.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
@@ -116,6 +116,8 @@ require_once Config::getViewPath("home","head.php");
 
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>

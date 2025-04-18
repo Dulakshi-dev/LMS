@@ -27,7 +27,7 @@ $role_name = $_SESSION["staff"]["role_name"];
 <?php
 $pageTitle = "Profile";
 $pageCss = "profile.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
@@ -184,9 +184,10 @@ require_once Config::getViewPath("home","head.php");
     </div>
 
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="<?php echo Config::getJsPath("profile.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("staffProfile.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 

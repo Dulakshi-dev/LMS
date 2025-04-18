@@ -28,7 +28,7 @@ $member_id = $_SESSION["member"]["member_id"]
 <?php
 $pageTitle = "My Library";
 $pageCss = "my-library.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body onload="loadSavedBooks();">
@@ -77,6 +77,7 @@ require_once Config::getViewPath("home","head.php");
 
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
 
     <script src="<?php echo Config::getJsPath("myLibrary.js"); ?>"></script>

@@ -4,7 +4,7 @@
 <?php
 $pageTitle = "Reset Password";
 $pageCss = "reset-password.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
@@ -49,9 +49,8 @@ require_once Config::getViewPath("home","head.php");
             </div>
         </div>
     </div>
-    <script>
+    <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
 
-    </script>
     <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

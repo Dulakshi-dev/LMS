@@ -23,7 +23,7 @@ $_SESSION['staff']['last_activity'] = time();
 <?php
 $pageTitle = "Book Management";
 $pageCss = "book-management.css";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body>
@@ -112,12 +112,9 @@ require_once Config::getViewPath("home","head.php");
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
     </div>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
 </body>
 

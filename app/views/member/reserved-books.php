@@ -23,7 +23,7 @@ $_SESSION['member']['last_activity'] = time();
 
 <?php
 $pageTitle = "Reserved Books";
-require_once Config::getViewPath("home","head.php");
+require_once Config::getViewPath("common","head.php");
 ?>
 
 <body class="bg-white">
@@ -68,6 +68,8 @@ require_once Config::getViewPath("home","head.php");
       </div>
     </div>
   </div>
+  <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+
 
   <!-- Bootstrap JS -->
   <script src="<?php echo Config::getJsPath("memberReservation.js"); ?>"></script>

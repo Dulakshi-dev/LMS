@@ -1,102 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <title>Register</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .Important {
-            background-color: rgb(88, 84, 76);
-        }
-
-        .background-container {
-            position: relative;
-            height: 400px;
-            width: 100%;
-            background-image: url('<?php echo Config::getImagePath("contact.jpg"); ?>');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .container {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-        }
-
-        .txt {
-            color: black;
-        }
-
-        .line {
-            height: 2px;
-            background-color: black;
-            margin: 10px auto;
-        }
-
-        .long-line {
-            width: 90%;
-
-        }
-
-        .short-line {
-            width: 90%;
-        }
-
-        .bt {
-            background-color: #000000;
-            color: white;
-            padding: 10px;
-            border-radius: 105px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 150px;
-        }
-
-        .bt:hover {
-            background-color: #141414;
-        }
-
-        .otp-inputs {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .otp-box {
-            width: 50px;
-            height: 50px;
-            font-size: 20px;
-            text-align: center;
-            background-color: #333;
-            color: white;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .otp-timer {
-            color: #ffc107;
-        }
-
-        .resend-text {
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .resend-text a {
-            color: grey;
-            opacity: 0.5;
-            text-decoration: none;
-        }
-
-        .phone-number {
-            color: #27ee55;
-            font-weight: bold;
-        }
-    </Style>
-</head>
+<?php
+$pageTitle = "Register";
+$pageCss = "member-register.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body>
 

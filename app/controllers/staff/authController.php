@@ -105,7 +105,6 @@ class AuthController extends Controller
             } else {
                 $this->jsonResponse(["message" => "Invalid enrollment details. Please check your email, role, or enrollment key."], false);
             }
-            
         }
     }
 
@@ -181,6 +180,18 @@ class AuthController extends Controller
         session_start();
         session_unset();
         session_destroy();
+
+        // Clear "Remember Me" cookies
+        if (isset($_COOKIE['staffid'])) {
+            setcookie("staffid", "", time() - 3600, "/");
+            unset($_COOKIE['staffid']);
+        }
+
+        if (isset($_COOKIE['staffpw'])) {
+            setcookie("staffpw", "", time() - 3600, "/");
+            unset($_COOKIE['staffpw']);
+        }
+
         header("Location: index.php?action=login");
         exit();
     }

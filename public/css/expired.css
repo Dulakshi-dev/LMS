@@ -1,0 +1,30 @@
+body {
+    background-image: url('<?php echo Config::getImagePath("signup.jpg"); ?>');
+    /* Replace with your actual image path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.glassmorphism-card {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 600px;
+    color: white;
+}
+
+.danger {
+    color: red;
+}
+
+/* Inline style for placeholder customization */
+#memberID::placeholder {
+    color: rgb(255, 255, 255);
+    /* Set a dark color for placeholder text */
+    opacity: 1;
+    /* Make sure placeholder text is fully opaque */
+}

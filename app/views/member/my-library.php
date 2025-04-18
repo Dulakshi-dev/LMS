@@ -25,54 +25,11 @@ $member_id = $_SESSION["member"]["member_id"]
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyLibrary</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .book-card {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 4px 6px 3px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            max-width: 200px;
-        }
-
-        .book-cover {
-            width: 100%;
-            height: 200px;
-            border-radius: 5px;
-        }
-
-        #success {
-            color: rgba(21, 83, 28, 1);
-            background: rgb(127, 221, 138);
-        }
-
-        #success:hover {
-            background: rgb(69, 161, 80);
-        }
-
-        .book-title {
-            font-size: 18px;
-            margin: 5px 0 0px;
-        }
-
-        .book-author {
-            font-size: 14px;
-            color: gray;
-        }
-
-        .reseve {
-            color: red;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "My Library";
+$pageCss = "my-library.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body onload="loadSavedBooks();">
     <?php require_once Config::getViewPath("member", "header.php"); ?>

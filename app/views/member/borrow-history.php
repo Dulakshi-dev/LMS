@@ -21,46 +21,11 @@ $_SESSION['member']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Library Management System</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-  <style>
-    .modal-header {
-      border-bottom: 1px solid #ddd;
-    }
-
-    .btn-close {
-      font-size: 1.2rem;
-    }
-
-    .entries {
-      margin-top: 100px;
-    }
-
-    .box {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-    }
-
-    .card {
-      background-color: #fff;
-    }
-
-    .error {
-      color: red;
-      font-size: 0.875rem;
-    }
-  </style>
-</head>
+<?php
+$pageTitle = "Borrow History";
+$pageCss = "borrow-history.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body class="bg-white" onload="loadBorrowBooks();">
   <?php require_once Config::getViewPath("member", "header.php"); ?>

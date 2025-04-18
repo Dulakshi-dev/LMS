@@ -25,18 +25,10 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Update</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .nav-bar {
-            height: 100%;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "Issue Book";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body>
     <?php include "dash_header.php"; ?>
@@ -44,11 +36,11 @@ $member_id = isset($_POST['member_id']) ? htmlspecialchars($_POST['member_id']) 
 
 
     <div>
-            <div class="nav-bar d-none d-lg-block">
+    <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="nav-bar d-block d-lg-none">
+            <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
 

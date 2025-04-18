@@ -20,27 +20,20 @@ $_SESSION['staff']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Software</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .nav-bar {
-            height: 100%;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "About Software";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body>
     <?php include "dash_header.php"; ?>
     <div class="d-flex bg-light">
     <div>
-            <div class="nav-bar d-none d-lg-block">
+            <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="nav-bar d-block d-lg-none">
+            <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
 

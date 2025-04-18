@@ -20,24 +20,12 @@ $_SESSION['staff']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .box {
-            height: 400px;
-            width: 500px;
-            background: rgba(26, 50, 65, 1);
-        }
-        .nav-bar {
-            height: 100%;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "Staff Management";
+$pageCss = "staff-management.css";
+require_once Config::getViewPath("home","head.php");
+?>
+
 
 <body>
 
@@ -45,11 +33,11 @@ $_SESSION['staff']['last_activity'] = time();
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
         <div>
-            <div class="nav-bar d-none d-lg-block">
+        <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="nav-bar d-block d-lg-none">
+            <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
 
@@ -120,7 +108,7 @@ $_SESSION['staff']['last_activity'] = time();
                             <i class="fas fa-user-minus text-warning display-1"></i>
                             <p class="fw-bold fs-5 mt-3">View Detective Staff</p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning px-5 rounded-pill mt-2">Issue</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning px-5 rounded-pill mt-2">View</a>
                             </div>
 
                         </div>

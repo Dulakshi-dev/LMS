@@ -22,50 +22,12 @@ $_SESSION['member']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Details</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-  <style>
-    .book-card {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-      transition: transform 0.3s ease;
-      height: 100%;
-    }
+<?php
+$pageTitle = "Dashboard";
+$pageCss = "member-dashboard.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
-    .book-card:hover {
-      transform: scale(1.03);
-    }
-
-    .book-image img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-    }
-
-    .book-title {
-      font-weight: bold;
-      margin: 10px 0 5px;
-    }
-
-    #success {
-      color: rgba(21, 83, 28, 1);
-      background: rgb(127, 221, 138);
-    }
-
-    #success:hover {
-      background: rgb(69, 161, 80);
-    }
-
-    .reseve {
-      color: red;
-    }
-  </style>
-</head>
 
 <body onload="loadDashboardBooks();">
   <?php require_once Config::getViewPath("member", "header.php"); ?>

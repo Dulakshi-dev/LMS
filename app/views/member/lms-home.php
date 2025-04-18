@@ -1,16 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>LMS | Home</title>
-    <style>
-        /* Custom style for horizontal scrolling on mobile */
-       
-    </style>
-</head>
+<?php
+$pageTitle = "Welcome";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body onload="loadTopBooks();">
     <?php require_once Config::getViewPath("home", "header.view.php"); ?>

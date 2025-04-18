@@ -21,13 +21,10 @@ $_SESSION['member']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Library Management System</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-</head>
+<?php
+$pageTitle = "Reserved Books";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body class="bg-white">
   <?php require_once Config::getViewPath("member", "header.php"); ?>

@@ -24,25 +24,11 @@ $role_name = $_SESSION["staff"]["role_name"];
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Details</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        #box1 {
-            display: block;
-        }
-
-        #box2 {
-            display: none;
-        }
-        .nav-bar {
-            height: 100%;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "Profile";
+$pageCss = "profile.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body>
     <script>
@@ -56,11 +42,11 @@ $role_name = $_SESSION["staff"]["role_name"];
     <div class="d-flex bg-light">
 
         <div>
-            <div class="nav-bar d-none d-lg-block">
+        <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="nav-bar d-block d-lg-none">
+            <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
 

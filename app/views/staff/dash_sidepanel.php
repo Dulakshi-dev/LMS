@@ -5,7 +5,6 @@ if (!isset($_SESSION["staff"])) {
 }
 
 $role_name = $_SESSION["staff"]["role_name"];
-
 $modules = $_SESSION["modules"] ?? [["name" => "No modules available", "icon" => "default.png"]];
 $current_action = $_GET['action'] ?? 'dashboard';
 ?>
@@ -46,12 +45,12 @@ $current_action = $_GET['action'] ?? 'dashboard';
 
     <a href="<?php echo Config::indexPath() ?>?action=dashboard"
       class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'dashboard' ? 'active' : ''; ?>">
-      <i class="fa fa-gauge me-2"></i> Dashboard
+      <i class="fa fa-gauge me-2 ms-1"></i> Dashboard
     </a>
 
     <a href="<?php echo Config::indexPath() ?>?action=profile"
       class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'profile' ? 'active' : ''; ?>">
-      <i class="fas fa-user me-2"></i> My Profile
+      <i class="fas fa-user me-2 ms-1"></i> My Profile
     </a>
 
     <?php foreach ($modules as $module): 
@@ -60,19 +59,19 @@ $current_action = $_GET['action'] ?? 'dashboard';
     ?>
       <a href="<?= Config::indexPath() ?>?action=<?= htmlspecialchars($action); ?>"
         class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == $action ? 'active' : ''; ?>">
-        <img src="<?= htmlspecialchars($iconPath); ?>" alt="Module Icon" width="24" height="24" class="me-2">
+        <img src="<?= htmlspecialchars($iconPath); ?>" alt="Module Icon" width="22" height="22" class="me-2">
         <?= htmlspecialchars($module["name"]); ?>
       </a>
     <?php endforeach; ?>
 
     <a href="<?php echo Config::indexPath() ?>?action=libsetup"
       class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'libsetup' ? 'active' : ''; ?>">
-      <i class="fa-solid fa-university me-2"></i> Library Setup
+      <i class="fa-solid fa-university me-2 ms-1"></i> Library Setup
     </a>
 
     <a href="<?php echo Config::indexPath() ?>?action=aboutsoftware"
       class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'active' : ''; ?>">
-      <i class="fa-solid fa-laptop-code me-2"></i> About Software
+      <i class="fa-solid fa-laptop-code me-2 "></i> About Software
     </a>
   </div>
 

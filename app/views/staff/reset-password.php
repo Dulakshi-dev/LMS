@@ -1,32 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <title>Create Password</title>
-
-    <style>
-        body {
-            background-image: url('<?php echo Config::getImagePath("login_background.png"); ?>');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-
-        .login-form {
-            background: rgba(0, 0, 0, 0.8);
-            padding: 30px;
-            border-radius: 20px;
-            overflow: visible;
-            min-height: auto;
-
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "Reset Password";
+$pageCss = "reset-password.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body>
     <div class="container">

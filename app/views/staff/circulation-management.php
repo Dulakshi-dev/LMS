@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -20,38 +20,28 @@ $_SESSION['staff']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .bg{
-            background: rgba(26, 50, 65, 1);
-        }
-        .nav-bar {
-            height: 100%;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "Book Management";
+$pageCss = "circulation-management.css";
+require_once Config::getViewPath("home","head.php");
+?>
+
 
 <body>
 
     <div id="box1">
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
-        <div>
-            <div class="nav-bar d-none d-lg-block">
-                <?php include "dash_sidepanel.php"; ?>
-            </div>
+            <div>
+                <div class="h-100 d-none d-lg-block">
+                    <?php include "dash_sidepanel.php"; ?>
+                </div>
 
-            <div class="nav-bar d-block d-lg-none">
-                <?php include "small_sidepanel.php"; ?>
-            </div>
+                <div class="h-100 d-block d-lg-none">
+                    <?php include "small_sidepanel.php"; ?>
+                </div>
 
-        </div>
+            </div>
 
             <div class="container-fluid mx-md-5 mb-5 bg-white">
                 <div class="row">
@@ -68,16 +58,16 @@ $_SESSION['staff']['last_activity'] = time();
                             <i class="fas fa-book-open text-info display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Issue Book</p>
                             <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=showissuebook" class="btn btn-info px-5 rounded-pill mt-2">Add</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=showissuebook" class="btn btn-info px-5 rounded-pill mt-2">Add</a>
                             </div>
-                            
+
                         </div>
                     </div>
 
                     <!-- View All Books -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
-                            
+
                             <i class="fas fa-list display-1" style="color: #2AC23A;"></i>
                             <p class="fw-bold fs-5 mt-3">Issued Books</p>
                             <div class="d-flex justify-content-center">
@@ -96,13 +86,13 @@ $_SESSION['staff']['last_activity'] = time();
                             <i class="fas fa-cubes text-warning display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Reservation</p>
                             <div class="d-flex justify-content-center">
-                            <a href="<?php echo Config::indexPath() ?>?action=viewreservations" class="btn btn-warning px-5 rounded-pill mt-2">View</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewreservations" class="btn btn-warning px-5 rounded-pill mt-2">View</a>
                             </div>
-                            
+
                         </div>
                     </div>
 
-                    
+
                 </div>
 
             </div>

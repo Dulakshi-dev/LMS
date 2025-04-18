@@ -6,33 +6,11 @@ require_once "../../main.php";
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shelf Loom || Staff Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-
-    <style>
-        .login-form {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 10px;
-
-        }
-
-        body {
-            background-image: url('<?php echo Config::getImagePath("stafflog.jpg"); ?>');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-    </style>
-
-    </style>
-</head>
+<?php
+$pageTitle = "Login";
+$pageCss = "staff-login.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body class="x">
     <div class="container my-5">

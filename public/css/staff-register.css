@@ -1,0 +1,44 @@
+.box-1 {
+    background: rgba(255, 255, 255, 0.24);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    background-image: url('<?php echo Config::getImagePath("staff-reg back.jpg"); ?>');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+span {
+    color: red;
+    font-size: 0.9em;
+}
+
+.v-b {
+    background: rgb(37, 87, 162);
+    color: white;
+}
+
+.box-2{
+    display: none;
+}
+
+
+#passwordRules li {
+    color: red;
+    font-size: 0.9em;
+    list-style-type: none;
+
+    /* Initial color is red */
+}
+
+#passwordRules li.valid {
+    color: green;
+    font-size: 0.9em;
+    list-style-type: none;
+
+
+    /* Change to green when valid */
+}

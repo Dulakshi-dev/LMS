@@ -272,6 +272,18 @@ class AuthController extends Controller
         session_start();
         session_unset();
         session_destroy();
+
+        // Clear "Remember Me" cookies
+        if (isset($_COOKIE['memberid'])) {
+            setcookie("memberid", "", time() - 3600, "/");
+            unset($_COOKIE['memberid']);
+        }
+
+        if (isset($_COOKIE['memberpw'])) {
+            setcookie("memberpw", "", time() - 3600, "/");
+            unset($_COOKIE['memberpw']);
+        }
+
         header("Location: index.php?action=login");
         exit();
     }

@@ -20,31 +20,21 @@ $_SESSION['staff']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Management</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style>
-        .nav-bar {
-            height: 100%;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "Deactive Members";
+require_once Config::getViewPath("home","head.php");
+?>
 
 <body onload="loadMembers(1,'Deactive');">
     <?php include "dash_header.php"; ?>
 
     <div class="d-flex bg-light">
         <div>
-            <!-- Large and Medium Screens -->
-            <div class="d-none d-md-block">
+        <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <!-- Small Screens Only -->
-            <div class="d-block d-md-none">
+            <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
         </div>

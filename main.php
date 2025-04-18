@@ -19,6 +19,7 @@ class Config {
         "models" => Config::sourcePath . "\\app\\models\\",
         "images" => Config::baseURL . "/public/images/",
         "js" => Config::baseURL . "/public/js/",
+        "css" => Config::baseURL . "/public/css/",
         "database" => Config::sourcePath . "\\database\\connection.php",
         "index" => "/LMS/public/staff/index.php",
         "index_member" => "/LMS/public/member/index.php",
@@ -35,7 +36,7 @@ class Config {
     public static $database = [
         "host" => "localhost", 
         "username" => "root", 
-        "password" => "",
+        "password" => "Dg$11029",
         "dbname" => "library_db",
         "port" => "3306"
     ];
@@ -60,6 +61,11 @@ class Config {
     public static function getjsPath(String $js){
         return Config::$paths["js"] . $js;
     }
+
+    public static function getCssPath(String $css){
+        return Config::$paths["css"] . $css;
+    }
+
 
     public static function getdbPath(){
         return Config::$paths["database"];

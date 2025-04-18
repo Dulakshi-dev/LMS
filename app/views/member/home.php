@@ -4,24 +4,12 @@ require_once "../../main.php";
 
 <!DOCTYPE html>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale = 1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Home</title>
-    <style>
-        .book {
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
+<?php
+$pageTitle = "Home";
+$pageCss = "home.css";
+require_once Config::getViewPath("home","head.php");
+?>
 
-        .book:hover {
-            transform: scale(1.05);
-            /* Or any other transformation */
-            opacity: 0.8;
-        }
-    </style>
-</head>
 
 
 <body onload="loadNewsUpdates();">

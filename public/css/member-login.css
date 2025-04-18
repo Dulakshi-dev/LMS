@@ -1,0 +1,14 @@
+body {
+    background-image: url('<?php echo Config::getImagePath("signup.jpg"); ?>');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+.login-form {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+}

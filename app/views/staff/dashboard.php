@@ -21,57 +21,23 @@ $_SESSION['staff']['last_activity'] = time();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <style>
-        html,
-        body {
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-
-        .box-1 {
-            background: rgba(26, 50, 65, 1);
-            color: white;
-        }
-
-        .box-2 {
-            background: rgba(92, 176, 255, 0.63);
-        }
-
-        .box-3 {
-            height: 200px;
-            width: 150px;
-        }
-
-        .box-4 {
-            height: 400px;
-            width: 750px;
-            background: rgba(26, 50, 65, 1);
-            border-radius: 10px;
-        }
-        .nav-bar {
-            height: 100%;
-        }
-    </style>
-</head>
+<?php
+$pageTitle = "Dashboard";
+$pageCss = "dashboard.css";
+require_once Config::getViewPath("home","head.php");?>
 
 <body>
-    <?php include "dash_header.php"; ?>
+
+    <?php include 'dash_header.php'; ?>
 
     <div class="d-flex mx-auto">
 
         <div>
-            <div class="nav-bar d-none d-lg-block">
+            <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
-            <div class="nav-bar d-block d-lg-none">
+            <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
 

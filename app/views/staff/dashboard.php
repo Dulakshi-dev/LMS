@@ -1,9 +1,5 @@
 <?php
-
-if (!isset($_SESSION['staff'])) {
-    header("Location: index.php");
-    exit;
-}
+ 
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
@@ -13,10 +9,14 @@ if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['
     exit;
 }
 
-// Reset last activity time (only if user is active)
-$_SESSION['staff']['last_activity'] = time();
-?>
+if (!isset($_SESSION['staff'])) {
+    header("Location: index.php");
+    exit;
+}
 
+$_SESSION['staff']['last_activity'] = time();
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,7 +30,6 @@ require_once Config::getViewPath("common", "head.php");
 <body>
 
     <?php include 'dash_header.php'; ?>
-
     <div class="d-flex min-vh-100">
 
         <div class="bg text-white d-flex flex-column d-none d-lg-block" >

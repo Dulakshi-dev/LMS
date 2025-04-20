@@ -31,7 +31,7 @@ function loadProfileData(id) {
                 var profimg = resp.profile_img;
                 var profileImgElement = document.getElementById("profileimg");
 
-                if (profimg == "") {
+                if (profimg == null) {
                     profileImgElement.src = "index.php?action=serveprofimage&image=user.jpg";
                 } else {
                     profileImgElement.src = "index.php?action=serveprofimage&image=" + profimg;

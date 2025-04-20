@@ -1,10 +1,23 @@
+<?php
+require_once "../../main.php";
+
+require_once Config::getControllerPath("member", "authController.php");
+$auth = new AuthController();
+
+if (isset($_SESSION['member'])) {
+    // If session exists, redirect to the dashboard
+    header("Location: index.php?action=dashboard");
+    exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <?php
 $pageTitle = "Login";
 $pageCss = "member-login.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body>
@@ -19,20 +32,22 @@ require_once Config::getViewPath("common","head.php");
                     <h1 class="text-center">Log In</h1>
 
                     <?php
-                    $memberid = isset($_COOKIE["memberid"]) ? $_COOKIE["memberid"] : "";
-                    $memberpw = isset($_COOKIE["memberpw"]) ? $_COOKIE["memberpw"] : "";
-                    $rememberChecked = isset($_COOKIE["memberid"]) ? "checked" : "";
+                    $memberid = "";
+
+                    if (isset($_COOKIE["memberid"])) {
+                        $memberid = $_COOKIE["memberid"];
+                    }
                     ?>
                     <div class="form-group">
                         <label for="memberid">Member ID</label>
-                        <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memberid" value="<?php echo $memberid; ?>">
+                        <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memberid" value="<?php echo htmlspecialchars($memberid); ?>" >
                         <span class="error text-danger" id="memberidError"></span>
                     </div>
 
                     <div class="form-group mt-3">
                         <label for="memberpw">Password</label>
                         <div class="input-group">
-                            <input class="form-control " placeholder="Enter your password" type="password" name="memberpw" id="memberpw" value="<?php echo $memberpw; ?>">
+                            <input class="form-control " placeholder="Enter your password" type="password" name="memberpw" id="memberpw" >
                             <span class="input-group-text" id="passwordToggle" style="cursor: pointer;">
                                 <i class="fas fa-eye" id="passwordIcon"></i>
                             </span>
@@ -42,7 +57,7 @@ require_once Config::getViewPath("common","head.php");
 
                     <div class="row mt-2">
                         <div class="col">
-                            <input type="checkbox" name="rememberme" id="rememberme" <?php echo $rememberChecked; ?>>
+                            <input type="checkbox" name="rememberme" id="rememberme">
                             <label for="rememberme">Remember me</label>
                         </div>
                         <div class="col d-flex justify-content-end">

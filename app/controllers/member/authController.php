@@ -6,6 +6,7 @@ class AuthController extends Controller
 {
     private $authModel;
     private $homeModel;
+    private const REMEMBER_ME_EXPIRY_DAYS = 30; 
 
     public function __construct()
     {
@@ -13,6 +14,32 @@ class AuthController extends Controller
         require_once Config::getModelPath('member', 'homemodel.php');
         $this->authModel = new AuthModel();
         $this->homeModel = new HomeModel();
+        $this->handleAutoLogin();
+
+    }
+
+    
+    private function handleAutoLogin()
+    {
+        if (!isset($_SESSION['member']) && isset($_COOKIE['member_remember_token'])) {
+            $token = $_COOKIE['member_remember_token'];
+            $userDetails = $this->authModel->getUserByRememberToken($token); // Changed to instance method
+            
+            if ($userDetails && password_verify($token, $userDetails['remember_token'])) {
+                $this->createSession($userDetails);
+                
+                $newToken = bin2hex(random_bytes(32));
+                $hashedToken = password_hash($newToken, PASSWORD_BCRYPT);
+                
+                $this->authModel->updateRememberToken($userDetails['member_id'], $hashedToken);
+                $this->setSecureCookie("member_remember_token", $newToken, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
+                
+                header("Location: index.php?action=dashboard");
+                exit;
+            } else {
+                $this->clearCookie("member_remember_token");
+            }
+        }
     }
 
     public function login()
@@ -25,7 +52,7 @@ class AuthController extends Controller
             $rememberme = $this->getPost('rememberme', 0);
 
             // Validate the Member ID and Password using the AuthModel
-            $userDetails = AuthModel::validateLogin($memberid, $memberpw);
+            $userDetails = $this->authModel->validateLogin($memberid, $memberpw);
 
             // Check if the user is inactive
             if (isset($userDetails['status_id']) && $userDetails['status_id'] == '2') {
@@ -35,26 +62,21 @@ class AuthController extends Controller
             } else {
                 // Check if login was successful
                 if ($userDetails) {
-                    session_regenerate_id(true); // Prevent session fixation
+                    $this->createSession($userDetails);
 
-                    // Store user details in the session upon successful login
-                    $_SESSION['member'] = [
-                        'member_id' => $userDetails['member_id'],
-                        'id' => $userDetails['id'],
-                        'profile_img' => $userDetails['profile_img'],
-                        'lname' => $userDetails['lname'],
-                        'fname' => $userDetails['fname'],
-                        'last_activity' => time() // Track last activity
-                    ];
-
-                    // If "Remember Me" is checked, set cookies
                     if ($rememberme) {
-                        setcookie("memberid", $memberid, time() + (365 * 24 * 60 * 60), "/");
-                        setcookie("memberpw", $memberpw, time() + (365 * 24 * 60 * 60), "/");
+                        // Generate and store new token
+                        $token = bin2hex(random_bytes(32));
+                        $hashedToken = password_hash($token, PASSWORD_BCRYPT);
+                        
+                        $this->authModel->storeRememberToken($userDetails['member_id'], $hashedToken);
+                        $this->setSecureCookie("member_remember_token", $token, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
                     } else {
-                        setcookie("memberid", "", time() - 3600, "/");
-                        setcookie("memberpw", "", time() - 3600, "/");
+                        // Clear any existing tokens if "Remember Me" not checked
+                        $this->authModel->clearRememberToken($userDetails['member_id']);
+                        $this->clearCookie("member_remember_token");
                     }
+
 
                     // Return a success response in JSON format
                     $this->jsonResponse(["message" => "Login successful!"]);
@@ -64,6 +86,49 @@ class AuthController extends Controller
                 }
             }
         }
+    }
+
+    private function createSession($userDetails)
+    {
+        session_regenerate_id(true);
+
+        $_SESSION['member'] = [
+            'member_id' => $userDetails['member_id'],
+            'id' => $userDetails['id'],
+            'profile_img' => $userDetails['profile_img'],
+            'lname' => $userDetails['lname'],
+            'fname' => $userDetails['fname'],
+            'last_activity' => time() // Track last activity
+        ];
+        
+        // Only log non-sensitive data
+        error_log("Session initialized for member_id: " . $userDetails['member_id']);
+    }
+
+    private function setSecureCookie($name, $value, $duration)
+    {
+        $secure = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
+        $options = [
+            'expires' => time() + $duration,
+            'path' => '/',
+            'domain' => '',
+            'secure' => $secure,
+            'httponly' => true,
+            'samesite' => 'Strict'
+        ];
+        
+        setcookie($name, $value, $options);
+    }
+
+    private function clearCookie($name)
+    {
+        setcookie($name, "", [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'domain' => '',
+            'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
+            'httponly' => true
+        ]);
     }
 
     public function sendOTP()
@@ -273,16 +338,8 @@ class AuthController extends Controller
         session_unset();
         session_destroy();
 
-        // Clear "Remember Me" cookies
-        if (isset($_COOKIE['memberid'])) {
-            setcookie("memberid", "", time() - 3600, "/");
-            unset($_COOKIE['memberid']);
-        }
-
-        if (isset($_COOKIE['memberpw'])) {
-            setcookie("memberpw", "", time() - 3600, "/");
-            unset($_COOKIE['memberpw']);
-        }
+        $this->clearCookie("member_remember_token");
+        $this->clearCookie("memberid");
 
         header("Location: index.php?action=login");
         exit();

@@ -1,6 +1,15 @@
 <?php
 require_once "../../main.php";
 
+require_once Config::getControllerPath("staff","authController.php");
+$auth = new AuthController();
+
+if (isset($_SESSION['staff'])) {
+    // If session exists, redirect to the dashboard
+    header("Location: index.php?action=dashboard");
+    exit;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -9,7 +18,7 @@ require_once "../../main.php";
 <?php
 $pageTitle = "Login";
 $pageCss = "staff-login.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body class="x">
@@ -20,36 +29,32 @@ require_once Config::getViewPath("common","head.php");
                 <h1 class="text-center"> Staff Login</h1>
 
                 <?php
-
                 $staffid = "";
-                $staffpw = "";
 
                 if (isset($_COOKIE["staffid"])) {
                     $staffid = $_COOKIE["staffid"];
                 }
-
-                if (isset($_COOKIE["staffpw"])) {
-                    $staffpw = $_COOKIE["staffpw"];
-                }
                 ?>
+
 
                 <div>
                     <label for="staffid">Staff ID:</label>
                     <input class="form-control mt-2" type="text" name="staffid" id="staffid"
-                        placeholder="Enter Staff ID" value="<?php echo $staffid; ?>" autocomplete="off">
+                        placeholder="Enter Staff ID" value="<?php echo htmlspecialchars($staffid); ?>">
                     <span class="error text-danger" id="staffidError"></span>
                 </div>
 
                 <div class="form-group mt-3">
-                    <label for="memberpw">Password</label>
+                    <label for="password">Password</label>
                     <div class="input-group">
-                        <input class="form-control " placeholder="Enter your password" type="password" name="password" id="password" value="<?php echo $staffpw; ?>">
+                        <input class="form-control " placeholder="Enter your password" type="password" name="password" id="password">
                         <span class="input-group-text" id="passwordToggle" style="cursor: pointer;">
                             <i class="fas fa-eye" id="passwordIcon"></i>
                         </span>
                     </div>
                     <span class="error text-danger" id="passwordError"></span>
                 </div>
+
 
 
                 <div class="col mt-3">

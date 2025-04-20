@@ -33,7 +33,7 @@ function staffLogin() {
     } else if(!staffid.match(staffidPattern)){
         staffidError.innerText = 'Invalid Staff ID.';
         return;
-    }else if (password === '') {
+    } else if (password === '') {
         passwordError.innerText = 'Password is required.';
         return; 
     } else {
@@ -48,20 +48,23 @@ function staffLogin() {
             method: "POST",
             body: formData,
         })
-            .then(response => response.json()) // Parse response as JSON
-            .then(resp => {
-                if (resp.success) {
-                    // If login is successful, redirect to the dashboard
-                    window.location.href = "index.php?action=dashboard";
-                } else {
-                    showAlert("Error", resp.message, "error");
-                }
-            })
-            .catch(error => {
-                showAlert("Error", "Error fetching user data: " + error, "error");
-            });
+        .then(response => response.json()) // Parse response as JSON
+        .then(resp => {
+            if (resp.success) {
+                // If login is successful, redirect to the dashboard
+                window.location.href = "index.php?action=dashboard";
+            } else {
+                showAlert("Error", resp.message, "error");
+                // Optional: Uncheck remember me on error
+                document.getElementById("rememberme").checked = false;
+            }
+        })
+        .catch(error => {
+            showAlert("Error", "Error fetching user data: " + error, "error");
+        });
     }
 }
+
 
 function staffRegistration() {
     //validate all the fiels and formats

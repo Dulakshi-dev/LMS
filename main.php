@@ -3,6 +3,7 @@ define('ROOT_PATH', realpath(__DIR__ ));
 require_once "database/connection.php";
 
 if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_lifetime', 0);
     session_start();
 }
 

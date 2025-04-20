@@ -178,9 +178,10 @@ FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WH
         Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
         $memberID = self::generateMemberID();
         $password = self::generatePassword();
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         self::sendPasswordResetMail($id, $memberID, $password);
-        Database::insert("INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES('$memberID','$password','$id');");
+        Database::insert("INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES('$memberID','$hashedPassword','$id');");
 
         return true;
     }
@@ -339,13 +340,13 @@ FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WH
         return true;
     }
 
-    public static function updateMembershipStatus($member_id)
-    {
-        $result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = '$member_id'");
-        $row = $result->fetch_assoc();
-        $id = $row['id'];
+    // public static function updateMembershipStatus($member_id)
+    // {
+    //     $result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = '$member_id'");
+    //     $row = $result->fetch_assoc();
+    //     $id = $row['id'];
 
-        $rs = Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
-        return true;
-    }
+    //     $rs = Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
+    //     return true;
+    // }
 }

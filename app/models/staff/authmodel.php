@@ -2,8 +2,6 @@
 
 require_once config::getdbPath();
 
-
-
 class AuthModel
 {
 
@@ -14,21 +12,68 @@ class AuthModel
         $this->db = new Database();
     }
 
-    public static function validateLogin($username, $password)
-    {
-        // SQL query to retrieve user details by matching user ID and password
-        $query = "SELECT * FROM `staff`
-                JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
-                JOIN `role` ON `staff`.`role_id` = `role`.`role_id` WHERE `staff_id` = '$username' AND `password` = '$password' ;";
-        $result = Database::search($query);
 
-        // Check if a user record is found
+    public static function validateLogin($staffid, $password)
+    {
+        // Use prepared statements to prevent SQL injection
+        $query = "SELECT * FROM `staff`
+        JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+        JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
+        WHERE `staff_id` = '$staffid'";
+
+$result = Database::search($query);
+
         if ($result && $result->num_rows > 0) {
             $user = $result->fetch_assoc();
-            return $user;
+
+            if (password_verify($password, $user['password'])) {
+                return $user;
+            }
         }
+
         return false;
     }
+
+    public static function getUserByRememberToken($token)
+    {
+        // Get all potential tokens (we'll verify with password_verify)
+        $query = "SELECT * FROM `staff`
+                  JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+                  JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
+                  WHERE `remember_token` IS NOT NULL";
+        
+        $result = Database::search($query);
+
+        if ($result && $result->num_rows > 0) {
+            while ($user = $result->fetch_assoc()) {
+                // Verify the token against the hashed version in DB
+                if (password_verify($token, $user['remember_token'])) {
+                    return $user;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static function storeRememberToken($staffid, $hashedToken)
+    {
+        Database::ud("UPDATE `staff_login` SET `remember_token` = '$hashedToken' WHERE `staff_id` = '$staffid'");
+    }
+
+    public static function updateRememberToken($staffid, $hashedToken)
+    {
+        return self::storeRememberToken($staffid, $hashedToken);
+    }
+
+    public static function clearRememberToken($staffid)
+    {
+        Database::ud("UPDATE `staff_login` SET `remember_token` = NULL WHERE `staff_id` = '$staffid'");
+    }
+
+
+
+
 
     public static function getUserModules($role_id)
     {
@@ -96,11 +141,13 @@ class AuthModel
  VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','$role_id')");
             $staffID = self::generateStaffID();
 
-            Database::insert("INSERT INTO `staff_login`(`staff_id`, `password`, `staffId`) VALUES ('$staffID', '$password', '$id')");
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            Database::insert("INSERT INTO `staff_login`(`staff_id`, `password`, `staffId`) VALUES ('$staffID', '$hashedPassword', '$id')");
             self::sendMail($id, $staffID);
 
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -173,6 +220,7 @@ class AuthModel
     public static function changePassword($password, $vcode)
     {
         $vcode = trim($vcode);
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         $rs = Database::search("SELECT * FROM `staff` WHERE `vcode` = '$vcode'");
 
@@ -181,7 +229,7 @@ class AuthModel
             $row = $rs->fetch_assoc();
             $id = $row["id"];
 
-            Database::ud("UPDATE `staff_login` SET `password` ='$password' WHERE `staffId`='$id'");
+            Database::ud("UPDATE `staff_login` SET `password` ='$hashedPassword' WHERE `staffId`='$id'");
             Database::ud("UPDATE `staff` SET `vcode` = NULL WHERE `id`='$id'");
 
             return true;

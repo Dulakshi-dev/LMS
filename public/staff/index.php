@@ -146,7 +146,7 @@ $router->add('profile', function () {
     include Config::getViewPath("staff", "profile.php");
 });
 
-$router->add('libsetup', function () {
+$router->add('librarysetup', function () {
     include Config::getViewPath("staff", "library-setup.php");
 });
 $router->add('membermanagement', function () {

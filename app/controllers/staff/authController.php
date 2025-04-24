@@ -2,6 +2,8 @@
 
 require_once __DIR__ . '/../../../main.php';
 require_once Config::getControllerPath('system', 'controller.php');
+require_once Config::getMailPath('emailTemplate.php');
+require_once Config::getServicePath('emailService.php');
 
 class AuthController extends Controller
 {
@@ -19,20 +21,20 @@ class AuthController extends Controller
     {
         if (!isset($_SESSION['staff']) && isset($_COOKIE['staff_remember_token'])) {
             $token = $_COOKIE['staff_remember_token'];
-            
+
             // Get user by token (model should return user if token is valid)
             $userDetails = AuthModel::getUserByRememberToken($token);
-            
+
             if ($userDetails && password_verify($token, $userDetails['staff_remember_token'])) {
                 $this->createSession($userDetails);
-                
+
                 // Token rotation - generate new token after each use
                 $newToken = bin2hex(random_bytes(32));
                 $hashedToken = password_hash($newToken, PASSWORD_BCRYPT);
-                
+
                 AuthModel::updateRememberToken($userDetails['staff_id'], $hashedToken);
                 $this->setSecureCookie("staff_remember_token", $newToken, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
-                
+
                 $this->loadModules($userDetails["role_id"]);
                 header("Location: index.php?action=dashboard");
                 exit;
@@ -59,7 +61,7 @@ class AuthController extends Controller
                     // Generate and store new token
                     $token = bin2hex(random_bytes(32));
                     $hashedToken = password_hash($token, PASSWORD_BCRYPT);
-                    
+
                     $this->authModel->storeRememberToken($userDetails['staff_id'], $hashedToken);
                     $this->setSecureCookie("staff_remember_token", $token, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
                 } else {
@@ -94,7 +96,7 @@ class AuthController extends Controller
             'ip' => $_SERVER['REMOTE_ADDR'],
             'user_agent' => $_SERVER['HTTP_USER_AGENT']
         ];
-        
+
         // Only log non-sensitive data
         error_log("Session initialized for staff_id: " . $userDetails['staff_id']);
     }
@@ -110,7 +112,7 @@ class AuthController extends Controller
             'httponly' => true,
             'samesite' => 'Strict'
         ];
-        
+
         setcookie($name, $value, $options);
     }
 
@@ -198,32 +200,19 @@ class AuthController extends Controller
 
     public function sendResetLink($email, $vcode)
     {
-        require_once Config::getServicePath('emailService.php');
 
         $subject = "Reset Password";
-        $body = '
-           <h4 style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Reset Your password</h4> 
-
-            <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-                <p>Dear Staff Member,</p>
-                <p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
+        $specificMessage = '<p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
                 <div style="margin-bottom: 10px;">
                     <a href="http://localhost/LMS/public/staff/index.php?action=showresetpw&vcode=' . $vcode . '">Reset Password</a>
-                 </div>
-                <div>
-                    <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
-                    <p style="margin: 0px;">Call: [tel_num]</p>
-                </div>
+                 </div>';
 
-                <div>
-                    <p style="margin-bottom: 0px;">Best regards,</p>
-                    <p style="margin: 0px;">Shelf Loom</p>
-                </div>
-            </div>';
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody("Staff Member", $specificMessage);
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
-
+    
         if ($emailSent) {
             $this->jsonResponse(["message" => "Password reset link sent! Check your email."]);
         } else {

@@ -177,7 +177,15 @@ LIMIT 4;");
         ];
     }
 
+    public static function getRandomBooks($limit = 4)
+    {
+        $rs = Database::search("SELECT * FROM `book` ORDER BY RAND() LIMIT $limit;");
+        return [
+            'results' => $rs
+        ];
+    }
 
+    
     public static function getAllCategories()
     {
         $query = "SELECT category_id, category_name FROM category";

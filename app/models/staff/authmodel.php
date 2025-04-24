@@ -117,8 +117,8 @@ $result = Database::search($query);
 
     public static function validateRegDetails($nic, $email)
     {
-        $nicCheck = Database::search("SELECT * FROM `member` WHERE `nic` = '$nic'");
-        $emailCheck = Database::search("SELECT * FROM `member` WHERE `email` = '$email'");
+        $nicCheck = Database::search("SELECT * FROM `staff` WHERE `nic` = '$nic'");
+        $emailCheck = Database::search("SELECT * FROM `staff` WHERE `email` = '$email'");
 
         if ($nicCheck->num_rows > 0 && $emailCheck->num_rows > 0) {
             return "Both NIC and Email are already registered.";
@@ -130,7 +130,6 @@ $result = Database::search($query);
             return true;  // No match for both NIC and Email
         }
     }
-
 
     public static function register($fname, $lname, $address, $phone, $email, $nic, $role_id, $password, $key)
     {
@@ -178,24 +177,15 @@ $result = Database::search($query);
         $email = $row["email"];
         $subject = 'Staff ID';
 
-        $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
-        <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
-            <p>Dear ' . $name . ',</p>
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-            <p>We are pleased to connect with you! Here’s some important information:</p>
-            <h2>Your Staff ID is ' . $staff_id . '</h2>
-            <p>If you have any questions or issues, please reach out to us.</p>
-            <p>Call:[tel_num]</p>
+        $specificMessage = '<h2>Your Staff ID is ' . $staff_id . '</h2>';
 
-            <div style="margin-top: 20px;">
-                <p>Best regards,</p>
-                <p>Shelf Loom Team</p>
-            </div>
-        </div>';
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
-
+    
+        
         if ($emailSent) {
             return true;
         } else {

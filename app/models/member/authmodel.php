@@ -131,10 +131,6 @@ class AuthModel
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         if ($rs->num_rows > 0) {
-
-            $row = $rs->fetch_assoc();
-            $id = $row["id"];
-
             Database::ud("UPDATE `member_login` SET `password` ='$hashedPassword' WHERE `memberId`='$id'");
             return true;
         } else {

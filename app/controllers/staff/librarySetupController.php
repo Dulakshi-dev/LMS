@@ -113,23 +113,80 @@ class LibrarySetupController extends Controller
     {
         if ($this->isPost()) {
             $subject = $this->getPost('subject');
-            $message = $this->getPost('message');
-
-            $result = LibrarySetupModel::sendEmailToAllStaff($subject, $message);
-            $this->jsonResponse(["message" => $result ? "Mails Sent" : "Failed to send Mails."], $result);
+            $specificMessage = $this->getPost('message');
+    
+            $result = LibrarySetupModel::getAllActiveStaff();
+    
+            if ($result) {
+                $emailService = new EmailService();
+                $emailTemplate = new EmailTemplate();
+                
+                $failures = 0; // Count failed emails
+    
+                while ($row = $result->fetch_assoc()) {
+                    $email = $row['email'];
+                    $body = $emailTemplate->getEmailBody("Staff Member", $specificMessage);
+                    
+                    $emailSent = $emailService->sendEmail($email, $subject, $body);
+    
+                    if (!$emailSent) {
+                        $failures++;
+                    }
+                }
+    
+                if ($failures === 0) {
+                    $this->jsonResponse(["message" => "Emails sent successfully to all staff members."], true);
+                } else {
+                    $this->jsonResponse([
+                        "message" => "Some emails failed to send.",
+                        "failed_count" => $failures
+                    ], false);
+                }
+            } else {
+                $this->jsonResponse(["message" => "No staff members can be found"], false);
+            }
         }
     }
+
 
     public function sendMailsToAllMembers()
     {
         if ($this->isPost()) {
             $subject = $this->getPost('subject');
-            $message = $this->getPost('message');
-
-            $result = LibrarySetupModel::sendEmailToAllMembers($subject, $message);
-            $this->jsonResponse(["message" => $result ? "Mails Sent" : "Failed to send Mails."], $result);
+            $specificMessage = $this->getPost('message');
+    
+            $result = LibrarySetupModel::getAllActiveMembers();
+    
+            if ($result) {
+                $emailService = new EmailService();
+                $emailTemplate = new EmailTemplate();
+                
+                $failures = 0; // Count failed emails
+    
+                while ($row = $result->fetch_assoc()) {
+                    $email = $row['email'];
+                    $body = $emailTemplate->getEmailBody("Member", $specificMessage);
+                    $emailSent = $emailService->sendEmail($email, $subject, $body);
+    
+                    if (!$emailSent) {
+                        $failures++;
+                    }
+                }
+    
+                if ($failures === 0) {
+                    $this->jsonResponse(["message" => "Emails sent successfully to all members."], true);
+                } else {
+                    $this->jsonResponse([
+                        "message" => "Some emails failed to send.",
+                        "failed_count" => $failures
+                    ], false);
+                }
+            } else {
+                $this->jsonResponse(["message" => "No members can be found"], false);
+            }
         }
-    }
+    } 
+
 
     public function loadOpeningHours()
     {

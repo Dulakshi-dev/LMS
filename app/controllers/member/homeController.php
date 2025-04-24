@@ -87,8 +87,10 @@ class HomeController extends Controller
             $libraryData = HomeModel::getLibraryInfo();
             $libraryEmail = $libraryData['email'] ?? 'default@example.com';
 
-            $subject = 'Contact Us';
+
+            $subject = "New Contact Us Message from $userName";
             $body = '
+
                 <h3 style="text-align: center;">You have received a new message through the Contact Us form on your website.</h3> 
                 <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
                     <p style ="font-weight: bold;">Details:</p>
@@ -99,7 +101,7 @@ class HomeController extends Controller
                 </div>';
 
             $emailService = new EmailService();
-            $emailSent = $emailService->sendEmail($libraryEmail, $subject, $body);
+            $emailSent = $emailService->sendEmail($libraryEmail, $subject, $body, $email, $name);
 
             if ($emailSent) {
                 $this->jsonResponse(["message" => "Email sent successfully!"]);
@@ -111,26 +113,73 @@ class HomeController extends Controller
         }
     }
 
-    public function loadTopBooks()
-    {
-        if ($this->isPost()) {
-            $topBooksResult = HomeModel::getTopBooks();
+//     public function loadTopBooks()
+// {
+//     if ($this->isPost()) {
+//         $topBooksResult = HomeModel::getTopBooks();
 
-            if (!$topBooksResult) {
-                $this->jsonResponse(["message" => "Failed to fetch books."], false);
-                return;
-            }
+//         $topbooks = [];
+//         if ($topBooksResult) {
+//             while ($row = $topBooksResult->fetch_assoc()) {
+//                 $topbooks[] = $row;
+//             }
+//         }
 
-            $topbooks = [];
+//         // If no top borrowed books, fallback to latest arrivals
+//         if (empty($topbooks)) {
+//             $latestBooksResult = HomeModel::getLatestArrivals();
+//             if ($latestBooksResult) {
+//                 while ($row = $latestBooksResult->fetch_assoc()) {
+//                     $topbooks[] = $row;
+//                 }
+//             }
+//         }
+
+//         $this->jsonResponse(["books" => $topbooks]);
+//     } else {
+//         $this->jsonResponse(["message" => "Invalid request method."], false);
+//     }
+// }
+
+public function loadTopBooks()
+{
+    if ($this->isPost()) {
+        $topBooksResult = HomeModel::getTopBooks();
+        $topbooks = [];
+
+        if ($topBooksResult) {
             while ($row = $topBooksResult->fetch_assoc()) {
                 $topbooks[] = $row;
             }
-
-            $this->jsonResponse(["books" => $topbooks]);
-        } else {
-            $this->jsonResponse(["message" => "Invalid request method."], false);
         }
+
+        if (!empty($topbooks)) {
+            // Return top books with type
+            $this->jsonResponse([
+                "books" => $topbooks,
+                "type" => "top"
+            ]);
+        } else {
+            // Fallback to latest arrivals
+            $latestBooksResult = HomeModel::getLatestArrivals();
+            $latestBooks = [];
+
+            if ($latestBooksResult) {
+                while ($row = $latestBooksResult->fetch_assoc()) {
+                    $latestBooks[] = $row;
+                }
+            }
+
+            $this->jsonResponse([
+                "books" => $latestBooks,
+                "type" => "latest"
+            ]);
+        }
+    } else {
+        $this->jsonResponse(["message" => "Invalid request method."], false);
     }
+}
+
 
     public function serveLogo()
     {

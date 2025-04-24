@@ -4,22 +4,28 @@
 <?php
 $pageTitle = "Register";
 $pageCss = "staff-register.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body>
     <div class="container-fluid vh-100 d-md-flex justify-content-left align-items-center my-5">
-        <div class="box-2 rounded-5 px-3 my-5 shadow-lg overflow-hidden" style="backdrop-filter: blur(3px);">
+
+        <div class="box-2 d-none rounded-5 px-3 my-5 shadow-lg overflow-hidden" style="backdrop-filter: blur(3px);">
             <h2 class="text-center text-white m-4">Librarian Registration</h2>
             <p class="p-3" style="color: rgb(37, 87, 162);">An enrollment key has been sent to the email address. Please check. </p>
             <input type="password" class="form-control rounded-pill" name="enrollmentKey" id="enrollmentKey" placeholder="Enter Enrollment Key">
             <span id="enrollmentKeyError" class="text-danger"></span>
-            <div class="text-center m-4">
-                <button type="button" class="btn w-50 mt-3 rounded-pill v-b" onclick="register();">Verify</button>
-            </div>
 
+            <div class="text-center m-4">
+                <button id="btn1" type="button" class="btn w-50 mt-3 rounded-pill v-b" onclick="register()">Verify</button>
+                <div class="spinner-border d-none" role="status" id="spinner">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
         </div>
+
         <div class="box-1 p-3 text-dark mx-md-5 rounded-5 " style="width: 100%; max-width: 800px; ">
+
             <h2 class="text-center mb-4" style="color: rgb(37, 87, 162);">Staff Registration</h2>
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -33,6 +39,8 @@ require_once Config::getViewPath("common","head.php");
                     <span id="lastNameError"></span>
                 </div>
             </div>
+
+
 
             <div class="row">
                 <div class="col-md-6 mb-3">
@@ -59,8 +67,6 @@ require_once Config::getViewPath("common","head.php");
                     <span id="nicError"></span>
                 </div>
             </div>
-
-
 
             <div class="mb-3">
                 <label class="form-label">Select Role</label>
@@ -90,8 +96,6 @@ require_once Config::getViewPath("common","head.php");
                             <li id="rule-special">At least one special character</li>
                         </ul>
                     </div>
-
-
                 </div>
 
                 <div class="col-md-6 mb-3">
@@ -107,7 +111,7 @@ require_once Config::getViewPath("common","head.php");
             </form>
         </div>
 
-        
+
     </div>
 
     <?php require_once Config::getViewPath("common", "footer.view.php"); ?>

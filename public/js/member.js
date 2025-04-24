@@ -46,16 +46,25 @@ function loadMembers(page = 1, status = "Active") {
                                 <i class="fa fa-envelope"></i>
                             </button>
 
-                            <button class="btn btn-danger my-1 btn-sm deactivate" 
-                                data-memberid="${member.id}">
-                                <i class="fa fa-trash"></i>
-                            </button>
+                          <button class="btn btn-danger my-1 btn-sm deactivate" 
+                            data-id="${member.id}"
+                            data-name="${member.fname} ${member.lname}"
+                            data-email="${member.email}">
+                            <i class="fa fa-trash icon"></i>
+                            <span class="spinner-border spinner-border-sm d-none spinner" role="status"></span>
+                        </button>
+
+
                         `;
                     } else {
                         // Show Activate button for deactivated users
                         actionButtons = `
-                            <button class="btn btn-success my-1 btn-sm activate" data-memberid="${member.id}">
-                                <i class="fa fa-plus"></i>
+                            <button class="btn btn-success my-1 btn-sm activate" 
+                            data-id="${member.id}"
+                            data-name="${member.fname} ${member.lname}"
+                            data-email="${member.email}">
+                                <i class="fa fa-plus icon"></i>
+                                <span class="spinner-border spinner-border-sm d-none spinner" role="status"></span>
                             </button>
 
                         `;
@@ -121,19 +130,28 @@ function loadMemberRequests(page = 1, status = "Pending") {
                         // Show Edit, Email, and Deactivate buttons for active users
                         actionButtons = `
                              <button class="btn btn-info my-1 btn-sm approve-request " 
-                                data-id="${request.id}">
-                                <i class="fa fa-check"></i>
+                                data-id="${request.id}"
+                                data-name="${request.fname} ${request.lname}"
+                                data-email="${request.email}">
+                                <i class="fa fa-check icon"></i>
+                                <span class="spinner-border spinner-border-sm d-none spinner" role="status"></span>
+
                             </button>
 
                             <button class="btn btn-danger my-1 btn-sm reject" 
-                                data-id="${request.id}">
-                                <i class="fa fa-trash"></i>
+                                data-id="${request.id}"
+                                data-name="${request.fname} ${request.lname}"
+                                data-email="${request.email}">
+                                <i class="fa fa-trash icon"></i>
+                                <span class="spinner-border spinner-border-sm d-none spinner" role="status"></span>
+
                             </button>
                         `;
                     } else {
                         // Show Activate button for deactivated users
                         actionButtons = `
-                            <button class="btn btn-success my-1 btn-sm activate-request" data-id="${request.id}">
+                            <button class="btn btn-success my-1 btn-sm activate-request" 
+                                data-id="${request.id}">
                                 <i class="fa fa-plus"></i>
                             </button>
 
@@ -186,34 +204,125 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     document.body.addEventListener("click", function (event) {
-        if (event.target.closest(".deactivate")) {
-            let button = event.target.closest(".deactivate");
-            deactivateMember(button.dataset.memberid);
-        }
+        const button = event.target.closest(".deactivate");
+        if (!button) return;
+
+        // Extract icon and spinner elements inside the clicked button
+        const icon = button.querySelector(".icon");
+        const spinner = button.querySelector(".spinner");
+
+        // Show spinner, hide icon
+        if (icon) icon.classList.add("d-none");
+        if (spinner) spinner.classList.remove("d-none");
+
+        // Prevent multiple clicks
+        button.disabled = true;
+
+        // Call deactivate with UI feedback references
+        deactivateMember(
+            button.dataset.id,
+            button.dataset.name,
+            button.dataset.email,
+            button,
+            icon,
+            spinner
+        );
     });
+
+    function deactivateMember(id, name, email, button, icon, spinner) {
+        const formData = new FormData();
+        formData.append("id", id);
+        formData.append("name", name);
+        formData.append("email", email);
+
+        fetch("index.php?action=deactivatemember", {
+            method: "POST",
+            body: formData,
+        })
+            .then(response => response.json())
+            .then(resp => {
+                if (resp.success) {
+                    showAlert("Success", resp.message, "success").then(() => {
+                        location.reload();
+                    });
+                } else {
+                    showAlert("Error", resp.message, "error").then(() => {
+                        resetButtonUI(button, icon, spinner);
+                    });
+                }
+            })
+            .catch(error => {
+                showAlert("Error", "Something went wrong", "error");
+                console.error("Error fetching user data:", error);
+                resetButtonUI(button, icon, spinner);
+            });
+    }
+
+    // function to restore button UI
+    function resetButtonUI(button, icon, spinner) {
+        if (icon) icon.classList.remove("d-none");
+        if (spinner) spinner.classList.add("d-none");
+        if (button) button.disabled = false;
+    }
+
 
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".activate")) {
             let button = event.target.closest(".activate");
-            activateMember(button.dataset.memberid);
+            if (!button) return;
 
+            // Extract icon and spinner elements inside the clicked button
+            var icon = button.querySelector(".icon");
+            var spinner = button.querySelector(".spinner");
 
+            // Show spinner, hide icon
+            if (icon) icon.classList.add("d-none");
+            if (spinner) spinner.classList.remove("d-none");
+
+            // Prevent multiple clicks
+            button.disabled = true;
+
+            activateMember(button.dataset.id, button.dataset.name, button.dataset.email, button, icon, spinner);
         }
     });
 
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".approve-request")) {
             let button = event.target.closest(".approve-request");
-            approveMembership(button.dataset.id);
-            
+            if (!button) return;
+
+            // Extract icon and spinner elements inside the clicked button
+            var icon = button.querySelector(".icon");
+            var spinner = button.querySelector(".spinner");
+
+            // Show spinner, hide icon
+            if (icon) icon.classList.add("d-none");
+            if (spinner) spinner.classList.remove("d-none");
+
+            // Prevent multiple clicks
+            button.disabled = true;
+            approveMembership(button.dataset.id, button.dataset.name, button.dataset.email, button, icon, spinner);
+
         }
     });
 
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".reject")) {
             let button = event.target.closest(".reject");
-            rejectMemberRequest(button.dataset.id);
-        
+            if (!button) return;
+
+            // Extract icon and spinner elements inside the clicked button
+            var icon = button.querySelector(".icon");
+            var spinner = button.querySelector(".spinner");
+
+            // Show spinner, hide icon
+            if (icon) icon.classList.add("d-none");
+            if (spinner) spinner.classList.remove("d-none");
+
+            // Prevent multiple clicks
+            button.disabled = true;
+            rejectMemberRequest(button.dataset.id, button.dataset.name, button.dataset.email,button, icon, spinner);
+
         }
     });
 
@@ -226,9 +335,11 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-function approveMembership(id){
+function approveMembership(id, name, email,button, icon, spinner) {
     var formData = new FormData();
     formData.append("id", id);
+    formData.append("name", name);
+    formData.append("email", email);
 
     fetch("index.php?action=approvemembership", {
         method: "POST",
@@ -241,8 +352,9 @@ function approveMembership(id){
                     location.reload();
                 });
             } else {
-                showAlert("Error", resp.message, "error");
-            }
+                showAlert("Error", resp.message, "error").then(() => {
+                    resetButtonUI(button, icon, spinner);
+                });            }
         })
         .catch(error => {
             showAlert("Error", "Something went wrong", "error");
@@ -311,7 +423,7 @@ function updateUserDetails() {
     if (nic === "") {
         document.getElementById("nicError").innerText = "Enter the NIC number";
         isValid = false;
-    }else  if (!/^(?:\d{9}[VXvx]|\d{12})$/.test(nic)) {
+    } else if (!/^(?:\d{9}[VXvx]|\d{12})$/.test(nic)) {
         document.getElementById("nicError").innerText = "Invalid NIC.";
         isValid = false;
     }
@@ -320,7 +432,7 @@ function updateUserDetails() {
     if (username === "") {
         document.getElementById("usernameError").innerText = "Enter the user name.";
         isValid = false;
-    }else if(!/^[a-zA-Z\s]+$/.test(username)) {
+    } else if (!/^[a-zA-Z\s]+$/.test(username)) {
         document.getElementById("usernameError").innerText = "Invalid name.";
         isValid = false;
     }
@@ -329,7 +441,7 @@ function updateUserDetails() {
     if (email === "") {
         document.getElementById("emailError").innerText = "Enter the email.";
         isValid = false;
-    }else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
         document.getElementById("emailError").innerText = "Invalid email address.";
         isValid = false;
     }
@@ -338,7 +450,7 @@ function updateUserDetails() {
     if (phone === "") {
         document.getElementById("phoneError").innerText = "Enter the mobile number.";
         isValid = false;
-    }else if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(phone)) {
+    } else if (!/^(?:\+94|0)([1-9][0-9])\d{7}$/.test(phone)) {
         document.getElementById("phoneError").innerText = "Invalid mibile number.";
         isValid = false;
     }
@@ -347,7 +459,7 @@ function updateUserDetails() {
     if (address === "") {
         document.getElementById("addressError").innerText = "Enter the address.";
         isValid = false;
-    }else if (address.length < 5) {
+    } else if (address.length < 5) {
         document.getElementById("addressError").innerText = "Address must be at least 5 characters.";
         isValid = false;
     }
@@ -415,35 +527,14 @@ function loadMailData(member_id) {
         });
 }
 
-function deactivateMember(member_id) {
 
-    var formData = new FormData();
-    formData.append("id", member_id);
-
-    fetch("index.php?action=deactivatemember", {
-        method: "POST",
-        body: formData,
-    })
-        .then(response => response.json())
-        .then(resp => {
-            if (resp.success) {
-                showAlert("Success", resp.message, "success").then(() => {
-                    location.reload();
-                });
-            } else {
-                showAlert("Error", resp.message, "error");
-            }
-        })
-        .catch(error => {
-            showAlert("Error", "Something went wrong", "error");
-            console.error("Error fetching user data:", error);
-        });
-}
-
-function rejectMemberRequest(id) {
+function rejectMemberRequest(id, name, email,button, icon, spinner) {
 
     var formData = new FormData();
     formData.append("id", id);
+    formData.append("name", name);
+    formData.append("email", email);
+
 
     fetch("index.php?action=rejectmember", {
         method: "POST",
@@ -456,8 +547,9 @@ function rejectMemberRequest(id) {
                     location.reload();
                 });
             } else {
-                showAlert("Error", resp.message, "error");
-
+                showAlert("Error", resp.message, "error").then(() => {
+                    resetButtonUI(button, icon, spinner);
+                });
             }
         })
         .catch(error => {
@@ -535,9 +627,11 @@ function sendEmail() {
         });
 }
 
-function activateMember(memberid) {
+function activateMember(id, name, email,button, icon, spinner) {
     var formData = new FormData();
-    formData.append("memberid", memberid);
+    formData.append("id", id);
+    formData.append("name", name);
+    formData.append("email", email);
 
     fetch("index.php?action=activatemember", {
         method: "POST",
@@ -550,8 +644,9 @@ function activateMember(memberid) {
                     location.reload();
                 });
             } else {
-                showAlert("Error", "Failed to activate Member", "error");
-
+                showAlert("Error", resp.message, "error").then(() => {
+                    resetButtonUI(button, icon, spinner);
+                });
             }
         })
         .catch(error => {
@@ -559,10 +654,11 @@ function activateMember(memberid) {
         });
 }
 
-function activateRequest(id) {
-    alert(id);
+function activateRequest(id, name, email) {
     var formData = new FormData();
     formData.append("id", id);
+    formData.append("name", name);
+    formData.append("email", email);
 
     fetch("index.php?action=activaterequest", {
         method: "POST",
@@ -615,11 +711,11 @@ function generateActiveMemberReport() {
         method: "POST",
         body: formData
     })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-    });
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
 }
 
 function generateDeactiveMemberReport() {
@@ -653,11 +749,11 @@ function generateDeactiveMemberReport() {
         method: "POST",
         body: formData
     })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-    });
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
 }
 
 function generateRejectedUserReport() {
@@ -691,9 +787,9 @@ function generateRejectedUserReport() {
         method: "POST",
         body: formData
     })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-    });
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
 }

@@ -27,17 +27,23 @@ class ProfileModel
 
     public static function validateCurrentPassword($staffid ,$password)
     {
-        $result = Database::search("SELECT * from `staff_login` WHERE `staff_id`='$staffid' AND `password` = '$password'");
+        $result = Database::search("SELECT * from `staff_login` WHERE `staff_id`='$staffid'");
+
         if ($result && $result->num_rows > 0) {
-            return true;
-        }else{
-            return false;
+            $user = $result->fetch_assoc();
+
+            if (password_verify($password, $user['password'])) {
+                return true;
+            }
         }
+        return false;
     }
 
     public static function resetPassword($staffid ,$password)
     {
-        Database::ud("UPDATE `staff_login` SET `password` = '$password' WHERE `staff_id`='$staffid'");
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        Database::ud("UPDATE `staff_login` SET `password` = '$hashedPassword' WHERE `staff_id`='$staffid'");
         return true;
     }
 }

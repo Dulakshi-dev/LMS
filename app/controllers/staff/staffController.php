@@ -8,21 +8,21 @@ class StaffController extends Controller
 
     public function __construct()
     {
-        require_once Config::getModelPath('staff','staffmodel.php');
+        require_once Config::getModelPath('staff', 'staffmodel.php');
         $this->staffModel = new StaffModel();
     }
 
     public function loadStaff()
     {
         $resultsPerPage = 10;
-        
+
         if ($this->isPost()) {
             $page = (int)$this->getPost('page', 1);
             $memberId = $this->getPost('memberid');
             $nic = $this->getPost('nic');
             $userName = $this->getPost('username');
             $status = $this->getPost('status', 'Active');
-            
+
             if (!empty($memberId) || !empty($nic) || !empty($userName)) {
                 $usersData = StaffModel::searchStaff($memberId, $nic, $userName, $status, $page, $resultsPerPage);
             } else {
@@ -49,10 +49,10 @@ class StaffController extends Controller
         if ($this->isPost()) {
             $user_id = $this->getPost('staff_id');
             $result = StaffModel::loadStaffDetails($user_id);
-    
+
             if ($result && $result->num_rows > 0) {
                 $userData = $result->fetch_assoc();
-    
+
                 if ($userData) {
                     $this->jsonResponse([
                         "id" => $userData['id'],
@@ -75,7 +75,7 @@ class StaffController extends Controller
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
-    
+
     public function updateStaffDetails()
     {
         if ($this->isPost()) {
@@ -164,9 +164,13 @@ class StaffController extends Controller
     {
         if ($this->isPost()) {
             $id = $this->getPost('staff_id');
+            $name = $this->getPost('name');
+            $email = $this->getPost('email');
+
             $result = StaffModel::deactivateStaff($id);
 
             if ($result) {
+                $this->sendDeactivateStaffEmail($name, $email);  
                 $this->jsonResponse(["message" => "Membership Deactivated"]);
             } else {
                 $this->jsonResponse(["message" => "User Not found."], false);
@@ -176,13 +180,37 @@ class StaffController extends Controller
         }
     }
 
+    
+    public function sendDeactivateStaffEmail($name, $email)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+        $subject = 'Staff Account Deactivated';
+
+        $specificMessage = '
+                <h4>Your library staff account has been deactivated by the administration.</h4>';
+             
+
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailService = new EmailService();
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+    }
+
+
     public function activateStaff()
     {
         if ($this->isPost()) {
             $id = $this->getPost('staff_id');
+            $name = $this->getPost('name');
+            $email = $this->getPost('email');
+
             $result = StaffModel::activateStaff($id);
 
             if ($result) {
+                $this->sendActivateStaffEmail($name, $email);  
                 $this->jsonResponse(["message" => "Staff Member Activated Again"]);
             } else {
                 $this->jsonResponse(["message" => "Staff Member not found."], false);
@@ -192,23 +220,55 @@ class StaffController extends Controller
         }
     }
 
+      
+    public function sendActivateStaffEmail($name, $email)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+        $subject = 'Staff Account Activated Again';
+
+        $specificMessage = '
+                <h4>Your library staff account has been activated again by the administration.</h4>';
+             
+
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailService = new EmailService();
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+    }
+
+
     public function sendEnrollmentKey()
     {
+        require_once Config::getServicePath('emailService.php');
+
         if ($this->isPost()) {
             $email = $this->getPost('email');
             $role = $this->getPost('role');
-            
+
             // Check if the role is librarian and set role_id accordingly
             if ($role === 'Librarian') {
                 $role_id = 1; // Librarian
             } else {
                 $role_id = 2; // Other roles
             }
-    
+
             // Send the enrollment key with the role_id
-            $result = StaffModel::sendEnrollmentKey($email, $role_id);
-    
-            if ($result) {
+            $key = StaffModel::generateKey($email, $role_id);
+
+            $subject = 'Staff Enrollment Key';
+
+            $specificMessage = '<h4>Your enrollment key is <br> ' . $key . '</h4>';
+
+            $emailTemplate = new EmailTemplate();
+            $body = $emailTemplate->getEmailBody("Staff Member", $specificMessage);
+
+            $emailService = new EmailService();
+            $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+            if ($emailSent) {
                 $this->jsonResponse(["message" => "Enrollment Key Sent"]);
             } else {
                 $this->jsonResponse(["message" => "Failed to send enrollment key."], false);
@@ -217,8 +277,4 @@ class StaffController extends Controller
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
-
-
-
-    
 }

@@ -151,7 +151,7 @@ function loadDashboardBooks() {
         });
       } else {
         recommendedContainer.innerHTML =
-          "<p>No recommended books available</p>";
+          "<p>No recommended books available yet.</p>";
       }
 
       // Populate Latest Arrivals
@@ -169,7 +169,7 @@ function loadDashboardBooks() {
           topContainer.innerHTML += generateBookCard(book);
         });
       } else {
-        topContainer.innerHTML = "<p>No top books available</p>";
+        topContainer.innerHTML = "<p>No top books available Yet</p>";
       }
     })
     .catch((error) => {

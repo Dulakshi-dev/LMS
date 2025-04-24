@@ -11,34 +11,27 @@ body {
     background-position: center;
 }
 
+  
 span {
     color: red;
     font-size: 0.9em;
 }
+
+  
 
 .v-b {
     background: rgb(37, 87, 162);
     color: white;
 }
 
-.box-2{
-    display: none;
-}
-
-
 #passwordRules li {
     color: red;
     font-size: 0.9em;
     list-style-type: none;
-
-    /* Initial color is red */
 }
 
 #passwordRules li.valid {
     color: green;
     font-size: 0.9em;
     list-style-type: none;
-
-
-    /* Change to green when valid */
 }

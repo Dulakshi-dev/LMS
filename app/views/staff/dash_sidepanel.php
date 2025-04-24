@@ -54,11 +54,6 @@ $current_action = $_GET['action'] ?? 'dashboard';
       </a>
     <?php endforeach; ?>
 
-    <a href="<?php echo Config::indexPath() ?>?action=libsetup"
-      class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'libsetup' ? 'active' : ''; ?>">
-      <i class="fa-solid fa-university me-2 ms-1"></i> Library Setup
-    </a>
-
     <a href="<?php echo Config::indexPath() ?>?action=aboutsoftware"
       class="nav-link text-white p-2 border-bottom d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'active' : ''; ?>">
       <i class="fa-solid fa-laptop-code me-2 "></i> About Software

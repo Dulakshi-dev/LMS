@@ -123,7 +123,7 @@ function updateProfileDetails() {
                 if (resp.success) {
                     showAlert("Success", resp.message, "success").then(() => {
                         location.reload();
-                    });                
+                    });
                 } else {
                     alert("Failed to update user data. Please try again.");
                 }
@@ -180,11 +180,46 @@ function saveNewPassword(member_id) {
     const confirmPassword = document.getElementById("confirm-password").value.trim();
 
 
-    if (newPassword.length < 8 || newPassword.length > 15) {
-        document.getElementById("errormsg-new").textContent = "Password must be 8-15 characters.";
+    // Clear previous error messages
+    document.getElementById("new-password-error").textContent = '';
+    document.getElementById("confirm-password-error").textContent = '';
+
+    let isValid = true;
+
+    // Validate new password length
+    if (newPassword === "") {
+        document.getElementById("new-password-error").textContent = "Enter the new password.";
+        isValid = false;
+    }
+
+    const rules = {
+        length: newPassword.length >= 8,
+        uppercase: /[A-Z]/.test(newPassword),
+        lowercase: /[a-z]/.test(newPassword),
+        digit: /[0-9]/.test(newPassword),
+        special: /[\W_]/.test(newPassword)
+    };
+    const rulesContainer = document.getElementById("passwordRulesContainer");
+
+    // Validate password
+
+    if (!rules.length || !rules.uppercase || !rules.lowercase || !rules.digit || !rules.special) {
+        rulesContainer.style.display = "block";
+        isValid = false;
+
+    }
+
+    if (confirmPassword === "") {
+        rulesContainer.style.display = "none";
+        document.getElementById("confirm-password-error").textContent = "Confirm the new password.";
+        isValid = false;
     } else if (newPassword !== confirmPassword) {
-        document.getElementById("errormsg-new").textContent = "Passwords do not match.";
-    } else {
+        document.getElementById("confirm-password-error").textContent = "Passwords do not match.";
+        isValid = false;
+    }
+    
+
+    if (isValid) {
 
         var formData = new FormData();
         formData.append("member_id", member_id);

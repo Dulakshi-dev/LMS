@@ -6,7 +6,7 @@ class AuthController extends Controller
 {
     private $authModel;
     private $homeModel;
-    private const REMEMBER_ME_EXPIRY_DAYS = 30; 
+    private const REMEMBER_ME_EXPIRY_DAYS = 30;
 
     public function __construct()
     {
@@ -15,25 +15,23 @@ class AuthController extends Controller
         $this->authModel = new AuthModel();
         $this->homeModel = new HomeModel();
         $this->handleAutoLogin();
-
     }
 
-    
     private function handleAutoLogin()
     {
         if (!isset($_SESSION['member']) && isset($_COOKIE['member_remember_token'])) {
             $token = $_COOKIE['member_remember_token'];
             $userDetails = $this->authModel->getUserByRememberToken($token); // Changed to instance method
-            
+
             if ($userDetails && password_verify($token, $userDetails['remember_token'])) {
                 $this->createSession($userDetails);
-                
+
                 $newToken = bin2hex(random_bytes(32));
                 $hashedToken = password_hash($newToken, PASSWORD_BCRYPT);
-                
+
                 $this->authModel->updateRememberToken($userDetails['member_id'], $hashedToken);
                 $this->setSecureCookie("member_remember_token", $newToken, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
-                
+
                 header("Location: index.php?action=dashboard");
                 exit;
             } else {
@@ -68,7 +66,7 @@ class AuthController extends Controller
                         // Generate and store new token
                         $token = bin2hex(random_bytes(32));
                         $hashedToken = password_hash($token, PASSWORD_BCRYPT);
-                        
+
                         $this->authModel->storeRememberToken($userDetails['member_id'], $hashedToken);
                         $this->setSecureCookie("member_remember_token", $token, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
                     } else {
@@ -100,7 +98,7 @@ class AuthController extends Controller
             'fname' => $userDetails['fname'],
             'last_activity' => time() // Track last activity
         ];
-        
+
         // Only log non-sensitive data
         error_log("Session initialized for member_id: " . $userDetails['member_id']);
     }
@@ -116,7 +114,7 @@ class AuthController extends Controller
             'httponly' => true,
             'samesite' => 'Strict'
         ];
-        
+
         setcookie($name, $value, $options);
     }
 
@@ -133,6 +131,7 @@ class AuthController extends Controller
 
     public function sendOTP()
     {
+
         require_once Config::getServicePath('emailService.php');
 
         if ($this->isPost()) {
@@ -148,33 +147,25 @@ class AuthController extends Controller
 
                 $subject = "Email Verification";
 
-                $body = '
-                <h4 style="font-size: 30px; color: black; font-weight: bold; text-align: center;">ONE Time Passcode</h4> 
-
-                <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+                $specificMessage = '
+                <h4 style="text-align: center;">ONE Time Passcode</h4> 
                     <p>Here is the OTP to verify your email address.</p>
-                    <h1>' . $otp . '</h1>
-                    <div>
-                        <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
-                        <p style="margin: 0px;">Call: [tel_num]</p>
-                    </div>
+                    <h4>' . $otp . '</h4>';
 
-                    <div>
-                        <p style="margin-bottom: 0px;">Best regards,</p>
-                        <p style="margin: 0px;">Shelf Loom</p>
-                    </div>
-                </div>';
+
+                $emailTemplate = new EmailTemplate();
+                $body = $emailTemplate->getEmailBody("User", $specificMessage);
 
                 $emailService = new EmailService();
                 $emailSent = $emailService->sendEmail($email, $subject, $body);
+
                 if ($emailSent) {
                     $this->jsonResponse(["message" => "OTP sent. Check your email!"]);
                 } else {
                     $this->jsonResponse(["message" => "Failed to send email."], false);
                 }
-            }else{
+            } else {
                 $this->jsonResponse(["message" => "This email is already registered."], false);
-
             }
         } else {
             $this->jsonResponse(["message" => "Invalid Request"], false);
@@ -273,41 +264,27 @@ class AuthController extends Controller
         }
     }
 
-
-
-    public static function sendResetLink($email, $vcode)
+    public function sendResetLink($email, $vcode)
     {
         require_once Config::getServicePath('emailService.php');
 
+
         $subject = "Reset Password";
-
-        $body = '
-            <h4 style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Reset Your password</h4> 
-
-            <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-                <p>Dear Member,</p>
-                <p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
+        $specificMessage = '<p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
                 <div style="margin-bottom: 10px;">
-                    <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&vcode=' . $vcode . '">Click here to reset your password</a>
-                </div>
-                <div>
-                    <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
-                    <p style="margin: 0px;">Call: [tel_num]</p>
-                </div>
+                    <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&vcode=' . $vcode . '">Reset Password</a>
+                 </div>';
 
-                <div>
-                    <p style="margin-bottom: 0px;">Best regards,</p>
-                    <p style="margin: 0px;">Shelf Loom</p>
-                </div>
-            </div>';
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody("Member", $specificMessage);
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
-
+    
         if ($emailSent) {
-            echo json_encode(["success" => true, "message" => "Email for reset password sent! Check your email"]);
+            $this->jsonResponse(["message" => "Password reset link sent! Check your email."]);
         } else {
-            echo json_encode(["success" => false, "message" => "Failed to send email."]);
+            $this->jsonResponse(["message" => "Failed to send email."], false);
         }
     }
 
@@ -319,6 +296,7 @@ class AuthController extends Controller
             $id = $this->getPost('id', '');
 
             if (empty($vcode)) {
+                error_log("lo");
                 $result = AuthModel::changePasswordwithid($password, $id);
             } else {
                 $result = AuthModel::changePasswordwithvcode($password, $vcode);

@@ -8,7 +8,7 @@ class PaymentModel
     {
        
             Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `memberId`) 
-VALUES ('$fee', '$transaction_id', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), '$id');");
+            VALUES ('$fee', '$transaction_id', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), '$id');");
             return true;
         
     }
@@ -27,7 +27,7 @@ VALUES ('$fee', '$transaction_id', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), '$id
             $next_due_date = "DATE_ADD('$due_date', INTERVAL 1 YEAR)";
 
             Database::insert("INSERT INTO `payment` (`amount`, `transaction_id`, `payed_at`, `next_due_date`, `memberId`) 
-VALUES ('$fee', '$transaction_id', NOW(), $next_due_date, '$id');");
+            VALUES ('$fee', '$transaction_id', NOW(), $next_due_date, '$id');");
 
 
             return true;
@@ -36,59 +36,50 @@ VALUES ('$fee', '$transaction_id', NOW(), $next_due_date, '$id');");
         } 
     }
 
-    public static function sendMembershipReminder()
+    public static function getMembersToRenewMembership()
     {
-        $resultOneWeek = Database::search("SELECT member.email, payment.next_due_date
-FROM member
-JOIN payment ON member.id = payment.memberId
-WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY 
-   OR DATE(payment.next_due_date) = CURDATE() + INTERVAL 1 MONTH;");
+        $resultOneWeek = Database::search("SELECT member.email, payment.next_due_date, member_login.member_id, fname, lname
+        FROM member
+        JOIN payment ON member.id = payment.memberId
+        JOIN member_login ON member_login.memberId = member.id
+        WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY 
+        OR DATE(payment.next_due_date) = CURDATE() + INTERVAL 1 MONTH;");
 
         while ($row = $resultOneWeek->fetch_assoc()) {
 
             $email = $row['email'];
             $expirationDate = $row['next_due_date'];
+            $name = $row['fname'].' '.$row['lname'];
+            $member_id = $row['email'];
 
-            self::sendExpirationReminder($email, $expirationDate);
+
+            self::sendExpirationReminderEmail($email, $expirationDate, $name, $member_id);
         }
     }
 
-    public static function sendExpirationReminder($email, $expirationDate)
+    public static function sendExpirationReminderEmail($email, $expirationDate, $name, $member_id)
     {
-        $rs = Database::search("SELECT `member_id`.`fname`,`lname` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `email` = '$email'");
-        $row = $rs->fetch_assoc();
-
         require_once Config::getServicePath('emailService.php');
-
-        $id = $row["member_id"];
-        $name = $row["fname"] . " " . $row["lname"];
-        $subject = 'Annual membership fee reminder';
-
-        $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
-        <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
-            <p>Dear ' . $name . ',</p>
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-            <p>We are pleased to connect with you! Here’s some important information:</p>
-            <h2>Your membership is set to expire on' . $expirationDate . '<br>Please make the payment soon to continue enjoying our services.</h2>
-            <div style="margin-bottom: 10px;">
-            
-                <a href="http://localhost/LMS/public/member/index.php?action=renewmembership&id=' . $id . '">Click here to reset your password</a>
-            </div><p>If you have any questions or issues, please reach out to us.</p>
-            <p>Call:[tel_num]</p>
-
-            <div style="margin-top: 20px;">
-                <p>Best regards,</p>
-                <p>Shelf Loom Team</p>
-            </div>
-        </div>';
-
         $emailService = new EmailService();
-        $emailSent = $emailService->sendEmail($email, $subject, $body);
+        $emailTemplate = new EmailTemplate();
+        $notificationController = new NotificationController();
 
-        if ($emailSent) {
-            return true;
-        } else {
-            return false;
+        $subject = 'Renew Your Membership';
+
+        $specificMessage = '<h4>Your membership is set to expire on' . $expirationDate . '<br>Please make the annual membership payment to continue enjoying our services.</h4>
+                <p><a href="http://localhost/LMS/public/member/index.php?action=renewmembership&id=' . $member_id . '">Click here to renew the membership.</a></p>';
+    
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+        $notification = $notificationController->insertNotification($email, strip_tags($specificMessage));
+   
+        if (!$emailSent) {
+            error_log("Failed to send email to: " . $email);
+        }
+
+        if (!$notification) {
+            error_log("Failed to send notification to: $name ");
         }
     }
 
@@ -96,15 +87,43 @@ WHERE DATE(payment.next_due_date) = CURDATE() + INTERVAL 7 DAY
     {
         $today = date('Y-m-d');
 
-        $result = Database::search("SELECT `memberId` FROM `payment` JOIN `member` ON `payment`.`memberId` = `member`.`id` WHERE DATE(`payment`.`next_due_date`) < '$today';");
+        $result = Database::search("SELECT `memberId`,`email`,`fname`,`lname` FROM `payment` JOIN `member` ON `payment`.`memberId` = `member`.`id` WHERE DATE(`payment`.`next_due_date`) < '$today';");
         
         while ($row = $result->fetch_assoc()) {
             $member_id = $row['memberId'];
-            self::deactivateMembership($member_id);        }
+            $email = $row['email'];
+            $name = $row['fname'] . ' ' . $row['lname'];
+
+
+            self::deactivateMembership($member_id);    
+            self::sendMembershipExpiredMail($email,$name);        
+        
+
+        }
     }
 
     private static function deactivateMembership($id)
     {
         Database::ud("UPDATE `member` SET `status_id` = '5' WHERE `id` = '$id'");
+    }
+
+    private static function sendMembershipExpiredMail($email, $name)
+    {
+        require_once Config::getServicePath('emailService.php');
+        $emailService = new EmailService();
+        $emailTemplate = new EmailTemplate();
+
+        $subject = 'Membership Expired';
+
+        $specificMessage = '<h4>Your membership expired today.<br>Please make the annual membership payment to continue enjoying our services.</h4>
+                <p><a href="http://localhost/LMS/public/member/index.php?action=renewmembership&id=' . $id . '">Click here to renew the membership.</a></p>';
+    
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+        if (!$emailSent) {
+            error_log("Failed to send email to: " . $email);
+        }
     }
 }

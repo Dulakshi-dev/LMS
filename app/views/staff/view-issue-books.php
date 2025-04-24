@@ -22,7 +22,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Issued Books";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body onload="loadIssuedBooks();">
@@ -109,8 +109,6 @@ require_once Config::getViewPath("common","head.php");
 
                 </div>
                 <div id="pagination"></div>
-
-
             </div>
         </div>
 
@@ -128,6 +126,9 @@ require_once Config::getViewPath("common","head.php");
                     <input type="text" class="d-none" id="borrowId" name="borrowId">
                     <input type="text" class="d-none" id="bookId" name="bookId">
                     <input type="text" class="d-none" id="memberId" name="memberId">
+                    <input type="text" class="d-none" id="name" name="name">
+                    <input type="text" class="d-none" id="title" name="title">
+                    <input type="text" class="d-none" id="email" name="email">
 
 
                     <div class="mb-3 row align-items-center">
@@ -153,8 +154,13 @@ require_once Config::getViewPath("common","head.php");
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-primary" onclick="returnBook();">Return Book</button>
+                        <button type="button" class="btn btn-primary" id="btn" onclick="returnBook();">
+                            <span id="btnText">Return Book</span>
+                            <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
+                           
+                        </button>
                     </div>
+
                 </div>
             </div>
         </div>

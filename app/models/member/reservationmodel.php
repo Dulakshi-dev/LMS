@@ -79,9 +79,7 @@ class ReservationModel
         $result = Database::search("SELECT `reservation_book_id`,`reservation_member_id` FROM `reservation` 
         INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id` 
         INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id`  
-        WHERE `expiration_date` < CURDATE() AND `status_id` = '1'");
-
-
+        WHERE `expiration_date` < CURDATE() AND `reservation`.`status_id` = '1'");
 
         // Update expired reservations to status 3 (expired)
         Database::ud("UPDATE `reservation` SET `status_id` = '3' WHERE `expiration_date` < CURDATE() AND `status_id` = '1'");
@@ -90,50 +88,84 @@ class ReservationModel
         while ($row = $result->fetch_assoc()) {
             $book_id = $row['reservation_book_id'];
             $title = $row['title'];
-            $memberid = $row['reservation_member_id'];
-
+            $email = $row["email"];
+            $name = $row["fname"] . '' . $row["lname"];
 
             // Increase book quantity for the expired reservation
             Database::ud("UPDATE `book` SET `available_qty` = `available_qty` + 1 WHERE `book_id` = '$book_id'");
-            self::sendReservationExpireEmail($book_id, $memberid, $title);
+            self::sendReservationExpiredEmail($book_id, $title, $email, $name);
         }
 
         return true;
     }
 
-    private static function sendReservationExpireEmail($book_id, $member_id, $title)
+    private static function sendReservationExpiredEmail($book_id, $title, $email, $name)
     {
-        $member = Database::search("SELECT `fname`,`lname`,`email` FROM `member` WHERE `id` = '$member_id'")->fetch_assoc();
-        $email = $member["email"];
-        $name = $member["fname"] . '' . $member["lname"];
-
-        $subject = "Reset Password";
-
-        $body = '
-           <h1 style="padding-top: 30px;">Book Reservation</h1>
-           <p style = "font-size: 30px; color: black; font-weight: bold; text-align: center;">Shelf Loom</p> 
-
-           <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-              <p>Dear ' . $name . ',</p>
-              <p>The book you reserved ' . $title . '(' . $book_id . ') is expired. </p>
-              <div>
-                    <p style="margin: 0px;">If you have problems or questions regarding your account, please contact us.</p>
-                    <p style="margin: 0px;">Call: [tel_num]</p>
-              </div>
-
-              <div>
-                    <p style="margin-bottom: 0px;">Best regards,</p>
-                    <p style="margin: 0px;">Shelf Loom</p>
-              </div>
-           </div>';
-
         $emailService = new EmailService();
-        $emailSent = $emailService->sendEmail($email, $subject, $body);
+        $emailTemplate = new EmailTemplate();
+        $notificationController = new NotificationController();
 
-        if ($emailSent) {
-            echo ("Email for reset sent successfully! Check Your email address");
-        } else {
-            echo ("Failed to send email.");
+        $subject = "Book Reservation Expired";
+
+        $specificMessage = "<h4>Your reservation for the book '<strong>$title</strong>' (ID: $book_id) has expired.</h4> 
+        <p>This occurred because you did not complete the borrowing process within the specified time frame.</p>";
+
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+        $notification = $notificationController->insertNotification($email, strip_tags($specificMessage));
+
+        if (!$emailSent) {
+            error_log("Failed to send email to: " . $email);
+        }
+
+        if (!$notification) {
+            error_log("Failed to send notification to: $name ");
+        }
+    }
+
+    public static function getReservationsToExpire()
+    {
+        $result = Database::search("SELECT `reservation_book_id`, `reservation_member_id`, `title`
+        FROM `reservation`
+        INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
+        INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id`
+        WHERE `expiration_date` = CURDATE() + INTERVAL 2 DAY AND `reservation`.`status_id` = '1'");
+
+        while ($row = $result->fetch_assoc()) {
+            $book_id = $row['reservation_book_id'];
+            $title = $row['title'];
+            $email = $row["email"];
+            $name = $row["fname"] . '' . $row["lname"];
+            $expirationDate = $row["expiration_date"];
+
+            self::sendReseravationExpirationReminder($book_id, $title, $email, $name, $expirationDate);
+        }
+    }
+
+    public static function sendReseravationExpirationReminder($book_id, $title, $email, $name, $expirationDate)
+    {
+        require_once Config::getServicePath('emailService.php');
+        $emailService = new EmailService();
+        $emailTemplate = new EmailTemplate();
+        $notificationController = new NotificationController();
+
+        $subject = "Book Reservation Reminder";
+
+        $specificMessage = "<h4>Your reservation for the book '<strong>$title</strong>' (ID: $book_id) is about to expire on $expirationDate.</h4> 
+        <p>Please make sure to collect the book before $expirationDate.</p>";
+
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+        $notification = $notificationController->insertNotification($email, strip_tags($specificMessage));
+
+        if (!$emailSent) {
+            error_log("Failed to send email to: " . $email);
+        }
+
+        if (!$notification) {
+            error_log("Failed to send notification to: $name ");
         }
     }
 

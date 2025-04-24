@@ -51,7 +51,7 @@ require_once Config::getViewPath("common","head.php");
     </div>
     <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
 
-    <script src="<?php echo Config::getJsPath("login.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("staffLogin.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>

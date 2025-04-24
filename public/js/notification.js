@@ -10,13 +10,13 @@ function notificationload() {
         if (resp.success && resp.notifications.length > 0) {
             resp.notifications.forEach(notification => {
                 let item = `
-                    <div class="dropdown-item notification-item ${notification.status === 'unread' ? 'unread' : 'read'}"
-                        data-id="${notification.id}">
-                        <small class="text-muted">${notification.created_at}</small>
-                        <p>${notification.message}</p>
-                        <hr>
-                    </div>
-                `;
+                <div class="dropdown-item notification-item ${notification.status === 'unread' ? 'unread' : 'read'}"
+                    data-id="${notification.id}">
+                    <small class="text-muted">${notification.created_at}</small>
+                    <p>${notification.message}</p>
+                </div>
+            `;
+            
                 notificationList.innerHTML += item;
             });
         } else {
@@ -28,42 +28,53 @@ function notificationload() {
     });
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
     const dropdown = document.getElementById("notification-dropdown");
-    const triggerButton = document.getElementById("notification-bell"); // Button to open dropdown
+    const triggerButton = document.getElementById("notification-bell");
     const notificationList = document.getElementById("notification-list");
 
-    // Function to toggle dropdown visibility
     function toggleDropdown() {
-        if (dropdown.style.display === "none" || dropdown.style.display === "") {
-            dropdown.style.display = "block";
-        } else {
-            dropdown.style.display = "none";
-        }
+        dropdown.style.display = (dropdown.style.display === "none" || dropdown.style.display === "") ? "block" : "none";
     }
 
-    // Open dropdown when clicking the bell icon
+    // Toggle dropdown and load notifications
     triggerButton.addEventListener("click", function (event) {
-        event.stopPropagation(); // Prevent the click event from propagating to document
+        event.stopPropagation();
         toggleDropdown();
-        notificationload(); // Load notifications when the dropdown opens
+        notificationload();
     });
 
-    // Close dropdown when clicking outside
-    document.addEventListener("click", function (event) {
-        if (!dropdown.contains(event.target) && event.target !== triggerButton) {
-            dropdown.style.display = "none"; // Close the dropdown
-        }
-    });
+    // Unified outside click handling
+        document.addEventListener("click", function (event) {
+            const isClickInsideDropdown = dropdown.contains(event.target);
+            const isBellClick = event.target === triggerButton || triggerButton.contains(event.target);
+            const clickedNotification = event.target.closest(".notification-item");
+        
+            const allItems = document.querySelectorAll(".notification-item");
+        
+            if (clickedNotification) {
+                // Deselect others
+                allItems.forEach(item => item.classList.remove("selected"));
+                // Select clicked
+                clickedNotification.classList.add("selected");
+            } else {
+                // Clicked outside, remove selection
+                allItems.forEach(item => item.classList.remove("selected"));
+            }
+        
+            if (!isClickInsideDropdown && !isBellClick) {
+                dropdown.style.display = "none";
+            }
+        });
+        
 
     // Mark notification as read when clicked
     notificationList.addEventListener("click", function (event) {
         let notificationItem = event.target.closest(".notification-item");
-        
-        if (!notificationItem) return; // Prevent errors if click is not on an item
+        if (!notificationItem) return;
 
         let notificationId = notificationItem.dataset.id;
-
         let formData = new FormData();
         formData.append("notification_id", notificationId);
 
@@ -75,14 +86,13 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(resp => {
             if (resp.success) {
                 notificationItem.classList.remove("unread");
-                notificationItem.classList.add("read"); 
-                notificationItem.style.opacity = "0.5"; // Fade out to indicate it's read
+                notificationItem.classList.add("read");
+                notificationItem.style.opacity = "0.5";
             }
         })
         .catch(error => console.error("Error:", error));
     });
 
-    // Fetch unread count when the page loads
     fetchNotificationCount();
 });
 

@@ -1,22 +1,22 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
 // Reset last activity time (only if user is active)
 $_SESSION['staff']['last_activity'] = time();
 
-$user_id = $_SESSION["staff"]["staff_id"]; 
+$user_id = $_SESSION["staff"]["staff_id"];
 $role_name = $_SESSION["staff"]["role_name"];
 
 ?>
@@ -27,7 +27,7 @@ $role_name = $_SESSION["staff"]["role_name"];
 <?php
 $pageTitle = "Profile";
 $pageCss = "profile.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body>
@@ -42,7 +42,7 @@ require_once Config::getViewPath("common","head.php");
     <div class="d-flex bg-light">
 
         <div>
-        <div class="h-100 d-none d-lg-block">
+            <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
@@ -160,8 +160,21 @@ require_once Config::getViewPath("common","head.php");
                             <div class="col-12 col-md-4 mb-2"><label for="new-password">New Password</label></div>
                             <div class="col-12 col-md-8">
                                 <input id="new-password" class="form-control" type="password">
-                                <span id="new-password-error" class="text-danger"></span> <!-- Error message for new password -->
+                                <span id="new-password-error" class="text-danger"></span>
+                                <div id="passwordRulesContainer" class="mt-2" style="display: none;">
+                                    <ul class="list-unstyled mb-0">
+                                        <li id="rule-length" class="text-danger">At least 8 characters</li>
+                                        <li id="rule-uppercase" class="text-danger">At least one uppercase letter</li>
+                                        <li id="rule-lowercase" class="text-danger">At least one lowercase letter</li>
+                                        <li id="rule-digit" class="text-danger">At least one number</li>
+                                        <li id="rule-special" class="text-danger">At least one special character</li>
+                                    </ul>
+                                </div> <!-- Error message for new password -->
                             </div>
+
+
+
+
                         </div>
 
                         <div class="row d-flex my-4">

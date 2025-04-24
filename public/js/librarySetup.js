@@ -159,6 +159,17 @@ function saveUpdatedLibInfo() {
 
 function sendEmailToAllStaff() {
     if (validateStaffEmail()) {
+        const button = document.getElementById("btn1");
+        const btnText = document.getElementById("btnText1");
+        const spinner = document.getElementById("spinner1");
+    
+        // Show spinner, hide icon
+        if (btnText) btnText.classList.add("d-none");
+        if (spinner) spinner.classList.remove("d-none");
+    
+        // Prevent multiple clicks
+        button.disabled = true;
+
         var subject = document.getElementById("staffsubject").value.trim();
         var message = document.getElementById("staffmsg").value.trim();
 
@@ -178,7 +189,9 @@ function sendEmailToAllStaff() {
                     });
 
                 } else {
-                    showAlert("Error", resp.message, "error");
+                    showAlert("Error", resp.message, "error").then(()=>{
+                        resetButtonUI(button, btnText, spinner);
+                    });
 
                 }
             })
@@ -191,8 +204,26 @@ function sendEmailToAllStaff() {
 
 }
 
+function resetButtonUI(button, btnText, spinner) {
+    if (btnText) btnText.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
+}
+
+
 function sendEmailToAllMembers() {
     if (validateMemberEmail()) {
+        const button = document.getElementById("btn2");
+        const btnText = document.getElementById("btnText2");
+        const spinner = document.getElementById("spinner2");
+    
+        // Show spinner, hide icon
+        if (btnText) btnText.classList.add("d-none");
+        if (spinner) spinner.classList.remove("d-none");
+    
+        // Prevent multiple clicks
+        button.disabled = true;
+
         var subject = document.getElementById("membersubject").value.trim();
         var message = document.getElementById("membermsg").value.trim();
 
@@ -212,8 +243,9 @@ function sendEmailToAllMembers() {
                     });
 
                 } else {
-                    showAlert("Error", resp.message, "error");
-
+                    showAlert("Error", resp.message, "error").then(()=>{
+                        resetButtonUI(button, btnText, spinner);
+                    });
                 }
             })
             .catch(error => {

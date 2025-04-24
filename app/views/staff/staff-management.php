@@ -23,7 +23,7 @@ $_SESSION['staff']['last_activity'] = time();
 <?php
 $pageTitle = "Staff Management";
 $pageCss = "staff-management.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 
@@ -32,16 +32,16 @@ require_once Config::getViewPath("common","head.php");
     <div id="box1">
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
-        <div>
-        <div class="h-100 d-none d-lg-block">
-                <?php include "dash_sidepanel.php"; ?>
-            </div>
+            <div>
+                <div class="h-100 d-none d-lg-block">
+                    <?php include "dash_sidepanel.php"; ?>
+                </div>
 
-            <div class="h-100 d-block d-lg-none">
-                <?php include "small_sidepanel.php"; ?>
-            </div>
+                <div class="h-100 d-block d-lg-none">
+                    <?php include "small_sidepanel.php"; ?>
+                </div>
 
-        </div>
+            </div>
 
             <div class="container-fluid mx-md-5 mb-5 bg-white">
                 <div class="row">
@@ -77,11 +77,12 @@ require_once Config::getViewPath("common","head.php");
 
                     </div>
                     <div class="col-md-2 text-end">
-                        <button class="btn btn-dark" onclick="sendKey();"><i class="fas fa-paper-plane me-2"></i>Send Key</button>
+                        <button class="btn btn-dark" id="btn" onclick="sendKey();">
+                            <span id="btnText"><i class="fas fa-paper-plane me-2"></i>Send Key</span>
+                            <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
+                        </button>
                     </div>
                 </div>
-
-
 
                 <div class="row g-5 m-1 m-md-5 justify-content-center">
 
@@ -90,7 +91,7 @@ require_once Config::getViewPath("common","head.php");
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-list display-1" style="color: #2AC23A;"></i>
-                            <p class="fw-bold fs-5 mt-3">View Staff</p>
+                            <p class="fw-bold fs-5 mt-3">Staff</p>
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewstaff"
                                     class="btn rounded-pill px-5 mt-2"
@@ -106,7 +107,7 @@ require_once Config::getViewPath("common","head.php");
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-user-minus text-warning display-1"></i>
-                            <p class="fw-bold fs-5 mt-3">View Detective Staff</p>
+                            <p class="fw-bold fs-5 mt-3">Deactive Staff</p>
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning px-5 rounded-pill mt-2">View</a>
                             </div>
@@ -120,7 +121,7 @@ require_once Config::getViewPath("common","head.php");
             </div>
         </div>
     </div>
-      <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
 
     <script src="<?php echo Config::getJsPath("staff.js"); ?>"></script>
 

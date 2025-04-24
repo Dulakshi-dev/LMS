@@ -41,7 +41,7 @@ class MemberModel
     private static function getTotalMembers($statusId)
     {
         $result = Database::search("SELECT COUNT(*) AS total 
-FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE FIND_IN_SET(`status_id`, '$statusId') ");
+                                    FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE FIND_IN_SET(`status_id`, '$statusId') ");
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
@@ -122,7 +122,6 @@ FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WH
         return $row['total'] ?? 0;
     }
 
-
     public static function searchMemberRequests($nic, $userName, $status = 'Pending', $page, $resultsPerPage)
     {
         $statusId = ($status === 'Pending') ? 3 : 4;
@@ -169,68 +168,67 @@ FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WH
 
     public static function loadMemberDetails($id)
     {
-        $rs = Database::search("SELECT `member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
+        $rs = Database::search("SELECT `member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email` FROM `member` 
+        INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
         return $rs;
     }
 
-    public static function approveMembership($id)
+    public static function approveMembership($id, $memberID, $password)
     {
         Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
-        $memberID = self::generateMemberID();
-        $password = self::generatePassword();
+
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        self::sendPasswordResetMail($id, $memberID, $password);
         Database::insert("INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES('$memberID','$hashedPassword','$id');");
 
         return true;
     }
 
-    public static function sendPasswordResetMail($id, $memberID, $password, $vcode = null)
-    {
-        $rs = Database::search("SELECT * FROM `member` WHERE `id` = '$id'");
-        $row = $rs->fetch_assoc();
+    // public static function sendPasswordResetMail($id, $memberID, $password, $vcode = null)
+    // {
+    //     $rs = Database::search("SELECT * FROM `member` WHERE `id` = '$id'");
+    //     $row = $rs->fetch_assoc();
 
-        require_once Config::getServicePath('emailService.php');
+    //     require_once Config::getServicePath('emailService.php');
 
-        $name = $row["fname"] . " " . $row["lname"];
-        $email = $row["email"];
-        $subject = 'Library Membership Approved – Your Login Details';
+    //     $name = $row["fname"] . " " . $row["lname"];
+    //     $email = $row["email"];
+    //     $subject = 'Library Membership Approved – Your Login Details';
 
-        $resetLink = '';
-        if (!empty($vcode)) {
-            $resetLink = '<div style="margin-bottom: 10px;">
-                <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&vcode=' . $vcode . '">Click here to reset your password</a>
-            </div>';
-        } else {
-            $resetLink = '<div style="margin-bottom: 10px;">
-                <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&id=' . $id . '">Click here to reset your password</a>
-            </div>';
-        }
+    //     $resetLink = '';
+    //     if (!empty($vcode)) {
+    //         $resetLink = '<div style="margin-bottom: 10px;">
+    //             <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&vcode=' . $vcode . '">Click here to reset your password</a>
+    //         </div>';
+    //     } else {
+    //         $resetLink = '<div style="margin-bottom: 10px;">
+    //             <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&id=' . $id . '">Click here to reset your password</a>
+    //         </div>';
+    //     }
         
 
-        $body = '
-            <h4 style="text-align: center;">Welcome to SHELFLOOM!</h4> 
-            <p>Dear ' . $name . ',</p>
-            <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-                <p>You can now log in to the library management system using the credentials provided below:</p>
-                <h2>Your Member ID is ' . $memberID . '</h2>
-                <h2>Your temporary password is ' . $password . '</h2>
-                <p>Please use the above credentials to log in to your account or if you want to change the password before login to the system below is the password reset link.</p><br>
-                ' . $resetLink . '
-                <p>If you have any questions or issues, please reach out to us.</p>
-                <p>Call:[tel_num]</p>
-                <div style="margin-top: 20px;">
-                    <p>Best regards,</p>
-                    <p>Shelf Loom Team</p>
-                </div>
-            </div>';
+    //     $body = '
+    //         <h4 style="text-align: center;">Welcome to SHELFLOOM!</h4> 
+    //         <p>Dear ' . $name . ',</p>
+    //         <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+    //             <p>You can now log in to the library management system using the credentials provided below:</p>
+    //             <h2>Your Member ID is ' . $memberID . '</h2>
+    //             <h2>Your temporary password is ' . $password . '</h2>
+    //             <p>Please use the above credentials to log in to your account or if you want to change the password before login to the system below is the password reset link.</p><br>
+    //             ' . $resetLink . '
+    //             <p>If you have any questions or issues, please reach out to us.</p>
+    //             <p>Call:[tel_num]</p>
+    //             <div style="margin-top: 20px;">
+    //                 <p>Best regards,</p>
+    //                 <p>Shelf Loom Team</p>
+    //             </div>
+    //         </div>';
 
-        $emailService = new EmailService();
-        $emailSent = $emailService->sendEmail($email, $subject, $body);
+    //     $emailService = new EmailService();
+    //     $emailSent = $emailService->sendEmail($email, $subject, $body);
 
-        return $emailSent;
-    }
+    //     return $emailSent;
+    // }
 
     public static function sendMemberMail($name, $email, $subject, $msg)
     {

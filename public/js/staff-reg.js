@@ -10,6 +10,7 @@ function showAlert(title, message, type) {
 
 document.addEventListener("DOMContentLoaded", () => {
     const passwordInput = document.getElementById("password");
+    const cpasswordInput = document.getElementById("cpassword");
     const rulesContainer = document.getElementById("passwordRulesContainer");
 
     // Show the password rules when the password field is focused
@@ -18,11 +19,8 @@ document.addEventListener("DOMContentLoaded", () => {
             rulesContainer.style.display = "block";
         });
 
-        // Hide the password rules when the password field loses focus
-        passwordInput.addEventListener("blur", () => {
-            setTimeout(() => {
-                rulesContainer.style.display = "none";
-            }, 150); // allow clicking inside the rule box if needed
+        cpasswordInput.addEventListener("focus", () => {
+            rulesContainer.style.display = "none";
         });
 
         // Update password rules on input
@@ -130,11 +128,16 @@ function submit() {
         special: /[\W_]/.test(password)
     };
 
+    const rulesContainer = document.getElementById("passwordRulesContainer");
 
-    const allRulesPassed = Object.values(passwordRules).every(v => v === true);
-    if (!allRulesPassed) {
-        document.getElementById("passwordError").textContent = "Password must meet all requirements.";
+    if(password ===""){
+        document.getElementById("passwordError").textContent = "Password is required.";
         isValid = false;
+
+    }else if(!passwordRules.length || !passwordRules.uppercase || !passwordRules.lowercase || !passwordRules.digit || !passwordRules.special){
+        rulesContainer.style.display = "block";
+        isValid = false;
+
     }
 
     // Confirm password check
@@ -158,9 +161,7 @@ function submit() {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    document.querySelector(".box-2").style.display = "block";
-
-
+                    document.querySelector(".box-2").classList.remove("d-none");
                 } else {
                     showAlert("Error", resp.message, "error");
 
@@ -186,6 +187,21 @@ function register() {
     var password = document.getElementById("password").value.trim();
     var key = document.getElementById("enrollmentKey").value.trim();
 
+    let isValid = true;
+
+    if (key === "") {
+        document.getElementById("enrollmentKeyError").textContent = "Enrollment key required.";
+        isValid = false;
+    }
+
+    if (isValid) {
+
+    const button1 = document.getElementById("btn1");
+    const spinner = document.getElementById("spinner");
+
+    // Show spinner, hide icon
+    if (button1) button1.classList.add("d-none");
+    if (spinner) spinner.classList.remove("d-none");
 
     var formData = new FormData();
     formData.append("fname", fname);
@@ -210,7 +226,10 @@ function register() {
                 });
 
             } else {
-                showAlert("Error", resp.message, "error");
+                showAlert("Error", resp.message, "error").then(()=>{
+                    if (button1) button1.classList.remove("d-none");
+                    if (spinner) spinner.classList.add("d-none");
+                });
 
             }
         })
@@ -219,6 +238,12 @@ function register() {
             showAlert("Error", "An error occurred. Please try again.", "error");
 
         });
+    }
 }
 
 
+function resetButtonUI(button, btnText, spinner) {
+    if (btnText) btnText.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
+}

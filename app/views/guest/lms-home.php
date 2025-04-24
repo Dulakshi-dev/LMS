@@ -36,15 +36,17 @@ require_once Config::getViewPath("common","head.php");
         <div class="container">
             <div class="row mb-4">
                 <div class="col-12">
-                    <h1 class="fw-bold"><span class="text-danger">Top</span> <span class="text-dark">Books</span></h1>
+                    <h1 class="fw-bold" id="topicTopBooks"><span class="text-danger">Top</span> <span class="text-dark">Books</span></h1>
+                    <h1 class="fw-bold d-none" id="topicNewArrivals"><span class="text-danger">New</span> <span class="text-dark">Arrivals</span></h1>
                 </div>
+              
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="row g-4" id="topBookBody">
+                    <div class="row g-4" id="bookBody">
                         <!-- Books will be loaded here by JavaScript -->
-                        <!-- Each book card should be wrapped in a div with class "col book-card" -->
                     </div>
+                   
                 </div>
             </div>
         </div>

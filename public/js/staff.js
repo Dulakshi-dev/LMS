@@ -42,15 +42,25 @@ function loadUsers(page = 1, status = "Active") {
                             <button class="btn btn-warning my-1 btn-sm send-mail" data-userid="${user.staff_id}">
                                 <i class="fa fa-envelope"></i>
                             </button>
-                            <button class="btn btn-danger my-1 btn-sm deactivate" data-userid="${user.id}">
-                                <i class="fa fa-trash"></i>
+                           
+                            <button class="btn btn-danger my-1 btn-sm deactivate" 
+                                data-userid="${user.id}"
+                                data-name="${user.fname} ${user.lname}"
+                                data-email="${user.email}">
+                                <i class="fa fa-trash icon"></i>
+                                <span class="spinner-border spinner-border-sm d-none spinner" role="status"></span>
                             </button>
                         `;
                     } else {
                         // Show Activate button for deactivated users
                         actionButtons = `
-                            <button class="btn btn-success my-1 btn-sm activate" data-userid="${user.id}">
-                                <i class="fa fa-plus"></i>
+                            
+                            <button class="btn btn-success my-1 btn-sm activate" 
+                                data-userid="${user.id}"
+                                data-name="${user.fname} ${user.lname}"
+                                data-email="${user.email}">
+                                <i class="fa fa-plus icon"></i>
+                                <span class="spinner-border spinner-border-sm d-none spinner" role="status"></span>
                             </button>
                         `;
                     }
@@ -103,14 +113,39 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".deactivate")) {
             let button = event.target.closest(".deactivate");
-            deactivateUser(button.dataset.userid);
+            if (!button) return;
+
+            // Extract icon and spinner elements inside the clicked button
+            var icon = button.querySelector(".icon");
+            var spinner = button.querySelector(".spinner");
+
+            // Show spinner, hide icon
+            if (icon) icon.classList.add("d-none");
+            if (spinner) spinner.classList.remove("d-none");
+
+            // Prevent multiple clicks
+            button.disabled = true;
+
+            deactivateUser(button.dataset.userid, button.dataset.name, button.dataset.email,button, icon, spinner);
         }
     });
 
     document.body.addEventListener("click", function (event) {
         if (event.target.closest(".activate")) {
             let button = event.target.closest(".activate");
-            activateUser(button.dataset.userid);
+            if (!button) return;
+
+            // Extract icon and spinner elements inside the clicked button
+            var icon = button.querySelector(".icon");
+            var spinner = button.querySelector(".spinner");
+
+            // Show spinner, hide icon
+            if (icon) icon.classList.add("d-none");
+            if (spinner) spinner.classList.remove("d-none");
+
+            // Prevent multiple clicks
+            button.disabled = true;
+            activateUser(button.dataset.userid, button.dataset.name, button.dataset.email, button, icon, spinner);
 
 
         }
@@ -149,11 +184,11 @@ function generateActiveStaffReport() {
         method: "POST",
         body: formData
     })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-    });
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
 }
 
 function generateDeactiveStaffReport() {
@@ -188,16 +223,24 @@ function generateDeactiveStaffReport() {
         method: "POST",
         body: formData
     })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-    });
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
 }
 
-function deactivateUser(user_id) {
+function resetButtonUI(button, icon, spinner) {
+    if (icon) icon.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
+}
+
+function deactivateUser(user_id,name, email , button, icon, spinner) {
     var formData = new FormData();
     formData.append("staff_id", user_id);
+    formData.append("name", name);
+    formData.append("email", email);
 
     fetch("index.php?action=deactivateuser", {
         method: "POST",
@@ -212,6 +255,8 @@ function deactivateUser(user_id) {
                 });
             } else {
                 showAlert("Error", resp.message, "error");
+                resetButtonUI(button, icon, spinner);
+
             }
         })
         .catch(error => {
@@ -399,6 +444,17 @@ function sendEmail() {
         return; // Stop execution if validation fails
     }
 
+    const button = document.getElementById("btn");
+    const btnText = document.getElementById("btnText");
+    const spinner = document.getElementById("spinner");
+
+    // Show spinner, hide icon
+    if (btnText) btnText.classList.add("d-none");
+    if (spinner) spinner.classList.remove("d-none");
+
+    // Prevent multiple clicks
+    button.disabled = true;
+
     // Prepare form data for sending
     var formData = new FormData();
     formData.append("subject", subject);
@@ -419,7 +475,9 @@ function sendEmail() {
                     location.reload();
                 });
             } else {
-                showAlert("Error", resp.message, "error");
+                showAlert("Error", resp.message, "error").then(() => {
+                    resetButtonUI(button, btnText, spinner);
+                });
             }
         })
         .catch(error => {
@@ -427,9 +485,11 @@ function sendEmail() {
         });
 }
 
-function activateUser(user_id) {
+function activateUser(user_id, name, email, button, icon, spinner) {
     var formData = new FormData();
     formData.append("staff_id", user_id);
+    formData.append("name", name);
+    formData.append("email", email);
 
     fetch("index.php?action=activatestaff", {
         method: "POST",
@@ -442,7 +502,8 @@ function activateUser(user_id) {
                     location.reload();
                 });
             } else {
-                showAlert("Success", "Failed to activate Staff Member", "success");
+                showAlert("Error", "Failed to activate Staff Member", "error");
+                resetButtonUI(button, icon, spinner);
 
             }
         })
@@ -482,6 +543,18 @@ function sendKey() {
     // If not valid, stop the function
     if (!isValid) return;
 
+   
+    const button = document.getElementById("btn");
+    const btnText = document.getElementById("btnText");
+    const spinner = document.getElementById("spinner");
+
+    // Show spinner, hide icon
+    if (btnText) btnText.classList.add("d-none");
+    if (spinner) spinner.classList.remove("d-none");
+
+    // Prevent multiple clicks
+    button.disabled = true;
+
     const formData = new FormData();
     formData.append("email", email);
     formData.append("role", roleInput.value); // Use .value here
@@ -497,7 +570,10 @@ function sendKey() {
                     location.reload();
                 });
             } else {
-                showAlert("Error", resp.message, "error");
+                showAlert("Error", resp.message, "error").then(() => {
+                    resetButtonUI(button, btnText, spinner);
+
+                });
             }
         })
         .catch(error => {
@@ -505,7 +581,11 @@ function sendKey() {
             showAlert("Error", "An error occurred. Please try again.", "error");
         });
 }
-
+function resetButtonUI(button, btnText, spinner) {
+    if (btnText) btnText.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
+}
 
 
 

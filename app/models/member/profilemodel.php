@@ -34,19 +34,22 @@ class ProfileModel
 
     public static function validateCurrentPassword($memid ,$password)
     {
-        $result = Database::search("SELECT * from `member_login` WHERE `member_id`='$memid' AND `password` = '$password'");
+        $result = Database::search("SELECT * from `member_login` WHERE `member_id`='$memid'");
         if ($result && $result->num_rows > 0) {
-            return true;
-        }else{
-            return false;
-        }
-        
-    }
+            $user = $result->fetch_assoc();
 
+            if (password_verify($password, $user['password'])) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     public static function resetPassword($memid ,$password)
-    {
-        Database::ud("UPDATE `member_login` SET `password` = '$password' WHERE `member_id`='$memid'");
+    {        
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        Database::ud("UPDATE `member_login` SET `password` = '$hashedPassword' WHERE `member_id`='$memid'");
             return true;
         
     }

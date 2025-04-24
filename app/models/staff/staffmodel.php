@@ -143,30 +143,30 @@ class StaffModel
         return $key;
     }
 
-    public static function sendEnrollmentKey($email, $role_id)
-    {
-        require_once Config::getServicePath('emailService.php');
+    // public static function sendEnrollmentKey($email, $role_id)
+    // {
+    //     require_once Config::getServicePath('emailService.php');
 
-        $key = self::generateKey($email, $role_id);
-        $subject = 'Staff Enrollment Key';
-        $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
-        <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
-        <p>Mrs,</p>
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-            <p>We are pleased to connect with you! Here’s some important information:</p>
-            <h2>Your enrollment key is <br> ' . $key . '</h2>
+    //     $key = self::generateKey($email, $role_id);
+    //     $subject = 'Staff Enrollment Key';
+    //     $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
+    //     <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Welcome!</p> 
+    //     <p>Mrs,</p>
+    //     <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+    //         <p>We are pleased to connect with you! Here’s some important information:</p>
+    //         <h2>Your enrollment key is <br> ' . $key . '</h2>
            
-            <p>If you have any questions or issues, please reach out to us.</p>
-            <p>Call:[tel_num]</p>
-            <div style="margin-top: 20px;">
-                <p>Best regards,</p>
-                <p>Shelf Loom Team</p>
-            </div>
-        </div>';
+    //         <p>If you have any questions or issues, please reach out to us.</p>
+    //         <p>Call:[tel_num]</p>
+    //         <div style="margin-top: 20px;">
+    //             <p>Best regards,</p>
+    //             <p>Shelf Loom Team</p>
+    //         </div>
+    //     </div>';
 
-        $emailService = new EmailService();
-        $emailSent = $emailService->sendEmail($email, $subject, $body);
+    //     $emailService = new EmailService();
+    //     $emailSent = $emailService->sendEmail($email, $subject, $body);
 
-        return true;
-    }
+    //     return true;
+    // }
 }

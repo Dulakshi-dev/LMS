@@ -30,12 +30,12 @@ function staffLogin() {
     if (staffid === '') {
         staffidError.innerText = 'Staff ID is required.';
         return;
-    } else if(!staffid.match(staffidPattern)){
+    } else if (!staffid.match(staffidPattern)) {
         staffidError.innerText = 'Invalid Staff ID.';
         return;
     } else if (password === '') {
         passwordError.innerText = 'Password is required.';
-        return; 
+        return;
     } else {
         // Create a FormData object to send data via POST
         let formData = new FormData();
@@ -48,20 +48,20 @@ function staffLogin() {
             method: "POST",
             body: formData,
         })
-        .then(response => response.json()) // Parse response as JSON
-        .then(resp => {
-            if (resp.success) {
-                // If login is successful, redirect to the dashboard
-                window.location.href = "index.php?action=dashboard";
-            } else {
-                showAlert("Error", resp.message, "error");
-                // Optional: Uncheck remember me on error
-                document.getElementById("rememberme").checked = false;
-            }
-        })
-        .catch(error => {
-            showAlert("Error", "Error fetching user data: " + error, "error");
-        });
+            .then(response => response.json()) // Parse response as JSON
+            .then(resp => {
+                if (resp.success) {
+                    // If login is successful, redirect to the dashboard
+                    window.location.href = "index.php?action=dashboard";
+                } else {
+                    showAlert("Error", resp.message, "error");
+                    // Optional: Uncheck remember me on error
+                    document.getElementById("rememberme").checked = false;
+                }
+            })
+            .catch(error => {
+                showAlert("Error", "Error fetching user data: " + error, "error");
+            });
     }
 }
 
@@ -100,12 +100,23 @@ function forgotpw() {
 
     if (email === "") {
         response.innerHTML = "Please enter the email";
-    }else if(!/^\S+@\S+\.\S+$/.test(email)){
+    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
         response.innerHTML = "Invalid email address";
-    }else{
+    } else {
+        const button = document.getElementById("btn");
+        const btnText = document.getElementById("btnText");
+        const spinner = document.getElementById("spinner");
+    
+        // Show spinner, hide icon
+        if (btnText) btnText.classList.add("d-none");
+        if (spinner) spinner.classList.remove("d-none");
+    
+        // Prevent multiple clicks
+        button.disabled = true;
+
         var formData = new FormData();
         formData.append("email", email);
-    
+
         fetch("index.php?action=forgotpassword", {
             method: "POST",
             body: formData,
@@ -113,17 +124,21 @@ function forgotpw() {
             .then(response => response.json())
             .then(resp => {
                 if (resp.success) {
-                    showAlert("Info", resp.message, "info");
+                    showAlert("Info", resp.message, "info").then(() => {
+                        location.reload();
+
+                    });
+
                 } else {
                     response.innerHTML = resp.message;
+                    resetButtonUI(button, btnText, spinner);
+
                 }
             })
             .catch(error => {
                 showAlert("Error", "Error fetching user data: " + error, "error");
             });
     }
-    
-
 };
 
 function resetpassword() {
@@ -138,14 +153,23 @@ function resetpassword() {
     pwError.innerText = '';
     cpwError.innerText = '';
 
+    const rules = {
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        digit: /[0-9]/.test(password),
+        special: /[\W_]/.test(password)
+    };
+    const rulesContainer = document.getElementById("passwordRulesContainer");
+
     // Validate password
     if (password === "") {
         pwError.textContent = "Password is required.";
 
-    } else if (password.length < 8) {
-        pwError.textContent = "Password must be at least 8 characters.";
-
-    } else if (confirmPassword === "") {
+    } else if (!rules.length || !rules.uppercase || !rules.lowercase || !rules.digit || !rules.special) {
+        rulesContainer.style.display = "block";
+    }else if (confirmPassword === "") {
+        rulesContainer.style.display = "none";
         cpwError.textContent = "Confirm password is required.";
 
     } else if (confirmPassword !== password) {
@@ -182,6 +206,7 @@ function resetpassword() {
 
 document.addEventListener("DOMContentLoaded", () => {
     const passwordInput = document.getElementById("pw");
+    const cpasswordInput = document.getElementById("cpw");
     const rulesContainer = document.getElementById("passwordRulesContainer");
 
     // Only continue if both elements exist
@@ -191,11 +216,10 @@ document.addEventListener("DOMContentLoaded", () => {
         rulesContainer.style.display = "block";
     });
 
-    passwordInput.addEventListener("blur", () => {
-        setTimeout(() => {
-            rulesContainer.style.display = "none";
-        }, 200);
+    cpasswordInput.addEventListener("focus", () => {
+        rulesContainer.style.display = "none";
     });
+
 
     passwordInput.addEventListener("input", () => {
         const password = passwordInput.value;
@@ -222,4 +246,11 @@ function updateRule(id, isValid) {
 
     element.classList.toggle("text-danger", !isValid);
     element.classList.toggle("text-success", isValid);
+}
+
+
+function resetButtonUI(button, icon, spinner) {
+    if (icon) icon.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
 }

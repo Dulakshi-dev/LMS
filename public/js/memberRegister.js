@@ -49,6 +49,8 @@ function registerBox2() {
     var Address = document.getElementById("Address").value;
     var PhoneNumber = document.getElementById("PhoneNumber").value;
 
+    document.getElementById("Addresserror").innerText = "";
+    document.getElementById("Pnumerror").innerText = "";
     if (Address === "") {
         document.getElementById("Addresserror").innerText = "Please enter Address";
         return false;
@@ -65,7 +67,6 @@ function registerBox2() {
         document.getElementById("Box2").classList.add("d-none");
         document.getElementById("Box3").classList.remove("d-none");
         return false;
-
     }
 }
 
@@ -84,9 +85,16 @@ function registerBox3() {
 
         document.getElementById("Emailerror").innerText = "";
 
-        var spinner = document.getElementById("emailSpinner");
-        spinner.classList.remove("d-none");
-        document.getElementById("btn4").classList.add("d-none");
+        const button = document.getElementById("btn4");
+        const btnText = document.getElementById("btnText");
+        const spinner = document.getElementById("spinner");
+    
+        // Show spinner, hide icon
+        if (btnText) btnText.classList.add("d-none");
+        if (spinner) spinner.classList.remove("d-none");
+    
+        // Prevent multiple clicks
+        button.disabled = true;
 
         var formData = new FormData();
         formData.append("email", email);
@@ -106,7 +114,9 @@ function registerBox3() {
                     // Start OTP Timer
                     startOTPTimer(120); // 120 seconds (2 minutes)
                 } else {
-                    showAlert("Error", resp.message, "error");
+                    showAlert("Error", resp.message, "error").then(()=>{
+                        resetButtonUI(button, btnText, spinner);
+                    });
                 }
             })
             .catch(error => {
@@ -203,10 +213,11 @@ function backToBox2() {
 
 // Function to navigate back to Box 3
 function backToBox3() {
+    const button = document.getElementById("btn4");
+    const btnText = document.getElementById("btnText");
+    const spinner = document.getElementById("spinner");
 
-    var spinner = document.getElementById("emailSpinner");
-    spinner.classList.add("d-none");
-    document.getElementById("btn4").classList.remove("d-none");
+    resetButtonUI(button, btnText, spinner);
 
     document.getElementById("Box4").classList.add("d-none");
     document.getElementById("Box3").classList.remove("d-none");
@@ -358,5 +369,8 @@ function register(transactionId) {
     return false;
 }
 
-
-
+function resetButtonUI(button, btnText, spinner) {
+    if (btnText) btnText.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
+}

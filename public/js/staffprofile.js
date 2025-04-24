@@ -184,7 +184,6 @@ function validateCurrentPassword(user_id) {
 
 }
 
-
 function saveNewPassword(user_id) {
     const newPassword = document.getElementById("new-password").value.trim();
     const confirmPassword = document.getElementById("confirm-password").value.trim();
@@ -196,16 +195,37 @@ function saveNewPassword(user_id) {
     let isValid = true;
 
     // Validate new password length
-    if (newPassword.length < 8 || newPassword.length > 15) {
-        document.getElementById("new-password-error").textContent = "Password must be 8-15 characters.";
+    if (newPassword === "") {
+        document.getElementById("new-password-error").textContent = "Enter the new password.";
         isValid = false;
     }
 
-    // Check if passwords match
-    if (newPassword !== confirmPassword) {
+    const rules = {
+        length: newPassword.length >= 8,
+        uppercase: /[A-Z]/.test(newPassword),
+        lowercase: /[a-z]/.test(newPassword),
+        digit: /[0-9]/.test(newPassword),
+        special: /[\W_]/.test(newPassword)
+    };
+    const rulesContainer = document.getElementById("passwordRulesContainer");
+
+    // Validate password
+
+    if (!rules.length || !rules.uppercase || !rules.lowercase || !rules.digit || !rules.special) {
+        rulesContainer.style.display = "block";
+        isValid = false;
+
+    }
+
+    if (confirmPassword === "") {
+        rulesContainer.style.display = "none";
+        document.getElementById("confirm-password-error").textContent = "Confirm the new password.";
+        isValid = false;
+    } else if (newPassword !== confirmPassword) {
         document.getElementById("confirm-password-error").textContent = "Passwords do not match.";
         isValid = false;
     }
+    
 
     // If the form is valid, proceed with saving the password
     if (isValid) {
@@ -243,4 +263,49 @@ function goBack() {
 function goBackToCurrent() {
     document.getElementById("box3").classList.add("d-none");
     document.getElementById("box2").classList.remove("d-none");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const passwordInput = document.getElementById("new-password");
+    const cpasswordInput = document.getElementById("confirm-password");
+
+    const rulesContainer = document.getElementById("passwordRulesContainer");
+
+    // Only continue if both elements exist
+    if (!passwordInput || !rulesContainer) return;
+
+    passwordInput.addEventListener("focus", () => {
+        rulesContainer.style.display = "block";
+    });
+
+    cpasswordInput.addEventListener("focus", () => {
+        rulesContainer.style.display = "none";
+    });
+
+
+    passwordInput.addEventListener("input", () => {
+        const password = passwordInput.value;
+
+        const rules = {
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            digit: /[0-9]/.test(password),
+            special: /[\W_]/.test(password)
+        };
+
+        updateRule("rule-length", rules.length);
+        updateRule("rule-uppercase", rules.uppercase);
+        updateRule("rule-lowercase", rules.lowercase);
+        updateRule("rule-digit", rules.digit);
+        updateRule("rule-special", rules.special);
+    });
+});
+
+function updateRule(id, isValid) {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    element.classList.toggle("text-danger", !isValid);
+    element.classList.toggle("text-success", isValid);
 }

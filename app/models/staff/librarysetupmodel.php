@@ -82,97 +82,29 @@ class LibrarySetupModel
         return true;
     }
 
-    public static function sendEmailToAllStaff($subject, $message)
+    public static function getAllActiveStaff()
     {
         // Search for active members only
         $rs = Database::search("SELECT * FROM `staff` WHERE `status_id` = '1'");
         
         // Check if any active members exist
         if ($rs->num_rows > 0) {
-            // Require the email service
-            require_once Config::getServicePath('emailService.php');
-            
-            // Define the email body with the message
-            $body = '<h1 style="padding-top: 30px;">Shelf Loom</h1>
-                <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Important Update!</p> 
-                <p>Dear Staff Member,</p>
-                <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-                    <p>We are pleased to connect with you! Here’s some important information:</p>
-                    <h2>'.$message.'</h2>
-                 
-                    <p>If you have any questions or issues, please reach out to us.</p>
-                    <p>Call: [tel_num]</p>
-                    <div style="margin-top: 20px;">
-                        <p>Best regards,</p>
-                        <p>Shelf Loom Team</p>
-                    </div>
-                </div>';
+            return $rs;
     
-            // Create the email service instance
-            $emailService = new EmailService();
-            
-            // Loop through all active members and send the email
-            while ($row = $rs->fetch_assoc()) {
-                $email = $row['email'];
-                // Send email to the current member
-                $emailSent = $emailService->sendEmail($email, $subject, $body);
-                
-                // If the email fails for any member, you might want to log it or return false
-                if (!$emailSent) {
-                    // Log failure or handle accordingly
-                    return false;
-                }
-            }
-    
-            return true;
         } else {
             return false;
         }
     }
 
-    public static function sendEmailToAllMembers($subject, $message)
+     public static function getAllActiveMembers()
     {
         // Search for active members only
         $rs = Database::search("SELECT * FROM `member` WHERE `status_id` = '1'");
         
         // Check if any active members exist
         if ($rs->num_rows > 0) {
-            // Require the email service
-            require_once Config::getServicePath('emailService.php');
-            
-            // Define the email body with the message
-            $body = '
-                <h4 style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Important Update!</h4> 
-                <p>Dear Member,</p>
-                <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-                    <p>We are pleased to connect with you! Here’s some important information:</p>
-                    <h2>'.$message.'</h2>
-                 
-                    <p>If you have any questions or issues, please reach out to us.</p>
-                    <p>Call: [tel_num]</p>
-                    <div style="margin-top: 20px;">
-                        <p>Best regards,</p>
-                        <p>Shelf Loom Team</p>
-                    </div>
-                </div>';
+            return $rs;
     
-            // Create the email service instance
-            $emailService = new EmailService();
-            
-            // Loop through all active members and send the email
-            while ($row = $rs->fetch_assoc()) {
-                $email = $row['email'];
-                // Send email to the current member
-                $emailSent = $emailService->sendEmail($email, $subject, $body);
-                
-                // If the email fails for any member, you might want to log it or return false
-                if (!$emailSent) {
-                    // Log failure or handle accordingly
-                    return false;
-                }
-            }
-    
-            return true;
         } else {
             return false;
         }

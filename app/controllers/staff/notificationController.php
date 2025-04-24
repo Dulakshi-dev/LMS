@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../../../main.php';
+require_once Config::getControllerPath('system', 'controller.php');
 
 class NotificationController extends Controller
 {
@@ -12,21 +13,15 @@ class NotificationController extends Controller
         $this->notificationModel = new NotificationModel();
     }
 
-    public function insertNotification()
+    public function insertNotification($email, $msg)
     {
-        if ($this->isPost()) {
-            $email = $this->getPost('email');
-            $subject = $this->getPost('subject');
-            
-            $result = NotificationModel::insertNotification($email, $subject);
+            $result = NotificationModel::insertNotification($email, $msg);
             
             if($result){
                 return true;
             }else{
                 return false;
             }
-        } else {
-            return false;
-        }    
+           
     }
 }

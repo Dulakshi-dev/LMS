@@ -89,6 +89,12 @@ class HomeModel
         return $rs ?: null; // Return null if the query fails
     }
 
+    public static function getLatestArrivals()
+    {
+        $rs = Database::search("SELECT * FROM `book` ORDER BY CAST(SUBSTRING(`book_id`, 3) AS UNSIGNED) DESC LIMIT 4;");
+        return $rs ?: null; // Return null if the query fails
+    }
+
 
     
     

@@ -59,14 +59,6 @@ class Database
         return $resultset;
     }
 
-    public static function escape($value)
-    {
-        Database::setUpConnection(); // Ensure connection is initialized
-        return mysqli_real_escape_string(self::$connection, $value);
-    }
-    
-
-
     // Close connection
     public static function closeConnection()
     {

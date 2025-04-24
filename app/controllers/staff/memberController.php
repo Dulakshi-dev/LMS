@@ -81,10 +81,16 @@ class MemberController extends Controller
     {
         if ($this->isPost()) {
             $id = $this->getPost('id');
+            $name = $this->getPost('name');
+            $email = $this->getPost('email');
 
-            $result = MemberModel::approveMembership($id);
+            $memberID = MemberModel::generateMemberID();
+            $password = MemberModel::generatePassword();
+            $result = MemberModel::approveMembership($id, $memberID, $password);  
+
 
             if ($result) {
+                $this->sendRequestApprovedEmail($id, $name, $email, $memberID, $password);
                 $this->jsonResponse(["message" => "Membership approved"]);
             } else {
                 $this->jsonResponse(["message" => "User not found."], false);
@@ -94,14 +100,45 @@ class MemberController extends Controller
         }
     }
 
+    public function sendRequestApprovedEmail($id, $name, $email, $memberID, $password)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+        $subject = 'Membership Request Approved';
+
+        $resetLink = '<div style="margin-bottom: 10px;">
+        <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&id=' . $id . '">Click here to reset your password</a>
+        </div>';
+
+        $specificMessage = '<h4>Welcome to our Library Management Syatem.</h4>
+        <p>You can now log in to the library management system using the credentials provided below:</p>
+                <h4>Your Member ID: ' . $memberID . '</h4>
+                <h4>Your temporary password: ' . $password . '</h4>
+                <p>Please use the above credentials to log in to your account or if you want to change the password before login to the system, below is the password reset link.</p>
+                ' . $resetLink;
+
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailService = new EmailService();
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+        $notificationController = new NotificationController();
+        $notification = $notificationController->insertNotification($email, "Welcome to our Library Management System");
+    
+    }
+
     public function deactivateMember()
     {
         if ($this->isPost()) {
             $id = $this->getPost('id');
+            $name = $this->getPost('name');
+            $email = $this->getPost('email');
 
-            $result = MemberModel::deactivateMember($id);
+            $result = MemberModel::deactivateMember($id, $name, $name);
 
             if ($result) {
+                $this->sendDeactivateMemberEmail($name, $email);  
                 $this->jsonResponse(["message" => "Member deactivated"]);
             } else {
                 $this->jsonResponse(["message" => "Member not found."], false);
@@ -111,14 +148,35 @@ class MemberController extends Controller
         }
     }
 
+    public function sendDeactivateMemberEmail($name, $email)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+        $subject = 'Membership Deactivated';
+
+        $specificMessage = '
+                <h4>Your library account has been deactivated by the administration.</h4>';
+             
+
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailService = new EmailService();
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+    }
+
     public function rejectMember()
     {
         if ($this->isPost()) {
             $id = $this->getPost('id');
+            $name = $this->getPost('name');
+            $email = $this->getPost('email');
 
-            $result = MemberModel::rejectMember($id);
+            $result = MemberModel::rejectMember($id, $name, $name);
 
             if ($result) {
+                $this->sendRejectMemberEmail($name, $email);  
                 $this->jsonResponse(["message" => "Member Rejected"]);
             } else {
                 $this->jsonResponse(["message" => "User not found."], false);
@@ -126,6 +184,23 @@ class MemberController extends Controller
         } else {
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
+    }
+
+    public function sendRejectMemberEmail($name, $email)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+        $subject = 'Membership Request Rejected';
+
+     
+        $specificMessage = '<h4>Your membership request has been rejected by the administration.</h4>';
+     
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailService = new EmailService();
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
+
     }
 
     public function loadMemberDetails()
@@ -229,11 +304,14 @@ class MemberController extends Controller
     public function activateMember()
     {
         if ($this->isPost()) {
-            $id = $this->getPost('memberid');
+            $id = $this->getPost('id');
+            $name = $this->getPost('name');
+            $email = $this->getPost('email');
 
-            $result = MemberModel::activateMember($id);
+            $result = MemberModel::activateMember($id, $name, $name);
 
             if ($result) {
+                $this->sendActivateMemberEmail($name, $email);  
                 $this->jsonResponse(["message" => "Member activated again"]);
             } else {
                 $this->jsonResponse(["message" => "Member not found."], false);
@@ -241,6 +319,21 @@ class MemberController extends Controller
         } else {
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
+    }
+
+    public function sendActivateMemberEmail( $name, $email)
+    {
+        require_once Config::getServicePath('emailService.php');
+
+        $subject = 'Membership Activated Again';
+
+        $specificMessage = '<h4>Youe account has been activated again by the administration.</h4>';
+
+        $emailTemplate = new EmailTemplate();
+        $body = $emailTemplate->getEmailBody($name, $specificMessage);
+
+        $emailService = new EmailService();
+        $emailSent = $emailService->sendEmail($email, $subject, $body);
     }
 
     public function activateRequest()
@@ -259,4 +352,5 @@ class MemberController extends Controller
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
+
 }

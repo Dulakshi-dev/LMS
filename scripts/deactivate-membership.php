@@ -2,10 +2,10 @@
 require_once __DIR__ . '/../main.php';
 
 require_once config::getdbPath();
-require_once Config::getModelPath('paymentmodel.php');
+require_once Config::getModelPath('member','paymentmodel.php');
 
 // Call the function to deactivate expired reservations
 PaymentModel::checkOverduePayments();
 
-echo "Expired memberships deactivated successfully.";
+error_log("Expired memberships deactivated successfully.")
 ?>

@@ -27,6 +27,7 @@ require_once Config::getViewPath("common","head.php");
                     </div>
 
                     <input class="form-control" type="password" placeholder="Create new password" id="pw" name="password">
+                    <span class="error text-danger" id="pwError"></span>
                     <div id="passwordRulesContainer" class="mt-2" style="display: none;">
                         <ul class="list-unstyled mb-0">
                             <li id="rule-length" class="text-danger">Minimum 8 characters</li>
@@ -37,7 +38,6 @@ require_once Config::getViewPath("common","head.php");
                         </ul>
                     </div>
 
-                    <span class="error text-danger" id="pwError"></span>
 
                     <input class="form-control mt-4" type="password" placeholder="Confirm your password" id="cpw" name="cpassword">
                     <span class="error text-danger" id="cpwError"></span>

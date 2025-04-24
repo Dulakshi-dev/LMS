@@ -18,14 +18,51 @@ $fine = $libraryData['fine_amount'];
 ?>
 
 <style>
-  .notification-item.unread {
-    font-weight: bold;
-    /* Light red for unread */
-  }
 
-  .notification-item.read {
-    opacity: 0.5;
-  }
+.notification-item {
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color:rgb(248, 249, 250);
+  border-radius: 5px;
+}
+
+.notification-item.unread {
+  background-color: #e9f7fe;
+  font-weight: 500;
+}
+
+.notification-item p {
+  white-space: normal;
+  word-wrap: break-word;
+  margin-bottom: 5px;
+}
+
+.notification-item.selected {
+  background-color: #d1ecf1; /* light blue */
+  border-left: 4px solid #0c5460;
+}
+
+#notification-dropdown {
+  max-height: 300px;
+  overflow-y: auto; /* vertical scroll only */
+  width: 550px;
+}
+
+.notification-item.selected {
+  background-color: #e0f0ff;
+}
+
+.notification-item.read {
+  opacity: 0.5;
+}
+.notification-item:active,
+.notification-item:focus {
+  background-color: inherit !important;
+  color: inherit !important;
+  box-shadow: none;
+}
+
+
 </style>
 
 
@@ -64,16 +101,18 @@ $fine = $libraryData['fine_amount'];
         </a>
 
         <!-- Dropdown for Notifications -->
+        <div id="notification-dropdown"
+          class="dropdown-menu p-2"
+          style="display: none; position: absolute; right: 0; max-height: 300px; overflow-y: auto; width: 550px;">
 
-
-        <!-- Dropdown for Notifications -->
-        <div id="notification-dropdown" class="dropdown-menu p-2" style="display: none; position: absolute; right: 0; max-height: 300px; overflow-y: auto;">
           <p class="dropdown-header">Notifications</p>
-          <div id="notification-list"></div>
-          <p>Check your emails for full message.</p>
+
+          <div id="notification-list">
+            <!-- Notifications inserted here -->
+          </div>
+
+          <p class="small text-muted mb-0 ms-3">Check your emails for full message.</p>
         </div>
-
-
 
       </div>
 

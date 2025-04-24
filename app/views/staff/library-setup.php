@@ -1,15 +1,15 @@
 <?php
 
 if (!isset($_SESSION['staff'])) {
-    header("Location: index.php"); 
+    header("Location: index.php");
     exit;
 }
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
     session_unset();  // Clear session data
-    session_destroy(); 
-    header("Location: index.php"); 
+    session_destroy();
+    header("Location: index.php");
     exit;
 }
 
@@ -23,7 +23,7 @@ $_SESSION['staff']['last_activity'] = time();
 <?php
 $pageTitle = "Library Setup";
 $pageCss = "library-setup.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body onload="loadDetails();">
@@ -31,7 +31,7 @@ require_once Config::getViewPath("common","head.php");
     <div class="d-flex">
 
 
-    <div>
+        <div>
             <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
@@ -168,7 +168,7 @@ require_once Config::getViewPath("common","head.php");
                                     </div>
                                     <span class="text-danger" id="nameError"></span>
 
-                            
+
 
                                     <div class="d-flex align-items-center gap-3 mt-3">
                                         <label for="date" class="col-2 fw-bold">Logo</label>
@@ -194,12 +194,12 @@ require_once Config::getViewPath("common","head.php");
                                     </div>
                                     <span class="text-danger" id="phoneError"></span>
 
-                                   
+
                                 </div>
 
                                 <div class="col-12 col-md-6">
 
-                                
+
                                     <div class="d-flex align-items-center gap-3 mt-3">
                                         <label for="date" class="col-2 fw-bold">Address</label>
                                         <input type="text" id="address" class="form-control">
@@ -255,15 +255,18 @@ require_once Config::getViewPath("common","head.php");
                                             </div>
                                             <span class="text-danger" id="description1Error"></span>
                                             <div class="text-end pt-4">
-                                                <button class="btn px-5 btn-primary" onclick="sendEmailToAllStaff()">Send</button>
+                                                <button class="btn px-5 btn-primary" id="btn1" onclick="sendEmailToAllStaff()">
+                                                    <span id="btnText1">Send</span>
+                                                    <span class="spinner-border spinner-border-sm d-none" id="spinner2" role="status"></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                                <!-- Second Email Section -->
-                                 <div class="row">
+                            <!-- Second Email Section -->
+                            <div class="row mb-5">
                                 <div class="col-lg-12 col-sm-12 mt-4 p-4 border rounded book-car"> <!-- Added ms-lg-3 for spacing on large screens -->
                                     <h4 class="text-start"><i class="fa fa-envelope"></i> Send Email to All Library Members</h4>
                                     <div class="row">
@@ -282,7 +285,10 @@ require_once Config::getViewPath("common","head.php");
                                             </div>
                                             <span class="text-danger" id="description2Error"></span>
                                             <div class="text-end pt-4">
-                                                <button class="btn px-5 btn-primary" onclick="sendEmailToAllMembers()">Send</button>
+                                                <button class="btn px-5 btn-primary" id="btn2" onclick="sendEmailToAllMembers()">
+                                                    <span id="btnText2">Send</span>
+                                                    <span class="spinner-border spinner-border-sm d-none" id="spinner2" role="status"></span>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

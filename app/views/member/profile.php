@@ -25,7 +25,7 @@ $member_id = $_SESSION["member"]["member_id"];
 
 <?php
 $pageTitle = "Profile";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body class="bg-white">
@@ -152,6 +152,16 @@ require_once Config::getViewPath("common","head.php");
             <div class="col-12 col-md-4 mb-2"><label for="new-password">New Password</label></div>
             <div class="col-12 col-md-8">
               <input id="new-password" class="form-control" type="password">
+              <span id="new-password-error" class="text-danger"></span>
+              <div id="passwordRulesContainer" class="mt-2" style="display: none;">
+                <ul class="list-unstyled mb-0">
+                  <li id="rule-length" class="text-danger">At least 8 characters</li>
+                  <li id="rule-uppercase" class="text-danger">At least one uppercase letter</li>
+                  <li id="rule-lowercase" class="text-danger">At least one lowercase letter</li>
+                  <li id="rule-digit" class="text-danger">At least one number</li>
+                  <li id="rule-special" class="text-danger">At least one special character</li>
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -159,6 +169,8 @@ require_once Config::getViewPath("common","head.php");
             <div class="col-12 col-md-4 mb-2"><label for="confirm-password">Confirm Password</label></div>
             <div class="col-12 col-md-8">
               <input id="confirm-password" class="form-control" type="password">
+              <span id="confirm-password-error" class="text-danger"></span> <!-- Error message for confirm password -->
+
             </div>
           </div>
 

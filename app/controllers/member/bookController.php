@@ -45,7 +45,7 @@ class BookController extends Controller
     public function getDashboardBooks()
     {
         $data = [];
-
+    
         // Fetch Recommended Books
         $recBooksData = $this->bookModel->getRecommendedBooks();
         $recBooksResult = $recBooksData['results'];
@@ -53,8 +53,18 @@ class BookController extends Controller
         while ($row = $recBooksResult->fetch_assoc()) {
             $booksrec[] = $row;
         }
+    
+        // If no recommended books, load random books
+        if (empty($booksrec)) {
+            $randomBooksData = $this->bookModel->getRandomBooks(6); // Get 6 random books
+            $randomBooksResult = $randomBooksData['results'];
+            while ($row = $randomBooksResult->fetch_assoc()) {
+                $booksrec[] = $row;
+            }
+        }
+    
         $data['recommended'] = $booksrec;
-
+    
         // Fetch Latest Arrival Books
         $newArrivalData = $this->bookModel->getLatestArrivalBooks();
         $newArrivalResult = $newArrivalData['results'];
@@ -63,7 +73,7 @@ class BookController extends Controller
             $latestbooks[] = $row;
         }
         $data['latest'] = $latestbooks;
-
+    
         // Fetch Top Books
         $topData = $this->bookModel->getTopBooks();
         $topResult = $topData['results'];
@@ -72,13 +82,13 @@ class BookController extends Controller
             $topbooks[] = $row;
         }
         $data['top'] = $topbooks;
-
+    
         // Return as JSON response
         $this->jsonResponse([
             "books" => $data
         ]);
     }
-
+    
     public function serveBookCover()
     {
         $imageName = $this->getGet('image');

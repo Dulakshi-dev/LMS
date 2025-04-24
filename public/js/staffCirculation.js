@@ -23,32 +23,32 @@ function loadIssuedBooks(page = 1) {
         method: "POST",
         body: formData,
     })
-    .then(response => response.json())
-    .then(resp => {
-        let tableBody = document.getElementById("issueBookTableBody");
-        tableBody.innerHTML = "";
+        .then(response => response.json())
+        .then(resp => {
+            let tableBody = document.getElementById("issueBookTableBody");
+            tableBody.innerHTML = "";
 
-        if (resp.success && resp.issuebooks.length > 0) {
-            resp.issuebooks.forEach(issuebook => {
-                let returnOrDueDate;
-                let fines;
+            if (resp.success && resp.issuebooks.length > 0) {
+                resp.issuebooks.forEach(issuebook => {
+                    let returnOrDueDate;
+                    let fines;
 
-                if (issuebook.return_date) {
-                    returnOrDueDate = `<span class="text-success">Return: ${issuebook.return_date}</span>`;
-                    fines = issuebook.amount;
-                } else {
-                    let dueDate = new Date(issuebook.due_date);
-                    let today = new Date();
-                    fines = `<p class="text-secondary">Not Returned</p>`;
-
-                    if (dueDate < today) {
-                        returnOrDueDate = `<span class="text-danger">Overdue: ${issuebook.due_date}</span>`;
+                    if (issuebook.return_date) {
+                        returnOrDueDate = `<span class="text-success">Return: ${issuebook.return_date}</span>`;
+                        fines = issuebook.amount;
                     } else {
-                        returnOrDueDate = `<span class="text-warning">Due: ${issuebook.due_date}</span>`;
-                    }
-                }
+                        let dueDate = new Date(issuebook.due_date);
+                        let today = new Date();
+                        fines = `<p class="text-secondary">Not Returned</p>`;
 
-                let row = `
+                        if (dueDate < today) {
+                            returnOrDueDate = `<span class="text-danger">Overdue: ${issuebook.due_date}</span>`;
+                        } else {
+                            returnOrDueDate = `<span class="text-warning">Due: ${issuebook.due_date}</span>`;
+                        }
+                    }
+
+                    let row = `
                 <tr>
                     <td>${issuebook.borrow_id}</td>
                     <td>${issuebook.borrow_book_id}</td>
@@ -60,33 +60,37 @@ function loadIssuedBooks(page = 1) {
                     <td>${fines}</td>
                     <td>`;
 
-                if (!issuebook.return_date) {
-                    row += `<div class="m-1 action-buttons">
+                    if (!issuebook.return_date) {
+                        row += `<div class="m-1 action-buttons">
                         <button class="btn btn-success my-1 btn-sm return-book"
                             data-due-date="${issuebook.due_date}"
                             data-borrow-id="${issuebook.borrow_id}"
                             data-book-id="${issuebook.borrow_book_id}"
-                            data-member-id="${issuebook.borrow_member_id}">
+                            data-member-id="${issuebook.borrow_member_id}"
+                            data-member-name="${issuebook.fname} ${issuebook.lname}"
+                            data-book-title="${issuebook.title}"
+                            data-book-email="${issuebook.email}">
+
                             <i class="fa fa-edit"></i>
                         </button>
                     </div>`;
-                } else {
-                    row += `<p class="text-success">Returned</p>`;
-                }
+                    } else {
+                        row += `<p class="text-success">Returned</p>`;
+                    }
 
-                row += `</td></tr>`;
+                    row += `</td></tr>`;
 
-                tableBody.innerHTML += row;
-            });
-        } else {
-            tableBody.innerHTML = "<tr><td colspan='10'>No issued books found</td></tr>";
-        }
+                    tableBody.innerHTML += row;
+                });
+            } else {
+                tableBody.innerHTML = "<tr><td colspan='10'>No issued books found</td></tr>";
+            }
 
-        createPagination("pagination", resp.totalPages, page, "loadIssuedBooks");
-    })
-    .catch(error => {
-        console.error("Error fetching borrow data:", error);
-    });
+            createPagination("pagination", resp.totalPages, page, "loadIssuedBooks");
+        })
+        .catch(error => {
+            console.error("Error fetching borrow data:", error);
+        });
 }
 
 
@@ -94,8 +98,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Check if the "statusSelection" element exists before adding the event listener
     const statusSelection = document.getElementById("statusSelection");
     if (statusSelection) {
-        statusSelection.addEventListener("change", function() {
-            loadIssuedBooks(); 
+        statusSelection.addEventListener("change", function () {
+            loadIssuedBooks();
         });
     }
 
@@ -113,7 +117,11 @@ function returnButtonClick(button) {
     const dueDate = button.getAttribute("data-due-date");
     const borrow_id = button.getAttribute("data-borrow-id");
     const book_id = button.getAttribute("data-book-id");
-    const memberId = button.getAttribute("data-member-id"); // Corrected case
+    const memberId = button.getAttribute("data-member-id"); 
+    const memberName = button.getAttribute("data-member-name"); 
+    const bookTitle = button.getAttribute("data-book-title"); 
+    const email = button.getAttribute("data-book-email"); 
+
 
     let updateModal = new bootstrap.Modal(document.getElementById("borrowBookAction"));
     updateModal.show();
@@ -122,8 +130,12 @@ function returnButtonClick(button) {
     document.getElementById("borrowId").value = borrow_id;
     document.getElementById("bookId").value = book_id;
     document.getElementById("memberId").value = memberId;
-}
+    document.getElementById("name").value = memberName;
+    document.getElementById("title").value = bookTitle;
+    document.getElementById("email").value = email;
 
+
+}
 
 
 function validateReturnForm() {
@@ -179,6 +191,7 @@ function loadMemberData() {
             if (resp.success) {
                 document.getElementById("nic").value = resp.nic;
                 document.getElementById("memName").value = resp.name;
+                document.getElementById("email").value = resp.email;
 
             } else {
                 showAlert("Success", resp.message, "success");
@@ -213,7 +226,7 @@ function issueBook() {
     if (book_id === "") {
         document.getElementById("book_id_error").innerText = "Book ID is required.";
         isValid = false;
-    }else if(!book_id.match(bookidPattern)){
+    } else if (!book_id.match(bookidPattern)) {
         document.getElementById("book_id_error").innerText = "Invalid Book ID.";
         isValid = false;
 
@@ -222,12 +235,11 @@ function issueBook() {
     if (member_id === "") {
         document.getElementById("member_id_error").innerText = "Membership ID is required.";
         isValid = false;
-    }else if(!member_id.match(memberidPattern)){
+    } else if (!member_id.match(memberidPattern)) {
         document.getElementById("member_id_error").innerText = "Invalid Membership ID.";
         isValid = false;
 
     }
-
 
     if (issueDate === "") {
         document.getElementById("issueDate_error").innerText = "Issue date is required.";
@@ -242,6 +254,16 @@ function issueBook() {
         return;  // Stop form submission if validation fails
     }
 
+    const button = document.getElementById("btn");
+    const btnText = document.getElementById("btnText");
+    const spinner = document.getElementById("spinner");
+
+    // Show spinner, hide icon
+    if (btnText) btnText.classList.add("d-none");
+    if (spinner) spinner.classList.remove("d-none");
+
+    // Prevent multiple clicks
+    button.disabled = true;
     // Create a new FormData object
     let formData = new FormData();
 
@@ -253,6 +275,7 @@ function issueBook() {
     formData.append("title", document.getElementById("title").value);
     formData.append("memName", document.getElementById("memName").value);
     formData.append("author", document.getElementById("author").value);
+    formData.append("email", document.getElementById("email").value);
     formData.append("borrow_date", issueDate);
     formData.append("due_date", returnDate);
 
@@ -261,20 +284,23 @@ function issueBook() {
         method: "POST",
         body: formData
     })
-    .then(response => response.json())
-    .then(resp => {
-        if (resp.success) {
-            showAlert("Success", resp.message, "success").then(() => {
-                location.reload();
-            });
-        } else {
-            Swal.fire("Error", resp.message, "error"); // Show error message
-        }
-    })
-    .catch(error => {
-        console.error("Error issuing book:", error);
-        Swal.fire("Error", "Something went wrong!", "error");
-    });
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                Swal.fire("Error", resp.message, "error").then(() => {
+                    resetButtonUI(button, btnText, spinner);
+                })
+
+            }
+        })
+        .catch(error => {
+            console.error("Error issuing book:", error);
+            Swal.fire("Error", "Something went wrong!", "error");
+        });
 }
 
 
@@ -303,7 +329,18 @@ function generateFine(finePerDay) {
 
 }
 
-function returnBook(){
+function returnBook() {
+    const button = document.getElementById("btn");
+    const btnText = document.getElementById("btnText");
+    const spinner = document.getElementById("spinner");
+
+    // Show spinner, hide icon
+    if (btnText) btnText.classList.add("d-none");
+    if (spinner) spinner.classList.remove("d-none");
+
+    // Prevent multiple clicks
+    button.disabled = true;
+
     let formData = new FormData();
 
     // Collect input values
@@ -313,27 +350,41 @@ function returnBook(){
     formData.append("dueDate", document.getElementById("dueDate").value);
     formData.append("returnDate", document.getElementById("returnDate").value);
     formData.append("fines", document.getElementById("fines").value);
+    formData.append("name", document.getElementById("name").value);
+    formData.append("title", document.getElementById("title").value);
+    formData.append("email", document.getElementById("email").value);
+
 
     // Send data to the backend using Fetch API
     fetch("index.php?action=returnbook", {
         method: "POST",
         body: formData
     })
-    .then(response => response.json())
-    .then(resp => {
-        if (resp.success) {
-            showAlert("Success", resp.message, "success").then(() => {
-                location.reload();
-            });
-        } else {
-            showAlert("Error", resp.message, "error"); 
-        }
-    })
-    .catch(error => {
-        console.error("Error returning book:", error);
-        Swal.fire("Error", "Something went wrong!", "error");
-    });
+        .then(response => response.json())
+        .then(resp => {
+            if (resp.success) {
+                showAlert("Success", resp.message, "success").then(() => {
+                    location.reload();
+                });
+            } else {
+                showAlert("Error", resp.message, "error").then(()=>{
+                    resetButtonUI(button, btnText, spinner);
+
+                })
+            }
+        })
+        .catch(error => {
+            console.error("Error returning book:", error);
+            Swal.fire("Error", "Something went wrong!", "error");
+        });
 }
+
+function resetButtonUI(button, btnText, spinner) {
+    if (btnText) btnText.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
+}
+
 
 function generateIssuedBookReport() {
     const table = document.getElementById("issueBookTable");
@@ -367,9 +418,9 @@ function generateIssuedBookReport() {
         method: "POST",
         body: formData
     })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url);
-    });
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            window.open(url);
+        });
 }

@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../../../main.php';?>
+<?php require_once __DIR__ . '/../../../main.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +6,7 @@
 <?php
 $pageTitle = "Register";
 $pageCss = "member-register.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body>
@@ -50,7 +50,7 @@ require_once Config::getViewPath("common","head.php");
     </div>
 
     <!-- Registration Form Section -->
-    <div class="bg-white background-container p-5" >
+    <div class="bg-white background-container p-5">
         <div class="container p-4 my-2 col-md-12 col-lg-6">
             <div class="row">
                 <div class="text-white login-form">
@@ -67,9 +67,6 @@ require_once Config::getViewPath("common","head.php");
                             </div>
                             <div class="text-end mt-4">
                                 <button id="btn1" type="button" class="bt text-white" onclick="registerBox1()">NEXT</button>
-
-
-
                             </div>
                         </form>
                     </div>
@@ -95,9 +92,6 @@ require_once Config::getViewPath("common","head.php");
                             <div class="d-flex justify-content-between">
                                 <button type="button" class="bt " id="backButton1" onclick="backToBox1()">Back</button>
                                 <button type="button" class="bt" id="btn2" onclick="registerBox2()">Next</button>
-
-
-
                             </div>
                         </form>
                     </div>
@@ -116,16 +110,13 @@ require_once Config::getViewPath("common","head.php");
                             <div class="d-flex justify-content-between">
 
                                 <button type="button" class="bt" id="backButton3" onclick="backToBox2()">BACK</button>
-                                <button id="btn4" type="button" class="bt" onclick="registerBox3()">NEXT</button>
 
-                                <div id="emailSpinner" class="text-center mt-3 d-flex d-none">
-                                    <div class="spinner-grow text-light" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                    <p class="text-white ms-2">Sending OTP...</p>
+                                <div class="d-flex justify-content-end">
+                                    <button id="btn4" type="button" class="bt" onclick="registerBox3()">
+                                        <span id="btnText">Next</span>
+                                        <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
+                                    </button>
                                 </div>
-
-
                             </div>
                         </form>
                     </div>

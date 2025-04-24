@@ -191,10 +191,18 @@ function loadTopBooks() {
     fetch("index.php?action=gettopbooks", {
         method: "POST",
     })
-        .then(response => response.json()) 
+        .then(response => response.json())
         .then(resp => {
+            const type = resp.type;
+            if (type === "top") {
+                document.getElementById("topicTopBooks").classList.remove("d-none");
+                document.getElementById("topicNewArrivals").classList.add("d-none");
+            } else {
+                document.getElementById("topicNewArrivals").classList.remove("d-none");
+                document.getElementById("topicTopBooks").classList.add("d-none");
+            }
 
-            let body = document.getElementById("topBookBody");
+            let body = document.getElementById("bookBody");
             body.innerHTML = "";
 
             if (resp.success && resp.books.length > 0) {
@@ -202,17 +210,16 @@ function loadTopBooks() {
                     let coverImageUrl = `index.php?action=serveimage&image=${encodeURIComponent(book.cover_page)}`;
 
                     let row = `
-              
 
-                <div class="col-md-3 mb-4 ms-3">
-    <div class="card" style="height: 500px;">
-        <img src="${coverImageUrl}" class="card-img-top" alt="Book 5" style="height: 400px; object-fit: cover;">
-        <div class="card-body d-flex flex-column">
-            <h5 class="card-title text-truncate">${book.title}</h5>
-            <p class="card-text">${book.author}</p>
-        </div>
-    </div>
-</div>
+                <div class="col-md-3 mb-4">
+                    <div class="card" style="height: 485px;">
+                        <img src="${coverImageUrl}" class="card-img-top" alt="Book 5" style="height: 400px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-truncate">${book.title}</h5>
+                            <p class="card-text">${book.author}</p>
+                        </div>
+                    </div>
+                </div>
 
                 `;
 
@@ -221,8 +228,6 @@ function loadTopBooks() {
             } else {
                 body.innerHTML = "<p>No books found</p>";
             }
-
-           
         })
         .catch(error => {
             console.error("Error fetching book data:", error);

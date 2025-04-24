@@ -4,7 +4,7 @@ require_once config::getdbPath();
 
 class NotificationModel
 {
-    public static function insertNotification($email, $subject)
+    public static function insertNotification($email, $msg)
     {
         // Search for the member_id
         $rs = Database::search("SELECT `member_id` FROM `member` 
@@ -16,7 +16,7 @@ class NotificationModel
             $member_id = $row["member_id"];
 
             Database::insert("INSERT INTO `notification` (`message`, `created_at`, `status`, `receiver_id`) 
-                                        VALUES ('$subject', NOW(), 'unread', '$member_id')");
+                                        VALUES ('$msg', NOW(), 'unread', '$member_id')");
 
             return true;
         } else {

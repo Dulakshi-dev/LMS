@@ -187,8 +187,13 @@ require_once Config::getViewPath("common","head.php");
                         <span id="messageError" class="text-danger"></span> <!-- Message error message -->
                     </div>
                     <div class="text-end">
-                        <button type="button" class="btn btn-primary px-4 mt-3" onclick="sendEmail()">Send</button>
+                        <button type="button" class="btn btn-primary px-4 mt-3" id="btn" onclick="sendEmail()">
+                        <span id="btnText">Send</span>
+                        <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
+                        </button>
+                       
                     </div>
+
                 </div>
 
             </div>

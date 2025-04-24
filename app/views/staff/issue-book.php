@@ -152,7 +152,7 @@ require_once Config::getViewPath("common", "head.php");
             </div>
         </div>
     </div>
-    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "stafffoot.php"); ?>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

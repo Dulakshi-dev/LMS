@@ -41,12 +41,6 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
       display: block !important;
     }
 
-    .nav-link {
-      white-space: nowrap;
-      overflow: hidden;
-      border: 2px solid;
-      border-color: red;
-    }
 
     .nav-icon {
       width: 24px;
@@ -57,46 +51,46 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
 
 <body>
 
-  <div id="sidepanel" class="bg-light text-dark d-flex flex-column p-2">
+  <div id="sidepanel" class="bg-light text-dark row-gap-2 d-flex flex-column p-2">
 
     <!-- Dashboard -->
     <a href="<?= Config::indexPathMember() ?>?action=dashboard"
-       class="nav-link border-bottom border-top border-3 rounded my-2 d-flex align-items-center <?= $current_action == 'dashboard' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link border-bottom border-top border-2 rounded py-1 d-flex align-items-center <?= $current_action == 'dashboard' ? 'bg-dark text-white' : 'text-dark'; ?>">
       <div class="nav-icon"><i class="fas fa-gauge"></i></div>
       <span class="nav-text ms-2 d-none">Dashboard</span>
     </a>
 
     <!-- Profile -->
     <a href="<?= Config::indexPathMember() ?>?action=profile"
-       class="nav-link rounded border-bottom border-top border-3 my-2 d-flex align-items-center <?= $current_action == 'profile' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link rounded border-bottom border-top border-2 py-1 d-flex align-items-center <?= $current_action == 'profile' ? 'bg-dark text-white' : 'text-dark'; ?>">
       <div class="nav-icon"><i class="fas fa-user"></i></div>
       <span class="nav-text ms-2 d-none">Profile</span>
     </a>
 
     <!-- My Library -->
     <a href="<?= Config::indexPathMember() ?>?action=viewMyLibrary"
-       class="nav-link rounded border-bottom border-top border-3 my-2 d-flex align-items-center <?= $current_action == 'viewMyLibrary' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link rounded border-bottom border-top border-2 py-1 d-flex align-items-center <?= $current_action == 'viewMyLibrary' ? 'bg-dark text-white' : 'text-dark'; ?>">
       <div class="nav-icon"><i class="fas fa-book"></i></div>
       <span class="nav-text ms-2 d-none">My Library</span>
     </a>
 
     <!-- Borrow History -->
     <a href="<?= Config::indexPathMember() ?>?action=viewborrowhistory"
-       class="nav-link rounded border-bottom border-top border-3 my-2 d-flex align-items-center <?= $current_action == 'viewborrowhistory' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link rounded border-bottom border-top border-2 py-1 d-flex align-items-center <?= $current_action == 'viewborrowhistory' ? 'bg-dark text-white' : 'text-dark'; ?>">
       <div class="nav-icon"><i class="fas fa-history"></i></div>
       <span class="nav-text ms-2 d-none">Borrow History</span>
     </a>
 
     <!-- Reserved Books -->
     <a href="<?= Config::indexPathMember() ?>?action=reservedbooks"
-       class="nav-link rounded border-bottom border-top border-3 my-2 d-flex align-items-center <?= $current_action == 'reservedbooks' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link rounded border-bottom border-top border-2 py-1 d-flex align-items-center <?= $current_action == 'reservedbooks' ? 'bg-dark text-white' : 'text-dark'; ?>">
       <div class="nav-icon"><i class="fas fa-bookmark"></i></div>
       <span class="nav-text ms-2 d-none">Reserved Books</span>
     </a>
 
     <!-- About Software -->
     <a href="<?= Config::indexPathMember() ?>?action=aboutsoftware"
-       class="nav-link rounded border-bottom border-top border-3 my-2 d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link rounded border-bottom border-top border-2 py-1 d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'bg-dark text-white' : 'text-dark'; ?>">
       <div class="nav-icon"><i class="fas fa-laptop-code"></i></div>
       <span class="nav-text ms-2 d-none">About</span>
     </a>
@@ -106,7 +100,7 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
 
     <!-- User Profile -->
     <a href="<?= Config::indexPathMember() ?>?action=profile"
-       class="nav-link rounded border-bottom border-top border-3 pt-1 my-2 d-flex align-items-center <?= $current_action == 'profile' ? 'bg-dark text-white' : 'text-dark'; ?>">
+       class="nav-link rounded pt-1 y-2 d-flex align-items-center <?= $current_action == 'profile' ? 'bg-dark text-white' : 'text-dark'; ?>">
        <div class="d-flex  align-items-center mb-2">
       <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" alt="User" id="headerprofileimg" class="rounded-circle me-2" style="height: 30px; width: 30px;" />
       <span class="nav-text ms-2 d-none"><?= $fname . " " . $lname; ?></span>
@@ -116,7 +110,7 @@ $current_action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
 
     <!-- Logout -->
     <a href="index.php?action=logout"
-       class="nav-link rounded border-bottom border-top border-3 d-flex align-items-center text-dark">
+       class="nav-link rounded border-bottom border-top border-2 py-1 d-flex align-items-center text-dark">
       <div class="nav-icon"><i class="fas fa-sign-out-alt"></i></div>
       <span class="nav-text ms-2 d-none">Logout</span>
     </a>

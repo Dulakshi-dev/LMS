@@ -36,9 +36,9 @@ class Config
     ];
 
     public static $database = [
-        "host" => "localhost",
-        "username" => "root",
-        "password" => "Dg$11029",
+        "host" => "localhost", 
+        "username" => "root", 
+        "password" => "",
         "dbname" => "library_db",
         "port" => "3306"
     ];

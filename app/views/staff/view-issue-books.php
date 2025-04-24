@@ -49,7 +49,7 @@ require_once Config::getViewPath("common", "head.php");
                         <span class="mb-0 h5">Issued Books</span>
 
                         <div class="d-flex align-items-center">
-                            <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateIssuedBookReport();">
+                            <button id="generateReport" class="btn btn-outline-dark me-3 " onclick="generateIssuedBookReport();">
                                 <i class="fa fa-print"></i> Generate Report
                             </button>
 
@@ -165,7 +165,7 @@ require_once Config::getViewPath("common", "head.php");
             </div>
         </div>
     </div>
-    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "stafffoot.php"); ?>
 
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>

@@ -41,14 +41,14 @@ require_once Config::getViewPath("common", "head.php");
         </div>
 
 
-        <div class="flex-grow-1 p-4 bg-white">
+        <div class=" bg-white">
             <div class="">
                 <nav class="navbar p-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Dashboard <small class="text-muted">control panel</small></span>
+                    <span class="navbar-brand mb-0 h1">Dashboard</span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
                 </nav>
             </div>
-            <div class="mt-3">
+            <div class="mt-3 flex-grow-1 p-3">
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-2 col-md-6">
                         <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
@@ -158,7 +158,7 @@ require_once Config::getViewPath("common", "head.php");
         </div>
     </div>
     </div>
-    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "stafffoot.php"); ?>
 
     <script src="<?php echo Config::getJsPath("staffDashboard.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

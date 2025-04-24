@@ -38,7 +38,7 @@ require_once Config::getViewPath("common","head.php");
             </div>
 
         </div>
-        <div class="container mt-3">
+        <div class="container my-3">
             <div class="card">
                 <div class="card-header bg-secondary text-white">
                     <h3>About the Library Management System</h3>
@@ -84,7 +84,7 @@ require_once Config::getViewPath("common","head.php");
             </div>
         </div>
     </div>
-    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "stafffoot.php"); ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

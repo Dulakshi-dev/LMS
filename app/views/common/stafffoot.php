@@ -8,9 +8,12 @@
     .tex:hover {
         color: violet;
     }
+    .bg{
+        background: rgba(26, 50, 65, 1);
+    }
 </style>
 
-<footer class="bg-black text-light m-0 py-3">
+<footer class="bg text-light m-0 py-3">
     <div class="container">
         <div class="row align-items-center d-flex justify-content-between">
             <p class="col-lg-3 d-none d-lg-block mb-0" style="font-size: 13px;">

@@ -64,23 +64,24 @@ $fine = $libraryData['fine_amount'];
 </style>
 
 <header>
-    <div class="row m-0 pt-2 bg align-items-center">
-        <div class="col navbar navbar-expand-lg navbar-dark">
+    <div class=" d-flex justify-content-between m-0 pt-2 bg align-items-center">
+        <div class=" navbar navbar-expand-lg navbar-dark">
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <img src="<?php echo Config::indexPath() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
             </a>
         </div>
-        <div class="col d-flex justify-content-end">
+        <div class=" d-flex justify-content-end">
             <nav>
                 <ul class="inline d-flex align-items-center list-unstyled mb-0">
                     <li class="list-inline-item position-relative dropdown-wrapper">
                         <a class="text-white text-decoration-none d-flex align-items-center" href="#" role="button">
                             <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
                                 alt="User" class="rounded-circle me-2" style="height: 40px; width: 40px;">
-                            <div class="text-left mx-3">
+                            <div class="text-left d-none d-md-block mx-3">
                                 <span class="d-block"><?php echo $fname . " " . $lname; ?></span>
                                 <small><?php echo $role_name; ?> </small>
                             </div>
+                            <div class="mx-2"><i class="fa fa-sort-down"></i></div>
                         </a>
 
                         <!-- Move the dropdown here -->

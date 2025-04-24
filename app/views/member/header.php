@@ -85,15 +85,16 @@ $fine = $libraryData['fine_amount'];
         <span class="text-white px-2"><?php echo $fname . " " . $lname; ?></span>
       </div>
       <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  class="navbar-toggler position-absolute top-0 end-0 mt-4 me-2"
+  type="button"
+  data-bs-toggle="collapse"
+  data-bs-target="#navbarNav"
+  aria-controls="navbarNav"
+  aria-expanded="false"
+  aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+
     </div>
 
   </div>

@@ -55,7 +55,7 @@ require_once Config::getViewPath("common","head.php");
         <div class="container-fluid mx-md-5 mb-5 bg-white">
             <div class="row">
                 <nav class="navbar p-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Profile <small class="text-muted">control panel</small></span>
+                    <span class="navbar-brand mb-0 h1">Profile </span>
                     <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
                 </nav>
             </div>
@@ -184,7 +184,7 @@ require_once Config::getViewPath("common","head.php");
     </div>
 
     </div>
-    <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "stafffoot.php"); ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<?php echo Config::getJsPath("staffProfile.js"); ?>"></script>

@@ -44,7 +44,7 @@ require_once Config::getViewPath("common","head.php");
 
             <div class="container-fluid mx-auto m-md-4 mb-5 bg-white">
                 <div class="row">
-                    <nav class="navbar p-1 p-md-4 navbar-light bg-light">
+                    <nav class="navbar px-3 p-md-4 navbar-light bg-light">
                         <span class="navbar-brand mb-0 h1">Member Management</span>
                         <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i> </a>
                     </nav>

@@ -34,9 +34,6 @@ $fine = $libraryData['fine_amount'];
     display: block;
   }
 
-  .bg-library {
-    background-color: rgba(26, 50, 65, 1);
-  }
 
   .notification-item.unread {
     font-weight: bold;
@@ -65,7 +62,7 @@ $fine = $libraryData['fine_amount'];
 </style>
 
 <header>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-library">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black">
     <div class="container-fluid">
       <!-- Logo -->
       <a class="navbar-brand d-flex align-items-center" href="#">

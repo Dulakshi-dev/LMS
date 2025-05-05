@@ -30,9 +30,11 @@ require_once Config::getViewPath("common", "head.php");
 <body>
 
     <?php include 'dash_header.php'; ?>
+
     <div class="d-flex min-vh-100">
 
-        <div class="bg text-white d-flex flex-column d-none d-lg-block" >
+        <!-- Side Panel -->
+        <div class="bg text-white d-flex flex-column d-none d-lg-block">
             <?php include "dash_sidepanel.php"; ?>
         </div>
 
@@ -40,121 +42,84 @@ require_once Config::getViewPath("common", "head.php");
             <?php include "small_sidepanel.php"; ?>
         </div>
 
+        <!-- Main Content -->
+        <div class="bg-white flex-grow-1">
+            <nav class="navbar p-4 navbar-light bg-light">
+                <span class="navbar-brand mb-0 h1">Dashboard</span>
+                <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
+            </nav>
 
-        <div class=" bg-white">
-            <div class="">
-                <nav class="navbar p-4 navbar-light bg-light">
-                    <span class="navbar-brand mb-0 h1">Dashboard</span>
-                    <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
-                </nav>
-            </div>
-            <div class="mt-3 flex-grow-1 p-3">
+            <div class="mt-3 p-3">
+                <!-- Stat Boxes -->
                 <div class="row d-flex justify-content-center">
-                    <div class="col-lg-2 col-md-6">
-                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
-                            <div class=ms-4>
-                                <h1 class="text-info" id="books"></h1>
-                                <p class="text-info">Books</p>
-                            </div>
-                            <div>
-                                <i class="fa fa-book-open text-info" style="font-size: 30px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
-                            <div class=ms-4>
-                                <h1 class="text-info" id="members"></h1>
-                                <p class="text-info">Members</p>
-                            </div>
-                            <div>
-                                <i class="fa fa-users text-info" style="font-size: 30px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
-                            <div class=ms-4>
-                                <h1 class="text-info" id="issuedBooks"></h1>
-                                <p class="text-info">Issued Books</p>
-                            </div>
-                            <div>
-                                <i class="fa fa-share-square text-info" style="font-size: 30px;"></i>
+                    <?php
+                    $items = [
+                        ['id' => 'books', 'label' => 'Books', 'icon' => 'fa-book-open'],
+                        ['id' => 'members', 'label' => 'Members', 'icon' => 'fa-users'],
+                        ['id' => 'issuedBooks', 'label' => 'Issued Books', 'icon' => 'fa-share-square'],
+                        ['id' => 'reservations', 'label' => 'Reservations', 'icon' => 'fa-calendar-check'],
+                        ['id' => 'totalfines', 'label' => 'Fines', 'icon' => 'fa-coins'],
+                    ];
+
+                    foreach ($items as $item) {
+                        echo <<<HTML
+                        <div class="col-lg-2 col-md-6">
+                            <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
+                                <div class="ms-4">
+                                    <h1 class="text-info" id="{$item['id']}"></h1>
+                                    <p class="text-info">{$item['label']}</p>
+                                </div>
+                                <div>
+                                    <i class="fa {$item['icon']} text-info" style="font-size: 30px;"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6">
-                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
-                            <div class=ms-4>
-                                <h1 class="text-info" id="reservations"></h1>
-                                <p class="text-info">Reservations</p>
-                            </div>
-                            <div>
-                                <i class="fa fa-calendar-check text-info" style="font-size: 30px;"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
-                            <div class=ms-4>
-                                <h1 class="text-info" id="totalfines"></h1>
-                                <p class="text-info">Fines</p>
-                            </div>
-                            <div>
-                                <i class="fa fa-coins text-info" style="font-size: 30px;"></i>
-                            </div>
-                        </div>
-                    </div>
+                        HTML;
+                    }
+                    ?>
                 </div>
 
-                <div class="row gap-5 my- p-2 align-items-center justify-content-center">
-
+                <!-- Charts Section 1 -->
+                <div class="row gap-5 my-3 p-2 align-items-center justify-content-center">
                     <div class="col-md-6 col-sm-12 bg-light rounded-5">
-                        <div class=" mt-4 p-3 d-flex justify-content-center">
+                        <div class="mt-4 p-3 d-flex justify-content-center">
                             <canvas id="lineChart" class="w-100 h-auto"></canvas>
-
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 bg-light rounded-5">
-                        <div class=" mt-4 p-3 d-flex justify-content-center">
+                        <div class="mt-4 p-3 d-flex justify-content-center">
                             <canvas id="pieChart" class="w-100 h-auto"></canvas>
-
-
                         </div>
                     </div>
                 </div>
 
+                <!-- Top Choices -->
                 <div class="row mt-5 justify-content-center">
                     <div class="col-12 text-center">
                         <h3>Top choices</h3>
                     </div>
                     <div class="col-md-12">
                         <div class="row justify-content-center" id="topBookBody">
-                            <!-- Book items will be inserted here by JavaScript -->
+                            <!-- JS will insert content here -->
                         </div>
                     </div>
                 </div>
 
-
-
+                <!-- Charts Section 2 -->
                 <div class="row gap-5 p-2 my-5 align-items-center justify-content-center">
-
                     <div class="col-md-6 col-sm-12 bg-light rounded-5">
-                        <div class=" mt-4  p-3 d-flex justify-content-center">
+                        <div class="mt-4 p-3 d-flex justify-content-center">
                             <canvas id="barChart" class="w-100 h-auto"></canvas>
-
                         </div>
                     </div>
                     <div class="col-md-4 col-sm-12 bg-light rounded-5">
-                        <div class=" mt-4 p-3 d-flex justify-content-center">
+                        <div class="mt-4 p-3 d-flex justify-content-center">
                             <canvas id="polarChart" class="w-100 h-auto"></canvas>
-
                         </div>
                     </div>
                 </div>
 
             </div>
-
         </div>
     </div>
     </div>

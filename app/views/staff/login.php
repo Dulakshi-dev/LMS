@@ -34,6 +34,8 @@ require_once Config::getViewPath("common", "head.php");
                     $staffid = $_COOKIE["staffid"];
                 }
                 ?>
+
+                <form id="loginForm">
                 <div>
                     <label for="staffid">Staff ID:</label>
                     <input class="form-control mt-2" type="text" name="staffid" id="staffid"
@@ -73,8 +75,9 @@ require_once Config::getViewPath("common", "head.php");
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary w-75 rounded-pill mt-3" onclick="staffLogin();">Login</button>
+                    <button type="submit" class="btn btn-primary w-75 rounded-pill mt-3">Login</button>
                 </div>
+                </form>
 
             </div>
         </div>
@@ -82,6 +85,12 @@ require_once Config::getViewPath("common", "head.php");
     <?php require_once Config::getViewPath("staff", "footer.php"); ?>
 
     <script>
+        // Handle form submit with Enter or button
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            staffLogin();
+        });
+
         document.getElementById('passwordToggle').addEventListener('click', function() {
             var passwordField = document.getElementById('password');
             var passwordIcon = document.getElementById('passwordIcon');

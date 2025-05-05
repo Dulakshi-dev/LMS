@@ -38,6 +38,7 @@ require_once Config::getViewPath("common", "head.php");
                         $memberid = $_COOKIE["memberid"];
                     }
                     ?>
+                    <form id="loginForm">
                     <div class="form-group">
                         <label for="memberid">Member ID</label>
                         <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memberid" value="<?php echo htmlspecialchars($memberid); ?>" >
@@ -65,7 +66,7 @@ require_once Config::getViewPath("common", "head.php");
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-primary w-100 my-4" onclick="login();">Login</button>
+                    <button type="submit" class="btn btn-primary w-100 my-4">Login</button>
 
                     <div class="row">
                         <div class=" col-md-6">
@@ -75,6 +76,7 @@ require_once Config::getViewPath("common", "head.php");
                             <a href="<?php echo Config::indexPathMember() ?>?action=register" class="text-decoration-none create-account">Create an account</a>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -83,6 +85,12 @@ require_once Config::getViewPath("common", "head.php");
 
 
     <script>
+        // Handle form submit with Enter or button
+        document.getElementById('loginForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            login();
+        });
+
         document.getElementById('passwordToggle').addEventListener('click', function() {
             var passwordField = document.getElementById('password');
             var passwordIcon = document.getElementById('passwordIcon');

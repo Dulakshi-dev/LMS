@@ -25,6 +25,8 @@ require_once Config::getViewPath("common","head.php");
         <p class="text-white m-4"> Visit the Library or Call Us to Reactivate Your Account.</p>
 
     </div>
+    <?php require_once Config::getViewPath("common", "footer.php"); ?>
+
 </body>
 
 </html>

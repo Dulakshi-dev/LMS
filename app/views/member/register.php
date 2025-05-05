@@ -20,7 +20,7 @@ require_once Config::getViewPath("common", "head.php");
         <ol class="py-4 fs-5 d-none d-md-block">
             Membership Fee:
             <ul class="m-3">
-                <li>The annual membership fee is <span class="phone-number font-weight-bold">RS <?= $fee ?></span></li>
+                <li>The annual membership fee is <span class="phone-number font-weight-bold">Rs <?= $fee ?></span></li>
             </ul>
             <ul class="m-3">
                 <li>Make the payment online through the designated payment portal at the end of the registration process.</li>
@@ -29,7 +29,7 @@ require_once Config::getViewPath("common", "head.php");
         <ol class="py-1 d-block d-md-none">
             Membership Fee:
             <ul class="m-3">
-                <li>The annual membership fee is <span class="phone-number font-weight-bold">RS <?= $fee ?></span></li>
+                <li>The annual membership fee is <span class="phone-number font-weight-bold">Rs <?= $fee ?></span></li>
             </ul>
             <ul class="m-3">
                 <li>Make the payment online through the designated payment portal at the end of the registration process.</li>

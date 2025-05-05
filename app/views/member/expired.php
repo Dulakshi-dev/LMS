@@ -29,7 +29,7 @@ require_once Config::getViewPath("common","head.php");
         <!-- Button to show the input div -->
         <button class="btn btn-primary text-white rounded-pill w-50 mt-3 proceedbtn" id="proceedbtn" onclick="showMembershipInput()">Proceed to Payment</button>
     </div>
-    <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "footer.php"); ?>
 
 
     <script>

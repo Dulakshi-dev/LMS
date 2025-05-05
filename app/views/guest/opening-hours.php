@@ -63,7 +63,7 @@ require_once Config::getViewPath("common","head.php");
     </div>
 
     <?php
-    require_once Config::getViewPath("common", "footer.view.php");
+    require_once Config::getViewPath("common", "footer.php");
     ?>
 
 <script src="<?php echo Config::getJsPath("home.js"); ?>"></script>

@@ -88,7 +88,7 @@ class HomeController extends Controller
             $libraryEmail = $libraryData['email'] ?? 'default@example.com';
 
 
-            $subject = "New Contact Us Message from $userName";
+            $subject = "Contact Us Message";
             $body = '
 
                 <h3 style="text-align: center;">You have received a new message through the Contact Us form on your website.</h3> 
@@ -96,7 +96,7 @@ class HomeController extends Controller
                     <p style ="font-weight: bold;">Details:</p>
                     <p>User Name: ' . htmlspecialchars($name) . '</p>
                     <p>User Email: ' . htmlspecialchars($email) . '</p>
-                    <p>Message:<br> ' . nl2br(htmlspecialchars($msg)) . '</p>
+                    <p>Message:<br><span style="font-weight: bold;">' . nl2br(htmlspecialchars($msg)) . '</span></p>
                     <p>Please review the details and take the necessary action.</p>
                 </div>';
 

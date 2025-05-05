@@ -114,7 +114,7 @@ require_once Config::getViewPath("common", "head.php");
 
     </div>
 
-    <?php require_once Config::getViewPath("common", "stafffoot.php"); ?>
+    <?php require_once Config::getViewPath("staff", "footer.php"); ?>
 
 
     <script src="<?php echo Config::getJsPath("staff-reg.js"); ?>"></script>

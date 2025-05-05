@@ -8,11 +8,14 @@
     .tex:hover {
         color: violet;
     }
+    .bg{
+        background: rgba(26, 50, 65, 1);
+    }
 </style>
 
-<footer class="bg-black text-light m-0 py-3">
+<footer class="bg text-light m-0 py-2">
     <div class="container">
-        <div class="row align-items-center d-flex justify-content-between">
+        <div class="row align-items-center d-flex justify-content-between" >
             <p class="col-lg-3 d-none d-lg-block mb-0" style="font-size: 13px;">
                 © Designed & Developed by Faculty of Computing
             </p>
@@ -22,7 +25,7 @@
 
             <div class="col-12 col-lg-3 text-center text-lg-end">
 
-                <a href="#" class="btn btn-outline-light tex me-2">Back to Top</a>
+            <a href="#" class="btn btn-outline-light tex me-2" id="backToTopBtn">Back to Top</a>
                 <a href="#" class="tex mx-3"><i class="fab fa-facebook-f fa-lg"></i></a>
                 <a href="#" class="tex mx-3"><i class="fab fa-twitter fa-lg"></i></a>
                 <a href="#" class="tex mx-3"><i class="fab fa-instagram fa-lg"></i></a>
@@ -36,3 +39,11 @@
     </div>
 </footer>
 
+<script>
+    window.addEventListener('load', () => {
+        const btn = document.getElementById("backToTopBtn");
+        if (document.body.scrollHeight <= window.innerHeight) {
+            btn.style.display = "none";
+        }
+    });
+</script>

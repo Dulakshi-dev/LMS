@@ -1,7 +1,7 @@
 <?php
 require_once "../../main.php";
 
-require_once Config::getControllerPath("staff","authController.php");
+require_once Config::getControllerPath("staff", "authController.php");
 $auth = new AuthController();
 
 if (isset($_SESSION['staff'])) {
@@ -9,7 +9,6 @@ if (isset($_SESSION['staff'])) {
     header("Location: index.php?action=dashboard");
     exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -21,8 +20,8 @@ $pageCss = "staff-login.css";
 require_once Config::getViewPath("common", "head.php");
 ?>
 
-<body class="x">
-    <div class="container my-5">
+<body class="x d-flex flex-column min-vh-100">
+    <div class="container my-5 flex-grow-1">
         <h1 class="text-dark text-center">Hi! Welcome Back</h1>
         <div class="row p-4 justify-content-center align-items-center">
             <div class="col-lg-5 p-4 col-md-6 text-white login-form col-md-10 col-lg-6">
@@ -35,8 +34,6 @@ require_once Config::getViewPath("common", "head.php");
                     $staffid = $_COOKIE["staffid"];
                 }
                 ?>
-
-
                 <div>
                     <label for="staffid">Staff ID:</label>
                     <input class="form-control mt-2" type="text" name="staffid" id="staffid"
@@ -54,8 +51,6 @@ require_once Config::getViewPath("common", "head.php");
                     </div>
                     <span class="error text-danger" id="passwordError"></span>
                 </div>
-
-
 
                 <div class="col mt-3">
                     <input type="checkbox" name="rememberme" id="rememberme" <?php echo isset($_COOKIE["staffid"]) ? "checked" : ""; ?>>
@@ -81,11 +76,10 @@ require_once Config::getViewPath("common", "head.php");
                     <button type="button" class="btn btn-primary w-75 rounded-pill mt-3" onclick="staffLogin();">Login</button>
                 </div>
 
-
             </div>
         </div>
     </div>
-    <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
+    <?php require_once Config::getViewPath("staff", "footer.php"); ?>
 
     <script>
         document.getElementById('passwordToggle').addEventListener('click', function() {

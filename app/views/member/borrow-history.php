@@ -95,7 +95,7 @@ require_once Config::getViewPath("common","head.php");
       </div>
     </div>
   </div>
-  <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+  <?php require_once Config::getViewPath("common", "footer.php"); ?>
 
   <script src="<?php echo Config::getJsPath("borrowHistory.js"); ?>"></script>
   <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>

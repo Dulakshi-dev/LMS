@@ -148,6 +148,17 @@ function validateContactData() {
 }
 
 function sendContactMail() {
+    const button = document.getElementById("btn");
+    const btnText = document.getElementById("btnText");
+    const spinner = document.getElementById("spinner");
+
+    // Show spinner, hide icon
+    if (btnText) btnText.classList.add("d-none");
+    if (spinner) spinner.classList.remove("d-none");
+
+    // Prevent multiple clicks
+    button.disabled = true;
+
     // Validate form data
     if (!validateContactData()) {
         return; // Stop if the form is not valid
@@ -170,19 +181,24 @@ function sendContactMail() {
         .then(resp => {
             if (resp.success) {
                 showAlert("Success", resp.message, "success").then(() => {
-                    // You could optionally clear the form here instead of reloading
-                    document.getElementById("name").value = "";
-                    document.getElementById("emailadd").value = "";
-                    document.getElementById("message").value = "";
+                    location.reload();
                 });
             } else {
                 showAlert("Error", "Failed to Send Your Message", "error");
+                resetButtonUI(button, btnText, spinner);
+
             }
         })
         .catch(error => {
             console.error("Error fetching user data:", error);
             showAlert("Error", "There was a problem with the request.", "error");
         });
+}
+
+function resetButtonUI(button, btnText, spinner) {
+    if (btnText) btnText.classList.remove("d-none");
+    if (spinner) spinner.classList.add("d-none");
+    if (button) button.disabled = false;
 }
 
 

@@ -170,7 +170,7 @@ require_once Config::getViewPath("common","head.php");
   </script>
 
 
-  <?php require_once Config::getViewPath("common", "footer.view.php"); ?>
+  <?php require_once Config::getViewPath("common", "footer.php"); ?>
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

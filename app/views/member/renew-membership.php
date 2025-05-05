@@ -17,7 +17,7 @@ require_once Config::getViewPath("common","head.php");
         <button class="btn btn-primary text-white rounded-pill w-50" onclick="proceedPayment(<?php echo $id; ?>)">Proceed to Payment</button>
     </div>
 
-    <?php require_once Config::getViewPath("common", "footer-noscroll.view.php"); ?>
+    <?php require_once Config::getViewPath("common", "footer.php"); ?>
 
     <script src="<?php echo Config::getJsPath("memberPayment.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

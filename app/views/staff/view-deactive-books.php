@@ -193,7 +193,7 @@ require_once Config::getViewPath("common","head.php");
         </div>
     </div>
 
-    <?php require_once Config::getViewPath("common", "stafffoot.php"); ?>
+    <?php require_once Config::getViewPath("staff", "footer.php"); ?>
 
     <!-- Bootstrap and JavaScript -->
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>

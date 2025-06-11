@@ -12,8 +12,13 @@ class ComposerStaticInitac2d307f4ed514763a8119f3523066bb
             'Svg\\' => 4,
             'Sabberworm\\CSS\\' => 15,
         ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+        ),
         'M' => 
         array (
+            'Monolog\\' => 8,
             'Masterminds\\' => 12,
         ),
         'F' => 
@@ -34,6 +39,14 @@ class ComposerStaticInitac2d307f4ed514763a8119f3523066bb
         'Sabberworm\\CSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Masterminds\\' => 
         array (

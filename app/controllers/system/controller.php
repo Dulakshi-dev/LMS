@@ -1,4 +1,7 @@
 <?php
+
+require_once '../../core/logger.php'; 
+
 abstract class Controller
 {
     protected function isPost(): bool

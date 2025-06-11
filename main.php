@@ -33,11 +33,14 @@ class Config
         "member_profile_img" => Config::sourcePath . "\\storage\\profile_img\\member\\",
         "news_image" => Config::sourcePath . "\\storage\\news\\",
         "logo" => Config::sourcePath . "\\storage\\logo\\",
+        "logger" => Config::sourcePath . "\\core\\logger.php",
+        "logs" => Config::sourcePath . "\\logs\\",
+
     ];
 
     public static $database = [
-        "host" => "localhost", 
-        "username" => "root", 
+        "host" => "localhost",
+        "username" => "root",
         "password" => "Dg$11029",
         "dbname" => "library_db",
         "port" => "3306"
@@ -129,5 +132,15 @@ class Config
     public static function getLogoPath()
     {
         return Config::$paths["logo"];
+    }
+    
+    public static function getLoggerPath()
+    {
+        return Config::$paths["logger"];
+    }
+
+        public static function getLogsPath()
+    {
+        return Config::$paths["logs"];
     }
 }

@@ -37,7 +37,7 @@ require_once Config::getViewPath("common", "head.php");
 
                 <form id="loginForm">
                 <div>
-                    <label for="staffid">Staff ID:</label>
+                    <label for="staffid">Staff ID</label>
                     <input class="form-control mt-2" type="text" name="staffid" id="staffid"
                         placeholder="Enter Staff ID" value="<?php echo htmlspecialchars($staffid); ?>">
                     <span class="error text-danger" id="staffidError"></span>

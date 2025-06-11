@@ -43,49 +43,46 @@ class AuthController extends Controller
     public function login()
     {
         if ($this->isPost()) {
-
-            // Retrieve login credentials from the POST request
             $memberid = $this->getPost('memberid');
             $memberpw = $this->getPost('memberpw');
             $rememberme = $this->getPost('rememberme', 0);
 
-            // Validate the Member ID and Password using the AuthModel
+            Logger::info('Login attempt received', ['member_id' => $memberid]);
+
             $userDetails = $this->authModel->validateLogin($memberid, $memberpw);
 
-            // Check if the user is inactive
             if (isset($userDetails['status_id']) && $userDetails['status_id'] == '2') {
+                Logger::warning('Deactivated account tried to login', ['member_id' => $memberid]);
                 $this->jsonResponse(["message" => 'deactivated'], false);
-            } else if (isset($userDetails['status_id']) && $userDetails['status_id'] == '5') {
+            } elseif (isset($userDetails['status_id']) && $userDetails['status_id'] == '5') {
+                Logger::warning('Expired account tried to login', ['member_id' => $memberid]);
                 $this->jsonResponse(["message" => 'expired'], false);
-            } else {
-                // Check if login was successful
-                if ($userDetails) {
-                    $this->createSession($userDetails);
+            } elseif ($userDetails) {
+                $this->createSession($userDetails);
 
-                    if ($rememberme) {
-                        // Generate and store new token
-                        $token = bin2hex(random_bytes(32));
-                        $hashedToken = password_hash($token, PASSWORD_BCRYPT);
+                if ($rememberme) {
+                    $token = bin2hex(random_bytes(32));
+                    $hashedToken = password_hash($token, PASSWORD_BCRYPT);
 
-                        $this->authModel->storeRememberToken($userDetails['member_id'], $hashedToken);
-                        $this->setSecureCookie("member_remember_token", $token, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
-                    } else {
-                        // Clear any existing tokens if "Remember Me" not checked
-                        $this->authModel->clearRememberToken($userDetails['member_id']);
-                        $this->clearCookie("member_remember_token");
-                    }
+                    $this->authModel->storeRememberToken($userDetails['member_id'], $hashedToken);
+                    $this->setSecureCookie("member_remember_token", $token, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
 
-
-                    // Return a success response in JSON format
-                    $this->jsonResponse(["message" => "Login successful!"]);
+                    Logger::info('Remember me token set', ['member_id' => $userDetails['member_id']]);
                 } else {
-                    // If login fails, return an error response in JSON format
-                    $this->jsonResponse(["message" => "Invalid Member ID or Password."], false);
+                    $this->authModel->clearRememberToken($userDetails['member_id']);
+                    $this->clearCookie("member_remember_token");
+                    Logger::info('Remember me token cleared', ['member_id' => $userDetails['member_id']]);
                 }
+
+                Logger::info('User successfully logged in', ['member_id' => $userDetails['member_id']]);
+                $this->jsonResponse(["message" => "Login successful!"]);
+            } else {
+                Logger::error('Invalid login attempt', ['member_id' => $memberid]);
+                $this->jsonResponse(["message" => "Invalid Member ID or Password."], false);
             }
         }
     }
-
+    
     private function createSession($userDetails)
     {
         session_regenerate_id(true);
@@ -280,7 +277,7 @@ class AuthController extends Controller
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
-    
+
         if ($emailSent) {
             $this->jsonResponse(["message" => "Password reset link sent! Check your email."]);
         } else {

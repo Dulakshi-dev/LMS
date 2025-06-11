@@ -205,6 +205,10 @@ $router->add('paymentmanagement', function () {
     include Config::getViewPath("staff", "view-payments.php");
 });
 
+$router->add('loggers', function () {
+    include Config::getViewPath("staff", "loggers.php");
+});
+
 
 // Get the action from the URL
 $action = $_GET['action'] ?? 'login';

@@ -1,0 +1,57 @@
+{
+    "message": "Login attempt received",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-06-11T19:24:43.910097+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Remember me token cleared",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-06-11T19:24:43.995326+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "User successfully logged in",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-06-11T19:24:43.995553+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}

@@ -21,14 +21,15 @@ require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body>
-    <div class="container-fluid">
-        <div class="row mt-5 mb-5">
-            <div class="col-12 col-lg-3 d-flex align-items-center justify-content-center">
-                <h2 class="text-white fs-1">Hi! Welcome Back</h2>
+    <div class="container my-5 flex-grow-1">
+        <div class="mt-5 mb-5">
+        
+            <div class="col-12 col-lg-3 offset-lg-10 d-flex align-items-center justify-content-center">
+                <h2 class="text-white fs-1">Hi!<br> Welcome Back</h2>
             </div>
             <div class="col-12 col-lg-6 pt-5">
 
-                <div class="text-white login-form col-12 col-lg-8 offset-lg-4">
+                <div class="text-white login-form">
                     <h1 class="text-center">Log In</h1>
 
                     <?php
@@ -39,43 +40,43 @@ require_once Config::getViewPath("common", "head.php");
                     }
                     ?>
                     <form id="loginForm">
-                    <div class="form-group">
-                        <label for="memberid">Member ID</label>
-                        <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memberid" value="<?php echo htmlspecialchars($memberid); ?>" >
-                        <span class="error text-danger" id="memberidError"></span>
-                    </div>
+                        <div class="form-group">
+                            <label for="memberid">Member ID</label>
+                            <input class="form-control mt-2" placeholder="M-XXXXXX" type="text" name="memid" id="memberid" value="<?php echo htmlspecialchars($memberid); ?>">
+                            <span class="error text-danger" id="memberidError"></span>
+                        </div>
 
-                    <div class="form-group mt-3">
-                        <label for="memberpw">Password</label>
-                        <div class="input-group">
-                            <input class="form-control " placeholder="Enter your password" type="password" name="memberpw" id="memberpw" >
-                            <span class="input-group-text" id="passwordToggle" style="cursor: pointer;">
-                                <i class="fas fa-eye" id="passwordIcon"></i>
-                            </span>
+                        <div class="form-group mt-3">
+                            <label for="memberpw">Password</label>
+                            <div class="input-group">
+                                <input class="form-control " placeholder="Enter your password" type="password" name="memberpw" id="memberpw">
+                                <span class="input-group-text" id="passwordToggle" style="cursor: pointer;">
+                                    <i class="fas fa-eye" id="passwordIcon"></i>
+                                </span>
+                            </div>
+                            <span class="error text-danger" id="passwordError"></span>
                         </div>
-                        <span class="error text-danger" id="passwordError"></span>
-                    </div>
 
-                    <div class="row mt-2">
-                        <div class="col">
-                            <input type="checkbox" name="rememberme" id="rememberme">
-                            <label for="rememberme">Remember me</label>
+                        <div class="row mt-2">
+                            <div class="col">
+                                <input type="checkbox" name="rememberme" id="rememberme">
+                                <label for="rememberme">Remember me</label>
+                            </div>
+                            <div class="col d-flex justify-content-end">
+                                <a href="<?php echo Config::indexPathMember() ?>?action=showforgotpw" class="text-decoration-none forgot-password">Forgot Password?</a>
+                            </div>
                         </div>
-                        <div class="col d-flex justify-content-end">
-                            <a href="<?php echo Config::indexPathMember() ?>?action=showforgotpw" class="text-decoration-none forgot-password">Forgot Password?</a>
-                        </div>
-                    </div>
 
-                    <button type="submit" class="btn btn-primary w-100 my-4">Login</button>
+                        <button type="submit" class="btn btn-primary w-100 my-4">Login</button>
 
-                    <div class="row">
-                        <div class=" col-md-6">
-                            <p>Not registered yet?</p>
+                        <div class="row">
+                            <div class=" col-md-6">
+                                <p>Not registered yet?</p>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-end">
+                                <a href="<?php echo Config::indexPathMember() ?>?action=register" class="text-decoration-none create-account">Create an account</a>
+                            </div>
                         </div>
-                        <div class="col-md-6 d-flex justify-content-end">
-                            <a href="<?php echo Config::indexPathMember() ?>?action=register" class="text-decoration-none create-account">Create an account</a>
-                        </div>
-                    </div>
                     </form>
                 </div>
             </div>
@@ -86,7 +87,7 @@ require_once Config::getViewPath("common", "head.php");
 
     <script>
         // Handle form submit with Enter or button
-        document.getElementById('loginForm').addEventListener('submit', function (event) {
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
             login();
         });

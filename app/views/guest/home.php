@@ -25,10 +25,10 @@ require_once Config::getViewPath("common","head.php");
         require_once Config::getViewPath("guest", "header.view.php");
     }
     ?>
-    <section class="bg-dark text-white pt-5 px-3 mt-3 d-none d-md-block w-100" style="background: url('<?php echo Config::getImagePath("home.jpg"); ?>') no-repeat center center/cover; height: 550px;">
+    <section class="bg-dark text-white sm-bg px-3 mt-3 d-none d-lg-block w-100" style="background: url('<?php echo Config::getImagePath("home.jpg"); ?>') no-repeat center center/cover; height: 550px;">
         <h1 class="display-1 fw-bold">Welcome to</h1>
     </section>
-    <section class="bg-dark text-white pt-5 px-3 mt-3 d-md-none" style="background: url('<?php echo Config::getImagePath("home.jpg"); ?>') no-repeat center center/cover; height: 350px;">
+    <section class="px-3 pt-md-5 pt-2 d-lg-none" style="background: url('<?php echo Config::getImagePath("lib.jpg"); ?>') no-repeat center center/cover; height: 400px;">
         <h1 class="display-1 fw-bold">Welcome to</h1>
     </section>
 

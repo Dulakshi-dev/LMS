@@ -120,11 +120,11 @@ $fine = $libraryData['fine_amount'];
 
     <!-- right -->
     <div class="">
-      <div class="d-flex align-items-center gap-3 px-3">
+      <div class="d-flex align-items-center px-3">
 
 
         <!-- Notifications -->
-        <div class="position-relative me-4">
+        <div class="position-relative me-md-4">
           <a class="text-white text-decoration-none" href="#" id="notification-bell">
             <i class="fa fa-bell"></i>
             <span id="notification-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle" style="display: none;"></span>
@@ -140,8 +140,8 @@ $fine = $libraryData['fine_amount'];
 
 
         <!-- Profile -->
-        <div class="dropdown-wrapper position-relative">
-          <a href="#" class="d-flex align-items-center text-white text-decoration-none">
+        <div class="dropdown-wrapper position-relative px-3">
+          <a href="#" class="d-flex align-items-center text-white text-decoration-none gap-1">
             <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" alt="User" class="rounded-circle" style="height: 40px; width: 40px;">
             <i class="fa fa-sort-down ms-1"></i>
           </a>
@@ -165,7 +165,7 @@ $fine = $libraryData['fine_amount'];
 
         <!-- LMS -->
         <div>
-          <a class="nav-link text-black <?= $_GET['action'] == 'dashboard' ? 'bgcolor px-2 px-md-3 rounded py-1' : '' ?>" href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
+          <a class="nav-link text-danger <?= $_GET['action'] == 'dashboard' ? 'bgcolor px-2 px-md-3 rounded py-1' : '' ?>" href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
         </div>
       </div>
     </div>

@@ -59,7 +59,7 @@ require_once Config::getViewPath("common","head.php");
         </div>
       </div>
       <div class="row">
-        <div class="col-12 d-flex justify-content-end">
+        <div class="col-12 py-2 d-flex justify-content-end">
           <a href="<?php echo Config::indexPathMember() ?>?action=showallbooks" class="text-decoration-none me-5">
             See All Books <i class="fa fa-angle-right"></i>
           </a>
@@ -156,18 +156,31 @@ require_once Config::getViewPath("common","head.php");
     </div>
   </div>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
+    const reserveBtn = document.getElementById("rbox");
+    const rbox2 = document.getElementById("rbox-2");
+    const confirmBtn = document.getElementById("reserve-btn");
 
-      const reserveBtn = document.getElementById("rbox");
-      const rbox2 = document.getElementById("rbox-2");
+    reserveBtn.addEventListener("click", function () {
+      rbox2.classList.remove("d-none");
+      reserveBtn.style.display = "none";
+    });
 
-      reserveBtn.addEventListener("click", function() {
-        rbox2.classList.remove("d-none");
-        reserveBtn.style.display = "none";
+    confirmBtn.addEventListener("click", function () {
+      // You can optionally show a success alert here
+      Swal.fire({
+        title: "Reservation Confirmed",
+        icon: "success",
+        timer: 2000,
+        showConfirmButton: false
       });
 
+      // Reset buttons after confirmation
+      rbox2.classList.add("d-none");
+      reserveBtn.style.display = "block";
     });
-  </script>
+  });
+</script>
 
 
   <?php require_once Config::getViewPath("common", "footer.php"); ?>

@@ -29,18 +29,16 @@ require_once Config::getViewPath("common", "head.php");
 
 <body>
 
-    <div id="box1">
+<div id="box1">
         <?php include "dash_header.php"; ?>
         <div class="d-flex bg-light">
             <div>
                 <div class="h-100 d-none d-lg-block">
                     <?php include "dash_sidepanel.php"; ?>
                 </div>
-
                 <div class="h-100 d-block d-lg-none">
                     <?php include "small_sidepanel.php"; ?>
                 </div>
-
             </div>
 
             <div class="container-fluid mx-md-5 mb-5 bg-white">
@@ -51,43 +49,41 @@ require_once Config::getViewPath("common", "head.php");
                     </nav>
                 </div>
 
-                <div class="row m-4">
-                    <div class="col-md-2">
-                        <p class="mr-3 fw-bold mt-1">New Staff Member?</p>
-                    </div>
-                    <div class="col-md-4 ">
-                        <input class="form-control" type="email" id="email" placeholder="Enter the email">
-                        <span id="emailError" class="text-danger"></span>
-
-                    </div>
-                    <div class="col-md-2 ">
-                        <label class="form-label mt-1">Select Role</label>
-
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="roleLibraryStaff" name="role" value="Library Staff" required>
-                            <label class="form-check-label" for="roleLibraryStaff">Library Staff</label>
+                <!-- New Staff Member Form -->
+                <form id="newStaffForm" onsubmit="sendKey(event); return false;">
+                    <div class="row m-4">
+                        <div class="col-md-2">
+                            <p class="mr-3 fw-bold mt-1">New Staff Member?</p>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="roleLibrarian" name="role" value="Librarian" required>
-                            <label class="form-check-label" for="roleLibrarian">Librarian</label>
+                        <div class="col-md-4">
+                            <input class="form-control" type="email" id="email" name="email" placeholder="Enter the email" required>
+                            <span id="emailError" class="text-danger"></span>
                         </div>
-                        <span id="roleError" class="text-danger"></span>
-
+                        <div class="col-md-2">
+                            <label class="form-label mt-1">Select Role</label>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="roleLibraryStaff" name="role" value="Library Staff" required>
+                                <label class="form-check-label" for="roleLibraryStaff">Library Staff</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" id="roleLibrarian" name="role" value="Librarian" required>
+                                <label class="form-check-label" for="roleLibrarian">Librarian</label>
+                            </div>
+                            <span id="roleError" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <button type="submit" class="btn btn-dark" id="btn">
+                                <span id="btnText"><i class="fas fa-paper-plane me-2"></i>Send Key</span>
+                                <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-md-2 text-end">
-                        <button class="btn btn-dark" id="btn" onclick="sendKey();">
-                            <span id="btnText"><i class="fas fa-paper-plane me-2"></i>Send Key</span>
-                            <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
-                        </button>
-                    </div>
-                </div>
+                </form>
 
                 <div class="row g-5 m-1 m-md-5 justify-content-center">
-
-
-                    <!-- View All Books -->
+                    <!-- View All Staff -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-list display-1" style="color: #2AC23A;"></i>
@@ -95,28 +91,24 @@ require_once Config::getViewPath("common", "head.php");
                             <div class="d-flex justify-content-center">
                                 <a href="<?php echo Config::indexPath() ?>?action=viewstaff"
                                     class="btn rounded-pill px-5 mt-2"
-                                    style="background-color: #2AC23A;  color: white;">
+                                    style="background-color: #2AC23A; color: white;">
                                     View
                                 </a>
                             </div>
-
                         </div>
                     </div>
 
-                    <!-- Add New Category -->
+                    <!-- View Deactivated Staff -->
                     <div class="col-sm-12 col-md-6">
                         <div class="card text-white bg text-center shadow-lg rounded-4 py-5">
                             <i class="fas fa-user-minus text-warning display-1"></i>
                             <p class="fw-bold fs-5 mt-3">Deactive Staff</p>
                             <div class="d-flex justify-content-center">
-                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" class="btn btn-warning px-5 rounded-pill mt-2">View</a>
+                                <a href="<?php echo Config::indexPath() ?>?action=viewdeactivatedstaff" 
+                                   class="btn btn-warning px-5 rounded-pill mt-2">View</a>
                             </div>
-
                         </div>
                     </div>
-
-
-
                 </div>
             </div>
         </div>

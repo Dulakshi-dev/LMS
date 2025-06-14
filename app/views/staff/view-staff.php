@@ -35,26 +35,23 @@ require_once Config::getViewPath("common","head.php");
 
     <div class="d-flex bg-light">
         <div>
-        <div class="h-100 d-none d-lg-block">
+            <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
-
             <div class="h-100 d-block d-lg-none">
                 <?php include "small_sidepanel.php"; ?>
             </div>
-
         </div>
-        <div class="container-fluid w-75 mb-5 bg-white ">
+        
+        <div class="container-fluid w-75 mb-5 bg-white">
             <div class="row">
                 <nav class="navbar p-md-4 navbar-light bg-light w-100">
                     <div class="d-flex align-items-center w-100 justify-content-between">
                         <span class="mb-0 h5">Active Staff Members</span>
-
                         <div class="d-flex align-items-center">
                             <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateActiveStaffReport();">
                                 <i class="fa fa-print"></i> Generate Report
                             </button>
-
                             <a href="#" class="text-decoration-none h5">
                                 <i class="fa fa-home"></i>
                             </a>
@@ -63,21 +60,25 @@ require_once Config::getViewPath("common","head.php");
                 </nav>
             </div>
 
-
-            <div class="row m-4">
-                <div class="col-md-3 mt-2">
-                    <input id="memberId" name="memberId" class="form-control" type="text" placeholder="Type Staff ID">
-                </div>
-                <div class="col-md-3 mt-2">
-                    <input id="nic" name="nic" class="form-control" type="text" placeholder="Type NIC">
-                </div>
-                <div class="col-md-6 mt-2">
-                    <div class="d-flex">
-                        <input id="userName" name="userName" class="form-control" type="text" placeholder="Type Staff Name">
-                        <button type="button" name="search" class="btn btn-primary mx-3 px-3" onclick="loadUsers(1,'Active');"><i class="fa fa-search"></i></button>
+            <!-- Search Form -->
+            <form id="searchForm" onsubmit="loadUsers(1,'Active'); return false;">
+                <div class="row m-4">
+                    <div class="col-md-3 mt-2">
+                        <input id="memberId" name="memberId" class="form-control" type="text" placeholder="Type Staff ID">
+                    </div>
+                    <div class="col-md-3 mt-2">
+                        <input id="nic" name="nic" class="form-control" type="text" placeholder="Type NIC">
+                    </div>
+                    <div class="col-md-6 mt-2">
+                        <div class="d-flex">
+                            <input id="userName" name="userName" class="form-control" type="text" placeholder="Type Staff Name">
+                            <button type="submit" name="search" class="btn btn-primary mx-3 px-3">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
 
             <div class="px-1 table-responsive">
                 <table class="table" id="staffTable">
@@ -92,15 +93,105 @@ require_once Config::getViewPath("common","head.php");
                             <th>Action</th>
                         </tr>
                     </thead>
-
-                    <tbody id="userTableBody">
-                    </tbody>
-
+                    <tbody id="userTableBody"></tbody>
                 </table>
             </div>
 
             <div id="pagination"></div>
+        </div>
+    </div>
 
+    <!-- Modal Update details -->
+    <div class="modal fade" id="updateDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <div class="d-flex justify-content-between align-items-center m-3">
+                    <h3 class="mb-0">Edit User Detail</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="border border-2"></div>
+                <div class="p-3">
+                    <form id="updateUserForm" onsubmit="updateUserDetails(event); return false;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="userID">Membership ID</label>
+                                <input type="text" class="form-control" id="userID" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="NIC">NIC</label>
+                                <input type="text" class="form-control" id="NIC">
+                                <span id="nicError" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="my-2">
+                            <label for="username">User's Name</label>
+                            <input type="text" class="form-control" id="username">
+                            <span id="usernameError" class="text-danger"></span>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-6">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email">
+                                <span id="emailError" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phoneNumber">Phone Number</label>
+                                <input type="tel" class="form-control" id="phoneNumber">
+                                <span id="phoneError" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="my-2">
+                            <label for="address">Address</label>
+                            <textarea class="form-control" id="address" rows="3"></textarea>
+                            <span id="addressError" class="text-danger"></span>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary mt-3 px-4">Update User Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Mail -->
+    <div class="modal fade" id="mailModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="d-flex justify-content-between align-items-center m-3">
+                    <h3 class="mb-0">Send Email</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="border border-2"></div>
+                <div class="p-4">
+                    <form id="emailForm" onsubmit="sendEmail(event); return false;">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">User Name</label>
+                            <input type="text" class="form-control" id="name" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailadd" class="form-label">User Email</label>
+                            <input type="text" class="form-control" id="emailadd" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject</label>
+                            <input type="text" class="form-control" id="subject" name="subject" required>
+                            <span id="subjectError" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" name="message" rows="3" required></textarea>
+                            <span id="messageError" class="text-danger"></span>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary px-4 mt-3" id="btn">
+                                <span id="btnText">Send</span>
+                                <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

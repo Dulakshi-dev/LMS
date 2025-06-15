@@ -49,7 +49,7 @@ $fine = $libraryData['fine_amount'];
     overflow-y: auto;
     width: 350px;
     top: 50px;
-    right: -150px;
+    right: -130px;
 
     /* Hide scrollbar for WebKit (Chrome, Safari) */
     scrollbar-width: none;
@@ -130,7 +130,7 @@ $fine = $libraryData['fine_amount'];
             <span id="notification-count" class="badge bg-danger position-absolute top-0 start-100 translate-middle rounded-circle" style="display: none;"></span>
           </a>
 
-          <div id="notification-dropdown" class="dropdown-menu dropdown-menu-end p-2 mt-2" style="display: none;">
+          <div id="notification-dropdown" class="dropdown-menu dropdown-menu-end p-2 mt-2">
             <p class="dropdown-header">Notifications</p>
             <div id="notification-list"></div>
             <p class="text-muted mb-0">Check your emails for full message.</p>

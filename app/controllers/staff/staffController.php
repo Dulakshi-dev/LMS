@@ -40,6 +40,7 @@ class StaffController extends Controller
                 "currentPage" => $page
             ]);
         } else {
+            Logger::warning("loadStaff invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -48,6 +49,7 @@ class StaffController extends Controller
     {
         if ($this->isPost()) {
             $user_id = $this->getPost('staff_id');
+
             $result = StaffModel::loadStaffDetails($user_id);
 
             if ($result && $result->num_rows > 0) {
@@ -66,12 +68,15 @@ class StaffController extends Controller
                         "profile_img" => $userData['profile_img']
                     ]);
                 } else {
+                    Logger::warning("loadStaffDetails user data empty", ['staff_id' => $user_id]);
                     $this->jsonResponse(["message" => "User data not found."], false);
                 }
             } else {
+                Logger::warning("loadStaffDetails user not found", ['staff_id' => $user_id]);
                 $this->jsonResponse(["message" => "User not found."], false);
             }
         } else {
+            Logger::warning("loadStaffDetails invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -93,19 +98,24 @@ class StaffController extends Controller
             $result = StaffModel::updateStaffDetails($user_id, $firstName, $lastName, $email, $phone, $address, $nic);
 
             if ($result) {
+                Logger::info("updateStaffDetails success", ['staff_id' => $user_id]);
                 $this->jsonResponse(["message" => "User updated successfully."]);
             } else {
+                Logger::warning("updateStaffDetails failed - user not found", ['staff_id' => $user_id]);
                 $this->jsonResponse(["message" => "User not found."], false);
             }
         } else {
+            Logger::warning("updateStaffDetails invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
 
     public function loadMailData()
     {
+
         if ($this->isPost()) {
             $user_id = $this->getPost('staff_id');
+
             $result = StaffModel::loadMailDetails($user_id);
 
             if ($result) {
@@ -115,9 +125,11 @@ class StaffController extends Controller
                     "email" => $mailData['email'],
                 ]);
             } else {
+                Logger::warning("loadMailData user not found", ['staff_id' => $user_id]);
                 $this->jsonResponse(["message" => "User not found."], false);
             }
         } else {
+            Logger::warning("loadMailData invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -133,35 +145,38 @@ class StaffController extends Controller
             $msg = $this->getPost('message');
 
             $body = '
-        <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Update from Library Administration</p> 
+            <p style="font-size: 30px; color: black; font-weight: bold; text-align: center;">Update from Library Administration</p> 
             <p>Dear ' . $name . ',</p>
-        <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
-            <p>We are pleased to connect with you! Here’s some important information:</p>
-            <p>' . $msg . '</p>
-            <p>If you have any questions or issues, please reach out to us.</p>
-            <p>Call:[tel_num]</p>
-
-            <div style="margin-top: 20px;">
-                <p>Best regards,</p>
-                <p>Shelf Loom Team</p>
-            </div>
-        </div>';
+            <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: left;">
+                <p>We are pleased to connect with you! Here’s some important information:</p>
+                <p>' . $msg . '</p>
+                <p>If you have any questions or issues, please reach out to us.</p>
+                <p>Call:[tel_num]</p>
+                <div style="margin-top: 20px;">
+                    <p>Best regards,</p>
+                    <p>Shelf Loom Team</p>
+                </div>
+            </div>';
 
             $emailService = new EmailService();
             $emailSent = $emailService->sendEmail($email, $subject, $body);
 
             if ($emailSent) {
+                Logger::info("sendMail success", ['email' => $email]);
                 $this->jsonResponse(["message" => "Email sent successfully."]);
             } else {
+                Logger::error("sendMail failed", ['email' => $email]);
                 $this->jsonResponse(["message" => "Failed to send email."], false);
             }
         } else {
+            Logger::warning("sendMail invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid Request"], false);
         }
     }
 
     public function deactivateStaff()
     {
+
         if ($this->isPost()) {
             $id = $this->getPost('staff_id');
             $name = $this->getPost('name');
@@ -170,17 +185,19 @@ class StaffController extends Controller
             $result = StaffModel::deactivateStaff($id);
 
             if ($result) {
-                $this->sendDeactivateStaffEmail($name, $email);  
+                Logger::info("deactivateStaff success", ['staff_id' => $id]);
+                $this->sendDeactivateStaffEmail($name, $email);
                 $this->jsonResponse(["message" => "Membership Deactivated"]);
             } else {
+                Logger::warning("deactivateStaff failed - user not found", ['staff_id' => $id]);
                 $this->jsonResponse(["message" => "User Not found."], false);
             }
         } else {
+            Logger::warning("deactivateStaff invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
 
-    
     public function sendDeactivateStaffEmail($name, $email)
     {
         require_once Config::getServicePath('emailService.php');
@@ -189,7 +206,6 @@ class StaffController extends Controller
 
         $specificMessage = '
                 <h4>Your library staff account has been deactivated by the administration.</h4>';
-             
 
         $emailTemplate = new EmailTemplate();
         $body = $emailTemplate->getEmailBody($name, $specificMessage);
@@ -197,30 +213,39 @@ class StaffController extends Controller
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
+        if ($emailSent) {
+            Logger::info("sendDeactivateStaffEmail success", ['email' => $email]);
+        } else {
+            Logger::error("sendDeactivateStaffEmail failed", ['email' => $email]);
+        }
     }
-
 
     public function activateStaff()
     {
+
         if ($this->isPost()) {
             $id = $this->getPost('staff_id');
             $name = $this->getPost('name');
             $email = $this->getPost('email');
 
+            Logger::info("activateStaff inputs", compact('id', 'name', 'email'));
+
             $result = StaffModel::activateStaff($id);
 
             if ($result) {
-                $this->sendActivateStaffEmail($name, $email);  
+                Logger::info("activateStaff success", ['staff_id' => $id]);
+                $this->sendActivateStaffEmail($name, $email);
                 $this->jsonResponse(["message" => "Staff Member Activated Again"]);
             } else {
+                Logger::warning("activateStaff failed - user not found", ['staff_id' => $id]);
                 $this->jsonResponse(["message" => "Staff Member not found."], false);
             }
         } else {
+            Logger::warning("activateStaff invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
 
-      
     public function sendActivateStaffEmail($name, $email)
     {
         require_once Config::getServicePath('emailService.php');
@@ -229,7 +254,6 @@ class StaffController extends Controller
 
         $specificMessage = '
                 <h4>Your library staff account has been activated again by the administration.</h4>';
-             
 
         $emailTemplate = new EmailTemplate();
         $body = $emailTemplate->getEmailBody($name, $specificMessage);
@@ -237,8 +261,12 @@ class StaffController extends Controller
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
+        if ($emailSent) {
+            Logger::info("sendActivateStaffEmail success", ['email' => $email]);
+        } else {
+            Logger::error("sendActivateStaffEmail failed", ['email' => $email]);
+        }
     }
-
 
     public function sendEnrollmentKey()
     {
@@ -269,11 +297,14 @@ class StaffController extends Controller
             $emailSent = $emailService->sendEmail($email, $subject, $body);
 
             if ($emailSent) {
+                Logger::info("sendEnrollmentKey email sent", ['email' => $email, 'key' => $key]);
                 $this->jsonResponse(["message" => "Enrollment Key Sent"]);
             } else {
+                Logger::error("sendEnrollmentKey email failed", ['email' => $email]);
                 $this->jsonResponse(["message" => "Failed to send enrollment key."], false);
             }
         } else {
+            Logger::warning("sendEnrollmentKey invalid request method", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }

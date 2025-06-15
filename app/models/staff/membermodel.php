@@ -338,13 +338,13 @@ class MemberModel
         return true;
     }
 
-    // public static function updateMembershipStatus($member_id)
-    // {
-    //     $result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = '$member_id'");
-    //     $row = $result->fetch_assoc();
-    //     $id = $row['id'];
+    public static function updateMembershipStatus($member_id)
+    {
+        $result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = '$member_id'");
+        $row = $result->fetch_assoc();
+        $id = $row['id'];
 
-    //     $rs = Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
-    //     return true;
-    // }
+        $rs = Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
+        return true;
+    }
 }

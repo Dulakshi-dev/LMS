@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../../../main.php';
 
-class BookController extends Controller 
+class BookController extends Controller
 {
     private $bookModel;
 
@@ -41,6 +41,7 @@ class BookController extends Controller
                 "currentPage" => $page
             ]);
         } else {
+            Logger::warning("getAllBooks called with invalid request method");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -66,9 +67,11 @@ class BookController extends Controller
                     "language_id" => $bookData['language_id']
                 ]);
             } else {
+                Logger::warning("loadBookDetails failed - book not found", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book not found."], false);
             }
         } else {
+            Logger::warning("loadBookDetails called with invalid request method");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -83,6 +86,7 @@ class BookController extends Controller
                 'categories' => $categories,
             ]);
         } else {
+            Logger::warning("getAllCategories failed - no categories found");
             echo json_encode([
                 'success' => false,
                 'message' => 'No categories found',
@@ -100,6 +104,7 @@ class BookController extends Controller
                 'languages' => $languages,
             ]);
         } else {
+            Logger::warning("getLanguages failed - no languages found");
             echo json_encode([
                 'success' => false,
                 'message' => 'No languages found',
@@ -120,14 +125,28 @@ class BookController extends Controller
             $quantity = $this->getPost('quantity');
             $description = $this->getPost('description');
 
+            Logger::info("Updating book details", [
+                'book_id' => $book_id,
+                'isbn' => $isbn,
+                'title' => $title,
+                'author' => $author,
+                'category' => $category,
+                'language' => $language,
+                'pub_year' => $pubYear,
+                'quantity' => $quantity
+            ]);
+
             $result = BookModel::updateBookDetails($book_id, $isbn, $title, $author, $category, $language, $pubYear, $quantity, $description);
 
             if ($result) {
+                Logger::info("Book updated successfully", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book updated successfully."]);
             } else {
+                Logger::warning("Failed to update book - book not found", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book not found."], false);
             }
         } else {
+            Logger::warning("updateBookDetails called with invalid request method");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -145,7 +164,6 @@ class BookController extends Controller
             $des = $this->getPost('des');
             $fileName = ''; // Default file name (in case no image is uploaded)
 
-            // Check if a cover page is uploaded
             $receipt = $_FILES['coverpage'];
             $targetDir = Config::getBookCoverPath(); // Get the directory path for book covers
 
@@ -155,16 +173,17 @@ class BookController extends Controller
 
             // Move the uploaded file to the target directory
             move_uploaded_file($receipt["tmp_name"], $targetFilePath);
-
-            // Call the model function to insert the book into the database
             $result = BookModel::addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $fileName);
 
             if ($result) {
+                Logger::info("Book added successfully", ['title' => $title, 'isbn' => $isbn]);
                 $this->jsonResponse(["message" => "Book added successfully."]);
             } else {
+                Logger::error("Failed to add book data", ['title' => $title, 'isbn' => $isbn]);
                 $this->jsonResponse(["message" => "Failed to add book data."], false);
             }
         } else {
+            Logger::warning("addBookData called with invalid request method");
             $this->jsonResponse(["message" => "Invalid Request."], false);
         }
     }
@@ -173,15 +192,17 @@ class BookController extends Controller
     {
         if ($this->isPost()) {
             $category = $this->sanitize($this->getPost('category'));
-
             $result = BookModel::addCategory($category);
 
             if ($result) {
+                Logger::info("Category added successfully", ['category' => $category]);
                 $this->jsonResponse(["message" => "Category Added."]);
             } else {
+                Logger::error("Database insertion failed for category", ['category' => $category]);
                 $this->jsonResponse(["message" => "Database insertion failed."], false);
             }
         } else {
+            Logger::warning("addCategory called with invalid request method");
             $this->jsonResponse(["message" => "Invalid request method."], false);
         }
     }
@@ -189,7 +210,6 @@ class BookController extends Controller
     public function serveBookCover()
     {
         $imageName = $_GET['image'] ?? '';
-
         $basePath = Config::getBookCoverPath();
         $filePath = realpath($basePath . basename($imageName));
 
@@ -199,6 +219,7 @@ class BookController extends Controller
             exit;
         }
 
+        Logger::warning("Book cover image not found", ['image' => $imageName]);
         http_response_code(404);
         echo "Image not found.";
         exit;
@@ -208,15 +229,17 @@ class BookController extends Controller
     {
         if ($this->isPost()) {
             $book_id = $this->getPost('book_id');
-
             $result = BookModel::deactivateBook($book_id);
 
             if ($result) {
+                Logger::info("Book deactivated", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book deactivated"]);
             } else {
+                Logger::warning("Failed to deactivate book - book not found", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book not found."], false);
             }
         } else {
+            Logger::warning("deactivateBook called with invalid request method");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -225,15 +248,17 @@ class BookController extends Controller
     {
         if ($this->isPost()) {
             $book_id = $this->getPost('book_id');
-
             $result = BookModel::activateBook($book_id);
 
             if ($result) {
+                Logger::info("Book activated again", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book activated again"]);
             } else {
+                Logger::warning("Failed to activate book - book not found", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book not found."], false);
             }
         } else {
+            Logger::warning("activateBook called with invalid request method");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -242,17 +267,18 @@ class BookController extends Controller
     {
         if ($this->isPost()) {
             $category_id = $this->getPost('category_id');
-
             $result = BookModel::deleteCategory($category_id);
 
             if ($result) {
+                Logger::info("Category deleted", ['category_id' => $category_id]);
                 $this->jsonResponse(["message" => "Category deleted"]);
             } else {
+                Logger::warning("Failed to delete category - not found", ['category_id' => $category_id]);
                 $this->jsonResponse(["message" => "Category not found."], false);
             }
         } else {
+            Logger::warning("deleteCategory called with invalid request method");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
-
 }

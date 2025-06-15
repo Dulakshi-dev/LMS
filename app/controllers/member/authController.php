@@ -21,7 +21,7 @@ class AuthController extends Controller
     {
         if (!isset($_SESSION['member']) && isset($_COOKIE['member_remember_token'])) {
             $token = $_COOKIE['member_remember_token'];
-            $userDetails = $this->authModel->getUserByRememberToken($token); // Changed to instance method
+            $userDetails = $this->authModel->getUserByRememberToken($token);
 
             if ($userDetails && password_verify($token, $userDetails['remember_token'])) {
                 $this->createSession($userDetails);
@@ -82,7 +82,7 @@ class AuthController extends Controller
             }
         }
     }
-    
+
     private function createSession($userDetails)
     {
         session_regenerate_id(true);
@@ -97,7 +97,7 @@ class AuthController extends Controller
         ];
 
         // Only log non-sensitive data
-        error_log("Session initialized for member_id: " . $userDetails['member_id']);
+        Logger::info("Session initialized for member_id: " . $userDetails['member_id']);
     }
 
     private function setSecureCookie($name, $value, $duration)
@@ -128,7 +128,6 @@ class AuthController extends Controller
 
     public function sendOTP()
     {
-
         require_once Config::getServicePath('emailService.php');
 
         if ($this->isPost()) {
@@ -139,16 +138,14 @@ class AuthController extends Controller
                 $otp = rand(100000, 999999);
 
                 $_SESSION['otp'] = $otp;
-                $_SESSION['otp_expiry'] = time() + (5 * 60); // Current time + 5 minutes
-                $_SESSION['otp_email'] = $email; // Store email for verification
+                $_SESSION['otp_expiry'] = time() + (5 * 60);
+                $_SESSION['otp_email'] = $email;
 
                 $subject = "Email Verification";
-
                 $specificMessage = '
                 <h4 style="text-align: center;">ONE Time Passcode</h4> 
-                    <p>Here is the OTP to verify your email address.</p>
-                    <h4>' . $otp . '</h4>';
-
+                <p>Here is the OTP to verify your email address.</p>
+                <h4>' . $otp . '</h4>';
 
                 $emailTemplate = new EmailTemplate();
                 $body = $emailTemplate->getEmailBody("User", $specificMessage);
@@ -157,17 +154,22 @@ class AuthController extends Controller
                 $emailSent = $emailService->sendEmail($email, $subject, $body);
 
                 if ($emailSent) {
+                    Logger::info("OTP sent to email", ['email' => $email]);
                     $this->jsonResponse(["message" => "OTP sent. Check your email!"]);
                 } else {
+                    Logger::error("Failed to send OTP email", ['email' => $email]);
                     $this->jsonResponse(["message" => "Failed to send email."], false);
                 }
             } else {
+                Logger::warning("Tried to send OTP to already registered email", ['email' => $email]);
                 $this->jsonResponse(["message" => "This email is already registered."], false);
             }
         } else {
+            Logger::warning("Invalid OTP request method");
             $this->jsonResponse(["message" => "Invalid Request"], false);
         }
     }
+
 
     public function validateemail()
     {
@@ -206,19 +208,21 @@ class AuthController extends Controller
 
             if (isset($_SESSION['otp']) && isset($_SESSION['otp_expiry']) && time() < $_SESSION['otp_expiry']) {
                 if ($enteredOTP == $_SESSION['otp']) {
+                    Logger::info("OTP verified successfully", ['email' => $_SESSION['otp_email'] ?? 'unknown']);
                     $this->jsonResponse(["message" => "OTP verified successfully."]);
 
-                    unset($_SESSION['otp']);
-                    unset($_SESSION['otp_expiry']);
-                    unset($_SESSION['otp_email']);
+                    unset($_SESSION['otp'], $_SESSION['otp_expiry'], $_SESSION['otp_email']);
                 } else {
+                    Logger::warning("Invalid OTP entered", ['email' => $_SESSION['otp_email'] ?? 'unknown']);
                     $this->jsonResponse(["message" => "Invalid OTP."], false);
                 }
             } else {
+                Logger::warning("OTP expired or not found");
                 $this->jsonResponse(["message" => "OTP expired or not found. Please request a new OTP."], false);
             }
         }
     }
+
 
     public function registerMember()
     {
@@ -238,12 +242,15 @@ class AuthController extends Controller
             $result = PaymentModel::registerPayment($transactionId, $id, $fee);
 
             if ($result) {
-                $this->jsonResponse(["message" => "Thank you for registering! Your login credentials will be issued by the library. This process may take some time. Please check your email"]);
+                Logger::info("New member registered", ['member_id' => $id, 'email' => $email]);
+                $this->jsonResponse(["message" => "Thank you for registering! Your login credentials will be issued by the library."]);
             } else {
+                Logger::error("Member registration failed", ['email' => $email]);
                 $this->jsonResponse(["message" => "Registration Failed!"], false);
             }
         }
     }
+
 
     public function forgotPassword()
     {
@@ -254,8 +261,10 @@ class AuthController extends Controller
             $result = AuthModel::verifyEmail($email, $vcode);
 
             if ($result) {
+                Logger::info("Forgot password request", ['email' => $email]);
                 self::sendResetLink($email, $vcode);
             } else {
+                Logger::warning("Forgot password for unregistered email", ['email' => $email]);
                 $this->jsonResponse(["message" => "Account not found!"], false);
             }
         }
@@ -293,22 +302,30 @@ class AuthController extends Controller
             $id = $this->getPost('id', '');
 
             if (empty($vcode)) {
-                error_log("lo");
                 $result = AuthModel::changePasswordwithid($password, $id);
             } else {
                 $result = AuthModel::changePasswordwithvcode($password, $vcode);
             }
 
             if ($result) {
+                Logger::info("Password reset successful", ['user_id' => $id ?: 'by_vcode']);
                 $this->jsonResponse(["message" => "Password reset successfully."]);
             } else {
+                Logger::error("Password reset failed", ['user_id' => $id ?: 'by_vcode']);
                 $this->jsonResponse(["message" => "Password reset failed."], false);
             }
         }
     }
 
+
     public function logout()
     {
+        if (isset($_SESSION['member']['member_id'])) {
+            Logger::info("User logged out", ['member_id' => $_SESSION['member']['member_id']]);
+        } else {
+            Logger::info("Logout called with no active session");
+        }
+
         session_start();
         session_unset();
         session_destroy();

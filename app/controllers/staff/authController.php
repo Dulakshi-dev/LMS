@@ -22,7 +22,8 @@ class AuthController extends Controller
         if (!isset($_SESSION['staff']) && isset($_COOKIE['staff_remember_token'])) {
             $token = $_COOKIE['staff_remember_token'];
 
-            // Get user by token (model should return user if token is valid)
+            Logger::info('Attempting auto-login via remember me token', ['token_present' => true]);
+
             $userDetails = AuthModel::getUserByRememberToken($token);
 
             if ($userDetails && password_verify($token, $userDetails['staff_remember_token'])) {
@@ -36,9 +37,13 @@ class AuthController extends Controller
                 $this->setSecureCookie("staff_remember_token", $newToken, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
 
                 $this->loadModules($userDetails["role_id"]);
+
+                Logger::info('Auto-login successful', ['staff_id' => $userDetails['staff_id']]);
+
                 header("Location: index.php?action=dashboard");
                 exit;
             } else {
+                Logger::warning('Invalid remember me token during auto-login', ['token' => $token]);
                 // Invalid token - clear it
                 $this->clearCookie("staff_remember_token");
             }
@@ -47,36 +52,44 @@ class AuthController extends Controller
 
     public function login()
     {
-        if ($this->isPost()) {
-            $staffid = trim($this->getPost('staffid'));
-            $password = $this->getPost('password');
-            $rememberme = $this->getPost('rememberme', 0);
+        if (!$this->isPost()) {
+            Logger::warning('Invalid request method for login', ['method' => $_SERVER['REQUEST_METHOD']]);
+            $this->jsonResponse(["message" => "Invalid request"], false);
+            return;
+        }
 
-            $userDetails = $this->authModel->validateLogin($staffid, $password);
+        $staffid = trim($this->getPost('staffid'));
+        $password = $this->getPost('password');
+        $rememberme = $this->getPost('rememberme', 0);
 
-            if ($userDetails) {
-                $this->createSession($userDetails);
+        Logger::info('Login attempt', ['staffid' => $staffid, 'remember_me' => (bool)$rememberme]);
 
-                if ($rememberme) {
-                    // Generate and store new token
-                    $token = bin2hex(random_bytes(32));
-                    $hashedToken = password_hash($token, PASSWORD_BCRYPT);
+        $userDetails = $this->authModel->validateLogin($staffid, $password);
 
-                    $this->authModel->storeRememberToken($userDetails['staff_id'], $hashedToken);
-                    $this->setSecureCookie("staff_remember_token", $token, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
-                } else {
-                    // Clear any existing tokens if "Remember Me" not checked
-                    $this->authModel->clearRememberToken($userDetails['staff_id']);
-                    $this->clearCookie("staff_remember_token");
-                }
+        if ($userDetails) {
+            $this->createSession($userDetails);
 
-                $this->loadModules($userDetails["role_id"]);
-                $this->jsonResponse(["message" => "Login successful!"]);
+            if ($rememberme) {
+                // Generate and store new token
+                $token = bin2hex(random_bytes(32));
+                $hashedToken = password_hash($token, PASSWORD_BCRYPT);
+
+                $this->authModel->storeRememberToken($userDetails['staff_id'], $hashedToken);
+                $this->setSecureCookie("staff_remember_token", $token, 60 * 60 * 24 * self::REMEMBER_ME_EXPIRY_DAYS);
             } else {
-                // Failed login
-                sleep(1); // Slow down brute force attempts
-                $this->jsonResponse(["message" => "Invalid username or password."], false);
+                // Clear any existing tokens if "Remember Me" not checked
+                $this->authModel->clearRememberToken($userDetails['staff_id']);
+                $this->clearCookie("staff_remember_token");
             }
+
+            $this->loadModules($userDetails["role_id"]);
+
+            Logger::info('Login successful', ['staff_id' => $userDetails['staff_id']]);
+            $this->jsonResponse(["message" => "Login successful!"]);
+        } else {
+            Logger::warning('Failed login attempt', ['staffid' => $staffid]);
+            sleep(1); // Slow down brute force attempts
+            $this->jsonResponse(["message" => "Invalid username or password."], false);
         }
     }
 
@@ -97,8 +110,8 @@ class AuthController extends Controller
             'user_agent' => $_SERVER['HTTP_USER_AGENT']
         ];
 
-        // Only log non-sensitive data
-        error_log("Session initialized for staff_id: " . $userDetails['staff_id']);
+        // Log session initialization with non-sensitive data only
+        Logger::info("Session initialized for staff_id: " . $userDetails['staff_id']);
     }
 
     private function setSecureCookie($name, $value, $duration)
@@ -114,6 +127,7 @@ class AuthController extends Controller
         ];
 
         setcookie($name, $value, $options);
+        Logger::info("Set secure cookie", ['cookie_name' => $name]);
     }
 
     private function clearCookie($name)
@@ -125,82 +139,109 @@ class AuthController extends Controller
             'secure' => isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on',
             'httponly' => true
         ]);
+        Logger::info("Cleared cookie", ['cookie_name' => $name]);
     }
-
 
     public function loadModules($role)
     {
         $userModules = AuthModel::getUserModules($role);
         if ($userModules) {
             $_SESSION["modules"] = $userModules;
+            Logger::info("Loaded modules for role", ['role' => $role, 'modules_count' => count($userModules)]);
+        } else {
+            Logger::warning("No modules found for role", ['role' => $role]);
         }
     }
 
     public function validatedetails()
     {
-        if ($this->isPost()) {
-            $nic = $this->getPost('nic');
-            $email = $this->getPost('email');
+        if (!$this->isPost()) {
+            Logger::warning('Invalid request method for validatedetails', ['method' => $_SERVER['REQUEST_METHOD']]);
+            $this->jsonResponse(["message" => "Invalid request"], false);
+            return;
+        }
 
-            $result = AuthModel::validateRegDetails($nic, $email);
+        $nic = $this->getPost('nic');
+        $email = $this->getPost('email');
 
-            if ($result === true) {
-                $this->jsonResponse(["message" => "Success."]);
-            } else {
-                $this->jsonResponse(["message" => $result], false);
-            }
+        Logger::info('Validating registration details', ['nic' => $nic, 'email' => $email]);
+
+        $result = AuthModel::validateRegDetails($nic, $email);
+
+        if ($result === true) {
+            $this->jsonResponse(["message" => "Success."]);
+        } else {
+            $this->jsonResponse(["message" => $result], false);
+            Logger::warning('Registration validation failed', ['reason' => $result]);
         }
     }
 
     public function register()
     {
-        if ($this->isPost()) {
-            $fname = $this->getPost('fname');
-            $lname = $this->getPost('lname');
-            $address = $this->getPost('address');
-            $phone = $this->getPost('phone');
-            $email = $this->getPost('email');
-            $nic = $this->getPost('nic');
-            $role = $this->getPost('role');
-            $password = $this->getPost('password');
-            $key = $this->getPost('key');
+        if (!$this->isPost()) {
+            Logger::warning('Invalid request method for register', ['method' => $_SERVER['REQUEST_METHOD']]);
+            $this->jsonResponse(["message" => "Invalid request"], false);
+            return;
+        }
 
-            if ($role === 'Librarian') {
-                $role_id = 1;
-            } else {
-                $role_id = 2;
-            }
+        $fname = $this->getPost('fname');
+        $lname = $this->getPost('lname');
+        $address = $this->getPost('address');
+        $phone = $this->getPost('phone');
+        $email = $this->getPost('email');
+        $nic = $this->getPost('nic');
+        $role = $this->getPost('role');
+        $password = $this->getPost('password');
+        $key = $this->getPost('key');
 
+        Logger::info('Register attempt', [
+            'fname' => $fname,
+            'lname' => $lname,
+            'email' => $email,
+            'nic' => $nic,
+            'role' => $role
+        ]);
 
-            $result = AuthModel::register($fname, $lname, $address, $phone, $email, $nic, $role_id, $password, $key);
+        $role_id = ($role === 'Librarian') ? 1 : 2;
 
-            if ($result) {
-                $this->jsonResponse(["message" => "Successfully Registered. Check the email for your staff ID"]);
-            } else {
-                $this->jsonResponse(["message" => "Invalid enrollment details. Please check your email, role, or enrollment key."], false);
-            }
+        $result = AuthModel::register($fname, $lname, $address, $phone, $email, $nic, $role_id, $password, $key);
+
+        if ($result) {
+            Logger::info('Registration successful', ['email' => $email]);
+            $this->jsonResponse(["message" => "Successfully Registered. Check the email for your staff ID"]);
+        } else {
+            Logger::warning('Registration failed', ['email' => $email]);
+            $this->jsonResponse(["message" => "Invalid enrollment details. Please check your email, role, or enrollment key."], false);
         }
     }
 
     public function forgotPassword()
     {
-        if ($this->isPost()) {
-            $email = $this->getPost('email');
-            $vcode = uniqid();
+        if (!$this->isPost()) {
+            Logger::warning('Invalid request method for forgotPassword', ['method' => $_SERVER['REQUEST_METHOD']]);
+            $this->jsonResponse(["message" => "Invalid request"], false);
+            return;
+        }
 
-            $result = AuthModel::validateEmail($email, $vcode);
+        $email = $this->getPost('email');
 
-            if ($result) {
-                $this->sendResetLink($email, $vcode);
-            } else {
-                $this->jsonResponse(["message" => "Account not found."], false);
-            }
+        Logger::info('Forgot password request', ['email' => $email]);
+
+        $vcode = uniqid();
+
+        $result = AuthModel::validateEmail($email, $vcode);
+
+        if ($result) {
+            Logger::info('Valid email found for password reset', ['email' => $email]);
+            $this->sendResetLink($email, $vcode);
+        } else {
+            Logger::warning('Password reset requested for non-existing email', ['email' => $email]);
+            $this->jsonResponse(["message" => "Account not found."], false);
         }
     }
 
     public function sendResetLink($email, $vcode)
     {
-
         $subject = "Reset Password";
         $specificMessage = '<p>We received a request to reset the password for your account. If you initiated this request, please click the button below to create a new password.</p>
                 <div style="margin-bottom: 10px;">
@@ -212,31 +253,44 @@ class AuthController extends Controller
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
-    
+
         if ($emailSent) {
+            Logger::info('Password reset email sent', ['email' => $email]);
             $this->jsonResponse(["message" => "Password reset link sent! Check your email."]);
         } else {
+            Logger::error('Failed to send password reset email', ['email' => $email]);
             $this->jsonResponse(["message" => "Failed to send email."], false);
         }
     }
 
     public function resetPassword()
     {
-        if ($this->isPost()) {
-            $password = $this->getPost('password');
-            $vcode = $this->getPost('vcode');
+        if (!$this->isPost()) {
+            Logger::warning('Invalid request method for resetPassword', ['method' => $_SERVER['REQUEST_METHOD']]);
+            $this->jsonResponse(["message" => "Invalid request"], false);
+            return;
+        }
 
-            $result = AuthModel::changePassword($password, $vcode);
-            if ($result) {
-                $this->jsonResponse(["message" => "Password reset successfully"]);
-            } else {
-                $this->jsonResponse(["message" => "Failed to reset password"], false);
-            }
+        $password = $this->getPost('password');
+        $vcode = $this->getPost('vcode');
+
+        Logger::info('Reset password attempt', ['vcode' => $vcode]);
+
+        $result = AuthModel::changePassword($password, $vcode);
+
+        if ($result) {
+            Logger::info('Password reset successful', ['vcode' => $vcode]);
+            $this->jsonResponse(["message" => "Password reset successfully"]);
+        } else {
+            Logger::warning('Password reset failed', ['vcode' => $vcode]);
+            $this->jsonResponse(["message" => "Failed to reset password"], false);
         }
     }
 
     public function logout()
     {
+        Logger::info('Logging out user', ['staff_id' => $_SESSION['staff']['staff_id'] ?? 'unknown']);
+
         session_start();
         session_unset();
         session_destroy();

@@ -22,11 +22,11 @@ class CirculationController extends Controller
             $status = $this->getPost('status', 'status1'); // default to "All"
 
             if (!empty($bookid) || !empty($memberid) || $status !== 'status1') {
-                // Pass status to the search function
                 $bookData = CirculationModel::searchBorrowData($bookid, $memberid, $status, $page, $resultsPerPage);
+              
             } else {
-                // Default all data
                 $bookData = CirculationModel::getAllBorrowData($page, $resultsPerPage);
+               
             }
 
             $issuebooks = $bookData['results'] ?? [];
@@ -40,6 +40,7 @@ class CirculationController extends Controller
                 'currentPage' => $page
             ]);
         } else {
+            Logger::warning("Invalid request method in getAllBorrowBooks", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -59,9 +60,11 @@ class CirculationController extends Controller
                     "author" => $bookData['author'],
                 ]);
             } else {
+                Logger::warning("Book not found in loadBookDetails", ['book_id' => $book_id]);
                 $this->jsonResponse(["message" => "Book not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method in loadBookDetails", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -78,12 +81,13 @@ class CirculationController extends Controller
                     "nic" => $memberData['nic'],
                     "name" => $memberData['fname'] . " " . $memberData['lname'],
                     "email" => $memberData['email'],
-
                 ]);
             } else {
+                Logger::warning("Member not found in loadMemberDetails", ['member_id' => $member_id]);
                 $this->jsonResponse(["message" => "Member not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method in loadMemberDetails", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -91,7 +95,6 @@ class CirculationController extends Controller
     public function issueBook()
     {
         if ($this->isPost()) {
-            // Fetch POST values
             $book_id = $this->getPost('book_id');
             $member_id = $this->getPost('member_id');
             $issue_date = $this->getPost('borrow_date');
@@ -100,20 +103,28 @@ class CirculationController extends Controller
             $title = $this->getPost('title');
             $name = $this->getPost('memName');
 
-
-            // Call the model's function to issue the book
             $result = CirculationModel::issueBook($book_id, $member_id, $issue_date, $due_date);
 
             if ($result["success"]) {
-                $this->sendIssueBookEmail($email, $name, $title, $issue_date, $due_date, $book_id);               
+                Logger::info("Book issued successfully", [
+                    'book_id' => $book_id,
+                    'member_id' => $member_id,
+                    'issue_date' => $issue_date,
+                    'due_date' => $due_date,
+                    'email' => $email
+                ]);
+                $this->sendIssueBookEmail($email, $name, $title, $issue_date, $due_date, $book_id);
                 $this->jsonResponse(["message" => $result["message"]], true);
-
             } else {
-                // Return failure message in JSON
+                Logger::error("Failed to issue book", [
+                    'book_id' => $book_id,
+                    'member_id' => $member_id,
+                    'error_message' => $result["message"]
+                ]);
                 $this->jsonResponse(["message" => $result["message"]], false);
             }
         } else {
-            // If not a POST request, return an error message
+            Logger::warning("Invalid request method in issueBook", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request method."], false);
         }
     }
@@ -133,9 +144,14 @@ class CirculationController extends Controller
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
+        Logger::info("Issue book email sent", [
+            'email' => $email,
+            'book_id' => $book_id,
+            'sent' => $emailSent ? 'success' : 'failure'
+        ]);
+
         $notificationController = new NotificationController();
         $notification = $notificationController->insertNotification($email, strip_tags($specificMessage));
-    
     }
 
     public function returnBook()
@@ -153,14 +169,26 @@ class CirculationController extends Controller
             $result = CirculationModel::returnBook($borrow_id, $return_date, $book_id, $fines, $memberId);
 
             if ($result) {
+                Logger::info("Book returned successfully", [
+                    'borrow_id' => $borrow_id,
+                    'book_id' => $book_id,
+                    'member_id' => $memberId,
+                    'return_date' => $return_date,
+                    'fines' => $fines,
+                ]);
                 CirculationModel::notifyNextWaitlistMember($book_id);
-                $this->sendReturnBookEmail($email, $return_date, $name, $title, $book_id); 
+                $this->sendReturnBookEmail($email, $return_date, $name, $title, $book_id);
                 $this->jsonResponse(["message" => "Book Returned."]);
-
             } else {
+                Logger::error("Failed to return book", [
+                    'borrow_id' => $borrow_id,
+                    'book_id' => $book_id,
+                    'member_id' => $memberId,
+                ]);
                 $this->jsonResponse(["message" => "Failed to return book."], false);
             }
         } else {
+            Logger::warning("Invalid request method in returnBook", ['method' => $_SERVER['REQUEST_METHOD']]);
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -179,8 +207,13 @@ class CirculationController extends Controller
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
+        Logger::info("Return book email sent", [
+            'email' => $email,
+            'book_id' => $book_id,
+            'sent' => $emailSent ? 'success' : 'failure'
+        ]);
+
         $notificationController = new NotificationController();
         $notification = $notificationController->insertNotification($email, strip_tags($specificMessage));
-       
     }
 }

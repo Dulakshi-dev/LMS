@@ -21,6 +21,7 @@ class BookController extends Controller
             $category_id = $this->getPost('category');
             $language_id = $this->getPost('language');
 
+
             if (!empty($title) || !empty($category_id) || !empty($language_id)) {
                 $bookData = $this->bookModel->searchBooks($title, $category_id, $language_id, $page, $resultsPerPage);
             } else {
@@ -38,6 +39,7 @@ class BookController extends Controller
                 "currentPage" => $page
             ]);
         } else {
+            Logger::warning("Invalid request method for getAllBooks()");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -45,7 +47,7 @@ class BookController extends Controller
     public function getDashboardBooks()
     {
         $data = [];
-    
+
         // Fetch Recommended Books
         $recBooksData = $this->bookModel->getRecommendedBooks();
         $recBooksResult = $recBooksData['results'];
@@ -53,7 +55,7 @@ class BookController extends Controller
         while ($row = $recBooksResult->fetch_assoc()) {
             $booksrec[] = $row;
         }
-    
+
         // If no recommended books, load random books
         if (empty($booksrec)) {
             $randomBooksData = $this->bookModel->getRandomBooks(6); // Get 6 random books
@@ -62,9 +64,9 @@ class BookController extends Controller
                 $booksrec[] = $row;
             }
         }
-    
+
         $data['recommended'] = $booksrec;
-    
+
         // Fetch Latest Arrival Books
         $newArrivalData = $this->bookModel->getLatestArrivalBooks();
         $newArrivalResult = $newArrivalData['results'];
@@ -73,7 +75,7 @@ class BookController extends Controller
             $latestbooks[] = $row;
         }
         $data['latest'] = $latestbooks;
-    
+
         // Fetch Top Books
         $topData = $this->bookModel->getTopBooks();
         $topResult = $topData['results'];
@@ -82,13 +84,13 @@ class BookController extends Controller
             $topbooks[] = $row;
         }
         $data['top'] = $topbooks;
-    
+
         // Return as JSON response
         $this->jsonResponse([
             "books" => $data
         ]);
     }
-    
+
     public function serveBookCover()
     {
         $imageName = $this->getGet('image');
@@ -102,6 +104,7 @@ class BookController extends Controller
             exit;
         }
 
+        Logger::warning("Book cover image not found", ['imageName' => $imageName]);
         http_response_code(404);
         echo "Image not found.";
         exit;
@@ -109,6 +112,7 @@ class BookController extends Controller
 
     public function getAllCategories()
     {
+
         $categories = $this->bookModel->getAllCategories();
 
         if ($categories) {
@@ -116,6 +120,7 @@ class BookController extends Controller
                 'categories' => $categories,
             ]);
         } else {
+            Logger::warning("No categories found");
             $this->jsonResponse([
                 'message' => 'No categories found',
             ], false);
@@ -124,6 +129,7 @@ class BookController extends Controller
 
     public function getLanguages()
     {
+
         $languages = $this->bookModel->getLanguages();
 
         if ($languages) {
@@ -131,26 +137,27 @@ class BookController extends Controller
                 'languages' => $languages,
             ]);
         } else {
+            Logger::warning("No languages found");
             $this->jsonResponse([
                 'message' => 'No languages found',
             ], false);
         }
     }
 
-
     public function getSearchResult()
     {
+
         if ($this->isPost()) {
             $title = $this->getPost('title');
 
             $bookData = $this->bookModel->searchBookByTitle($title);
-
             $books = $bookData['results'] ?? [];
-
+            
             $this->jsonResponse([
                 "books" => $books
             ]);
         } else {
+            Logger::warning("Invalid request method for getSearchResult()");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }

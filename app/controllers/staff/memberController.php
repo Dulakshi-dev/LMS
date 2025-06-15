@@ -17,7 +17,6 @@ class MemberController extends Controller
     {
         $resultsPerPage = 10;
         if ($this->isPost()) {
-
             $page = $this->getPost('page', 1);
             $memberId = $this->getPost('memberid');
             $nic = $this->getPost('nic');
@@ -40,8 +39,8 @@ class MemberController extends Controller
                 "totalPages" => $totalPages,
                 "currentPage" => $page
             ]);
-
         } else {
+            Logger::warning("Invalid request method for getAllMembers");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -50,7 +49,6 @@ class MemberController extends Controller
     {
         $resultsPerPage = 10;
         if ($this->isPost()) {
-
             $page = $this->getPost('page', 1);
             $nic = $this->getPost('nic');
             $userName = $this->getPost('username');
@@ -73,6 +71,7 @@ class MemberController extends Controller
                 "currentPage" => $page
             ]);
         } else {
+            Logger::warning("Invalid request method for getMemberRequests");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -86,16 +85,18 @@ class MemberController extends Controller
 
             $memberID = MemberModel::generateMemberID();
             $password = MemberModel::generatePassword();
-            $result = MemberModel::approveMembership($id, $memberID, $password);  
-
+            $result = MemberModel::approveMembership($id, $memberID, $password);
 
             if ($result) {
+                Logger::info("Membership approved", ['id' => $id, 'memberID' => $memberID]);
                 $this->sendRequestApprovedEmail($id, $name, $email, $memberID, $password);
                 $this->jsonResponse(["message" => "Membership approved"]);
             } else {
+                Logger::error("Failed to approve membership - user not found", ['id' => $id]);
                 $this->jsonResponse(["message" => "User not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for approveMembership");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -110,7 +111,7 @@ class MemberController extends Controller
         <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&id=' . $id . '">Click here to reset your password</a>
         </div>';
 
-        $specificMessage = '<h4>Welcome to our Library Management Syatem.</h4>
+        $specificMessage = '<h4>Welcome to our Library Management System.</h4>
         <p>You can now log in to the library management system using the credentials provided below:</p>
                 <h4>Your Member ID: ' . $memberID . '</h4>
                 <h4>Your temporary password: ' . $password . '</h4>
@@ -123,9 +124,14 @@ class MemberController extends Controller
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
+        if ($emailSent) {
+            Logger::info("Approval email sent", ['email' => $email]);
+        } else {
+            Logger::error("Failed to send approval email", ['email' => $email]);
+        }
+
         $notificationController = new NotificationController();
         $notification = $notificationController->insertNotification($email, "Welcome to our Library Management System");
-    
     }
 
     public function deactivateMember()
@@ -138,12 +144,15 @@ class MemberController extends Controller
             $result = MemberModel::deactivateMember($id, $name, $name);
 
             if ($result) {
-                $this->sendDeactivateMemberEmail($name, $email);  
+                Logger::info("Member deactivated", ['id' => $id]);
+                $this->sendDeactivateMemberEmail($name, $email);
                 $this->jsonResponse(["message" => "Member deactivated"]);
             } else {
+                Logger::error("Failed to deactivate member - not found", ['id' => $id]);
                 $this->jsonResponse(["message" => "Member not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for deactivateMember");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -154,9 +163,7 @@ class MemberController extends Controller
 
         $subject = 'Membership Deactivated';
 
-        $specificMessage = '
-                <h4>Your library account has been deactivated by the administration.</h4>';
-             
+        $specificMessage = '<h4>Your library account has been deactivated by the administration.</h4>';
 
         $emailTemplate = new EmailTemplate();
         $body = $emailTemplate->getEmailBody($name, $specificMessage);
@@ -164,6 +171,11 @@ class MemberController extends Controller
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
+        if ($emailSent) {
+            Logger::info("Deactivate email sent", ['email' => $email]);
+        } else {
+            Logger::error("Failed to send deactivate email", ['email' => $email]);
+        }
     }
 
     public function rejectMember()
@@ -176,12 +188,15 @@ class MemberController extends Controller
             $result = MemberModel::rejectMember($id, $name, $name);
 
             if ($result) {
-                $this->sendRejectMemberEmail($name, $email);  
+                Logger::info("Membership request rejected", ['id' => $id]);
+                $this->sendRejectMemberEmail($name, $email);
                 $this->jsonResponse(["message" => "Member Rejected"]);
             } else {
+                Logger::error("Failed to reject membership request - not found", ['id' => $id]);
                 $this->jsonResponse(["message" => "User not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for rejectMember");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -192,15 +207,19 @@ class MemberController extends Controller
 
         $subject = 'Membership Request Rejected';
 
-     
         $specificMessage = '<h4>Your membership request has been rejected by the administration.</h4>';
-     
+
         $emailTemplate = new EmailTemplate();
         $body = $emailTemplate->getEmailBody($name, $specificMessage);
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
+        if ($emailSent) {
+            Logger::info("Reject email sent", ['email' => $email]);
+        } else {
+            Logger::error("Failed to send reject email", ['email' => $email]);
+        }
     }
 
     public function loadMemberDetails()
@@ -222,9 +241,11 @@ class MemberController extends Controller
                     "address" => $userData['address'],
                 ]);
             } else {
+                Logger::error("Failed to load member details - not found", ['member_id' => $member_id]);
                 $this->jsonResponse(["message" => "User not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for loadMemberDetails");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -247,11 +268,14 @@ class MemberController extends Controller
             $result = MemberModel::UpdateMemberDetails($member_id, $firstName, $lastName, $email, $phone, $address, $nic);
 
             if ($result) {
+                Logger::info("Member updated successfully", ['member_id' => $member_id]);
                 $this->jsonResponse(["message" => "Member updated successfully."]);
             } else {
+                Logger::error("Failed to update member - not found", ['member_id' => $member_id]);
                 $this->jsonResponse(["message" => "Member not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for UpdateMemberDetails");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -270,9 +294,11 @@ class MemberController extends Controller
                     "email" => $mailData['email'],
                 ]);
             } else {
+                Logger::error("Failed to load mail data - member not found", ['member_id' => $member_id]);
                 $this->jsonResponse(["message" => "Member not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for loadMailData");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -292,11 +318,14 @@ class MemberController extends Controller
             $notification = $notificationController->insertNotification($email, $subject);
 
             if ($result && $notification) {
+                Logger::info("Email sent to member", ['email' => $email, 'subject' => $subject]);
                 $this->jsonResponse(["message" => "Email sent successfully!"]);
             } else {
+                Logger::error("Failed to send email to member", ['email' => $email, 'subject' => $subject]);
                 $this->jsonResponse(["message" => "Failed to send email."], false);
             }
         } else {
+            Logger::warning("Invalid request method for sendMail");
             $this->jsonResponse(["message" => "Invalid Request"], false);
         }
     }
@@ -311,12 +340,15 @@ class MemberController extends Controller
             $result = MemberModel::activateMember($id, $name, $name);
 
             if ($result) {
-                $this->sendActivateMemberEmail($name, $email);  
+                Logger::info("Member activated", ['id' => $id]);
+                $this->sendActivateMemberEmail($name, $email);
                 $this->jsonResponse(["message" => "Member activated again"]);
             } else {
+                Logger::error("Failed to activate member - not found", ['id' => $id]);
                 $this->jsonResponse(["message" => "Member not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for activateMember");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }
@@ -327,13 +359,19 @@ class MemberController extends Controller
 
         $subject = 'Membership Activated Again';
 
-        $specificMessage = '<h4>Youe account has been activated again by the administration.</h4>';
+        $specificMessage = '<h4>Your account has been activated again by the administration.</h4>';
 
         $emailTemplate = new EmailTemplate();
         $body = $emailTemplate->getEmailBody($name, $specificMessage);
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
+
+        if ($emailSent) {
+            Logger::info("Activate email sent", ['email' => $email]);
+        } else {
+            Logger::error("Failed to send activate email", ['email' => $email]);
+        }
     }
 
     public function activateRequest()
@@ -344,11 +382,14 @@ class MemberController extends Controller
             $result = MemberModel::activateRequest($id);
 
             if ($result) {
+                Logger::info("Request activated again", ['id' => $id]);
                 $this->jsonResponse(["message" => "Request activated again"]);
             } else {
+                Logger::error("Failed to activate request - not found", ['id' => $id]);
                 $this->jsonResponse(["message" => "Request not found."], false);
             }
         } else {
+            Logger::warning("Invalid request method for activateRequest");
             $this->jsonResponse(["message" => "Invalid request."], false);
         }
     }

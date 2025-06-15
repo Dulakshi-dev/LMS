@@ -13,56 +13,64 @@ class DashboardController extends Controller
 
     public static function getUserChartData()
     {
-        $userdata = DashboardModel::getUserRegistrationsPerMonth();
-        $issuebookdata = DashboardModel::getBooksIssuedPerMonth();
-        $borrowcategorydata = DashboardModel::getBookCategoryBorrowData(); 
-        $membersbystatus = DashboardModel::getMembersByStatus();
+        try {
+            $userdata = DashboardModel::getUserRegistrationsPerMonth();
+            $issuebookdata = DashboardModel::getBooksIssuedPerMonth();
+            $borrowcategorydata = DashboardModel::getBookCategoryBorrowData(); 
+            $membersbystatus = DashboardModel::getMembersByStatus();
 
-        // Combine both datasets into one array
-        $combinedData = [
-            'userRegistrations' => $userdata,
-            'booksIssued' => $issuebookdata,
-            'borrowCategory' => $borrowcategorydata,
-            'memberstatus' => $membersbystatus
-        ];
-    
-        // Output combined data as JSON
-        echo json_encode($combinedData);
+            $combinedData = [
+                'userRegistrations' => $userdata,
+                'booksIssued' => $issuebookdata,
+                'borrowCategory' => $borrowcategorydata,
+                'memberstatus' => $membersbystatus
+            ];
+        
+            echo json_encode($combinedData);
+
+        } catch (Exception $e) {
+            Logger::error("Failed to fetch user chart data: " . $e->getMessage());
+            echo json_encode(['error' => 'Failed to fetch user chart data']);
+        }
     }
 
     public static function getDashboardCounts()
     {
-        // Get counts for books, members, reservations, and issued books
-        $bookcount = DashboardModel::getNoOfBooks();
-        $membercount = DashboardModel::getNoOfMembers();
-        $reservationcount = DashboardModel::getNoOfReservations();
-        $issuecount = DashboardModel::getNoOfIssuedBooks();
-        $totalfines = DashboardModel::getAmountOfFines();
+        try {
 
-        // Prepare the data to send as a JSON response
-        $data = [
-            'bookcount' => $bookcount,
-            'membercount' => $membercount,
-            'reservationcount' => $reservationcount,
-            'issuecount' => $issuecount,
-            'finestotal' => $totalfines
-        ];
-    
-        // Return the data as JSON
-        echo json_encode([
-            'success' => true,
-            'libraryData' => $data
-        ]);
+            $bookcount = DashboardModel::getNoOfBooks();
+            $membercount = DashboardModel::getNoOfMembers();
+            $reservationcount = DashboardModel::getNoOfReservations();
+            $issuecount = DashboardModel::getNoOfIssuedBooks();
+            $totalfines = DashboardModel::getAmountOfFines();
+
+            $data = [
+                'bookcount' => $bookcount,
+                'membercount' => $membercount,
+                'reservationcount' => $reservationcount,
+                'issuecount' => $issuecount,
+                'finestotal' => $totalfines
+            ];
+        
+            echo json_encode([
+                'success' => true,
+                'libraryData' => $data
+            ]);
+
+        } catch (Exception $e) {
+            Logger::error("Failed to fetch dashboard counts: " . $e->getMessage());
+            echo json_encode(['error' => 'Failed to fetch dashboard counts']);
+        }
     }
 
     public function loadTopBooks()
     {
-        // Check if it's a POST request
         if ($this->isPost()) {
-            // Retrieve top books
+
             $topBooksResult = DashboardModel::getTopBooks();
 
             if (!$topBooksResult) {
+                Logger::error("Failed to fetch top books.");
                 $this->jsonResponse(["message" => "Failed to fetch books."], false);
                 return;
             }
@@ -76,6 +84,7 @@ class DashboardController extends Controller
                 "books" => $topbooks
             ]);
         } else {
+            Logger::warning("Invalid request method for loading top books.");
             $this->jsonResponse(["message" => "Invalid request method."], false);
         }
     }

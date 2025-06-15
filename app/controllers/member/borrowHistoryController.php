@@ -13,6 +13,7 @@ class BorrowHistoryController extends Controller
 
     public function loadBorrowBooks()
     {
+
         $id = $_SESSION["member"]["id"] ?? '';
 
         $resultsPerPage = 10;
@@ -40,6 +41,7 @@ class BorrowHistoryController extends Controller
                 "currentPage" => $page
             ]);
         } else {
+            Logger::warning("Invalid request method for loadBorrowBooks()");
             $this->jsonResponse([
                 "message" => "Invalid request."
             ], false);

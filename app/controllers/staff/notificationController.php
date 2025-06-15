@@ -15,13 +15,14 @@ class NotificationController extends Controller
 
     public function insertNotification($email, $msg)
     {
-            $result = NotificationModel::insertNotification($email, $msg);
-            
-            if($result){
-                return true;
-            }else{
-                return false;
-            }
-           
+        $result = NotificationModel::insertNotification($email, $msg);
+        
+        if ($result) {
+            Logger::info("Notification inserted successfully", ['email' => $email]);
+            return true;
+        } else {
+            Logger::error("Failed to insert notification", ['email' => $email]);
+            return false;
+        }
     }
 }

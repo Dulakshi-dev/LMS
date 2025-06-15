@@ -23,7 +23,7 @@ require_once Config::getViewPath("common","head.php");
         style="background-image: url('<?php echo Config::getImagePath('open-hour.jpg'); ?>'); 
            background-size: cover; 
            background-position: center; 
-           height: 600px;">
+           min-height: 500px;">
         <h1 class="display-3 bg-dark bg-opacity-50 p-3 rounded-3">Library Opening Hours</h1>
     </div>
 

@@ -7,13 +7,13 @@ require_once "../../main.php";
 <?php
 $pageTitle = "Home";
 $pageCss = "home.css";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 
 
 <body onload="loadNewsUpdates();">
-    
+
 
     <?php
     // Check if the session exists to decide which header to include
@@ -25,11 +25,18 @@ require_once Config::getViewPath("common","head.php");
         require_once Config::getViewPath("guest", "header.view.php");
     }
     ?>
-    <section class="bg-dark text-white pt-5 px-3 mt-3 d-none d-md-block w-100" style="background: url('<?php echo Config::getImagePath("home.jpg"); ?>') no-repeat center center/cover; height: 550px;">
+    <section class="bg-dark text-white sm-bg px-3 mt-3 d-none d-lg-block w-100" style="background: url('<?php echo Config::getImagePath("home.jpg"); ?>') no-repeat center center/cover; height: 550px;">
         <h1 class="display-1 fw-bold">Welcome to</h1>
     </section>
-    <section class="bg-dark text-white pt-5 px-3 mt-3 d-md-none" style="background: url('<?php echo Config::getImagePath("home.jpg"); ?>') no-repeat center center/cover; height: 350px;">
-        <h1 class="display-1 fw-bold">Welcome to</h1>
+    <section class="px-3 pt-md-5 pt-3 d-md-none" style="background: url('<?php echo Config::getImagePath("lib1.jpg"); ?>') no-repeat center center/cover; height: 350px;">
+        <h1 class="text-white fw-bold"
+            style="font-size: 3.5rem; -webkit-text-stroke: 1px black; color: white;">
+            Welcome to
+        </h1>
+
+    </section>
+    <section class="px-5 pt-md-1 d-none d-md-block d-lg-none" style="background: url('<?php echo Config::getImagePath("lib1.jpg"); ?>') no-repeat center center/cover; height: 500px;">
+        <h1 class="display-1 fw-bold" style="font-size: 6rem; -webkit-text-stroke: 2px black; color: white;">Welcome to</h1>
     </section>
 
     <div class="container mx-auto my-5 d-block d-md-none">
@@ -51,7 +58,7 @@ require_once Config::getViewPath("common","head.php");
             </div>
         </div>
     </div>
-    
+
     <div class="container mx-auto my-5 d-none d-md-block">
         <h2 class="fs-1 mb-4" style="color: red;">Our Goal</h2>
         <div class="row align-items-center mb-4">
@@ -84,7 +91,7 @@ require_once Config::getViewPath("common","head.php");
     <div class="modal fade" id="newsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="newsModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content text-center">
-            <div class="d-flex justify-content-between align-items-center m-3">
+                <div class="d-flex justify-content-between align-items-center m-3">
                     <h3 class="mb-0">News Update</h3>
                     <i class="fa fa-close text-black" style="cursor: pointer;" data-bs-dismiss="modal" aria-label="Close"></i>
                 </div>

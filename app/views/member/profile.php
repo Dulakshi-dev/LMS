@@ -47,7 +47,6 @@ require_once Config::getViewPath("common", "head.php");
       </div>
     </div>
 
-
     <div class="flex-grow-1 flex-column bg-light m-3 m-md-5" id="box1">
       <div class="container my-4">
         <div class="row">
@@ -72,7 +71,7 @@ require_once Config::getViewPath("common", "head.php");
           <hr class="d-block d-md-none">
 
           <div class="col-md-9 mx-auto px-lg-5">
-            <form>
+            <form id="profileForm" onsubmit="updateProfileDetails(event); return false;">
               <div class="row">
                 <div class="col-lg-6 col-sm-6 mb-3">
                   <label for="fname">First Name</label>
@@ -111,10 +110,9 @@ require_once Config::getViewPath("common", "head.php");
 
               <div class="d-flex justify-content-end gap-2 pt-lg-4 mt-3">
                 <button type="button" class="btn btn-danger" onclick="goToChangePassword(event)">Reset Password</button>
-                <button type="button" class="btn btn-primary px-5" onclick="updateProfileDetails()">Save</button>
+                <button type="submit" class="btn btn-primary px-5">Save</button>
               </div>
             </form>
-
           </div>
         </div>
       </div>
@@ -124,7 +122,7 @@ require_once Config::getViewPath("common", "head.php");
     <div id="box2" class="d-none">
       <div class="container mt-5 p-4 bg-white rounded" style="width: 800px;">
         <h3 class="pb-3">Change Password</h3>
-        <form id="currentPasswordForm" method="POST">
+        <form id="currentPasswordForm" onsubmit="validateCurrentPassword('<?php echo $member_id; ?>', event); return false;">
           <div class="row d-flex mt-5">
             <div class="col-12 col-md-4 mb-2"><label for="currentpassword">Current Password</label></div>
             <div class="col-12 col-md-8">
@@ -136,7 +134,7 @@ require_once Config::getViewPath("common", "head.php");
 
           <div class="d-flex justify-content-end py-3 my-4">
             <button type="button" class="btn btn-primary px-5 mx-4" onclick="goBack()">Back</button>
-            <button type="button" class="btn btn-danger px-5" onclick="validateCurrentPassword('<?php echo $member_id; ?>')">Next</button>
+            <button type="submit" class="btn btn-danger px-5">Next</button>
           </div>
         </form>
       </div>
@@ -147,7 +145,7 @@ require_once Config::getViewPath("common", "head.php");
       <div class="container mt-5 p-4 bg-white rounded" style="width: 800px;">
         <h3 class="pb-3">Change Password</h3>
         <p class="text-muted">Your new password must be between 8 and 15 characters in length</p>
-        <form id="newPasswordForm" method="POST">
+        <form id="newPasswordForm" onsubmit="saveNewPassword('<?php echo $member_id; ?>', event); return false;">
           <div class="row d-flex mt-5">
             <div class="col-12 col-md-4 mb-2"><label for="new-password">New Password</label></div>
             <div class="col-12 col-md-8">
@@ -169,8 +167,7 @@ require_once Config::getViewPath("common", "head.php");
             <div class="col-12 col-md-4 mb-2"><label for="confirm-password">Confirm Password</label></div>
             <div class="col-12 col-md-8">
               <input id="confirm-password" class="form-control" type="password">
-              <span id="confirm-password-error" class="text-danger"></span> <!-- Error message for confirm password -->
-
+              <span id="confirm-password-error" class="text-danger"></span>
             </div>
           </div>
 
@@ -178,7 +175,7 @@ require_once Config::getViewPath("common", "head.php");
 
           <div class="d-flex justify-content-end py-3 my-4">
             <button type="button" class="btn btn-primary px-5 mx-4" onclick="goBackToCurrent()">Back</button>
-            <button type="button" class="btn btn-danger px-5" onclick="saveNewPassword('<?php echo $member_id; ?>')">Save</button>
+            <button type="submit" class="btn btn-danger px-5">Save</button>
           </div>
         </form>
       </div>
@@ -187,13 +184,8 @@ require_once Config::getViewPath("common", "head.php");
 
   <?php require_once Config::getViewPath("common", "footer.php"); ?>
 
-
-
-
-
   <script src="<?php echo Config::getJsPath("memberProfile.js"); ?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

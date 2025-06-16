@@ -78,14 +78,14 @@ require_once Config::getViewPath("common","head.php");
                         <div class="row">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="category" class="form-label">Book Category</label>
-                                <select class="form-select" id="category" name="category"  >
+                                <select class="form-select" id="category1" name="category"  >
                                     <option value="">Select Category</option>
                                 </select>
                                 <span id="category-error" class="text-danger"></span>
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="language" class="form-label">Language</label>
-                                <select class="form-select" id="language" name="language"  >
+                                <select class="form-select" id="language1" name="language"  >
                                     <option value="">Select Language</option>
                                 </select>
                                 <span id="language-error" class="text-danger"></span>

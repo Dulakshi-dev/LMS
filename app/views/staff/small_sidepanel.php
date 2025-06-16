@@ -91,15 +91,6 @@ $current_action = $_GET['action'] ?? 'dashboard';
       </a>
     <?php endforeach; ?>
 
-    <!-- Library Setup -->
-    <a href="<?= Config::indexPath() ?>?action=libsetup"
-      class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'libsetup' ? 'active bg-primary' : 'text-white'; ?>">
-      <div class="nav-icon">
-        <i class="fas fa-university"></i>
-      </div>
-      <span class="nav-text ms-2 d-none">Library Setup</span>
-    </a>
-
     <!-- About Software -->
     <a href="<?= Config::indexPath() ?>?action=aboutsoftware"
       class="nav-link rounded my-2 d-flex align-items-center <?= $current_action == 'aboutsoftware' ? 'active bg-primary' : 'text-white'; ?>">

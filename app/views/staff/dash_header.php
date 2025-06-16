@@ -39,7 +39,7 @@ $fine = $libraryData['fine_amount'];
 </style>
 
 <header>
-    <div class="d-flex justify-content-between align-items-center py-2 px-3 bg-library text-white">
+    <div class="d-flex justify-content-between align-items-center px-3 bg-library text-white">
         <!-- Logo -->
         <div class="navbar navbar-dark">
             <a class="navbar-brand d-flex align-items-center" href="#">

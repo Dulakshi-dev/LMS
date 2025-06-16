@@ -49,7 +49,7 @@ require_once Config::getViewPath("common", "head.php");
                             <h4 class="text-start"><i class="fa fa-clock-o"></i> Time Setup</h4>
                             <div class="row ">
                                 <div class="col-md-2 mt-3 col-12">
-                                    <div class=" border-2 border-primary border-bottom"><label class="fw-bold mb-3 mb-md-5">Week Days</label></div>
+                                    <div class=""><label class="fw-bold mb-3 mb-md-5">Week Days</label></div>
                                     <div class="d-md-none">
                                         <div class="col-6 mb-3">
                                             <label for="weekdayfrom" class="fw-bold">From</label>
@@ -62,7 +62,8 @@ require_once Config::getViewPath("common", "head.php");
                                             <span class="text-danger error-message"></span>
                                         </div>
                                     </div>
-                                    <div class="border-2 border-primary border-bottom"><label class="fw-bold mb-3 mb-md-5">Week Ends</label></div>
+                                    <div class="d-md-none border-2 border-primary border-bottom"></div>
+                                    <div class=""><label class="fw-bold mb-3 mb-md-5">Week Ends</label></div>
                                     <div class="d-md-none">
                                         <!-- Week Ends -->
                                         <div class="col-6 mb-3">
@@ -76,7 +77,9 @@ require_once Config::getViewPath("common", "head.php");
                                             <span class="text-danger error-message"></span>
                                         </div>
                                     </div>
-                                    <div class="border-2 border-primary border-bottom"><label class="fw-bold mb-3 mb-md-5">Holidays</label></div>
+                                    <div class="d-md-none border-2 border-primary border-bottom"></div>
+
+                                    <div class=""><label class="fw-bold mb-3 mb-md-5">Holidays</label></div>
                                     <div class="d-md-none">
                                         <!-- Holidays -->
                                         <div class="col-6 mb-3">

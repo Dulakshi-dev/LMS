@@ -88,11 +88,11 @@ function registerBox3() {
         const button = document.getElementById("btn4");
         const btnText = document.getElementById("btnText");
         const spinner = document.getElementById("spinner");
-    
+
         // Show spinner, hide icon
         if (btnText) btnText.classList.add("d-none");
         if (spinner) spinner.classList.remove("d-none");
-    
+
         // Prevent multiple clicks
         button.disabled = true;
 
@@ -114,7 +114,7 @@ function registerBox3() {
                     // Start OTP Timer
                     startOTPTimer(120); // 120 seconds (2 minutes)
                 } else {
-                    showAlert("Error", resp.message, "error").then(()=>{
+                    showAlert("Error", resp.message, "error").then(() => {
                         resetButtonUI(button, btnText, spinner);
                     });
                 }
@@ -161,6 +161,9 @@ function startOTPTimer(duration) {
 }
 
 function resendOTP() {
+    let resendLink = document.getElementById("resend-link");
+    resendLink.style.pointerEvents = "none"; // Disable resend link
+
     registerBox3();
 }
 

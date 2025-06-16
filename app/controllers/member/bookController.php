@@ -58,7 +58,7 @@ class BookController extends Controller
 
         // If no recommended books, load random books
         if (empty($booksrec)) {
-            $randomBooksData = $this->bookModel->getRandomBooks(6); // Get 6 random books
+            $randomBooksData = $this->bookModel->getRandomBooks(4); // Get 4 random books
             $randomBooksResult = $randomBooksData['results'];
             while ($row = $randomBooksResult->fetch_assoc()) {
                 $booksrec[] = $row;

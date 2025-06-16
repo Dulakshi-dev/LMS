@@ -21,18 +21,15 @@ function loadProfileData(id) {
 
                 var profimg = resp.profile_img;
                 var profileImgElement = document.getElementById("profileimg");
-
-                if (profimg == "") {
+                
+                if (profimg == null) {
                     profileImgElement.src = "index.php?action=serveprofimage&image=user.jpg";
 
                 } else {
                     profileImgElement.src = "index.php?action=serveprofimage&image=" + profimg;
-
                 }
-
-
             } else {
-                alert("Failed to load user data. Please try again.");
+                showAlert("Error", resp.message, "error");
             }
         })
         .catch(error => {
@@ -51,8 +48,6 @@ function showProfilePreview() {
         reader.readAsDataURL(file);
     }
 }
-
-
 
 function updateProfileDetails() {
     // Get form values

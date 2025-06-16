@@ -115,6 +115,7 @@ require_once Config::getViewPath("common","head.php");
         </div>
     </div>
 
+    <!--edit book-->
     <div class="modal fade" id="updateBookDetailsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

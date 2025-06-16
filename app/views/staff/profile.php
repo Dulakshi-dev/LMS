@@ -62,7 +62,7 @@ require_once Config::getViewPath("common", "head.php");
                 <div class="container-fluid fw-bold bg-white d-flex justify-content-center">
                     <div class="row">
                         <div class="text-center border-bottom border-danger border-4">
-                            <h2 class="p-2">Update Details</h2>
+                            <h2 class="p-2">Profile</h2>
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-md-12 text-center">

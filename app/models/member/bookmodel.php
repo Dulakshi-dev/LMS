@@ -26,7 +26,6 @@ class BookModel
             'total' => $totalBooks,
             'results' => $books
         ];
-
     }
 
     private static function getTotalBooks()
@@ -50,7 +49,7 @@ class BookModel
         INNER JOIN `status` ON book.status_id = status.status_id 
         INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
         WHERE `book`.`status_id`='1' AND 1";
-       
+
         if (!empty($category_id)) {
             $sql .= " AND `book`.`category_id`='$category_id'";
         }
@@ -60,9 +59,8 @@ class BookModel
         if (!empty($title)) {
             $sql .= " AND `book`.`title` LIKE '%$title%'";
         }
-      
-      
-        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults"; 
+
+        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults";
 
         $rs = Database::search($sql);
         $books = [];
@@ -79,7 +77,7 @@ class BookModel
         INNER JOIN `status` ON book.status_id = status.status_id 
         INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
         WHERE `book`.`status_id`='1' AND 1";
-        
+
         if (!empty($category_id)) {
             $countQuery .= " AND `book`.`category_id`='$category_id'";
         }
@@ -89,7 +87,7 @@ class BookModel
         if (!empty($title)) {
             $countQuery .= " AND `book`.`title` LIKE '%$title%'";
         }
-    
+
         $result = Database::search($countQuery);
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
@@ -148,7 +146,7 @@ class BookModel
                 SELECT borrow_book_id FROM borrow WHERE borrow_member_id = '$id'
             )
             LIMIT 10");
-        
+
         return [
             'results' => $rs
         ];
@@ -157,7 +155,7 @@ class BookModel
     public static function getLatestArrivalBooks()
     {
         $rs = Database::search("SELECT * FROM `book` ORDER BY CAST(SUBSTRING(`book_id`, 3) AS UNSIGNED) DESC LIMIT 4;");
-        
+
         return [
             'results' => $rs
         ];
@@ -171,7 +169,7 @@ INNER JOIN borrow ON book.book_id = borrow.borrow_book_id
 GROUP BY book.book_id
 ORDER BY borrow_count DESC
 LIMIT 4;");
-        
+
         return [
             'results' => $rs
         ];
@@ -185,7 +183,7 @@ LIMIT 4;");
         ];
     }
 
-    
+
     public static function getAllCategories()
     {
         $query = "SELECT category_id, category_name FROM category";
@@ -229,7 +227,5 @@ LIMIT 4;");
         return [
             'results' => $books
         ];
-
-       
     }
 }

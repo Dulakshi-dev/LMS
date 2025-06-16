@@ -51,14 +51,14 @@ require_once Config::getViewPath("common", "head.php");
       <div class="container my-4">
         <div class="row">
           <div class="col-12 text-center border-bottom border-danger border-4 mb-4">
-            <h2 class="p-2">Update Details</h2>
+            <h2 class="p-2">Profile</h2>
           </div>
         </div>
 
         <div class="row">
           <div class="col-sm-12 col-lg-3 text-center p-4">
             <div class="mb-4">
-              <img id="profileimg" style="height: 250px; width: 250px; border-radius: 50%;" src="" alt="Profile Picture">
+              <img class="rounded-circle" id="profileimg" style="height: 200px; width: 200px;" src="" alt="Profile Picture">
             </div>
             <div class="mb-4">
               <input type="file" id="uploadprofimg" name="uploadprofimg" class="form-control" onchange="showProfilePreview()">
@@ -188,4 +188,5 @@ require_once Config::getViewPath("common", "head.php");
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

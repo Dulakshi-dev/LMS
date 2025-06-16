@@ -189,14 +189,14 @@ function validateForm() {
         isValid = false;
     }
 
-    let category = document.getElementById("category").value;
+    let category = document.getElementById("category1").value;
     if (category === "") {
         document.getElementById("category-error").innerText = "Select a category.";
         isValid = false;
     }
 
 
-    let language = document.getElementById("language").value;
+    let language = document.getElementById("language1").value;
     if (language === "") {
         document.getElementById("language-error").innerText = "Select a language.";
         isValid = false;
@@ -239,8 +239,8 @@ function addBook() {
         formData.append("isbn", document.getElementById("isbn").value);
         formData.append("author", document.getElementById("author").value);
         formData.append("title", document.getElementById("title").value);
-        formData.append("category", document.getElementById("category").value);
-        formData.append("language", document.getElementById("language").value);
+        formData.append("category", document.getElementById("category1").value);
+        formData.append("language", document.getElementById("language1").value);
         formData.append("pub", document.getElementById("pub").value);
         formData.append("qty", document.getElementById("qty").value);
         formData.append("des", document.getElementById("des").value);

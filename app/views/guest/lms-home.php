@@ -16,8 +16,8 @@ require_once Config::getViewPath("common","head.php");
                 <div class="container h-100">
                     <div class="row h-100 align-items-center">
                         <div class="col-12 col-lg-6 offset-lg-6 text-center text-lg-start">
-                            <div class=" p-4 rounded-3">
-                                <h2 class="mb-4 fw-bold"><?= $libraryName ?> - Library Management System</h2>
+                            <div class=" p-4 rounded-3 text-center">
+                                <h2 class="mb-4 fw-bold"><?= $libraryName ?> <br> Library Management System</h2>
                                 <p class="fs-5 mb-4">Register now to access our full range of features and start exploring our vast collection of resources</p>
                                 <div class="mt-5">
                                     <button class="btn btn-dark rounded-5 px-4" onclick="window.location.href='<?php echo Config::indexPathMember() ?>?action=register'">Register</button>

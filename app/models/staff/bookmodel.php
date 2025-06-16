@@ -40,7 +40,7 @@ class BookModel
         return $row['total'] ?? 0;
     }
 
-    public static function searchBooks($bookid, $title, $isbn,$category_id, $language_id, $status = 'Active', $page, $resultsPerPage)
+    public static function searchBooks($bookid, $title, $isbn, $category_id, $language_id, $status = 'Active', $page, $resultsPerPage)
     {
         $statusId = ($status === 'Active') ? 1 : 2;
         $pageResults = ($page - 1) * $resultsPerPage;
@@ -192,6 +192,12 @@ class BookModel
         return true;
     }
 
+    public static function isbnExists($isbn)
+    {
+        $result = Database::search("SELECT * FROM `book` WHERE `isbn` = '$isbn'");
+        return $result !== null;
+    }
+
 
     public static function addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $coverpage)
     {
@@ -205,6 +211,7 @@ class BookModel
 
         return true;
     }
+    
 
     public static function generateID()
     {

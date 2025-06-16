@@ -109,8 +109,8 @@ require_once Config::getViewPath("common", "head.php");
               </div>
 
               <div class="d-flex justify-content-end gap-2 pt-lg-4 mt-3">
-                <button type="button" class="btn btn-danger" onclick="goToChangePassword(event)">Reset Password</button>
-                <button type="submit" class="btn btn-primary px-5">Save</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="goToChangePassword(event)">Reset Password</button>
+                <button type="submit" class="btn btn-dark px-5">Save</button>
               </div>
             </form>
           </div>
@@ -119,67 +119,79 @@ require_once Config::getViewPath("common", "head.php");
     </div>
 
     <!-- Box 2: Current Password -->
-    <div id="box2" class="d-none">
-      <div class="container mt-5 p-4 bg-white rounded" style="width: 800px;">
-        <h3 class="pb-3">Change Password</h3>
+    <div id="box2" class="d-none d-flex justify-content-center align-items-center mx-auto py-5">
+      <div class="bg-white rounded-4 shadow-lg p-4 p-md-5 w-100 col-12 col-sm-10 col-md-8 col-lg-6">
+
+        <div class="text-center mb-4">
+          <h3 class="text-black fw-bold">Change Your Password</h3>
+        </div>
+
         <form id="currentPasswordForm" onsubmit="validateCurrentPassword('<?php echo $member_id; ?>', event); return false;">
-          <div class="row d-flex mt-5">
-            <div class="col-12 col-md-4 mb-2"><label for="currentpassword">Current Password</label></div>
-            <div class="col-12 col-md-8">
-              <input id="currentpassword" name="currentpassword" class="form-control" type="password">
-            </div>
+
+          <div class="mb-4">
+            <label for="currentpassword" class="form-label fw-semibold">Current Password</label>
+            <input type="password" id="currentpassword" name="currentpassword" class="form-control border border-primary"
+              placeholder="Enter your current password" />
+          </div>
+          <div id="errormsgcurrent" class="text-danger small mb-3"></div>
+          <div class="d-flex flex-column flex-md-row justify-content-end gap-3 pt-2">
+            <button type="button" class="btn btn-outline-secondary px-4" onclick="goBack()">Back</button>
+            <button type="submit" class="btn btn-dark px-4">Next</button>
           </div>
 
-          <div id="errormsgcurrent" class="text-danger mt-2"></div>
-
-          <div class="d-flex justify-content-end py-3 my-4">
-            <button type="button" class="btn btn-primary px-5 mx-4" onclick="goBack()">Back</button>
-            <button type="submit" class="btn btn-danger px-5">Next</button>
-          </div>
         </form>
+
       </div>
     </div>
+
+
+
+
 
     <!-- Box 3: New Password -->
-    <div id="box3" class="d-none">
-      <div class="container mt-5 p-4 bg-white rounded" style="width: 800px;">
-        <h3 class="pb-3">Change Password</h3>
-        <p class="text-muted">Your new password must be between 8 and 15 characters in length</p>
+    <div id="box3" class="d-none d-flex justify-content-center align-items-center mx-auto py-5">
+      <div class="bg-white rounded-4 shadow-lg p-4 p-md-5 w-100 col-12 col-sm-10 col-md-8 col-lg-6">
+
+        <!-- Title -->
+        <div class="text-center mb-3">
+          <h3 class="text-black fw-bold">Set a New Password</h3>
+          <p class="text-muted small">Your new password must be between 8 and 15 characters in length</p>
+        </div>
+
         <form id="newPasswordForm" onsubmit="saveNewPassword('<?php echo $member_id; ?>', event); return false;">
-          <div class="row d-flex mt-5">
-            <div class="col-12 col-md-4 mb-2"><label for="new-password">New Password</label></div>
-            <div class="col-12 col-md-8">
-              <input id="new-password" class="form-control" type="password">
-              <span id="new-password-error" class="text-danger"></span>
-              <div id="passwordRulesContainer" class="mt-2" style="display: none;">
-                <ul class="list-unstyled mb-0">
-                  <li id="rule-length" class="text-danger">At least 8 characters</li>
-                  <li id="rule-uppercase" class="text-danger">At least one uppercase letter</li>
-                  <li id="rule-lowercase" class="text-danger">At least one lowercase letter</li>
-                  <li id="rule-digit" class="text-danger">At least one number</li>
-                  <li id="rule-special" class="text-danger">At least one special character</li>
-                </ul>
-              </div>
+
+          <div class="mb-4">
+            <label for="new-password" class="form-label fw-semibold">New Password</label>
+            <input id="new-password" class="form-control border border-primary" type="password" placeholder="Emter your new password">
+            <span id="new-password-error" class="text-danger small"></span>
+
+            <div id="passwordRulesContainer" class="mt-2" style="display: none;">
+              <ul class="list-unstyled small">
+                <li id="rule-length" class="text-danger">• At least 8 characters</li>
+                <li id="rule-uppercase" class="text-danger">• At least one uppercase letter</li>
+                <li id="rule-lowercase" class="text-danger">• At least one lowercase letter</li>
+                <li id="rule-digit" class="text-danger">• At least one number</li>
+                <li id="rule-special" class="text-danger">• At least one special character</li>
+              </ul>
             </div>
           </div>
 
-          <div class="row d-flex my-4">
-            <div class="col-12 col-md-4 mb-2"><label for="confirm-password">Confirm Password</label></div>
-            <div class="col-12 col-md-8">
-              <input id="confirm-password" class="form-control" type="password">
-              <span id="confirm-password-error" class="text-danger"></span>
-            </div>
+          <div class="mb-4">
+            <label for="confirm-password" class="form-label fw-semibold">Confirm Password</label>
+            <input id="confirm-password" class="form-control border border-primary" type="password" placeholder="Confirm your new password">
+            <span id="confirm-password-error" class="text-danger small"></span>
           </div>
 
-          <div id="errormsg-new" class="text-danger mt-2"></div>
+          <div id="errormsg-new" class="text-danger small mb-3"></div>
 
-          <div class="d-flex justify-content-end py-3 my-4">
-            <button type="button" class="btn btn-primary px-5 mx-4" onclick="goBackToCurrent()">Back</button>
-            <button type="submit" class="btn btn-danger px-5">Save</button>
+          <div class="d-flex flex-column flex-md-row justify-content-end gap-3 pt-2">
+            <button type="button" class="btn btn-outline-secondary px-4" onclick="goBackToCurrent()"> Back</button>
+            <button type="submit" class="btn btn-dark px-4">Save</button>
           </div>
         </form>
       </div>
     </div>
+
   </div>
 
   <?php require_once Config::getViewPath("common", "footer.php"); ?>
@@ -188,4 +200,5 @@ require_once Config::getViewPath("common", "head.php");
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

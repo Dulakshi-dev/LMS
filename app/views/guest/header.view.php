@@ -10,12 +10,14 @@ $logo = $libraryData['logo'];
 $fee = $libraryData['membership_fee'];
 $fine = $libraryData['fine_amount'];
 
+// Safely get action
+$action = $_GET['action'] ?? '';
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-body m-0">
     <div class="container-fluid">
-        <a class="navbar-brand m-0" href="<?php echo Config::indexPathMember() ?>?action=home">
-            <img src="<?php echo Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
+        <a class="navbar-brand m-0" href="<?= Config::indexPathMember() ?>?action=home">
+            <img src="<?= Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
@@ -26,20 +28,20 @@ $fine = $libraryData['fine_amount'];
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link <?= $_GET['action'] == 'home' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=home">Home</a>
+                    <a class="nav-link <?= $action === 'home' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $_GET['action'] == 'openhours' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
+                    <a class="nav-link <?= $action === 'openhours' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $_GET['action'] == 'contact' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=contact">Contact</a>
+                    <a class="nav-link <?= $action === 'contact' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=contact">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $_GET['action'] == 'about' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=about">About</a>
+                    <a class="nav-link <?= $action === 'about' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=about">About</a>
                 </li>
                 <li class="nav-item">
-                    <button type="button" id="li" class="btn btn-outline-light <?= $_GET['action'] == 'lmshome' ? 'text-black bg-white fw-bold' : '' ?>"
-                        onclick="window.location.href='<?php echo Config::indexPathMember() ?>?action=lmshome'">
+                    <button type="button" class="btn btn-outline-light <?= $action === 'lmshome' ? 'text-black bg-white fw-bold' : '' ?>"
+                        onclick="window.location.href='<?= Config::indexPathMember() ?>?action=lmshome'">
                         LMS
                     </button>
                 </li>

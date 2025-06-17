@@ -95,7 +95,7 @@ $fine = $libraryData['fine_amount'];
   <div class="bg-black d-flex align-items-center justify-content-between">
     <!-- left -->
     <div>
-      <a class="navbar-brand d-flex align-items-center" href="#">
+      <a class="navbar-brand d-flex align-items-center" href="<?php echo Config::indexPathMember() ?>?action=home">
         <img src="<?= Config::indexPathMember() ?>?action=servelogo&image=<?= $logo ?>" alt="library logo" width="200" height="60">
       </a>
     </div>

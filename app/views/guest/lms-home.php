@@ -3,7 +3,7 @@
 
 <?php
 $pageTitle = "Welcome";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body onload="loadTopBooks();">
@@ -39,29 +39,55 @@ require_once Config::getViewPath("common","head.php");
                     <h1 class="fw-bold" id="topicTopBooks"><span class="text-danger">Top</span> <span class="text-dark">Books</span></h1>
                     <h1 class="fw-bold d-none" id="topicNewArrivals"><span class="text-danger">New</span> <span class="text-dark">Arrivals</span></h1>
                 </div>
-              
+
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="row g-4" id="bookBody">
                         <!-- Books will be loaded here by JavaScript -->
                     </div>
-                   
+
                 </div>
             </div>
         </div>
     </div>
+    <!-- Top Books Section -->
+    <!-- <div class="container-fluid bg-light py-5">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="fw-bold" id="topicTopBooks">
+                        <span class="text-danger">Top</span> <span class="text-dark">Books</span>
+                    </h1>
+                    <h1 class="fw-bold d-none" id="topicNewArrivals">
+                        <span class="text-danger">New</span> <span class="text-dark">Arrivals</span>
+                    </h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="horizontal-scroll-container" style="overflow-x: auto; white-space: nowrap; padding-bottom: 10px;">
+                        <div class="d-inline-flex gap-4" id="bookBody" style="min-width: max-content;">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
 
     <div class="container-fluid p-1">
-    <div class="row g-0">
-        <div class="col-12 d-none d-md-block" style="height: 100vh; width:100%; background-image: url('<?php echo Config::getImagePath("quotes.jpg"); ?>'); background-size: cover; background-position: center;">
-            <!-- Empty div - just shows the background image -->
-        </div>
-        <div class="col-12 d-md-none" style="height: 50vh; width:100%; background-image: url('<?php echo Config::getImagePath("quotes.jpg"); ?>'); background-size: cover; background-position: center;">
-            <!-- Empty div - just shows the background image -->
+        <div class="row g-0">
+            <div class="col-12 d-none d-md-block" style="height: 100vh; width:100%; background-image: url('<?php echo Config::getImagePath("quotes.jpg"); ?>'); background-size: cover; background-position: center;">
+                <!-- Empty div - just shows the background image -->
+            </div>
+            <div class="col-12 d-md-none" style="height: 50vh; width:100%; background-image: url('<?php echo Config::getImagePath("quotes.jpg"); ?>'); background-size: cover; background-position: center;">
+                <!-- Empty div - just shows the background image -->
+            </div>
         </div>
     </div>
-</div>
 
     <?php require_once Config::getViewPath("common", "footer.php"); ?>
     <script src="<?php echo Config::getJsPath("home.js"); ?>"></script>

@@ -237,6 +237,15 @@ function loadTopBooks() {
                     </div>
                 </div>
 
+                // <div class="card border-0 shadow-sm" style="width: 200px; min-width: 200px;">
+                //     <img src="${coverImageUrl}" class="card-img-top" alt="Book Cover" style="height: 300px; object-fit: cover; border-radius: 0.5rem 0.5rem 0 0;">
+                //     <div class="card-body p-2 d-flex flex-column justify-content-between">
+                //         <h6 class="card-title fw-semibold text-dark text-truncate" title="${book.title}">${book.title}</h6>
+                //         <p class="card-text text-muted small mb-0 text-truncate" title="${book.author}">${book.author}</p>
+                //     </div>
+                // </div>
+
+
                 `;
 
                     body.innerHTML += row;

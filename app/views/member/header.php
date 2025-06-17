@@ -120,7 +120,7 @@ $fine = $libraryData['fine_amount'];
 
     <!-- right -->
     <div class="">
-      <div class="d-flex align-items-center px-3">
+      <div class="d-flex align-items-center gap-3">
 
 
         <!-- Notifications -->
@@ -140,7 +140,7 @@ $fine = $libraryData['fine_amount'];
 
 
         <!-- Profile -->
-        <div class="dropdown-wrapper position-relative px-3">
+        <div class="dropdown-wrapper position-relative">
           <a href="#" class="d-flex align-items-center text-white text-decoration-none gap-1">
             <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>" alt="User" class="rounded-circle" style="height: 40px; width: 40px;">
             <i class="fa fa-sort-down ms-1"></i>
@@ -165,7 +165,7 @@ $fine = $libraryData['fine_amount'];
 
         <!-- LMS -->
         <div>
-          <a class="nav-link text-danger <?= $_GET['action'] == 'dashboard' ? 'bgcolor px-2 px-md-3 rounded py-1' : '' ?>" href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
+          <a class="nav-link text-danger <?= $_GET['action'] == 'dashboard' ? 'bgcolor px-2 mx-2 px-md-3 rounded py-1' : '' ?>" href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
         </div>
       </div>
     </div>

@@ -169,8 +169,6 @@ require_once Config::getViewPath("common","head.php");
     confirmBtn.addEventListener("click", function () {
       // You can optionally show a success alert here
       Swal.fire({
-        title: "Reservation Confirmed",
-        icon: "success",
         timer: 2000,
         showConfirmButton: false
       });

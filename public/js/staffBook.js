@@ -595,14 +595,16 @@ function clearErrors() {
     document.getElementById("pub_year_error").textContent = "";
     document.getElementById("qty_error").textContent = "";
     document.getElementById("des_error").textContent = "";
+    document.getElementById("des_error").textContent = "";
 }
 
 function addCategory() {
     var category = document.getElementById("category").value.trim();
     var categoryInput = document.getElementById("category");
+    var catError = document.getElementById("Category-error");
 
     if (category === "") {
-        alert("Category name is required!");
+        catError.textContent = ("Category name is required!");
         return;
     }
 

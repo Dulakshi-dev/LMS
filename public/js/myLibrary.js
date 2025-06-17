@@ -34,37 +34,26 @@ function loadSavedBooks(page = 1) {
                 let availabilityTextValue = book.available_qty > 0 ? 'Available' : 'Not Available';
 
                 let row = `
-                    <div class="row m-4 border rounded shadow-sm bg-white d-flex align-items-center">
-  <!-- Book Image and Info -->
-  <div class="col-12 col-md-4 p-4 d-flex justify-content-center align-items-center border-end">
-    <div class="book-card text-center position-relative w-100">
-      <!-- Bookmark icon -->
-      <a href="javascript:void(0)" onclick="unsaveBook('${book.book_id}')" class="position-absolute top-0 end-0 m-2">
-        <i class="fa fa-bookmark text-warning fs-4"></i>
-      </a>
-
-      <!-- Book Cover -->
-      <img class="book-cover img-fluid rounded shadow-sm" src="${coverImageUrl}" alt="Book Cover" style="max-height: 220px; object-fit: contain;">
-
-      <!-- Title & Author -->
-      <h5 class="mt-3 text-primary fw-bold">${book.title}</h5>
-      <p class="text-muted small">${book.author}</p>
-    </div>
-  </div>
-
-  <!-- Book Details -->
-  <div class="col-12 col-md-8 p-4">
-    <h6 class="text-danger fw-semibold mb-2">Book ID: ${book.book_id}</h6>
-    <p class="text-justify small text-dark mb-3">${book.description}</p>
-    <p class="${book.available_qty > 0 ? 'text-success' : 'text-danger'} fw-bold">${availabilityTextValue}</p>
-
-    <!-- Reserve Button -->
-    <button class="btn btn-outline-primary mt-2" onclick="reserveBook('${book.book_id}', '${availabilityTextValue}')">
-      
-    </button>
-  </div>
-</div>
-
+                    <div class="row m-4 border rounded d-flex align-items-center">
+                        <div class="col-md-4 mb-4 mb-md-0 p-2 d-flex justify-content-center align-items-center">
+                            <div class="book-card text-center position-relative d-flex flex-column align-items-center">
+                                <a href="javascript:void(0)" onclick="unsaveBook('${book.book_id}')" class="position-absolute top-0 end-0 mx-1">
+                                    <i class="fa fa-bookmark text-warning fs-5"></i>
+                                </a>
+                                <img class="book-cover img-fluid" src="${coverImageUrl}" alt="Book Cover">
+                                <h2 class="book-title mt-3">${book.title}</h2>
+                                <p class="book-author text-muted">${book.author}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-8 p-5">
+                            <h2 class="text-danger">Book ID : ${book.book_id}</h2>
+                            <p class="col-10 text-justify mt-3">${book.description}</p>
+                            <p class="${book.available_qty > 0 ? 'text-success' : 'text-danger'} fw-bold">${availabilityTextValue}</p>
+                            <button class="btn" id="success" onclick="reserveBook('${book.book_id}', '${availabilityTextValue}')">
+                                Reserve
+                            </button>
+                        </div>
+                    </div>
                 `;
 
                 tableBody.insertAdjacentHTML("beforeend", row); // Better performance

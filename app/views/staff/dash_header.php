@@ -36,6 +36,14 @@ $fine = $libraryData['fine_amount'];
     .bg-library {
         background-color: rgba(26, 50, 65, 1);
     }
+
+    #sidePanel {
+        margin-top: 86px;
+        width: 250px;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 1050;
+    }
 </style>
 
 <header>
@@ -47,8 +55,14 @@ $fine = $libraryData['fine_amount'];
             </a>
         </div>
 
-        <!-- Profile Section -->
-        <nav class="d-flex align-items-center">
+        <!-- Profile & Hamburger -->
+        <nav class="d-flex align-items-center gap-3">
+            <!-- Hamburger Menu -->
+            <div class="d-none" style="cursor: pointer;" id="menuToggle">
+                <i class="fas fa-bars fa-lg"></i>
+            </div>
+
+            <!-- Profile -->
             <div class="dropdown-wrapper position-relative">
                 <a href="#" class="d-flex align-items-center text-white text-decoration-none">
                     <img src="index.php?action=serveprofimage&image=<?= !empty($profile_img) ? $profile_img : 'user.jpg'; ?>"
@@ -80,4 +94,33 @@ $fine = $libraryData['fine_amount'];
             </div>
         </nav>
     </div>
+
+    <!-- Slide-in Side Panel
+    <div id="sidePanel" class="position-fixed top-0 start-0 vh-100 bg-white shadow">
+        <?php include "dash_sidepanel.php"; ?>
+    </div> -->
 </header>
+<!-- 
+<script>
+    const menuToggle = document.getElementById('menuToggle');
+    const sidePanel = document.getElementById('sidePanel');
+
+    // Open panel
+    menuToggle.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent body click
+        sidePanel.style.transform = 'translateX(0)';
+        document.body.classList.add('panel-open'); // Add class to prevent closing
+    });
+
+  
+
+    // Close when clicking outside the sidePanel
+    document.addEventListener('click', function(e) {
+        const isClickInside = sidePanel.contains(e.target) || menuToggle.contains(e.target);
+        if (!isClickInside) {
+            sidePanel.style.transform = 'translateX(-100%)';
+            document.body.classList.remove('panel-open');
+        }
+    });
+</script> -->
+

@@ -58,7 +58,7 @@ require_once Config::getViewPath("common", "head.php");
                         ['id' => 'members', 'label' => 'Members', 'icon' => 'fa-users'],
                         ['id' => 'issuedBooks', 'label' => 'Issued Books', 'icon' => 'fa-share-square'],
                         ['id' => 'reservations', 'label' => 'Reservations', 'icon' => 'fa-calendar-check'],
-                        ['id' => 'totalfines', 'label' => 'Fines', 'icon' => 'fa-coins'],
+                        ['id' => 'totalfines', 'label' => 'Fines (Rs.)', 'icon' => 'fa-coins'],
                     ];
 
                     foreach ($items as $item) {

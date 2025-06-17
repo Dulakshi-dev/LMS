@@ -26,19 +26,19 @@ $fine = $libraryData['fine_amount'];
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=home">Home</a>
+                    <a class="nav-link <?= $_GET['action'] == 'home' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
+                    <a class="nav-link <?= $_GET['action'] == 'openhours' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=contact">Contact</a>
+                    <a class="nav-link <?= $_GET['action'] == 'contact' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=contact">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="li" href="<?php echo Config::indexPathMember() ?>?action=about">About</a>
+                    <a class="nav-link <?= $_GET['action'] == 'about' ? 'text-white fw-bold' : '' ?>" id="li" href="<?php echo Config::indexPathMember() ?>?action=about">About</a>
                 </li>
                 <li class="nav-item">
-                    <button type="button" id="li" class="btn btn-outline-light"
+                    <button type="button" id="li" class="btn btn-outline-light <?= $_GET['action'] == 'lmshome' ? 'text-black bg-white fw-bold' : '' ?>"
                         onclick="window.location.href='<?php echo Config::indexPathMember() ?>?action=lmshome'">
                         LMS
                     </button>

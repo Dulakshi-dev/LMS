@@ -11,48 +11,49 @@ class PaymentController extends Controller
         $this->paymentModel = new PaymentModel();
     }
 
-    public function getAllPayments()
-    {
-        $resultsPerPage = 10;
-        if ($this->isPost()) {
-            $page = $this->getPost('page', 1);
-            $memberId = $this->getPost('memberid');
-            $transactionid = $this->getPost('transactionid');
+public function getAllPayments()
+{
+    $resultsPerPage = 10;
+    if ($this->isPost()) {
+        $page = $this->getPost('page', 1);
+        $memberId = $this->getPost('memberid');
+        $transactionid = $this->getPost('transactionid');
+        $paymentType = $this->getPost('paymentType');
 
-            Logger::info("Fetching payments", [
-                'page' => $page,
-                'memberId' => $memberId,
-                'transactionId' => $transactionid
-            ]);
+        Logger::info("Fetching payments", [
+            'page' => $page,
+            'memberId' => $memberId,
+            'paymentType' => $paymentType,
+            'transactionId' => $transactionid
+        ]);
 
-            if (!empty($memberId) || !empty($transactionid)) {
-                $paymentsData = PaymentModel::searchPayments($memberId, $transactionid, $page, $resultsPerPage);
-                Logger::info("Payments search performed", [
-                    'memberId' => $memberId,
-                    'transactionId' => $transactionid,
-                    'resultsCount' => count($paymentsData['results'] ?? [])
-                ]);
-            } else {
-                $paymentsData = PaymentModel::getAllPayments($page, $resultsPerPage);
-                Logger::info("All payments fetched", [
-                    'page' => $page,
-                    'resultsCount' => count($paymentsData['results'] ?? [])
-                ]);
-            }
-
-            $payments = $paymentsData['results'] ?? [];
-            $total = $paymentsData['total'] ?? 0;
-            $totalPages = ceil($total / $resultsPerPage);
-
-            $this->jsonResponse([
-                "payments" => $payments,
-                "total" => $total,
-                "totalPages" => $totalPages,
-                "currentPage" => $page
-            ]);
+        if (!empty($memberId) || !empty($transactionid) || !empty($paymentType)) {
+            $paymentsData = PaymentModel::searchPayments($memberId, $transactionid, $paymentType, $page, $resultsPerPage);
         } else {
-            Logger::warning("Invalid request to getAllPayments: not a POST request");
-            $this->jsonResponse(["message" => "Invalid request."], false);
+            $paymentsData = PaymentModel::getAllPayments($page, $resultsPerPage);
         }
+
+        $payments = $paymentsData['results'] ?? [];
+        $total = $paymentsData['total'] ?? 0;
+        $totalPages = ceil($total / $resultsPerPage);
+
+        // Calculate total amount
+        $totalAmount = 0;
+        foreach ($payments as $payment) {
+            $totalAmount += floatval($payment['amount']);
+        }
+
+        $this->jsonResponse([
+            "payments" => $payments,
+            "total" => $total,
+            "totalAmount" => $totalAmount, 
+            "totalPages" => $totalPages,
+            "currentPage" => $page
+        ]);
+    } else {
+        Logger::warning("Invalid request to getAllPayments: not a POST request");
+        $this->jsonResponse(["message" => "Invalid request."], false);
     }
+}
+
 }

@@ -21,7 +21,7 @@ class AuthModel
         JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
         WHERE `staff_id` = '$staffid'";
 
-$result = Database::search($query);
+        $result = Database::search($query);
 
         if ($result && $result->num_rows > 0) {
             $user = $result->fetch_assoc();
@@ -41,7 +41,7 @@ $result = Database::search($query);
                   JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
                   JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
                   WHERE `remember_token` IS NOT NULL";
-        
+
         $result = Database::search($query);
 
         if ($result && $result->num_rows > 0) {
@@ -184,8 +184,8 @@ $result = Database::search($query);
 
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
-    
-        
+
+
         if ($emailSent) {
             return true;
         } else {

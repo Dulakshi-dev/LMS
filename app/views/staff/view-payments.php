@@ -22,7 +22,7 @@ $_SESSION['staff']['last_activity'] = time();
 
 <?php
 $pageTitle = "Payments";
-require_once Config::getViewPath("common","head.php");
+require_once Config::getViewPath("common", "head.php");
 ?>
 
 <body onload="loadPayments();">
@@ -30,7 +30,7 @@ require_once Config::getViewPath("common","head.php");
 
     <div class="d-flex bg-light">
         <div>
-        <div class="h-100 d-none d-lg-block">
+            <div class="h-100 d-none d-lg-block">
                 <?php include "dash_sidepanel.php"; ?>
             </div>
 
@@ -39,7 +39,7 @@ require_once Config::getViewPath("common","head.php");
             </div>
 
         </div>
-        <div class="container-fluid w-75  mb-5 bg-white">
+        <div class="container-fluid w-75 mb-5 bg-white">
 
             <div class="row">
                 <nav class="navbar p-md-4 navbar-light bg-light w-100">
@@ -58,37 +58,51 @@ require_once Config::getViewPath("common","head.php");
                     </div>
                 </nav>
             </div>
+
             <div class="row m-4">
-                <div class="col-md-6 mt-2">
+                <div class="col-md-4 mt-2">
                     <input name="memberId" id="memberId" class="form-control" type="text" placeholder="Membership ID">
                 </div>
-                <div class="col-md-6 mt-2">
+                <div class="col-md-4 mt-2">
                     <div class="d-flex">
                         <input name="transactionId" id="transactionId" class="form-control" type="text" placeholder="Transaction ID">
                         <button type="submit" name="search" class="btn btn-primary mx-3 px-3" onclick="loadPayments();"><i class="fa fa-search"></i></button>
                     </div>
                 </div>
+                <div class="col-md-4 mt-2">
+                    <select id="paymentType" class="form-control" onchange="loadPayments();">
+                        <option value="">All Payments</option>
+                        <option value="membership">Membership Fee</option>
+                        <option value="fine">Fine</option>
+                    </select>
+                </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-bordered text-center" id="paymentTable">
+            <div class="table-responsive" id="paymentTable">
+                <div class="row px-4">
+                    <div class="col text-end text-secondary fw-bold" id="totalAmountSummary"></div>
+                </div>
+                <table class="table table-bordered text-center">
+
                     <thead class="thead-light text-center">
                         <tr>
                             <th>Transaction ID</th>
                             <th>Member ID</th>
+                            <th>Payment Type</th>
                             <th>Amount</th>
                             <th>Payed At</th>
                             <th>Next Due Date</th>
                         </tr>
                     </thead>
                     <tbody id="paymentTableBody">
-
+                        <!-- Payments will be loaded here -->
                     </tbody>
                 </table>
             </div>
             <div id="pagination"></div>
 
         </div>
+
     </div>
     <?php require_once Config::getViewPath("staff", "footer.php"); ?>
 

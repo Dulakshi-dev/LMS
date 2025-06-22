@@ -63,8 +63,8 @@ $fine = $libraryData['fine_amount'];
     /* Chrome, Safari and Opera */
   }
 
-  .bgcolor{
-    background-color:rgb(255, 255, 255);
+  .bgcolor {
+    background-color: rgb(255, 255, 255);
   }
 
 
@@ -89,8 +89,6 @@ $fine = $libraryData['fine_amount'];
   }
 </style>
 
-
-
 <nav class="py-1 bg-black">
   <div class="bg-black d-flex align-items-center justify-content-between">
     <!-- left -->
@@ -104,16 +102,17 @@ $fine = $libraryData['fine_amount'];
     <div class="d-none d-md-block">
       <ul class="navbar-nav flex-row flex-wrap text-center">
         <li class="nav-item px-3">
-          <a class="nav-link <?= $_GET['action'] == 'home' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=home">Home</a>
+          <a class="nav-link <?= (isset($_GET['action']) && $_GET['action'] == 'home') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=home">Home</a>
         </li>
         <li class="nav-item px-3">
-          <a class="nav-link <?= $_GET['action'] == 'openhours' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
+          <a class="nav-link <?= (isset($_GET['action']) && $_GET['action'] == 'openhours') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
+
         </li>
         <li class="nav-item px-3">
-          <a class="nav-link <?= $_GET['action'] == 'contact' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=contact">Contact</a>
+          <a class="nav-link <?= (isset($_GET['action']) && $_GET['action'] == 'contact') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=contact">Contact</a>
         </li>
         <li class="nav-item px-3">
-          <a class="nav-link <?= $_GET['action'] == 'about' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=about">About</a>
+          <a class="nav-link <?= (isset($_GET['action']) && $_GET['action'] == 'about') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=about">About</a>
         </li>
       </ul>
     </div>
@@ -165,28 +164,26 @@ $fine = $libraryData['fine_amount'];
 
         <!-- LMS -->
         <div>
-          <a class="nav-link text-danger <?= $_GET['action'] == 'dashboard' ? 'bgcolor px-2 mx-2 px-md-3 rounded py-1' : '' ?>" href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
+          <a class="nav-link text-danger <?= (isset($_GET['action']) && $_GET['action'] == 'dashboard') ? 'bgcolor px-2 mx-2 px-md-3 rounded py-1' : '' ?>" href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
+
         </div>
       </div>
     </div>
-
-
-
   </div>
 
   <div class="d-block d-md-none">
     <ul class="navbar-nav bg-black flex-row justify-content-around text-center w-100 ">
       <li class="nav-item">
-        <a class="nav-link px-3 text-white <?= $_GET['action'] == 'home' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=home">Home</a>
+        <a class="nav-link px-3 text-white <?=  (isset($_GET['action']) && $_GET['action'] == 'home') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=home">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-3 text-white <?= $_GET['action'] == 'openhours' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
+        <a class="nav-link px-3 text-white <?=  (isset($_GET['action']) && $_GET['action'] == 'openhours') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-3 text-white <?= $_GET['action'] == 'contact' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=contact">Contact</a>
+        <a class="nav-link px-3 text-white <?=  (isset($_GET['action']) &&$_GET['action'] == 'contact') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=contact">Contact</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link px-3 text-white <?= $_GET['action'] == 'about' ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=about">About</a>
+        <a class="nav-link px-3 text-white <?=  (isset($_GET['action']) &&$_GET['action'] == 'about') ? 'active' : '' ?>" href="<?= Config::indexPathMember() ?>?action=about">About</a>
       </li>
     </ul>
   </div>

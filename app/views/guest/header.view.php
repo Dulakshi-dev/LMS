@@ -28,16 +28,16 @@ $action = $_GET['action'] ?? '';
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link <?= $action === 'home' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=home">Home</a>
+                    <a class="nav-link <?= (isset($_GET['action']) && $action === 'home')? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $action === 'openhours' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
+                    <a class="nav-link <?= (isset($_GET['action']) && $action === 'openhours') ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=openhours">Opening Hours</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $action === 'contact' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=contact">Contact</a>
+                    <a class="nav-link <?= (isset($_GET['action']) && $action === 'contact') ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=contact">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= $action === 'about' ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=about">About</a>
+                    <a class="nav-link <?= (isset($_GET['action']) && $action === 'about') ? 'text-white fw-bold' : '' ?>" href="<?= Config::indexPathMember() ?>?action=about">About</a>
                 </li>
                 <li class="nav-item">
                     <button type="button" class="btn btn-outline-light <?= $action === 'lmshome' ? 'text-black bg-white fw-bold' : '' ?>"

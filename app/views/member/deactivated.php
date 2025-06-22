@@ -27,7 +27,7 @@ require_once Config::getViewPath("common", "head.php");
             <p class="text-white m-4"> Visit the Library or Call Us to Reactivate Your Account.</p>
 
             <div>
-                <a href="<?php echo Config::indexPathMember() ?>?action=home" class="btn btn-outline-light text-black rounded-pill w-50">
+                <a href="<?php echo Config::indexPathMember() ?>?action=home" class="btn btn-outline-light rounded-pill w-50">
                     Go To Home ->
                 </a>
             </div>

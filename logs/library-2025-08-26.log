@@ -1,0 +1,1077 @@
+{
+    "message": "No news found",
+    "context": {},
+    "level": 300,
+    "level_name": "WARNING",
+    "channel": "library_system",
+    "datetime": "2025-08-26T14:57:40.334843+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=getnewsupdates",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php"
+    }
+}
+{
+    "message": "Login attempt",
+    "context": {
+        "staffid": "S-000001",
+        "remember_me": false
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:11.706944+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=loginProcess",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php"
+    }
+}
+{
+    "message": "Session initialized for staff_id: S-000001",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:11.811788+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=loginProcess",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php"
+    }
+}
+{
+    "message": "Cleared cookie",
+    "context": {
+        "cookie_name": "staff_remember_token"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:11.816050+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=loginProcess",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php"
+    }
+}
+{
+    "message": "Loaded modules for role",
+    "context": {
+        "role": "1",
+        "modules_count": 7
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:11.824072+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=loginProcess",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php"
+    }
+}
+{
+    "message": "Login successful",
+    "context": {
+        "staff_id": "S-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:11.824138+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=loginProcess",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:11.910841+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=dashboard"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:23.209867+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=profile"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:25.649406+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=staffmanagement"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:28.667975+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=viewstaff"
+    }
+}
+{
+    "message": "Report generation requested",
+    "context": {
+        "title": "Active Staff Report",
+        "filename": "active_staff_report.pdf"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:33.416781+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=generatereport",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=viewstaff"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:47.804783+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=bookmanagement"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:54.982332+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=circulationmanagement"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:06:56.332484+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=viewissuebooks"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:00.366145+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=membermanagement"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:03.395760+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=paymentmanagement"
+    }
+}
+{
+    "message": "Fetching payments",
+    "context": {
+        "page": "1",
+        "memberId": "",
+        "paymentType": "",
+        "transactionId": ""
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:03.415292+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=loadpayments",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=paymentmanagement"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:05.082999+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=librarysetup"
+    }
+}
+{
+    "message": "Loading opening hours.",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:05.328894+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=getopeninghours",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=librarysetup"
+    }
+}
+{
+    "message": "Opening hours loaded successfully.",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:05.362111+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=getopeninghours",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=librarysetup"
+    }
+}
+{
+    "message": "Loading library information.",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:05.379265+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=getlibraryinfo",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=librarysetup"
+    }
+}
+{
+    "message": "Library information loaded successfully.",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:05.397071+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=getlibraryinfo",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=librarysetup"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:05.412040+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=librarysetup"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:14.601072+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=loggers"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:07:20.609147+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=aboutsoftware"
+    }
+}
+{
+    "message": "No news found",
+    "context": {},
+    "level": 300,
+    "level_name": "WARNING",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:11:38.875343+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=getnewsupdates",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=home"
+    }
+}
+{
+    "message": "Login attempt received",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:13:49.169928+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Session initialized for member_id: M-000001",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:13:49.240962+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Remember me token cleared",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:13:49.246144+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "User successfully logged in",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:13:49.246186+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:17:54.068746+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=dashboard"
+    }
+}
+{
+    "message": "Serving logo image: logo.png",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:18:11.800946+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=servelogo&image=logo.png",
+        "ip": "::1",
+        "http_method": "GET",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=paymentmanagement"
+    }
+}
+{
+    "message": "Fetching payments",
+    "context": {
+        "page": "1",
+        "memberId": "",
+        "paymentType": "",
+        "transactionId": ""
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T15:18:11.828137+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/staff/index.php?action=loadpayments",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/staff/index.php?action=paymentmanagement"
+    }
+}
+{
+    "message": "Login attempt received",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:12:15.562647+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Session initialized for member_id: M-000001",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:12:15.797741+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Remember me token cleared",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:12:15.805361+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "User successfully logged in",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:12:15.805418+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Login attempt received",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:53:56.304150+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Invalid login attempt",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 400,
+    "level_name": "ERROR",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:53:56.360787+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Login attempt received",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:54:03.558548+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Session initialized for member_id: M-000001",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:54:03.651990+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Remember me token cleared",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:54:03.653409+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "User successfully logged in",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T16:54:03.653458+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Login attempt received",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T17:54:17.770640+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Session initialized for member_id: M-000001",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T17:54:17.937840+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Remember me token cleared",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T17:54:17.947213+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "User successfully logged in",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T17:54:17.947326+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "OTP sent to email",
+    "context": {
+        "email": "iddcgammanpila@gmail.com"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T18:18:36.613307+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=validateemail",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=register"
+    }
+}
+{
+    "message": "OTP verified successfully",
+    "context": {
+        "email": "iddcgammanpila@gmail.com"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T18:19:23.785356+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=verifyotp",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=register"
+    }
+}
+{
+    "message": "Payment process started successfully.",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T18:19:32.344550+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=showPayment",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=register"
+    }
+}
+{
+    "message": "Received PayHere Response.",
+    "context": {
+        "response": {
+            "transactionId": "68adde945291b"
+        }
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T18:20:44.865111+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=payment_notify",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=register"
+    }
+}
+{
+    "message": "Payment successful for transactionId: 68adde945291b",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T18:20:44.865388+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=payment_notify",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=register"
+    }
+}
+{
+    "message": "New member registered",
+    "context": {
+        "member_id": 2,
+        "email": "iddcgammanpila@gmail.com"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T18:20:44.969547+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=registerMember",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=register"
+    }
+}
+{
+    "message": "Login attempt received",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T20:39:50.676196+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Session initialized for member_id: M-000001",
+    "context": {},
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T20:39:50.759286+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Remember me token cleared",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T20:39:50.763256+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "User successfully logged in",
+    "context": {
+        "member_id": "M-000001"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T20:39:50.763342+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=memberlogin",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=login"
+    }
+}
+{
+    "message": "Attempting to update profile",
+    "context": {
+        "nic": "200180300678",
+        "fname": "Dulakshi",
+        "lname": "Gammanpila"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T20:40:00.523722+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=updateprofile",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=profile"
+    }
+}
+{
+    "message": "Profile updated successfully without image change",
+    "context": {
+        "nic": "200180300678"
+    },
+    "level": 200,
+    "level_name": "INFO",
+    "channel": "library_system",
+    "datetime": "2025-08-26T20:40:00.542229+02:00",
+    "extra": {
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "ip_location": "Private Network, Local",
+        "url": "/LMS/public/member/index.php?action=updateprofile",
+        "ip": "::1",
+        "http_method": "POST",
+        "server": "localhost",
+        "referrer": "http://localhost/LMS/public/member/index.php?action=profile"
+    }
+}

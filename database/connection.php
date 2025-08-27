@@ -1,12 +1,10 @@
 <?php
-
 require_once __DIR__ . '/../main.php';
 
 class Database
 {
-    private static $connection; // Holds the database connection instance
+    private static $connection;
 
-    // Setup connection
     public static function setUpConnection()
     {
         if (!isset(self::$connection)) {
@@ -18,48 +16,64 @@ class Database
                 Config::$database["port"]
             );
 
-            // Check if the connection failed
             if (self::$connection->connect_error) {
                 die("Connection failed: " . self::$connection->connect_error);
             }
         }
     }
 
-    // Inserts data into the database and returns the last inserted ID if successful
-    public static function insert($q)
+    public static function insert($query, $params = [], $types = "")
     {
-        Database::setUpConnection();
-        $result = Database::$connection->query($q);
+        self::setUpConnection();
 
-        if ($result) {
-            if (Database::$connection->insert_id) {
-                return Database::$connection->insert_id;
-            }
+        if ($params) {
+            $stmt = self::$connection->prepare($query);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $id = $stmt->insert_id;
+            $stmt->close();
+            return $id ?: null;
+        } else {
+            $result = self::$connection->query($query);
+            return $result ? self::$connection->insert_id : null;
         }
-        return null;
     }
 
-    // Executes an UPDATE or DELETE query
-    public static function ud($q)
+    public static function ud($query, $params = [], $types = "")
     {
-        Database::setUpConnection();
-        Database::$connection->query($q);
-    }
+        self::setUpConnection();
 
-    // Executes a SELECT query and returns the result set
-    public static function search($q)
-    {
-        Database::setUpConnection();
-        $resultset = Database::$connection->query($q);
-
-        // If the query fails, terminate execution and show the error
-        if (!$resultset) {
-            die("Query failed: " . Database::$connection->error);
+        if ($params) {
+            $stmt = self::$connection->prepare($query);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $affected = $stmt->affected_rows;
+            $stmt->close();
+            return $affected;
+        } else {
+            $result = self::$connection->query($query);
+            return $result ? self::$connection->affected_rows : 0;
         }
-        return $resultset;
     }
 
-    // Close connection
+    public static function search($query, $params = [], $types = "")
+    {
+        self::setUpConnection();
+
+        if ($params) {
+            $stmt = self::$connection->prepare($query);
+            $stmt->bind_param($types, ...$params);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+            return $result;
+        } else {
+            $result = self::$connection->query($query);
+            if (!$result) die("Query failed: " . self::$connection->error);
+            return $result;
+        }
+    }
+
     public static function closeConnection()
     {
         if (self::$connection) {

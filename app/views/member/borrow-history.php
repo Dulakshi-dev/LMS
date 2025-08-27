@@ -60,7 +60,7 @@ require_once Config::getViewPath("common","head.php");
                     <input id="category" type="text" class="form-control" placeholder="Type Category" aria-label="Category">
                 </div>
                 <div class=" col-1 d-grid">
-                    <button class="btn btn-primary" onclick="loadSavedBooks();">
+                    <button class="btn btn-primary" onclick="loadBorrowBooks();">
                         <i class="fa fa-search"></i>
                     </button>
                 </div>
@@ -77,7 +77,7 @@ require_once Config::getViewPath("common","head.php");
                 <th>Book Name</th>
                 <th>Issued Date</th>
                 <th>Date Due</th>
-                <th>Date Returned</th>
+                <th>Borrow Status</th>
             </tr>
         </thead>
         <tbody id="bookTableBody">

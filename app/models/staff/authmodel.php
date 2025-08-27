@@ -15,13 +15,13 @@ class AuthModel
 
     public static function validateLogin($staffid, $password)
     {
-        // Use prepared statements to prevent SQL injection
         $query = "SELECT * FROM `staff`
         JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
         JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
-        WHERE `staff_id` = '$staffid'";
-
-        $result = Database::search($query);
+        WHERE `staff_id` = ?";
+        $params = [$staffid];
+        $types = "s";
+        $result = Database::search($query, $params, $types);
 
         if ($result && $result->num_rows > 0) {
             $user = $result->fetch_assoc();
@@ -58,7 +58,10 @@ class AuthModel
 
     public static function storeRememberToken($staffid, $hashedToken)
     {
-        Database::ud("UPDATE `staff_login` SET `remember_token` = '$hashedToken' WHERE `staff_id` = '$staffid'");
+        $query = "UPDATE `staff_login` SET `remember_token` = ? WHERE `staff_id` = ?";
+        $params = [$hashedToken, $staffid];
+        $types = "ss";
+        Database::ud($query, $params, $types);
     }
 
     public static function updateRememberToken($staffid, $hashedToken)
@@ -68,19 +71,21 @@ class AuthModel
 
     public static function clearRememberToken($staffid)
     {
-        Database::ud("UPDATE `staff_login` SET `remember_token` = NULL WHERE `staff_id` = '$staffid'");
+        $query = "UPDATE `staff_login` SET `remember_token` = NULL WHERE `staff_id` = ?";
+        $params = [$staffid];
+        $types = "s";
+        Database::ud($query, $params, $types);
     }
-
-
-
-
 
     public static function getUserModules($role_id)
     {
         // SQL query to fetch module names assigned to the given role
+
         $query = "SELECT `module_name`,`module_icon` FROM `module` 
-        JOIN `role_has_module` ON `module`.`module_id` = `role_has_module`.`module_id` WHERE `role_id` = '$role_id'";
-        $result = Database::search($query);
+        JOIN `role_has_module` ON `module`.`module_id` = `role_has_module`.`module_id` WHERE `role_id` = ?";
+        $params = [$role_id];
+        $types = "i";
+        $result = Database::search($query, $params, $types);
 
         if ($result && $result->num_rows > 0) {
             $modules = [];
@@ -99,7 +104,8 @@ class AuthModel
     public static function generateStaffID()
     {
         // Query to get the latest staff_id
-        $result = Database::search("SELECT staff_id FROM `staff_login` ORDER BY login_id DESC LIMIT 1");
+        $query = "SELECT staff_id FROM `staff_login` ORDER BY login_id DESC LIMIT 1";
+        $result = Database::search($query);
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -117,8 +123,15 @@ class AuthModel
 
     public static function validateRegDetails($nic, $email)
     {
-        $nicCheck = Database::search("SELECT * FROM `staff` WHERE `nic` = '$nic'");
-        $emailCheck = Database::search("SELECT * FROM `staff` WHERE `email` = '$email'");
+        $query = "SELECT * FROM `staff` WHERE `nic` = ?";
+        $params = [$nic];
+        $types = "s";
+        $nicCheck = Database::search($query, $params, $types);
+
+        $query = "SELECT * FROM `staff` WHERE `email` = ?";
+        $params = [$email];
+        $types = "s";
+        $emailCheck = Database::search($query, $params, $types);
 
         if ($nicCheck->num_rows > 0 && $emailCheck->num_rows > 0) {
             return "Both NIC and Email are already registered.";
@@ -136,13 +149,21 @@ class AuthModel
         $keyValidation = self::validateKey($email, $key, $role_id);
 
         if ($keyValidation) {
-            $id = Database::insert("INSERT INTO `staff`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) 
- VALUES ('$nic','$fname','$lname','$phone','$address','$email','1','$role_id')");
+
+            $query = "INSERT INTO `staff`(`nic`,`fname`,`lname`,`mobile`,`address`,`email`,`status_id`,`role_id`) 
+ VALUES (?,?,?,?,?,?,'1',?)";
+            $params = [$nic, $fname, $lname, $phone, $address, $email, $role_id];
+            $types = "ssssssi";
+            $id = Database::insert($query, $params, $types);
+
             $staffID = self::generateStaffID();
 
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            Database::insert("INSERT INTO `staff_login`(`staff_id`, `password`, `staffId`) VALUES ('$staffID', '$hashedPassword', '$id')");
+            $query = "INSERT INTO `staff_login`(`staff_id`, `password`, `staffId`) VALUES (?, ?, ?)";
+            $params = [$staffID, $hashedPassword, $id];
+            $types = "ssi";
+            Database::insert($query, $params, $types);
             self::sendMail($id, $staffID);
 
             return true;
@@ -155,8 +176,10 @@ class AuthModel
     public static function validateKey($email, $key, $role_id)
     {
 
-        $query = "SELECT * FROM staff_key WHERE email = '$email' AND key_value = '$key' AND role_id = '$role_id'";
-        $result = Database::search($query);
+        $query = "SELECT * FROM staff_key WHERE email = ? AND key_value = ? AND role_id = ?";
+        $params = [$email, $key, $role_id];
+        $types = "ssi";
+        $result = Database::search($query, $params, $types);
 
         if ($result->num_rows > 0) {
             return true;
@@ -166,17 +189,25 @@ class AuthModel
     }
 
 
-
     public static function sendMail($id, $staff_id)
     {
-        $rs = Database::search("SELECT * FROM `staff` WHERE `id` = '$id'");
+        // Secure query with placeholders
+        $query = "SELECT * FROM `staff` WHERE `id` = ?";
+        $params = [$id];
+        $types = "i";
+
+        $rs = Database::search($query, $params, $types);
+
         $row = $rs->fetch_assoc();
 
         require_once Config::getServicePath('emailService.php');
-        $name = $row["fname"] . " " . $row["lname"];
-        $email = $row["email"];
-        $subject = 'Staff ID';
 
+        // Escape dynamic content
+        $name = htmlspecialchars($row["fname"] . " " . $row["lname"], ENT_QUOTES, 'UTF-8');
+        $email = filter_var($row["email"], FILTER_SANITIZE_EMAIL);
+        $staff_id = htmlspecialchars($staff_id, ENT_QUOTES, 'UTF-8');
+
+        $subject = 'Staff ID';
         $specificMessage = '<h2>Your Staff ID is ' . $staff_id . '</h2>';
 
         $emailTemplate = new EmailTemplate();
@@ -185,22 +216,26 @@ class AuthModel
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 
-
-        if ($emailSent) {
-            return true;
-        } else {
-            return false;
-        }
+        return $emailSent ? true : false;
     }
+
 
     public static function validateEmail($email, $vcode)
     {
-        $rs = Database::search("SELECT * FROM `staff` WHERE `email` = '$email'");
+        $query = "SELECT * FROM `staff` WHERE `email` = ?";
+        $params = [$email];
+        $types = "s";
+        $rs = Database::search($query, $params, $types);
 
         if ($rs->num_rows > 0) {
             $row = $rs->fetch_assoc();
             $id = $row["id"];
-            Database::insert("UPDATE `staff` SET `vcode` ='$vcode' WHERE `id`='$id'");
+
+            $query = "UPDATE `staff` SET `vcode` =? WHERE `id`=?";
+            $params = [$vcode, $id];
+            $types = "si";
+            Database::ud($query, $params, $types);
+
             return true;
         } else {
             return false;
@@ -212,15 +247,25 @@ class AuthModel
         $vcode = trim($vcode);
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        $rs = Database::search("SELECT * FROM `staff` WHERE `vcode` = '$vcode'");
+        $query = "SELECT * FROM `staff` WHERE `vcode` = ?";
+        $params = [$vcode];
+        $types = "s";
+        $rs = Database::search($query, $params, $types);
 
         if ($rs->num_rows > 0) {
 
             $row = $rs->fetch_assoc();
             $id = $row["id"];
 
-            Database::ud("UPDATE `staff_login` SET `password` ='$hashedPassword' WHERE `staffId`='$id'");
-            Database::ud("UPDATE `staff` SET `vcode` = NULL WHERE `id`='$id'");
+            $query = "UPDATE `staff_login` SET `password` =? WHERE `staffId`=?";
+            $params = [$hashedPassword, $id];
+            $types = "si";
+            Database::ud($query, $params, $types);
+
+            $query = "UPDATE `staff` SET `vcode` = NULL WHERE `id`=?";
+            $params = [$id];
+            $types = "i";
+            Database::ud($query, $params, $types);
 
             return true;
         } else {

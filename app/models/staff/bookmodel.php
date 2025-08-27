@@ -11,12 +11,15 @@ class BookModel
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalBooks = self::getTotalBooks($statusId);
 
-        $rs = Database::search("SELECT * FROM book 
+        $query = "SELECT * FROM book 
         INNER JOIN category ON book.category_id = category.category_id 
         INNER JOIN `status` ON book.status_id = status.status_id 
         INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
-        WHERE `book`.`status_id`='$statusId'
-        LIMIT $resultsPerPage OFFSET $pageResults");
+        WHERE `book`.`status_id`=?
+        LIMIT ? OFFSET ?";
+        $params = [$statusId, $resultsPerPage, $pageResults];
+        $types = "iii";
+        $rs = Database::search($query, $params, $types);
 
         $books = [];
 
@@ -36,6 +39,12 @@ class BookModel
         INNER JOIN `status` ON book.status_id = status.status_id 
         INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
         WHERE `book`.`status_id`='$statusId'");
+
+                $query = "UPDATE `member_login` SET `remember_token` = NULL WHERE `member_id` = ?";
+        $params = [$memberid];
+        $types = "s";
+        Database::search($query, $params, $types);
+        
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
@@ -211,7 +220,7 @@ class BookModel
 
         return true;
     }
-    
+
 
     public static function generateID()
     {

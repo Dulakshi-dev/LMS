@@ -20,11 +20,16 @@ class MemberModel
         $totalMembers = self::getTotalMembers($statusId);
 
         // Adjust query based on the status
-        $rs = Database::search("SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`status_id` 
+
+
+        $query = "SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`status_id` 
                                 FROM `member`
                                 JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` 
-                                WHERE FIND_IN_SET(`status_id`, '$statusId') 
-                                LIMIT $resultsPerPage OFFSET $pageResults");
+                                WHERE FIND_IN_SET(`status_id`, ?) 
+                                LIMIT ? OFFSET ?";
+        $params = [$statusId, $resultsPerPage, $pageResults];
+        $types = "sii";
+        $rs = Database::search($query, $params, $types);
 
         $members = [];
 
@@ -40,8 +45,12 @@ class MemberModel
 
     private static function getTotalMembers($statusId)
     {
-        $result = Database::search("SELECT COUNT(*) AS total 
-                                    FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE FIND_IN_SET(`status_id`, '$statusId') ");
+        $query = "SELECT COUNT(*) AS total 
+                                    FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE FIND_IN_SET(`status_id`, ?)";
+        $params = [$statusId];
+        $types = "s";
+        $result = Database::search($query, $params, $types);
+
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
@@ -53,47 +62,79 @@ class MemberModel
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalSearch = self::getTotalSearchResults($memberId, $nic, $userName, $statusId);
 
-        $sql = "SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `status_id`='$statusId' AND 1";
+        $sql = "SELECT `id`, `member_id`, `nic`, `fname`, `lname`, `address`, `mobile`, `email`, `member`.`status_id`
+            FROM `member`
+            JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
+            WHERE `status_id` = ?";
+
+        $params = [$statusId];
+        $types = "i";
 
         if (!empty($memberId)) {
-            $sql .= " AND `member_id` LIKE '%$memberId%'";
+            $sql .= " AND `member_id` LIKE ?";
+            $params[] = "%$memberId%";
+            $types .= "s";
         }
         if (!empty($nic)) {
-            $sql .= " AND `nic` LIKE '%$nic%'";
+            $sql .= " AND `nic` LIKE ?";
+            $params[] = "%$nic%";
+            $types .= "s";
         }
         if (!empty($userName)) {
-            $sql .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+            $sql .= " AND (`fname` LIKE ? OR `lname` LIKE ?)";
+            $params[] = "%$userName%";
+            $params[] = "%$userName%";
+            $types .= "ss";
         }
 
-        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults";
+        $sql .= " LIMIT ? OFFSET ?";
+        $params[] = $resultsPerPage;
+        $params[] = $pageResults;
+        $types .= "ii";
 
-        $rs = Database::search($sql);
+        $rs = Database::search($sql, $params, $types);
 
         $users = [];
         while ($row = $rs->fetch_assoc()) {
             $users[] = $row;
         }
+
         return ['results' => $users, 'total' => $totalSearch];
     }
 
+
     private static function getTotalSearchResults($memberId, $nic, $userName, $statusId)
     {
-        $countQuery = "SELECT COUNT(*) as total FROM `member` JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `status_id`='$statusId' AND 1";
+        $countQuery = "SELECT COUNT(*) as total 
+                   FROM `member` 
+                   JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
+                   WHERE `status_id` = ?";
+
+        $params = [$statusId];
+        $types = "i";
 
         if (!empty($memberId)) {
-            $countQuery .= " AND `member_id` LIKE '%$memberId%'";
+            $countQuery .= " AND `member_id` LIKE ?";
+            $params[] = "%$memberId%";
+            $types .= "s";
         }
         if (!empty($nic)) {
-            $countQuery .= " AND `nic` LIKE '%$nic%'";
+            $countQuery .= " AND `nic` LIKE ?";
+            $params[] = "%$nic%";
+            $types .= "s";
         }
         if (!empty($userName)) {
-            $countQuery .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+            $countQuery .= " AND (`fname` LIKE ? OR `lname` LIKE ?)";
+            $params[] = "%$userName%";
+            $params[] = "%$userName%";
+            $types .= "ss";
         }
 
-        $result = Database::search($countQuery);
+        $result = Database::search($countQuery, $params, $types);
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
+
 
     public static function getAllMemberRequests($page, $resultsPerPage, $status = 'Pending')
     {
@@ -102,7 +143,11 @@ class MemberModel
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalrequests = self::getTotalRequests($statusId);
 
-        $rs = Database::search("SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` WHERE `status_id`='$statusId' LIMIT $resultsPerPage OFFSET $pageResults");
+        $query = "SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` WHERE `status_id`=? LIMIT ? OFFSET ?";
+        $params = [$statusId, $resultsPerPage, $pageResults];
+        $types = "iii";
+        $rs = Database::search($query, $params, $types);
+
 
         $requests = [];
 
@@ -117,7 +162,12 @@ class MemberModel
 
     private static function getTotalRequests($statusId)
     {
-        $result = Database::search("SELECT COUNT(*) AS total FROM `member` WHERE `status_id`='$statusId';");
+
+        $query = "SELECT COUNT(*) AS total FROM `member` WHERE `status_id`='$statusId';";
+        $params = [$statusId];
+        $types = "i";
+        $result = Database::search($query, $params, $types);
+
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
@@ -129,58 +179,92 @@ class MemberModel
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalSearch = self::getTotalSearchMemberRequest($nic, $userName, $statusId);
 
-        $sql = "SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` FROM `member` WHERE `status_id`='$statusId' AND 1";
+        $sql = "SELECT `id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`member`.`status_id` 
+            FROM `member` 
+            WHERE `status_id` = ?";
+
+        $params = [$statusId];
+        $types = "i";
 
         if (!empty($nic)) {
-            $sql .= " AND `nic` LIKE '%$nic%'";
+            $sql .= " AND `nic` LIKE ?";
+            $params[] = "%$nic%";
+            $types .= "s";
         }
         if (!empty($userName)) {
-            $sql .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+            $sql .= " AND (`fname` LIKE ? OR `lname` LIKE ?)";
+            $params[] = "%$userName%";
+            $params[] = "%$userName%";
+            $types .= "ss";
         }
 
-        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults";
+        $sql .= " LIMIT ? OFFSET ?";
+        $params[] = $resultsPerPage;
+        $params[] = $pageResults;
+        $types .= "ii";
 
-        $rs = Database::search($sql);
+        $rs = Database::search($sql, $params, $types);
 
         $users = [];
         while ($row = $rs->fetch_assoc()) {
             $users[] = $row;
         }
+
         return ['results' => $users, 'total' => $totalSearch];
     }
 
+
     private static function getTotalSearchMemberRequest($nic, $userName, $statusId)
     {
-        $countQuery = "SELECT COUNT(*) as total FROM `member` WHERE `status_id`='$statusId' AND 1";
-
+        $countQuery = "SELECT COUNT(*) AS total FROM `member` WHERE `status_id` = ?";
+        $params = [$statusId];
+        $types = "i";
 
         if (!empty($nic)) {
-            $countQuery .= " AND `nic` LIKE '%$nic%'";
-        }
-        if (!empty($userName)) {
-            $countQuery .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+            $countQuery .= " AND `nic` LIKE ?";
+            $params[] = "%$nic%";
+            $types .= "s";
         }
 
-        $result = Database::search($countQuery);
+        if (!empty($userName)) {
+            $countQuery .= " AND (`fname` LIKE ? OR `lname` LIKE ?)";
+            $params[] = "%$userName%";
+            $params[] = "%$userName%";
+            $types .= "ss";
+        }
+
+        $result = Database::search($countQuery, $params, $types);
         $row = $result->fetch_assoc();
+
         return $row['total'] ?? 0;
     }
 
     public static function loadMemberDetails($id)
     {
-        $rs = Database::search("SELECT `member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email` FROM `member` 
-        INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
+
+        $query = "SELECT `member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email` FROM `member` 
+        INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = ?";
+        $params = [$id];
+        $types = "s";
+        $rs = Database::search($query, $params, $types);
+
+
+
         return $rs;
     }
 
     public static function approveMembership($id, $memberID, $password)
     {
-        Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
-
+        $query = "UPDATE `member` SET `status_id`='1' WHERE `id`=?";
+        $params = [$id];
+        $types = "i";
+        Database::ud($query, $params, $types);
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        Database::insert("INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES('$memberID','$hashedPassword','$id');");
-
+        $query = "INSERT INTO `member_login`(`member_id`,`password`,`memberId`) VALUES(?,?,?);";
+        $params = [$memberID, $hashedPassword, $id];
+        $types = "ssi";
+        Database::insert($query, $params, $types);
         return true;
     }
 
@@ -205,7 +289,7 @@ class MemberModel
     //             <a href="http://localhost/LMS/public/member/index.php?action=showresetpw&id=' . $id . '">Click here to reset your password</a>
     //         </div>';
     //     }
-        
+
 
     //     $body = '
     //         <h4 style="text-align: center;">Welcome to SHELFLOOM!</h4> 
@@ -244,7 +328,10 @@ class MemberModel
 
     public static function generateMemberID()
     {
-        $result = Database::search("SELECT member_id FROM `member_login` ORDER BY member_login_id DESC LIMIT 1");
+        $query = "SELECT member_id FROM `member_login` ORDER BY member_login_id DESC LIMIT 1";
+        $result = Database::search($query);
+
+
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -287,14 +374,20 @@ class MemberModel
     public static function UpdateMemberDetails($member_id, $fname, $lname, $email, $phone, $address, $nic)
     {
 
-        Database::ud("UPDATE `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` SET 
-                `fname` = '$fname', 
-                `lname` = '$lname', 
-                `mobile` = '$phone',  
-                `address` = '$address', 
-                `nic` = '$nic',
-                `email` = '$email'
-                WHERE `member_id` = '$member_id'");
+        $query = "UPDATE `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` SET 
+                `fname` = ?, 
+                `lname` = ?, 
+                `mobile` = ?,  
+                `address` = ?, 
+                `nic` = ?,
+                `email` = ?
+                WHERE `member_id` = ?";
+        $params = [$fname, $lname, $phone, $address, $nic, $email, $member_id];
+        $types = "sssssss";
+        Database::ud($query, $params, $types);
+
+
+
         return true;
     }
 
@@ -302,7 +395,10 @@ class MemberModel
     public static function loadMailDetails($member_id)
     {
 
-        $id_result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$member_id'");
+        $query = "SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = ?";
+        $params = [$member_id];
+        $types = "s";
+        $id_result = Database::search($query, $params, $types);
 
         if ($id_result->num_rows == 0) {
             return false;
@@ -310,41 +406,70 @@ class MemberModel
 
         $id_data = $id_result->fetch_assoc();
         $id = $id_data['id'];
-        $rs = Database::search("SELECT `id`,`fname`,`lname`,`email` FROM `member` WHERE `id` = '$id'");
+
+        $query = "SELECT `id`,`fname`,`lname`,`email` FROM `member` WHERE `id` = ?";
+        $params = [$id];
+        $types = "i";
+        $rs = Database::search($query, $params, $types);
+
         return $rs;
     }
 
     public static function deactivateMember($id)
     {
-        $rs = Database::ud("UPDATE `member` SET `status_id`='2' WHERE `id`='$id'");
+        $query = "UPDATE `member` SET `status_id`='2' WHERE `id`=?";
+        $params = [$id];
+        $types = "i";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 
     public static function rejectMember($id)
     {
-        $rs = Database::ud("UPDATE `member` SET `status_id`='4' WHERE `id`='$id'");
+        $query = "UPDATE `member` SET `status_id`='4' WHERE `id`=?";
+        $params = [$id];
+        $types = "i";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 
     public static function activateMember($id)
     {
-        $rs = Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
+        $query = "UPDATE `member` SET `status_id`='1' WHERE `id`=?";
+        $params = [$id];
+        $types = "i";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 
     public static function activateRequest($id)
     {
-        $rs = Database::ud("UPDATE `member` SET `status_id`='3' WHERE `id`='$id'");
+        $query = "UPDATE `member` SET `status_id`='3' WHERE `id`=?";
+        $params = [$id];
+        $types = "i";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 
     public static function updateMembershipStatus($member_id)
     {
-        $result = Database::search("SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = '$member_id'");
+        $query = "SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = ?";
+        $params = [$member_id];
+        $types = "s";
+        $result = Database::search($query, $params, $types);
+
         $row = $result->fetch_assoc();
         $id = $row['id'];
 
-        $rs = Database::ud("UPDATE `member` SET `status_id`='1' WHERE `id`='$id'");
+        $query = "UPDATE `member` SET `status_id`='1' WHERE `id`=?";
+        $params = [$id];
+        $types = "i";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 }

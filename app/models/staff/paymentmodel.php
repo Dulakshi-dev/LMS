@@ -15,10 +15,10 @@ class PaymentModel
     }
 
     public static function getAllPayments($page, $resultsPerPage)
-{
-    $pageResults = ($page - 1) * $resultsPerPage;
+    {
+        $pageResults = ($page - 1) * $resultsPerPage;
 
-    $query = "SELECT * FROM (
+        $query = "SELECT * FROM (
         SELECT
             payment.transaction_id AS transaction_id,
             member_login.member_id AS member_id,
@@ -41,63 +41,83 @@ class PaymentModel
         JOIN member_login ON member.id = member_login.memberId
     ) AS combined
     ORDER BY payed_at IS NULL, payed_at DESC
-    LIMIT $pageResults, $resultsPerPage";
+    LIMIT ?, ?";
 
-    $rs = Database::search($query);
-    $payments = [];
+        // Use prepared statement parameters for LIMIT and OFFSET
+        $params = [$pageResults, $resultsPerPage];
+        $types = "ii";
 
-    $totalAmount = 0;
+        $rs = Database::search($query, $params, $types);
 
-    while ($row = $rs->fetch_assoc()) {
-        $payments[] = $row;
-        $totalAmount += floatval($row['amount']);
+        $payments = [];
+        $totalAmount = 0;
+
+        while ($row = $rs->fetch_assoc()) {
+            $payments[] = $row;
+            $totalAmount += floatval($row['amount']);
+        }
+
+        $totalPayments = self::getTotalPayments();
+
+        return [
+            'total' => $totalPayments,
+            'results' => $payments,
+            'totalAmount' => $totalAmount
+        ];
     }
 
-    $totalPayments = self::getTotalPayments();
-
-    return [
-        'total' => $totalPayments,
-        'results' => $payments,
-        'totalAmount' => $totalAmount
-    ];
-}
 
 
     private static function getTotalPayments()
     {
-        $result = Database::search("SELECT 
+        $query = "SELECT 
         (SELECT COUNT(*) FROM payment) + 
-        (SELECT COUNT(*) FROM fines JOIN borrow ON fines.fine_borrow_id = borrow.borrow_id) AS total
-    ");
-        $row = $result->fetch_assoc();
+        (SELECT COUNT(*) FROM fines 
+            JOIN borrow ON fines.fine_borrow_id = borrow.borrow_id) AS total";
+
+        // No parameters here, but using the Database::search method keeps it consistent
+        $rs = Database::search($query);
+
+        $row = $rs->fetch_assoc();
         return $row['total'] ?? 0;
     }
 
+
     public static function searchPayments($memberId, $transactionid, $paymentType, $page, $resultsPerPage)
-{
-    $offset = ($page - 1) * $resultsPerPage;
+    {
+        $offset = ($page - 1) * $resultsPerPage;
+        $params = [];
+        $types = '';
 
-    $whereClauses = [];
+        $whereClauses = [];
 
-    if (!empty($memberId)) {
-        $whereClauses[] = "`member_id` LIKE '%$memberId%'";
-    }
-
-    if (!empty($transactionid)) {
-        $whereClauses[] = "`transaction_id` LIKE '%$transactionid%'";
-    }
-
-    if (!empty($paymentType)) {
-        if ($paymentType == "fine") {
-            $whereClauses[] = "`transaction_id` LIKE 'F%'";
-        } elseif ($paymentType == "membership") {
-            $whereClauses[] = "`transaction_id` NOT LIKE 'F%'";
+        if (!empty($memberId)) {
+            $whereClauses[] = "`member_id` LIKE ?";
+            $params[] = "%$memberId%";
+            $types .= 's';
         }
-    }
 
-    $whereSQL = !empty($whereClauses) ? "WHERE " . implode(" AND ", $whereClauses) : "";
+        if (!empty($transactionid)) {
+            $whereClauses[] = "`transaction_id` LIKE ?";
+            $params[] = "%$transactionid%";
+            $types .= 's';
+        }
 
-    $sql = "SELECT * FROM (
+        if (!empty($paymentType)) {
+            if ($paymentType === "fine") {
+                $whereClauses[] = "`transaction_id` LIKE ?";
+                $params[] = "F%";
+                $types .= 's';
+            } elseif ($paymentType === "membership") {
+                $whereClauses[] = "`transaction_id` NOT LIKE ?";
+                $params[] = "F%";
+                $types .= 's';
+            }
+        }
+
+        $whereSQL = !empty($whereClauses) ? "WHERE " . implode(" AND ", $whereClauses) : "";
+
+        $sql = "SELECT * FROM (
         SELECT 
             payment.transaction_id AS transaction_id,
             member_login.member_id AS member_id,
@@ -123,69 +143,82 @@ class PaymentModel
     ) AS combined
     $whereSQL
     ORDER BY payed_at IS NULL, payed_at DESC
-    LIMIT $resultsPerPage OFFSET $offset";
+    LIMIT ? OFFSET ?";
 
-    $rs = Database::search($sql);
-    $payments = [];
-    $totalAmount = 0;
+        // Add LIMIT and OFFSET parameters
+        $params[] = $resultsPerPage;
+        $params[] = $offset;
+        $types .= 'ii';
 
-    while ($row = $rs->fetch_assoc()) {
-        $payments[] = $row;
-        $totalAmount += floatval($row['amount']);
+        $rs = Database::search($sql, $params, $types);
+
+        $payments = [];
+        $totalAmount = 0;
+
+        while ($row = $rs->fetch_assoc()) {
+            $payments[] = $row;
+            $totalAmount += floatval($row['amount']);
+        }
+
+        $total = self::getTotalSearchResults($memberId, $transactionid, $paymentType);
+
+        return ['results' => $payments, 'total' => $total, 'totalAmount' => $totalAmount];
     }
 
-    $total = self::getTotalSearchResults($memberId, $transactionid, $paymentType);
-
-    return ['results' => $payments, 'total' => $total, 'totalAmount' => $totalAmount];
-}
 
     private static function getTotalSearchResults($memberId, $transactionid, $paymentType)
     {
+        $params = [];
+        $types = '';
         $whereClauses = [];
 
         if (!empty($memberId)) {
-            $whereClauses[] = "`member_id` LIKE '%$memberId%'";
+            $whereClauses[] = "`member_id` LIKE ?";
+            $params[] = "%$memberId%";
+            $types .= 's';
         }
 
         if (!empty($transactionid)) {
-            $whereClauses[] = "`transaction_id` LIKE '%$transactionid%'";
+            $whereClauses[] = "`transaction_id` LIKE ?";
+            $params[] = "%$transactionid%";
+            $types .= 's';
         }
 
         if (!empty($paymentType)) {
-            if ($paymentType == "fine") {
-                $whereClauses[] = "`transaction_id` LIKE 'F%'";
-            } elseif ($paymentType == "membership") {
-                $whereClauses[] = "`transaction_id` NOT LIKE 'F%'";
+            if ($paymentType === "fine") {
+                $whereClauses[] = "`transaction_id` LIKE ?";
+                $params[] = "F%";
+                $types .= 's';
+            } elseif ($paymentType === "membership") {
+                $whereClauses[] = "`transaction_id` NOT LIKE ?";
+                $params[] = "F%";
+                $types .= 's';
             }
         }
 
-        $whereSQL = "";
-        if (!empty($whereClauses)) {
-            $whereSQL = "WHERE " . implode(" AND ", $whereClauses);
-        }
+        $whereSQL = !empty($whereClauses) ? "WHERE " . implode(" AND ", $whereClauses) : "";
 
         $countQuery = "SELECT COUNT(*) AS total FROM (
-            SELECT 
-                payment.transaction_id AS transaction_id,
-                member_login.member_id
-            FROM payment
-            JOIN member ON member.id = payment.memberId
-            JOIN member_login ON member.id = member_login.memberId
+        SELECT 
+            payment.transaction_id AS transaction_id,
+            member_login.member_id
+        FROM payment
+        JOIN member ON member.id = payment.memberId
+        JOIN member_login ON member.id = member_login.memberId
 
-            UNION ALL
+        UNION ALL
 
-            SELECT 
-                fines.fine_id AS transaction_id,
-                member_login.member_id
-            FROM fines
-            JOIN borrow ON fines.fine_borrow_id = borrow.borrow_id
-            JOIN member ON member.id = borrow.borrow_member_id
-            JOIN member_login ON member.id = member_login.memberId
-        ) AS combined
-        $whereSQL
-    ";
+        SELECT 
+            fines.fine_id AS transaction_id,
+            member_login.member_id
+        FROM fines
+        JOIN borrow ON fines.fine_borrow_id = borrow.borrow_id
+        JOIN member ON member.id = borrow.borrow_member_id
+        JOIN member_login ON member.id = member_login.memberId
+    ) AS combined
+    $whereSQL";
 
-        $result = Database::search($countQuery);
+        $result = Database::search($countQuery, $params, $types);
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }

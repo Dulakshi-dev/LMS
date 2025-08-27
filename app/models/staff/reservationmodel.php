@@ -4,24 +4,29 @@ require_once config::getdbPath();
 
 class ReservationModel
 {
-
     public static function getAllReservations($page, $resultsPerPage)
     {
-        $pageResults = ($page - 1) * $resultsPerPage;
+        $offset = ($page - 1) * $resultsPerPage;
         $totalReservations = self::getTotalReservations();
 
-        $rs = Database::search("SELECT `reservation_id`,`id`,`member_id`,`reservation_book_id`,`title`,`reservation_date`,`expiration_date`,`status` FROM `reservation` 
-INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id` 
-INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
-INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`  
-INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`
-        LIMIT $resultsPerPage OFFSET $pageResults");
+        $query = "SELECT `reservation_id`, `id`, `member_id`, `reservation_book_id`, `title`, `reservation_date`, `expiration_date`, `reservation_status`.`status`
+                  FROM `reservation`
+                  INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id`
+                  INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
+                  INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
+                  INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`
+                  LIMIT ? OFFSET ?";
+
+        $params = [$resultsPerPage, $offset];
+        $types = "ii";
+
+        $rs = Database::search($query, $params, $types);
 
         $reservations = [];
-
         while ($row = $rs->fetch_assoc()) {
             $reservations[] = $row;
         }
+
         return [
             'total' => $totalReservations,
             'results' => $reservations
@@ -30,86 +35,115 @@ INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_stat
 
     private static function getTotalReservations()
     {
-        $result = Database::search("SELECT COUNT(*) AS total FROM `reservation` 
-INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id` 
-INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
-INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`  
-INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`");
-        $row = $result->fetch_assoc();
+        $query = "SELECT COUNT(*) AS total
+                  FROM `reservation`
+                  INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id`
+                  INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
+                  INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
+                  INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`";
+
+        $rs = Database::search($query);
+        $row = $rs->fetch_assoc();
         return $row['total'] ?? 0;
     }
 
     public static function searchReservations($memberid, $bookid, $title, $status, $page, $resultsPerPage)
     {
-        $pageResults = ($page - 1) * $resultsPerPage;
-        $totalSearch = self::getTotalSearchResults($memberid, $bookid, $title, $status);
-    
-        $sql = "SELECT `reservation_id`,`id`,`member_id`,`reservation_book_id`,`title`,`reservation_date`,`expiration_date`,`reservation_status`.`status` 
-                FROM `reservation` 
-                INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id` 
-                INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
-                INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`  
-                INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`
-                WHERE 1"; // Basic where clause for conditions
-    
-        // Apply filters based on the input parameters
+        $offset = ($page - 1) * $resultsPerPage;
+
+        $params = [];
+        $types = '';
+
+        $whereClauses = ["1"]; // Start with "1" to simplify appending
+
         if (!empty($memberid)) {
-            $sql .= " AND `member_id` LIKE '%$memberid%'";
+            $whereClauses[] = "`member_id` LIKE ?";
+            $params[] = "%$memberid%";
+            $types .= 's';
         }
         if (!empty($bookid)) {
-            $sql .= " AND `reservation_book_id` LIKE '%$bookid%'";
+            $whereClauses[] = "`reservation_book_id` LIKE ?";
+            $params[] = "%$bookid%";
+            $types .= 's';
         }
         if (!empty($title)) {
-            $sql .= " AND `title` LIKE '%$title%'";
+            $whereClauses[] = "`title` LIKE ?";
+            $params[] = "%$title%";
+            $types .= 's';
         }
-        if (!empty($status) && $status !== 'all') { // Check if status is selected and is not 'all'
-            $sql .= " AND `reservation_status`.`status` = '$status'"; // Apply status filter
+        if (!empty($status) && $status !== 'all') {
+            $whereClauses[] = "`reservation_status`.`status` = ?";
+            $params[] = $status;
+            $types .= 's';
         }
-    
-        // Limit the results with pagination
-        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults";
-    
-        // Execute the query and fetch results
-        $rs = Database::search($sql);
+
+        $whereSQL = implode(" AND ", $whereClauses);
+
+        $sql = "SELECT `reservation_id`, `id`, `member_id`, `reservation_book_id`, `title`, `reservation_date`, `expiration_date`, `reservation_status`.`status`
+                FROM `reservation`
+                INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id`
+                INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
+                INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
+                INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`
+                WHERE $whereSQL
+                LIMIT ? OFFSET ?";
+
+        $params[] = $resultsPerPage;
+        $params[] = $offset;
+        $types .= 'ii';
+
+        $rs = Database::search($sql, $params, $types);
+
         $reservations = [];
         while ($row = $rs->fetch_assoc()) {
             $reservations[] = $row;
         }
-    
-        return ['results' => $reservations, 'total' => $totalSearch];
+
+        $total = self::getTotalSearchResults($memberid, $bookid, $title, $status);
+
+        return ['results' => $reservations, 'total' => $total];
     }
-    
+
     private static function getTotalSearchResults($memberid, $bookid, $title, $status)
     {
-        // Build the base query
-        $countQuery = "SELECT COUNT(`reservation_id`) AS total
-                       FROM `reservation` 
-                       INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id` 
-                       INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
-                       INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`  
-                       INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`
-                       WHERE 1"; // Basic where clause
-    
-        // Apply filters based on input parameters
+        $params = [];
+        $types = '';
+        $whereClauses = ["1"];
+
         if (!empty($memberid)) {
-            $countQuery .= " AND `member_id` LIKE '%$memberid%'";
+            $whereClauses[] = "`member_id` LIKE ?";
+            $params[] = "%$memberid%";
+            $types .= 's';
         }
         if (!empty($bookid)) {
-            $countQuery .= " AND `reservation_book_id` LIKE '%$bookid%'";
+            $whereClauses[] = "`reservation_book_id` LIKE ?";
+            $params[] = "%$bookid%";
+            $types .= 's';
         }
         if (!empty($title)) {
-            $countQuery .= " AND `title` LIKE '%$title%'";
+            $whereClauses[] = "`title` LIKE ?";
+            $params[] = "%$title%";
+            $types .= 's';
         }
-        if (!empty($status) && $status !== 'all') { // Check if status is provided and is not 'all'
-            $countQuery .= " AND `reservation_status`.`status` = '$status'"; // Filter by status
+        if (!empty($status) && $status !== 'all') {
+            $whereClauses[] = "`reservation_status`.`status` = ?";
+            $params[] = $status;
+            $types .= 's';
         }
-    
-        // Execute the query and get the total count
-        $result = Database::search($countQuery);
+
+        $whereSQL = implode(" AND ", $whereClauses);
+
+        $countQuery = "SELECT COUNT(`reservation_id`) AS total
+                       FROM `reservation`
+                       INNER JOIN `book` ON `reservation`.`reservation_book_id` = `book`.`book_id`
+                       INNER JOIN `member` ON `reservation`.`reservation_member_id` = `member`.`id`
+                       INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
+                       INNER JOIN `reservation_status` ON `reservation`.`status_id` = `reservation_status`.`status_id`
+                       WHERE $whereSQL";
+
+        $result = Database::search($countQuery, $params, $types);
         $row = $result->fetch_assoc();
-    
-        // Return the total number of results (if exists)
+
         return $row['total'] ?? 0;
     }
-    
 }

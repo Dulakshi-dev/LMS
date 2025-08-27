@@ -78,7 +78,7 @@ function staffRegistration() {
 
 
     if (username === '') {
-        errorMsg.innerText = 'Username is required.';
+        errorMsg.innerText = 'Staff ID is required.';
         errorMsgDiv.style.display = 'block';
         return false;
     } else if (password === '') {

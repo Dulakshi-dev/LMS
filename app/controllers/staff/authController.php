@@ -89,7 +89,7 @@ class AuthController extends Controller
         } else {
             Logger::warning('Failed login attempt', ['staffid' => $staffid]);
             sleep(1); // Slow down brute force attempts
-            $this->jsonResponse(["message" => "Invalid username or password."], false);
+            $this->jsonResponse(["message" => "Invalid Staff ID or Password."], false);
         }
     }
 

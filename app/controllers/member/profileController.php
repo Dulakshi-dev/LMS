@@ -7,10 +7,12 @@ class ProfileController extends Controller
 
     public function __construct()
     {
+        // Load Profile model to interact with member data
         require_once Config::getModelPath('member', 'profilemodel.php');
         $this->profileModel = new ProfileModel();
     }
 
+    // Load member details by member_id
     public function loadMemberDetails()
     {
         if (!$this->isPost()) {
@@ -20,7 +22,6 @@ class ProfileController extends Controller
         }
 
         $member_id = $this->getPost('member_id');
-
         $result = ProfileModel::loadMemberDetails($member_id);
 
         if ($result && $userData = $result->fetch_assoc()) {
@@ -41,6 +42,7 @@ class ProfileController extends Controller
         }
     }
 
+    // Serve profile image to browser
     public function serveProfileImage()
     {
         $imageName = $this->getGet('image', '');
@@ -48,7 +50,6 @@ class ProfileController extends Controller
         $filePath = realpath($basePath . basename($imageName));
 
         if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
-            
             header('Content-Type: ' . mime_content_type($filePath));
             readfile($filePath);
             exit;
@@ -58,6 +59,7 @@ class ProfileController extends Controller
         $this->jsonResponse(["message" => "Image not found."], false, 404);
     }
 
+    // Update member profile with or without new profile image
     public function updateProfile()
     {
         if (!$this->isPost()) {
@@ -77,18 +79,20 @@ class ProfileController extends Controller
         $fileName = '';
 
         if (isset($_FILES['profimg']) && $_FILES['profimg']['error'] === UPLOAD_ERR_OK) {
+            // Upload new profile image
             $img = $_FILES['profimg'];
             $targetDir = Config::getMemberProfileImagePath();
             $fileName = uniqid() . "_" . basename($img["name"]);
             $targetFilePath = $targetDir . $fileName;
 
+            // Remove old image
             $currentImage = ProfileModel::getMemberCurrentProfileImage($nic);
-
             if ($currentImage && file_exists($targetDir . $currentImage)) {
                 unlink($targetDir . $currentImage);
                 Logger::info('Deleted old profile image', ['old_image' => $currentImage]);
             }
 
+            // Move new image and update details
             if (move_uploaded_file($img["tmp_name"], $targetFilePath)) {
                 $result = ProfileModel::updateMemberDetails($nic, $fname, $lname, $address, $mobile, $fileName);
                 $_SESSION["member"]["profile_img"] = $fileName;
@@ -105,6 +109,7 @@ class ProfileController extends Controller
                 $this->jsonResponse(["message" => "Error moving uploaded file."], false);
             }
         } else {
+            // Update details without changing image
             $result = ProfileModel::updateMemberDetailsWithoutImage($nic, $fname, $lname, $address, $mobile);
 
             if ($result) {
@@ -117,6 +122,7 @@ class ProfileController extends Controller
         }
     }
 
+    // Reset member password
     public function resetPassword()
     {
         if (!$this->isPost()) {
@@ -141,6 +147,7 @@ class ProfileController extends Controller
         }
     }
 
+    // Validate the current password before allowing change
     public function validateCurrentPassword()
     {
         if (!$this->isPost()) {

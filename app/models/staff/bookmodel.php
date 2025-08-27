@@ -34,17 +34,15 @@ class BookModel
 
     private static function getTotalBooks($statusId)
     {
-        $result = Database::search("SELECT COUNT(*) AS total FROM book 
+        $query = "SELECT COUNT(*) AS total FROM book 
         INNER JOIN category ON book.category_id = category.category_id 
         INNER JOIN `status` ON book.status_id = status.status_id 
         INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
-        WHERE `book`.`status_id`='$statusId'");
+        WHERE `book`.`status_id`=?";
+        $params = [$statusId];
+        $types = "i";
+        $result = Database::search($query, $params, $types);
 
-                $query = "UPDATE `member_login` SET `remember_token` = NULL WHERE `member_id` = ?";
-        $params = [$memberid];
-        $types = "s";
-        Database::search($query, $params, $types);
-        
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
@@ -53,72 +51,114 @@ class BookModel
     {
         $statusId = ($status === 'Active') ? 1 : 2;
         $pageResults = ($page - 1) * $resultsPerPage;
+
+        // get total results securely
         $totalSearch = self::getTotalSearchResults($title, $isbn, $bookid, $statusId);
 
-        $sql = "SELECT * FROM `book`
-        INNER JOIN category ON book.category_id = category.category_id 
-        INNER JOIN `status` ON book.status_id = status.status_id 
-        INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
-        WHERE `book`.`status_id`='$statusId' AND 1";
+        $query = "SELECT * FROM `book`
+            INNER JOIN category ON book.category_id = category.category_id 
+            INNER JOIN `status` ON book.status_id = status.status_id 
+            INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
+            WHERE `book`.`status_id` = ?";
 
+        $params = [$statusId];
+        $types = "i";
+
+        // Optional filters
         if (!empty($category_id)) {
-            $sql .= " AND `book`.`category_id`='$category_id'";
+            $query .= " AND `book`.`category_id` = ?";
+            $params[] = $category_id;
+            $types .= "i";
         }
         if (!empty($language_id)) {
-            $sql .= " AND `book`.`language_id`='$language_id'";
+            $query .= " AND `book`.`language_id` = ?";
+            $params[] = $language_id;
+            $types .= "i";
         }
         if (!empty($bookid)) {
-            $sql .= " AND `book_id` LIKE '%$bookid%'";
+            $query .= " AND `book_id` LIKE ?";
+            $params[] = "%$bookid%";
+            $types .= "s";
         }
         if (!empty($title)) {
-            $sql .= " AND `title` LIKE '%$title%'";
+            $query .= " AND `title` LIKE ?";
+            $params[] = "%$title%";
+            $types .= "s";
         }
         if (!empty($isbn)) {
-            $sql .= " AND `isbn` LIKE '%$isbn%'";
+            $query .= " AND `isbn` LIKE ?";
+            $params[] = "%$isbn%";
+            $types .= "s";
         }
-        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults";
 
-        $rs = Database::search($sql);
+        // Pagination
+        $query .= " LIMIT ? OFFSET ?";
+        $params[] = $resultsPerPage;
+        $params[] = $pageResults;
+        $types .= "ii";
+
+        // Execute with prepared statement
+        $rs = Database::search($query, $params, $types);
+
         $books = [];
         while ($row = $rs->fetch_assoc()) {
             $books[] = $row;
         }
+
         return ['results' => $books, 'total' => $totalSearch];
     }
 
-    private static function getTotalSearchResults($title, $isbn, $bookid, $statusId)
+
+    private static function getTotalSearchResults($title, $isbn, $bookid, $statusId, $category_id = null, $language_id = null)
     {
         $countQuery = "SELECT COUNT(*) as total FROM `book`
-        INNER JOIN category ON book.category_id = category.category_id 
-        INNER JOIN `status` ON book.status_id = status.status_id 
-        INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
-        WHERE `book`.`status_id`='$statusId' AND 1";
+                   INNER JOIN category ON book.category_id = category.category_id 
+                   INNER JOIN `status` ON book.status_id = status.status_id 
+                   INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` 
+                   WHERE `book`.`status_id` = ?";
+
+        $params = [$statusId];
+        $types  = "i";
 
         if (!empty($category_id)) {
-            $countQuery .= " AND `book`.`category_id`='$category_id'";
+            $countQuery .= " AND `book`.`category_id` = ?";
+            $params[] = $category_id;
+            $types .= "i";
         }
         if (!empty($language_id)) {
-            $countQuery .= " AND `book`.`language_id`='$language_id'";
+            $countQuery .= " AND `book`.`language_id` = ?";
+            $params[] = $language_id;
+            $types .= "i";
         }
         if (!empty($bookid)) {
-            $countQuery .= " AND `book_id` LIKE '%$bookid%'";
+            $countQuery .= " AND `book_id` LIKE ?";
+            $params[] = "%$bookid%";
+            $types .= "s";
         }
         if (!empty($title)) {
-            $countQuery .= " AND `title` LIKE '%$title%'";
+            $countQuery .= " AND `title` LIKE ?";
+            $params[] = "%$title%";
+            $types .= "s";
         }
         if (!empty($isbn)) {
-            $countQuery .= " AND `isbn` LIKE '%$isbn%'";
+            $countQuery .= " AND `isbn` LIKE ?";
+            $params[] = "%$isbn%";
+            $types .= "s";
         }
 
-        $result = Database::search($countQuery);
+        $result = Database::search($countQuery, $params, $types);
         $row = $result->fetch_assoc();
+
         return $row['total'] ?? 0;
     }
 
-
     public static function loadBookDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id`INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` WHERE `book_id` = '$id'");
+        $query = "SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id` INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id`INNER JOIN `language` ON `book`.`language_id` = `language`.`language_id` WHERE `book_id` = ?";
+        $params = [$id];
+        $types = "s";
+        $rs = Database::search($query, $params, $types);
+
         return $rs;
     }
 
@@ -170,7 +210,12 @@ class BookModel
     public static function updateBookDetails($book_id, $isbn, $title, $author, $category, $language, $pubYear, $quantity, $description)
     {
         // Get the old qty and available_qty from the database
-        $rs = Database::search("SELECT `qty`, `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
+
+        $query = "SELECT `qty`, `available_qty` FROM `book` WHERE `book_id` = ?";
+        $params = [$book_id];
+        $types = "s";
+        $rs = Database::search($query, $params, $types);
+
         $row = $rs->fetch_assoc();
         $old_qty = $row['qty'];
         $old_available_qty = $row['available_qty'];  // Corrected here to use available_qty
@@ -186,24 +231,32 @@ class BookModel
         }
 
         // Update the book details in the database
-        Database::ud("UPDATE book SET
-            `isbn` = '$isbn',
-            `title` = '$title', 
-            `author` = '$author', 
-            `pub_year` = '$pubYear', 
-            `qty` = '$quantity', 
-            `available_qty` = '$new_available_qty',
-            `category_id` = '$category', 
-            `language_id` = '$language', 
-            `description` = '$description'
-            WHERE `book_id` = '$book_id'");
+        $query = "UPDATE book SET
+            `isbn` = ?,
+            `title` = ?, 
+            `author` = ?, 
+            `pub_year` = ?, 
+            `qty` = ?, 
+            `available_qty` = ?,
+            `category_id` = ?, 
+            `language_id` = ?, 
+            `description` = ?
+            WHERE `book_id` = ?";
+        $params = [$isbn, $title, $author, $pubYear, $quantity, $new_available_qty, $category, $language, $description, $book_id];
+        $types = "sssiiiiiss";
+        Database::ud($query, $params, $types);
 
         return true;
     }
 
     public static function isbnExists($isbn)
     {
-        $result = Database::search("SELECT * FROM `book` WHERE `isbn` = '$isbn'");
+
+        $query = "SELECT * FROM `book` WHERE `isbn` = ?";
+        $params = [$isbn];
+        $types = "s";
+        $result = Database::search($query, $params, $types);
+
         return $result !== null;
     }
 
@@ -214,9 +267,12 @@ class BookModel
         $book_id = self::generateID();
 
         // Insert the new book into the database
-        Database::insert("INSERT INTO `book`(`book_id`,`isbn`,`title`,`author`,`pub_year`,`description`,`cover_page`,`qty`,
+        $query = "INSERT INTO `book`(`book_id`,`isbn`,`title`,`author`,`pub_year`,`description`,`cover_page`,`qty`,
         `available_qty`,`category_id`,`language_id`,`status_id`) 
-        VALUES ('$book_id','$isbn', '$title', '$author', '$pub', '$des','$coverpage', '$qty', '$qty', '$category','$language','1')");
+        VALUES (?,?, ?, ?, ?, ?,?, ?, ?, ?,?,'1')";
+        $params = [$book_id, $isbn, $title, $author, $pub, $des, $coverpage, $qty, $qty, $category, $language];
+        $types = "ssssissiiii";
+        Database::insert($query, $params, $types);
 
         return true;
     }
@@ -225,7 +281,8 @@ class BookModel
     public static function generateID()
     {
         // Query to get the latest staff_id
-        $result = Database::search("SELECT book_id FROM `book` ORDER BY book_id DESC LIMIT 1");
+        $query = "SELECT book_id FROM `book` ORDER BY book_id DESC LIMIT 1";
+        $result = Database::search($query);
 
         if ($result->num_rows > 0) {
             // Fetch the last book ID
@@ -247,25 +304,41 @@ class BookModel
 
     public static function addCategory($category)
     {
-        Database::insert("INSERT INTO `category`(`category_name`) VALUES ('$category')");
+        $query = "INSERT INTO `category`(`category_name`) VALUES (?)";
+        $params = [$category];
+        $types = "s";
+        Database::insert($query, $params, $types);
+
         return true;
     }
 
     public static function deactivateBook($book_id)
     {
-        $rs = Database::ud("UPDATE `book` SET `status_id`='2' WHERE `book_id`='$book_id'");
+        $query = "UPDATE `book` SET `status_id`='2' WHERE `book_id`=?";
+        $params = [$book_id];
+        $types = "s";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 
     public static function activateBook($book_id)
     {
-        $rs = Database::ud("UPDATE `book` SET `status_id`='1' WHERE `book_id`='$book_id'");
+        $query = "UPDATE `book` SET `status_id`='1' WHERE `book_id`=?";
+        $params = [$book_id];
+        $types = "s";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 
     public static function deleteCategory($category_id)
     {
-        $rs = Database::ud("DELETE FROM `category` WHERE `category_id` = '$category_id'");
+        $query = "DELETE FROM `category` WHERE `category_id` = ?";
+        $params = [$category_id];
+        $types = "i";
+        Database::ud($query, $params, $types);
+
         return true;
     }
 }

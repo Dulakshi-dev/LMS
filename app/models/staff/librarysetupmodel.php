@@ -15,96 +15,112 @@ class LibrarySetupModel
 
     public static function changeOpeningHours($weekdaysfrom, $weekdaysto, $weekendfrom, $weekendto, $holidayfrom, $holidayto)
     {
-        // Check if the times are '00:00:00' and set them as NULL
-        if ($weekdaysfrom == '00:00:00') {
-            $weekdaysfrom = NULL;
-        }
-        if ($weekdaysto == '00:00:00') {
-            $weekdaysto = NULL;
-        }
-        if ($weekendfrom == '00:00:00') {
-            $weekendfrom = NULL;
-        }
-        if ($weekendto == '00:00:00') {
-            $weekendto = NULL;
-        }
-        if ($holidayfrom == '00:00:00') {
-            $holidayfrom = NULL;
-        }
-        if ($holidayto == '00:00:00') {
-            $holidayto = NULL;
-        }
+        // Convert '00:00:00' to NULL
+        $weekdaysfrom = $weekdaysfrom === '00:00:00' ? NULL : $weekdaysfrom;
+        $weekdaysto = $weekdaysto === '00:00:00' ? NULL : $weekdaysto;
+        $weekendfrom = $weekendfrom === '00:00:00' ? NULL : $weekendfrom;
+        $weekendto = $weekendto === '00:00:00' ? NULL : $weekendto;
+        $holidayfrom = $holidayfrom === '00:00:00' ? NULL : $holidayfrom;
+        $holidayto = $holidayto === '00:00:00' ? NULL : $holidayto;
 
-        // Perform the update with NULL where the time was '00:00:00'
-        Database::ud("UPDATE `opening_hours` SET 
-                  `open_time` = CASE 
-                                WHEN `day` = 'Week Day' THEN '$weekdaysfrom' 
-                                WHEN `day` = 'Week End' THEN '$weekendfrom' 
-                                WHEN `day` = 'Holiday' THEN '$holidayfrom' 
-                                ELSE `open_time`
-                                END,
-                  `close_time` = CASE 
-                                WHEN `day` = 'Week Day' THEN '$weekdaysto' 
-                                WHEN `day` = 'Week End' THEN '$weekendto' 
-                                WHEN `day` = 'Holiday' THEN '$holidayto' 
-                                ELSE `close_time`
-                                END
-                  WHERE `day` IN ('Week Day', 'Week End', 'Holiday')");
+        $query = "UPDATE `opening_hours` SET 
+                `open_time` = CASE 
+                    WHEN `day` = 'Week Day' THEN ? 
+                    WHEN `day` = 'Week End' THEN ? 
+                    WHEN `day` = 'Holiday' THEN ? 
+                    ELSE `open_time`
+                END,
+                `close_time` = CASE 
+                    WHEN `day` = 'Week Day' THEN ? 
+                    WHEN `day` = 'Week End' THEN ? 
+                    WHEN `day` = 'Holiday' THEN ? 
+                    ELSE `close_time`
+                END
+                WHERE `day` IN ('Week Day', 'Week End', 'Holiday')";
 
+        $params = [$weekdaysfrom, $weekendfrom, $holidayfrom, $weekdaysto, $weekendto, $holidayto];
+        $types = "ssssss";
+
+        Database::ud($query, $params, $types);
 
         return true;
     }
 
+
     public static function changeNewsUpdates($boxId, $title, $date, $description, $image)
     {
-
-        $rs = Database::search("SELECT * FROM `news` WHERE `id`='$boxId'");
+        // Check if the record exists
+        $rs = Database::search("SELECT * FROM `news` WHERE `id` = ?", [$boxId], "i");
 
         if ($rs && $rs->num_rows > 0) {
-            Database::ud("UPDATE `news` SET 
-            `title` = '$title', 
-            `date` = '$date', 
-            `description` = '$description', 
-            `image_path` = '$image' 
-        WHERE `id` = '$boxId'");
+            // Update existing news
+            $query = "UPDATE `news` SET 
+                    `title` = ?, 
+                    `date` = ?, 
+                    `description` = ?, 
+                    `image_path` = ? 
+                  WHERE `id` = ?";
+            $params = [$title, $date, $description, $image, $boxId];
+            $types = "ssssi";
+
+            Database::ud($query, $params, $types);
             return true;
         } else {
-            Database::insert("INSERT INTO `news` VALUES('$boxId','$title','$date','$description','$image');");
+            // Insert new news
+            $query = "INSERT INTO `news` (`id`, `title`, `date`, `description`, `image_path`) 
+                  VALUES (?, ?, ?, ?, ?)";
+            $params = [$boxId, $title, $date, $description, $image];
+            $types = "issss";
+
+            Database::insert($query, $params, $types);
             return false;
         }
     }
 
+
     public static function changeLibraryInfo($name, $address, $email, $phone, $fee, $logo, $fine)
     {
-        
-        // Perform the update with NULL where the time was '00:00:00'
-        Database::ud("UPDATE `library_info` SET `name`='$name',`address`='$address',`email`='$email',`mobile`='$phone',`membership_fee`='$fee',`logo`='$logo',`fine_amount`='$fine' WHERE `id`='1'");
+        $query = "UPDATE `library_info` 
+              SET `name` = ?, 
+                  `address` = ?, 
+                  `email` = ?, 
+                  `mobile` = ?, 
+                  `membership_fee` = ?, 
+                  `logo` = ?, 
+                  `fine_amount` = ? 
+              WHERE `id` = 1";
+
+        $params = [$name, $address, $email, $phone, $fee, $logo, $fine];
+        $types  = "ssssdss";
+
+        Database::ud($query, $params, $types);
+
         return true;
     }
+
 
     public static function getAllActiveStaff()
     {
         // Search for active members only
-        $rs = Database::search("SELECT * FROM `staff` WHERE `status_id` = '1'");
-        
+        $query = "SELECT * FROM `staff` WHERE `status_id` = '1'";
+        $rs = Database::search($query);
         // Check if any active members exist
         if ($rs->num_rows > 0) {
             return $rs;
-    
         } else {
             return false;
         }
     }
 
-     public static function getAllActiveMembers()
+    public static function getAllActiveMembers()
     {
         // Search for active members only
-        $rs = Database::search("SELECT * FROM `member` WHERE `status_id` = '1'");
-        
+        $query = "SELECT * FROM `member` WHERE `status_id` = '1'";
+        $rs = Database::search($query);
+
         // Check if any active members exist
         if ($rs->num_rows > 0) {
             return $rs;
-    
         } else {
             return false;
         }
@@ -112,8 +128,8 @@ class LibrarySetupModel
 
     public static function getLibraryInfo()
     {
-        $result = Database::search("SELECT * FROM `library_info` LIMIT 1");
-
+        $query = "SELECT * FROM `library_info` LIMIT 1";
+        $result = Database::search($query);
         if ($result && $result->num_rows > 0) {
             return $result->fetch_assoc();
         }
@@ -124,7 +140,7 @@ class LibrarySetupModel
     public static function getOpeningHours()
     {
         // Execute the query and return the results
-        $result = Database::search("SELECT 
+         $query = "SELECT 
             CASE 
                 WHEN `day` = 'Week Day' THEN 'Weekday' 
                 WHEN `day` = 'Week End' THEN 'Weekend' 
@@ -133,7 +149,8 @@ class LibrarySetupModel
             END AS `day_label`,
             `open_time`, 
             `close_time`
-        FROM `opening_hours`;");
+        FROM `opening_hours`;";
+        $result = Database::search($query);
 
         // Check if there are results and return them
         if ($result && $result->num_rows > 0) {
@@ -153,5 +170,4 @@ class LibrarySetupModel
 
         return false; // If no results are found, return false
     }
-    
 }

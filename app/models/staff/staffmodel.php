@@ -5,145 +5,220 @@ class StaffModel
 {
     public static function getAllStaff($page, $resultsPerPage, $status = 'Active')
     {
-        // Determine the status_id based on the user-specified status
-        $statusId = ($status === 'Active') ? 1 : 2;  // Assuming '1' is active, '2' is deactivated
-
-        $pageResults = ($page - 1) * $resultsPerPage;
+        $statusId = ($status === 'Active') ? 1 : 2;
+        $offset = ($page - 1) * $resultsPerPage;
         $totalUsers = self::getTotalStaff($statusId);
 
-        $rs = Database::search("SELECT * FROM `staff`
-            JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
-            JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
-            WHERE `status_id` = '$statusId'
-            LIMIT $resultsPerPage OFFSET $pageResults");
+        $query = "SELECT * FROM `staff`
+                  JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+                  JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
+                  WHERE `status_id` = ?
+                  LIMIT ? OFFSET ?";
+
+        $params = [$statusId, $resultsPerPage, $offset];
+        $types = "iii";
+
+        $rs = Database::search($query, $params, $types);
 
         $users = [];
-
         while ($row = $rs->fetch_assoc()) {
             $users[] = $row;
         }
 
-        return [
-            'total' => $totalUsers,
-            'results' => $users
-        ];
+        return ['total' => $totalUsers, 'results' => $users];
     }
 
     private static function getTotalStaff($statusId)
     {
+        $query = "SELECT COUNT(*) AS total FROM `staff`
+                  JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+                  JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
+                  WHERE `status_id` = ?";
 
-        // Get the total number of users based on the selected status
-        $result = Database::search("SELECT COUNT(*) AS total FROM `staff`
-            JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
-            JOIN `role` ON `staff`.`role_id` = `role`.`role_id`
-            WHERE `status_id` = '$statusId'");
+        $params = [$statusId];
+        $types = "i";
 
-        $row = $result->fetch_assoc();
+        $rs = Database::search($query, $params, $types);
+        $row = $rs->fetch_assoc();
         return $row['total'] ?? 0;
     }
 
     public static function searchStaff($memberId, $nic, $userName, $status = 'Active', $page, $resultsPerPage)
     {
         $statusId = ($status === 'Active') ? 1 : 2;
-        $pageResults = ($page - 1) * $resultsPerPage;
-        $totalSearch = self::getTotalSearchResults($memberId, $nic, $userName, $statusId);
+        $offset = ($page - 1) * $resultsPerPage;
 
-        $sql = "SELECT * FROM `staff` JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId` WHERE `staff`.`status_id`='$statusId' AND 1";
+        $whereClauses = ["`staff`.`status_id` = ?"];
+        $params = [$statusId];
+        $types = "i";
 
         if (!empty($memberId)) {
-            $sql .= " AND `staff_id` LIKE '%$memberId%'";
+            $whereClauses[] = "`staff_id` LIKE ?";
+            $params[] = "%$memberId%";
+            $types .= "s";
         }
         if (!empty($nic)) {
-            $sql .= " AND `nic` LIKE '%$nic%'";
+            $whereClauses[] = "`nic` LIKE ?";
+            $params[] = "%$nic%";
+            $types .= "s";
         }
         if (!empty($userName)) {
-            $sql .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+            $whereClauses[] = "(`fname` LIKE ? OR `lname` LIKE ?)";
+            $params[] = "%$userName%";
+            $params[] = "%$userName%";
+            $types .= "ss";
         }
 
-        $sql .= " LIMIT $resultsPerPage OFFSET $pageResults";
+        $whereSQL = implode(" AND ", $whereClauses);
 
-        $rs = Database::search($sql);
+        $sql = "SELECT * FROM `staff`
+                JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+                WHERE $whereSQL
+                LIMIT ? OFFSET ?";
+
+        // Add LIMIT and OFFSET params
+        $params[] = $resultsPerPage;
+        $params[] = $offset;
+        $types .= "ii";
+
+        $rs = Database::search($sql, $params, $types);
 
         $users = [];
         while ($row = $rs->fetch_assoc()) {
             $users[] = $row;
         }
+
+        $totalSearch = self::getTotalSearchResults($memberId, $nic, $userName, $statusId);
+
         return ['results' => $users, 'total' => $totalSearch];
     }
 
     private static function getTotalSearchResults($memberId, $nic, $userName, $statusId)
     {
-        $countQuery = "SELECT COUNT(*) as total FROM `staff` JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId` WHERE `staff`.`status_id`='$statusId' AND 1";
+        $whereClauses = ["`staff`.`status_id` = ?"];
+        $params = [$statusId];
+        $types = "s";
 
         if (!empty($memberId)) {
-            $countQuery .= " AND `staff_id` LIKE '%$memberId%'";
+            $whereClauses[] = "`staff_id` LIKE ?";
+            $params[] = "%$memberId%";
+            $types .= "s";
         }
         if (!empty($nic)) {
-            $countQuery .= " AND `nic` LIKE '%$nic%'";
+            $whereClauses[] = "`nic` LIKE ?";
+            $params[] = "%$nic%";
+            $types .= "s";
         }
         if (!empty($userName)) {
-            $countQuery .= " AND (`fname` LIKE '%$userName%' OR `lname` LIKE '%$userName%')";
+            $whereClauses[] = "(`fname` LIKE ? OR `lname` LIKE ?)";
+            $params[] = "%$userName%";
+            $params[] = "%$userName%";
+            $types .= "ss";
         }
 
-        $result = Database::search($countQuery);
+        $whereSQL = implode(" AND ", $whereClauses);
+
+        $countQuery = "SELECT COUNT(*) as total FROM `staff`
+                       JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+                       WHERE $whereSQL";
+
+        $result = Database::search($countQuery, $params, $types);
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
 
     public static function loadStaffDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `staff` INNER JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId` WHERE `staff_id` = '$id'");
-        return $rs;
+        $sql = "SELECT * FROM `staff`
+            INNER JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+            WHERE `staff_id` = ?";
+
+        $params = [$id];
+        $types = "s";
+
+        return Database::search($sql, $params, $types);
     }
 
     public static function getStaffbyID($user_id)
     {
-        $rs = Database::search("SELECT * FROM `staff` JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId` WHERE `staff_id` = '$user_id'");
+        $sql = "SELECT * FROM `staff`
+            JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+            WHERE `staff_id` = ?";
+
+        $params = [$user_id];
+        $types = "s";
+
+        $rs = Database::search($sql, $params, $types);
         return $rs->fetch_assoc();
     }
 
+
     public static function UpdateStaffDetails($user_id, $fname, $lname, $email, $phone, $address, $nic)
     {
+        $sql = "UPDATE `staff`
+            INNER JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+            SET `fname` = ?, 
+                `lname` = ?, 
+                `mobile` = ?,  
+                `address` = ?, 
+                `nic` = ?, 
+                `email` = ?
+            WHERE `staff_id` = ?";
 
-        Database::ud("UPDATE `staff` INNER JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId` SET 
-                `fname` = '$fname', 
-                `lname` = '$lname', 
-                `mobile` = '$phone',  
-                `address` = '$address', 
-                `nic` = '$nic',
-                `email` = '$email' 
-                WHERE `staff_id` = '$user_id'");
+        $params = [$fname, $lname, $phone, $address, $nic, $email, $user_id];
+        $types = "sssssss";
+
+        Database::ud($sql, $params, $types);
         return true;
     }
 
     public static function loadMailDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `staff` INNER JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId` WHERE `staff_id` = '$id'");
-        return $rs;
+        $sql = "SELECT * FROM `staff`
+            INNER JOIN `staff_login` ON `staff`.`id` = `staff_login`.`staffId`
+            WHERE `staff_id` = ?";
+
+        $params = [$id];
+        $types = "s";
+
+        return Database::search($sql, $params, $types);
     }
 
     public static function deactivateStaff($id)
     {
-        $rs = Database::ud("UPDATE `staff` SET `status_id`='2' WHERE `id`='$id'");
+        $sql = "UPDATE `staff` SET `status_id` = 2 WHERE `id` = ?";
+        $params = [$id];
+        $types = "i";
+
+        Database::ud($sql, $params, $types);
         return true;
     }
 
+
     public static function activateStaff($id)
     {
-        $rs = Database::ud("UPDATE `staff` SET `status_id`='1' WHERE `id`='$id'");
+        $sql = "UPDATE `staff` SET `status_id` = 1 WHERE `id` = ?";
+        $params = [$id];
+        $types = "i"; 
+
+        Database::ud($sql, $params, $types);
         return true;
     }
 
     public static function generateKey($email, $role_id)
     {
-        // Step 1: Generate a random key (e.g., 16 bytes long)
-        $key = strtoupper(bin2hex(random_bytes(16)));  // Generates a 32-character key (16 bytes)
+        // Generate a random key (32-character, 16 bytes)
+        $key = strtoupper(bin2hex(random_bytes(16)));
 
-        Database::insert("INSERT INTO staff_key (`email`,`key_value`,`role_id`) VALUES ('$email','$key','$role_id')");
+        $sql = "INSERT INTO `staff_key` (`email`, `key_value`, `role_id`) VALUES (?, ?, ?)";
+        $params = [$email, $key, $role_id];
+        $types = "ssi"; 
+
+        Database::insert($sql, $params, $types);
         return $key;
     }
-
-    // public static function sendEnrollmentKey($email, $role_id)
+}
+ // public static function sendEnrollmentKey($email, $role_id)
     // {
     //     require_once Config::getServicePath('emailService.php');
 
@@ -169,4 +244,3 @@ class StaffModel
 
     //     return true;
     // }
-}

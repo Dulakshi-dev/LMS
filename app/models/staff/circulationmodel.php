@@ -19,12 +19,15 @@ class CirculationModel
         $pageResults = ($page - 1) * $resultsPerPage;
         $totalBooks = self::getTotalBorrowData();
 
-        $rs = Database::search("SELECT * FROM `borrow` 
+        $query = "SELECT * FROM `borrow` 
 INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
 INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
 INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
 LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
-        LIMIT $resultsPerPage OFFSET $pageResults");
+        LIMIT ? OFFSET ?";
+        $params = [$resultsPerPage, $pageResults];
+        $types = "ii";
+        $rs = Database::search($query, $params, $types);
 
         $books = [];
 
@@ -39,11 +42,15 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
 
     private static function getTotalBorrowData()
     {
-        $result = Database::search("SELECT COUNT(*) AS total FROM `borrow` 
+
+        $query = "SELECT COUNT(*) AS total FROM `borrow` 
 INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
 INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
 INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
-LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
+LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`";
+
+        $result = Database::search($query);
+
         $row = $result->fetch_assoc();
         return $row['total'] ?? 0;
     }
@@ -60,11 +67,18 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
         LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
         WHERE 1";
 
+        $params = [];
+        $types  = "";
+
         if (!empty($bookid)) {
-            $sql .= " AND `book_id` LIKE '%$bookid%'";
+            $sql .= " AND `book`.`book_id` LIKE ?";
+            $params[] = "%$bookid%";
+            $types   .= "s";
         }
         if (!empty($memberid)) {
-            $sql .= " AND `member_id` LIKE '%$memberid%'";
+            $sql .= " AND `member`.`id` LIKE ?";
+            $params[] = "%$memberid%";
+            $types   .= "s";
         }
 
         // Dynamically determine status
@@ -83,64 +97,88 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
                 break;
         }
 
-        $sql .= " ORDER BY `borrow`.`borrow_id` DESC LIMIT $resultsPerPage OFFSET $pageResults";
+        $sql .= " ORDER BY `borrow`.`borrow_id` DESC LIMIT ? OFFSET ?";
+        $params[] = $resultsPerPage;
+        $params[] = $pageResults;
+        $types   .= "ii";
 
-        $rs = Database::search($sql);
+        $rs = Database::search($sql, $params, $types);
+
         $books = [];
         while ($row = $rs->fetch_assoc()) {
             $books[] = $row;
         }
+
         return ['results' => $books, 'total' => $totalSearch];
     }
 
 
     private static function getTotalSearchResults($bookid, $memberid, $status)
     {
-        $countQuery = "SELECT COUNT(*) AS total FROM `borrow` 
-        INNER JOIN `book` ON `borrow`.`borrow_book_id` = `book`.`book_id` 
-        INNER JOIN `member` ON `borrow`.`borrow_member_id` = `member`.`id` 
-        INNER JOIN `member_login` ON `member_login`.`memberId` = `member`.`id`
-        LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`
-        WHERE 1";
+        // Base query
+        $countQuery = "SELECT COUNT(*) AS total 
+                   FROM borrow 
+                   INNER JOIN book ON borrow.borrow_book_id = book.book_id 
+                   INNER JOIN member ON borrow.borrow_member_id = member.id 
+                   INNER JOIN member_login ON member_login.memberId = member.id 
+                   LEFT JOIN fines ON borrow.borrow_id = fines.fine_borrow_id 
+                   WHERE 1";
 
+        $params = [];
+        $types = "";
+
+        // Optional filters
         if (!empty($bookid)) {
-            $countQuery .= " AND `book_id` LIKE '%$bookid%'";
+            $countQuery .= " AND book_id LIKE ?";
+            $params[] = "%$bookid%";
+            $types .= "s";
         }
         if (!empty($memberid)) {
-            $countQuery .= " AND `member_id` LIKE '%$memberid%'";
+            $countQuery .= " AND member_id LIKE ?";
+            $params[] = "%$memberid%";
+            $types .= "s";
         }
 
-        // Apply the same status filter logic
+        // Status filter
         switch ($status) {
             case 'status2': // Returned
-                $countQuery .= " AND `return_date` IS NOT NULL";
+                $countQuery .= " AND return_date IS NOT NULL";
                 break;
             case 'status3': // Due
-                $countQuery .= " AND `return_date` IS NULL AND `due_date` >= CURDATE()";
+                $countQuery .= " AND return_date IS NULL AND due_date >= CURDATE()";
                 break;
             case 'status4': // Over Due
-                $countQuery .= " AND `return_date` IS NULL AND `due_date` < CURDATE()";
+                $countQuery .= " AND return_date IS NULL AND due_date < CURDATE()";
                 break;
             default:
-                // status1 or empty → All, no condition
+                // status1 or empty → All, no additional condition
                 break;
         }
 
-        $result = Database::search($countQuery);
+        // Execute query with prepared statement
+        $result = Database::search($countQuery, $params, $types);
         $row = $result->fetch_assoc();
+
         return $row['total'] ?? 0;
     }
 
 
+
     public static function getBookDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id` WHERE `book_id` = '$id'");
+        $query = "SELECT * FROM `book` INNER JOIN `category` ON `book`.`category_id` = `category`.`category_id`INNER JOIN `status` ON `book`.`status_id` = `status`.`status_id` WHERE `book_id` = ?";
+        $params = [$id];
+        $types = "s";
+        $rs = Database::search($query, $params, $types);
         return $rs;
     }
 
     public static function getMemberDetails($id)
     {
-        $rs = Database::search("SELECT * FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$id'");
+        $query = "SELECT * FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = ?";
+        $params = [$id];
+        $types = "s";
+        $rs = Database::search($query, $params, $types);
         return $rs;
     }
 
@@ -148,8 +186,11 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
     public static function issueBook($book_id, $member_id, $borrow_date, $due_date)
     {
         // Verify if the member exists in the system
-        $id_result = Database::search("SELECT `id` FROM `member` 
-        INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = '$member_id'");
+        $query = "SELECT `id` FROM `member` 
+        INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = ?";
+        $params = [$member_id];
+        $types = "s";
+        $id_result = Database::search($query, $params, $types);
 
         if ($id_result->num_rows == 0) {
             return ["success" => false, "message" => "Member does not exist."];
@@ -160,10 +201,13 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
         $memberid = $id_data['id'];
 
         // Check if the member has already borrowed this book and has not returned it yet
-        $borrow_check = Database::search("SELECT * FROM `borrow` 
-                                          WHERE `borrow_book_id` = '$book_id' 
-                                          AND `borrow_member_id` = '$memberid' 
-                                          AND `return_date` IS NULL");
+        $query = "SELECT * FROM `borrow` 
+                WHERE `borrow_book_id` = ? 
+                AND `borrow_member_id` = ? 
+                AND `return_date` IS NULL";
+        $params = [$book_id, $memberid];
+        $types = "si";
+        $borrow_check = Database::search($query, $params, $types);
 
         if ($borrow_check->num_rows > 0) {
             // The member has already borrowed the book and not returned it yet
@@ -171,35 +215,56 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
         }
 
         // Check if the member has reserved this book
-        $result = Database::search("SELECT * FROM `reservation` 
-                                    WHERE `reservation_book_id` = '$book_id' 
-                                    AND `reservation_member_id` = '$memberid'");
+
+        $query = "SELECT * FROM `reservation` 
+                WHERE `reservation_book_id` = ? 
+                AND `reservation_member_id` = ?";
+        $params = [$book_id, $memberid];
+        $types = "si";
+        $result = Database::search($query, $params, $types);
 
         $num = $result->num_rows;
 
         // If the book is reserved by the member
         if ($num > 0) {
             // Issue the book by inserting a record into the `borrow` table
-            Database::insert("INSERT INTO `borrow`(`borrow_date`, `due_date`, `borrow_book_id`, `borrow_member_id`) 
-                              VALUES('$borrow_date', '$due_date', '$book_id', '$memberid')");
+            $query = "INSERT INTO `borrow`(`borrow_date`, `due_date`, `borrow_book_id`, `borrow_member_id`) 
+                              VALUES(?, ?, ?, ?)";
+            $params = [$borrow_date, $due_date, $book_id, $memberid];
+            $types = "sssi";
+            Database::insert($query, $params, $types);
 
             // Update the reservation status to indicate the book has been borrowed
-            Database::ud("UPDATE `reservation` SET `status_id` = '2' 
-                        WHERE `reservation_book_id` = '$book_id' 
-                        AND `reservation_member_id` = '$memberid'");
+            $query = "UPDATE `reservation` SET `status_id` = '2' 
+                        WHERE `reservation_book_id` = ? 
+                        AND `reservation_member_id` = ?";
+            $params = [$book_id, $memberid];
+            $types = "si";
+            Database::ud($query, $params, $types);
         } else { // If the book is not reserved, check availability
-            $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
+            $query = "SELECT `available_qty` FROM `book` WHERE `book_id` = ?";
+            $params = [$book_id];
+            $types = "s";
+            $result =  Database::search($query, $params, $types);
+
+
             $data = $result->fetch_assoc();
             $available_qty = $data["available_qty"];
 
             // If copies are available
             if ($available_qty > 0) {
                 // Issue the book by inserting a record into the `borrow` table
-                Database::insert("INSERT INTO `borrow`(`borrow_date`, `due_date`, `borrow_book_id`, `borrow_member_id`) 
-                                  VALUES('$borrow_date', '$due_date', '$book_id', '$memberid')");
+                $query = "INSERT INTO `borrow`(`borrow_date`, `due_date`, `borrow_book_id`, `borrow_member_id`) 
+                                  VALUES(?, ?, ?, ?)";
+                $params = [$borrow_date, $due_date, $book_id, $memberid];
+                $types = "sssi";
+                Database::insert($query, $params, $types);
 
                 // Reduce the available quantity of the book by 1
-                Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
+                $query = "UPDATE `book` SET `available_qty` = ? - 1 WHERE `book_id` = ?";
+                $params = [$available_qty, $book_id];
+                $types = "is";
+                Database::ud($query, $params, $types);
             } else {
                 return ["success" => false, "message" => "No copies available for this book."];
             }
@@ -210,7 +275,8 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
     public static function generateFineID()
     {
         // get the latest fine_id
-        $result = Database::search("SELECT fine_id FROM `fines` ORDER BY fine_id DESC LIMIT 1");
+        $query = "SELECT fine_id FROM `fines` ORDER BY fine_id DESC LIMIT 1";
+        $result = Database::search($query);
 
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -230,25 +296,41 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
     public static function returnBook($borrow_id, $return_date, $book_id, $fines, $memberId)
     {
         // Update the borrow record with the return date
-        Database::ud("UPDATE `borrow` SET `return_date` = '$return_date' WHERE `borrow_id` = '$borrow_id'");
+        $query = "UPDATE `borrow` SET `return_date` = ? WHERE `borrow_id` = ?";
+        $params = [$return_date, $borrow_id];
+        $types = "si";
+        Database::ud($query, $params, $types);
+
 
         $fineID = self::generateFineID();
 
         // If there is a fine, insert the fine record into the database
         if ($fines > 0) {
-            $today = date("Y-m-d"); 
-            Database::insert("INSERT INTO `fines`(`fine_id`, `amount`, `fine_borrow_id`, `payed_on`) 
-        VALUES('$fineID', '$fines', '$borrow_id', '$today')");
+            $today = date("Y-m-d");
+
+            $query = "INSERT INTO `fines`(`fine_id`, `amount`, `fine_borrow_id`, `payed_on`) 
+        VALUES(?, ?, ?, ?)";
+            $params = [$fineID, $fines, $borrow_id, $today];
+            $types = "sdis";
+            Database::search($query, $params, $types);
         }
 
 
         // Get the current available quantity of the book
-        $result = Database::search("SELECT `available_qty` FROM `book` WHERE `book_id` = '$book_id'");
+
+        $query = "SELECT `available_qty` FROM `book` WHERE `book_id` = ?";
+        $params = [$book_id];
+        $types = "s";
+        $result = Database::search($query, $params, $types);
+
         $data = $result->fetch_assoc();
         $available_qty = $data["available_qty"];
 
         // Increase the available quantity of the returned book
-        Database::ud("UPDATE `book` SET `available_qty` = $available_qty + 1 WHERE `book_id` = '$book_id'");
+        $query = "UPDATE `book` SET `available_qty` = ? + 1 WHERE `book_id` = ?";
+        $params = [$available_qty, $book_id];
+        $types = "is";
+        Database::ud($query, $params, $types);
         return true;
     }
 
@@ -257,10 +339,13 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
         // Include the email service
 
         // Retrieve the next member on the waitlist (oldest reservation first)
-        $waitlist = Database::search("SELECT * FROM `reservation` 
-                                  WHERE `reservation_book_id` = '$book_id' AND `status_id` = 5
+        $query = "SELECT * FROM `reservation` 
+                                  WHERE `reservation_book_id` = ? AND `status_id` = 5
                                   ORDER BY `reservation_date` ASC 
-                                  LIMIT 1");
+                                  LIMIT 1";
+        $params = [$book_id];
+        $types = "s";
+        $waitlist = Database::search($query, $params, $types);
 
         if ($waitlist->num_rows > 0) {
             $reservation = $waitlist->fetch_assoc();
@@ -268,20 +353,33 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
             $reserved_member_id = $reservation["reservation_member_id"];
 
             //Update reservation status to "reserved" 
-            Database::ud("UPDATE `reservation` 
+            $query = "UPDATE `reservation` 
                       SET `status_id` = 1,`notified_date` = CURDATE(),`expiration_date` = DATE_ADD(CURDATE(), INTERVAL 3 DAY) 
-                      WHERE `reservation_id` = '$reservation_id'");
+                      WHERE `reservation_id` = ?";
+            $params = [$reservation_id];
+            $types = "i";
+            Database::ud($query, $params, $types);
 
             // Get book details
-            $book = Database::search("SELECT `title`,`available_qty` FROM `book` WHERE `book_id` = '$book_id'")->fetch_assoc();
+            $query = "SELECT `title`, `available_qty` FROM `book` WHERE `book_id` = ?";
+            $params = [$book_id];
+            $types = "s";
+            $result = Database::search($query, $params, $types);
+
+            $book = $result->fetch_assoc();
             $title = $book["title"];
             $available_qty = $book["available_qty"];
+
 
             // Send email notification to the reserved member
             self::sendReservationEmail($book_id, $reserved_member_id, $title);
 
             // Reduce the available book quantity as it is now reserved
-            Database::ud("UPDATE `book` SET `available_qty` = $available_qty - 1 WHERE `book_id` = '$book_id'");
+            $query = "UPDATE `book` SET `available_qty` = ? - 1 WHERE `book_id` = ?";
+            $params = [$available_qty, $book_id];
+            $types = "is";
+            Database::ud($query, $params, $types);
+
             return ["success" => true, "message" => "Book status changed to reserved."];
         }
 
@@ -290,20 +388,27 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`");
 
     private static function sendReservationEmail($book_id, $member_id, $title)
     {
-        $member = Database::search("SELECT `fname`,`lname`,`email` FROM `member` WHERE `id` = '$member_id'")->fetch_assoc();
-        $email = $member["email"];
-        $recipientName = $member["fname"] . ' ' . $member["lname"];
+        $query = "SELECT `fname`,`lname`,`email` FROM `member` WHERE `id` = ?";
+        $params = [$member_id];
+        $types = "i";
+        $result = Database::search($query, $params, $types);
+
+        $member = $result->fetch_assoc();
+        $email = filter_var($member["email"], FILTER_SANITIZE_EMAIL);
+
+        // HTML-escape all dynamic content
+        $recipientName = htmlspecialchars($member["fname"] . ' ' . $member["lname"], ENT_QUOTES, 'UTF-8');
+        $bookTitleEscaped = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+        $bookIdEscaped = htmlspecialchars($book_id, ENT_QUOTES, 'UTF-8');
 
         $subject = "Book Reservation Available - Shelf Loom";
 
-        // Create the specific message content for this email type
-        $specificMessage = 'The book you reserved, "' . $title . '" (ID: ' . $book_id . '), is now available for pickup. Please collect it within the next 3 days, or your reservation will expire.';
+        // Construct email message safely
+        $specificMessage = 'The book you reserved, "' . $bookTitleEscaped . '" (ID: ' . $bookIdEscaped . '), is now available for pickup. Please collect it within the next 3 days, or your reservation will expire.';
 
-        // Use the EmailTemplate to get the standardized email body
         $emailTemplate = new EmailTemplate();
         $body = $emailTemplate->getEmailBody($recipientName, $specificMessage);
 
-        // Send the email
         $emailService = new EmailService();
         $emailSent = $emailService->sendEmail($email, $subject, $body);
 

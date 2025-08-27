@@ -6,44 +6,61 @@ class ProfileModel
 {
     public static function updateUserDetails($nic, $fname, $lname, $address, $mobile, $fileName)
     {
-        Database::ud("UPDATE `staff` SET `fname`='$fname',`lname`='$lname',`address`='$address', `mobile`='$mobile', `profile_img`='$fileName' WHERE `nic` = '$nic'");
+        $query = "UPDATE `staff` SET `fname`=?, `lname`=?, `address`=?, `mobile`=?, `profile_img`=? WHERE `nic`=?";
+        $params = [$fname, $lname, $address, $mobile, $fileName, $nic];
+        $types = "ssssss";
+
+        Database::ud($query, $params, $types);
         return true;
     }
 
     public static function updateUserDetailsWithoutImage($nic, $fname, $lname, $address, $mobile)
     {
-        Database::ud("UPDATE `staff` SET `fname`='$fname',`lname`='$lname',`address`='$address', `mobile`='$mobile' WHERE `nic` = '$nic'");
+        $query = "UPDATE `staff` SET `fname`=?, `lname`=?, `address`=?, `mobile`=? WHERE `nic`=?";
+        $params = [$fname, $lname, $address, $mobile, $nic];
+        $types = "sssss";
+
+        Database::ud($query, $params, $types);
         return true;
     }
 
     public static function getUserCurrentProfileImage($nic)
     {
-        $result = Database::search("SELECT `profile_img` FROM `staff` WHERE `nic` = '$nic'");
+        $query = "SELECT `profile_img` FROM `staff` WHERE `nic`=?";
+        $params = [$nic];
+        $types = "s";
+
+        $result = Database::search($query, $params, $types);
         if ($row = $result->fetch_assoc()) {
             return $row['profile_img'];
         }
         return null;
     }
 
-    public static function validateCurrentPassword($staffid ,$password)
+    public static function validateCurrentPassword($staffid, $password)
     {
-        $result = Database::search("SELECT * from `staff_login` WHERE `staff_id`='$staffid'");
+        $query = "SELECT `password` FROM `staff_login` WHERE `staff_id`=?";
+        $params = [$staffid];
+        $types = "s";
+
+        $result = Database::search($query, $params, $types);
 
         if ($result && $result->num_rows > 0) {
             $user = $result->fetch_assoc();
-
-            if (password_verify($password, $user['password'])) {
-                return true;
-            }
+            return password_verify($password, $user['password']);
         }
         return false;
     }
 
-    public static function resetPassword($staffid ,$password)
+    public static function resetPassword($staffid, $password)
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        Database::ud("UPDATE `staff_login` SET `password` = '$hashedPassword' WHERE `staff_id`='$staffid'");
+        $query = "UPDATE `staff_login` SET `password`=? WHERE `staff_id`=?";
+        $params = [$hashedPassword, $staffid];
+        $types = "ss";
+
+        Database::ud($query, $params, $types);
         return true;
     }
 }

@@ -100,27 +100,4 @@ $fine = $libraryData['fine_amount'];
         <?php include "dash_sidepanel.php"; ?>
     </div> -->
 </header>
-<!-- 
-<script>
-    const menuToggle = document.getElementById('menuToggle');
-    const sidePanel = document.getElementById('sidePanel');
-
-    // Open panel
-    menuToggle.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent body click
-        sidePanel.style.transform = 'translateX(0)';
-        document.body.classList.add('panel-open'); // Add class to prevent closing
-    });
-
-  
-
-    // Close when clicking outside the sidePanel
-    document.addEventListener('click', function(e) {
-        const isClickInside = sidePanel.contains(e.target) || menuToggle.contains(e.target);
-        if (!isClickInside) {
-            sidePanel.style.transform = 'translateX(-100%)';
-            document.body.classList.remove('panel-open');
-        }
-    });
-</script> -->
 

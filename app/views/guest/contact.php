@@ -69,7 +69,7 @@ require_once Config::getViewPath("common", "head.php");
 
                             <div class="mb-3">
                                 <label for="name" class="form-label">Full Name</label>
-                                <input type="text" class="form-control bg-transparent text-white border-secondary" id="name" placeholder="Enter your full name">
+                                <input type="text" class="form-control bg-transparent border-secondary" id="name" placeholder="Enter your full name">
                                 <p class="text-danger small mt-1" id="nameerror"></p>
                             </div>
 

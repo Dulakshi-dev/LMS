@@ -214,4 +214,4 @@ $action = $_GET['action'] ?? 'login';
 
 // Dispatch the appropriate action
 $router->dispatch($action);
-?>
+

@@ -2,6 +2,10 @@
 
 require_once config::getdbPath();
 
+/**
+ * NotificationModel
+ * Handles member notifications.
+ */
 class NotificationModel
 {
     public static function insertNotification($email, $msg)

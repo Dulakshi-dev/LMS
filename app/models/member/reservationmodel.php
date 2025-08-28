@@ -213,7 +213,10 @@ class ReservationModel
             error_log("Failed to send notification to: $safeName");
         }
     }
-
+    /**
+     * cancelReservation
+     * Cancels a reservation and restores book quantity if active.
+     */
 
     public static function cancelReservation($id)
     {

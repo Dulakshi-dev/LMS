@@ -1,9 +1,22 @@
 <?php
 
 require_once config::getdbPath();
-
+ /**
+ * ProfileModel
+ * Handles staff profile updates, password validation, and profile image management.
+ */
 class ProfileModel
-{
+{    /**
+     * Update user details including profile image.
+     *
+     * @param string $nic
+     * @param string $fname
+     * @param string $lname
+     * @param string $address
+     * @param string $mobile
+     * @param string $fileName
+     * @return bool
+     */
     public static function updateUserDetails($nic, $fname, $lname, $address, $mobile, $fileName)
     {
         $query = "UPDATE `staff` SET `fname`=?, `lname`=?, `address`=?, `mobile`=?, `profile_img`=? WHERE `nic`=?";
@@ -13,6 +26,16 @@ class ProfileModel
         Database::ud($query, $params, $types);
         return true;
     }
+        /**
+     * Update user details without changing profile image.
+     *
+     * @param string $nic
+     * @param string $fname
+     * @param string $lname
+     * @param string $address
+     * @param string $mobile
+     * @return bool
+     */
 
     public static function updateUserDetailsWithoutImage($nic, $fname, $lname, $address, $mobile)
     {
@@ -24,6 +47,12 @@ class ProfileModel
         return true;
     }
 
+        /**
+     * Get the current profile image of the user.
+     *
+     * @param string $nic
+     * @return string|null
+     */
     public static function getUserCurrentProfileImage($nic)
     {
         $query = "SELECT `profile_img` FROM `staff` WHERE `nic`=?";
@@ -51,7 +80,13 @@ class ProfileModel
         }
         return false;
     }
-
+    /**
+     * Reset the password for a staff member.
+     *
+     * @param string $staffId
+     * @param string $password
+     * @return bool
+     */
     public static function resetPassword($staffid, $password)
     {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);

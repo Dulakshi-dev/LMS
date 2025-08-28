@@ -2,9 +2,16 @@
 
 require_once config::getdbPath();
 require_once config::getControllerPath('staff', 'notificationController.php');
+/**
+ * CirculationModel
+ * Handles operations related to circulation of books, including reminders for due books.
+ */
 
 class CirculationModel
-{
+{   /**
+ * CirculationModel
+ * Handles operations related to circulation of books, including reminders for due books.
+ */
 
     public static function getBooksAboutToDue()
     {
@@ -41,6 +48,15 @@ class CirculationModel
     }
 
 
+        /**
+     * sendDueBookReminder
+     * Sends an email reminder and notification for a borrowed book about to be due.
+     * @param string $email Member's email
+     * @param string $name Member's name
+     * @param string $title Book title
+     * @param string $dueDate Due date of the book
+     * @param string $bookid Book ID
+     */
     public static function sendDueBookReminder($email, $name, $title, $dueDate, $bookid)
     {
         require_once Config::getServicePath('emailService.php');

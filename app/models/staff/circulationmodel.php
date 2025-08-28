@@ -4,6 +4,10 @@ require_once config::getdbPath();
 require_once Config::getServicePath('emailService.php');
 require_once Config::getMailPath('emailTemplate.php');
 
+/**
+ * CirculationModel
+ * Handles borrowing, returning, fines, and reservations.
+ */
 class CirculationModel
 {
 
@@ -385,7 +389,9 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`";
 
         return ["success" => false, "message" => "No waitlisted reservations found."];
     }
-
+  /**
+     * Send reservation email.
+     */
     private static function sendReservationEmail($book_id, $member_id, $title)
     {
         $query = "SELECT `fname`,`lname`,`email` FROM `member` WHERE `id` = ?";

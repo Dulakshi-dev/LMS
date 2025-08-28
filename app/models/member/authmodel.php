@@ -2,6 +2,11 @@
 
 require_once config::getdbPath();
 
+/**
+ * AuthModel
+ * Handles all authentication-related database operations for members.
+ */
+
 class AuthModel
 {
     private $db;
@@ -28,6 +33,13 @@ class AuthModel
         return false;
     }
 
+        /**
+     * getUserByRememberToken
+     * Retrieves user by a "remember me" token.
+     * @param string $token Hashed token
+     * @return array|false User data if token matches, false otherwise
+     */
+
     public function getUserByRememberToken($token)
     {
         $query = "SELECT * FROM `member`JOIN `member_login` ON `member`.`id` = `member_login`.`memberId`
@@ -44,6 +56,13 @@ class AuthModel
         }
         return false;
     }
+
+        /**
+     * storeRememberToken
+     * Stores a hashed "remember me" token for a member.
+     * @param string $memberid Member ID
+     * @param string $hashedToken Hashed token
+     */
 
     public function storeRememberToken($memberid, $hashedToken)
     {
@@ -77,6 +96,12 @@ class AuthModel
         $id = Database::insert($query, $params, $types);
         return $id;
     }
+
+        /**
+     * verifyEmail
+     * Updates verification code for a member's email if exists.
+     * @return bool True if successful, false if email not found
+     */
 
     public static function verifyEmail($email, $vcode)
     {
@@ -128,6 +153,11 @@ class AuthModel
         }
     }
 
+    /**
+     * changePasswordwithvcode
+     * Updates member password using a verification code.
+     * @return bool True if successful, false otherwise
+     */
 
     public static function changePasswordwithvcode($password, $vcode)
     {
@@ -159,6 +189,12 @@ class AuthModel
             return false;
         }
     }
+    
+    /**
+     * changePasswordwithid
+     * Updates member password using their member ID.
+     * @return bool True if successful, false otherwise
+     */
 
     public static function changePasswordwithid($password, $id)
     {

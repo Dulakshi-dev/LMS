@@ -4,6 +4,10 @@ require_once config::getdbPath();
 require_once Config::getServicePath('emailService.php');
 require_once Config::getMailPath("emailTemplate.php");
 
+/**
+ * MemberModel
+ * Handles member management: listing, searching, approval, and emails.
+ */
 class MemberModel
 {
 

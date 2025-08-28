@@ -2,6 +2,10 @@
 
 require_once config::getdbPath();
 
+/**
+ * AuthModel
+ * Handles staff authentication, registration, password management, and role/module access.
+ */
 class AuthModel
 {
 
@@ -11,7 +15,12 @@ class AuthModel
     {
         $this->db = new Database();
     }
-
+ 
+    
+    /**
+     * validateLogin
+     * Validates staff login credentials.
+     */
 
     public static function validateLogin($staffid, $password)
     {
@@ -144,6 +153,10 @@ class AuthModel
         }
     }
 
+       /**
+     * register
+     * Registers a new staff member after validating key.
+     */
     public static function register($fname, $lname, $address, $phone, $email, $nic, $role_id, $password, $key)
     {
         $keyValidation = self::validateKey($email, $key, $role_id);

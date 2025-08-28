@@ -1,5 +1,5 @@
 <?php
- 
+
 
 // Session Timeout (30 minutes)
 if (isset($_SESSION['staff']['last_activity']) && (time() - $_SESSION['staff']['last_activity'] > 1800)) {
@@ -53,30 +53,34 @@ require_once Config::getViewPath("common", "head.php");
                 <div class="row d-flex justify-content-center">
                     <?php
                     $items = [
-                        ['id' => 'books', 'label' => 'Books', 'icon' => 'fa-book-open'],
-                        ['id' => 'members', 'label' => 'Members', 'icon' => 'fa-users'],
-                        ['id' => 'issuedBooks', 'label' => 'Issued Books', 'icon' => 'fa-share-square'],
-                        ['id' => 'reservations', 'label' => 'Reservations', 'icon' => 'fa-calendar-check'],
-                        ['id' => 'totalfines', 'label' => 'Fines (Rs.)', 'icon' => 'fa-coins'],
+                        ['id' => 'books', 'label' => 'Books', 'icon' => 'fa-book-open', 'link' => 'viewBooks'],
+                        ['id' => 'members', 'label' => 'Members', 'icon' => 'fa-users', 'link' => 'viewmembers'],
+                        ['id' => 'issuedBooks', 'label' => 'Issued Books', 'icon' => 'fa-share-square', 'link' => 'viewissuebooks'],
+                        ['id' => 'reservations', 'label' => 'Reservations', 'icon' => 'fa-calendar-check', 'link' => 'viewreservations'],
+                        ['id' => 'totalfines', 'label' => 'Fines (Rs.)', 'icon' => 'fa-coins', 'link' => 'paymentmanagement'],
                     ];
 
                     foreach ($items as $item) {
+                        $url = Config::indexPath() . '?action=' . $item['link'];
                         echo <<<HTML
-                        <div class="col-lg-2 col-md-6">
-                            <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
-                                <div class="ms-4">
-                                    <h1 class="text-info" id="{$item['id']}"></h1>
-                                    <p class="text-info">{$item['label']}</p>
+                                <div class="col-lg-2 col-md-6">
+                                    <a href="{$url}" class="text-decoration-none">
+                                        <div class="d-flex justify-content-between m-1 p-2 box-1 rounded">
+                                            <div class="ms-4">
+                                                <h1 class="text-info" id="{$item['id']}"></h1>
+                                                <p class="text-info">{$item['label']}</p>
+                                            </div>
+                                            <div>
+                                                <i class="fa {$item['icon']} text-info" style="font-size: 30px;"></i>
+                                            </div>
+                                        </div>
+                                    </a>
                                 </div>
-                                <div>
-                                    <i class="fa {$item['icon']} text-info" style="font-size: 30px;"></i>
-                                </div>
-                            </div>
-                        </div>
-                        HTML;
+                                HTML;
                     }
                     ?>
                 </div>
+
 
                 <!-- Charts Section 1 -->
                 <div class="row gap-5 my-3 p-2 align-items-center justify-content-center">

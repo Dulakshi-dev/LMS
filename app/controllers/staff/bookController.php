@@ -151,47 +151,47 @@ class BookController extends Controller
         }
     }
 
-public function addBookData()
-{
-    if ($this->isPost()) {
-        $isbn = $this->getPost('isbn');
-        $author = $this->getPost('author');
-        $title = $this->getPost('title');
-        $category = (int) $this->getPost('category');
-        $language = (int) $this->getPost('language');
-        $pub = $this->getPost('pub');
-        $qty = $this->getPost('qty');
-        $des = $this->getPost('des');
-        $fileName = ''; // Default file name
+    public function addBookData()
+    {
+        if ($this->isPost()) {
+            $isbn = trim($this->getPost('isbn'));
+            $author = trim($this->getPost('author'));
+            $title = trim($this->getPost('title'));
+            $category = (int) $this->getPost('category');
+            $language = (int) $this->getPost('language');
+            $pub = trim($this->getPost('pub'));
+            $qty = $this->getPost('qty');
+            $des = trim($this->getPost('des'));
 
-        // Check for existing ISBN
-        if (BookModel::isbnExists($isbn)) {
-            Logger::warning("Duplicate ISBN attempted", ['isbn' => $isbn]);
-            $this->jsonResponse(["message" => "This ISBN already exists."], false);
-            return;
-        }
+            Logger::info("Checking ISBN", ['isbn' => $isbn]);
 
-        $receipt = $_FILES['coverpage'];
-        $targetDir = Config::getBookCoverPath();
-        $fileName = uniqid() . "_" . basename($receipt["name"]);
-        $targetFilePath = $targetDir . $fileName;
+            if (BookModel::isbnExists($isbn)) {
+                Logger::warning("Duplicate ISBN attempted", ['isbn' => $isbn]);
+                $this->jsonResponse(["message" => "This ISBN already exists."], false);
+                return;
+            }
 
-        move_uploaded_file($receipt["tmp_name"], $targetFilePath);
+            $receipt = $_FILES['coverpage'];
+            $targetDir = Config::getBookCoverPath();
+            $fileName = uniqid() . "_" . basename($receipt["name"]);
+            $targetFilePath = $targetDir . $fileName;
 
-        $result = BookModel::addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $fileName);
+            move_uploaded_file($receipt["tmp_name"], $targetFilePath);
 
-        if ($result) {
-            Logger::info("Book added successfully", ['title' => $title, 'isbn' => $isbn]);
-            $this->jsonResponse(["message" => "Book added successfully."]);
+            $result = BookModel::addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $fileName);
+
+            if ($result) {
+                Logger::info("Book added successfully", ['title' => $title, 'isbn' => $isbn]);
+                $this->jsonResponse(["message" => "Book added successfully."]);
+            } else {
+                Logger::error("Failed to add book", ['isbn' => $isbn]);
+                $this->jsonResponse(["message" => "Failed to add book."], false);
+            }
         } else {
-            Logger::error("Failed to add book", ['isbn' => $isbn]);
-            $this->jsonResponse(["message" => "Failed to add book."], false);
+            Logger::warning("addBookData called with invalid method");
+            $this->jsonResponse(["message" => "Invalid Request."], false);
         }
-    } else {
-        Logger::warning("addBookData called with invalid method");
-        $this->jsonResponse(["message" => "Invalid Request."], false);
     }
-}
 
 
     public function addCategory()

@@ -322,7 +322,6 @@ function activateBook(book_id) {
 }
 
 function deleteCategory(category_id) {
-    alert(category_id);
     var formData = new FormData();
     formData.append("category_id", category_id);
 
@@ -499,8 +498,8 @@ function updateBookDetails() {
     var isbn = document.getElementById("isbn_no").value;
     var title = document.getElementById("title").value;
     var author = document.getElementById("author").value;
-    var category = document.getElementById("category").value;
-    var language = document.getElementById("language").value;
+    var category = document.getElementById("category2").value;
+    var language = document.getElementById("language2").value;
     var pubYear = document.getElementById("pub_year").value;
     var quantity = document.getElementById("qty").value;
     var description = document.getElementById("des").value;

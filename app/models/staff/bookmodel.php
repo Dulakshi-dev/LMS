@@ -251,14 +251,15 @@ class BookModel
 
     public static function isbnExists($isbn)
     {
-
         $query = "SELECT * FROM `book` WHERE `isbn` = ?";
         $params = [$isbn];
         $types = "s";
         $result = Database::search($query, $params, $types);
 
-        return $result !== null;
+        // Check if there are any rows
+        return $result->num_rows > 0;
     }
+
 
 
     public static function addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $coverpage)

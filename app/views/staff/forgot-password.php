@@ -8,31 +8,26 @@ $pageCss = "forgot-password.css";
 require_once Config::getViewPath("common", "head.php");
 ?>
 
-<body>
-    <?php
-    require_once Config::getViewPath("guest", "header.view.php");
-    ?>
+<body class="d-flex flex-column min-vh-100">
 
-    <div class="container">
-        <div class="row p-2 pt-md-5 mt-4 d-flex align-items-center justify-content-center">
-            <div class="col-12 col-md-8 col-lg-4 text-white login-form ">
-                <h1 class="text-center pb-3">Forgot Pasword</h1>
-                <span class="bg-danger text-dark text-center" id="doesnt"></span>
+    <?php require_once Config::getViewPath("guest", "header.view.php"); ?>
 
-                <label for="email">Enter your Email Address</label>
-                <input class="form-control mt-3" placeholder="Enter your Email" type="email" name="email" id="email">
-                <div id="responseMessage"></div>
+    <main class="flex-fill container-fluid d-flex justify-content-center align-items-center">
+        <div class="col-12 col-md-6 col-lg-4 text-white login-form p-4 rounded shadow">
+            <h1 class="text-center mb-4">Forgot Password</h1>
 
-                <button class="btn btn-primary mt-4 w-100 rounded-pill" id="btn" onclick="forgotpw();">
-                    <span id="btnText">Continue</span>
-                    <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
-                </button>
+            <label for="email" class="form-label my-3">Enter your Email Address</label>
+            <input class="form-control mb-3" placeholder="Enter your Email" type="email" name="email" id="email">
+            <div class="text-danger mb-3" id="responseMessage"></div>
 
-            </div>
+            <button class="btn btn-primary w-100 my-4" id="btn" onclick="forgotpw();">
+                <span id="btnText">Continue</span>
+                <span class="spinner-border spinner-border-sm d-none" id="spinner" role="status"></span>
+            </button>
         </div>
-    </div>
-    <?php require_once Config::getViewPath("staff", "footer.php"); ?>
-    
+    </main>
+
+    <?php require_once Config::getViewPath("common", "footer.php"); ?>
 
     <script src="<?php echo Config::getJsPath("staffLogin.js"); ?>"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

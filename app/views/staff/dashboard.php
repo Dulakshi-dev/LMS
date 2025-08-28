@@ -46,7 +46,6 @@ require_once Config::getViewPath("common", "head.php");
         <div class="bg-white flex-grow-1">
             <nav class="navbar p-4 navbar-light bg-light">
                 <span class="navbar-brand mb-0 h1">Dashboard</span>
-                <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
             </nav>
 
             <div class="mt-3 p-3">

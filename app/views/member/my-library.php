@@ -83,26 +83,6 @@ require_once Config::getViewPath("common","head.php");
     <script src="<?php echo Config::getJsPath("myLibrary.js"); ?>"></script>
     <script src="<?php echo Config::getJsPath("pagination.js"); ?>"></script>
 
-
-    <!-- <script>
-        function showReserve2() {
-            document.getElementById("reserve1").classList.add("d-none");
-            document.getElementById("reserve2").classList.remove("d-none");
-        }
-
-        // Star rating functionality
-        document.querySelectorAll('.fa-star').forEach(star => {
-            star.addEventListener('click', function() {
-                const value = this.getAttribute('data-value');
-                document.querySelectorAll('.fa-star').forEach(s => {
-                    s.classList.remove('text-warning');
-                    if (s.getAttribute('data-value') <= value) {
-                        s.classList.add('text-warning');
-                    }
-                });
-            });
-        });
-    </script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

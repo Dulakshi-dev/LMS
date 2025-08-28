@@ -50,10 +50,6 @@ require_once Config::getViewPath("common", "head.php");
                             <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generatePaymentReport();">
                                 <i class="fa fa-print"></i> Generate Report
                             </button>
-
-                            <a href="#" class="text-decoration-none h5">
-                                <i class="fa fa-home"></i>
-                            </a>
                         </div>
                     </div>
                 </nav>

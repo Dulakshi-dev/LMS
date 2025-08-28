@@ -134,7 +134,7 @@ function startOTPTimer(duration) {
 
     let timeLeft = duration;
 
-    // Disable OTP input initially
+    // Enable OTP inputs initially
     otpInputs.forEach(input => input.disabled = false);
     resendLink.style.pointerEvents = "none"; // Disable resend link
 
@@ -142,11 +142,13 @@ function startOTPTimer(duration) {
         let minutes = Math.floor(timeLeft / 60);
         let seconds = timeLeft % 60;
 
-        // Format seconds to always show two digits
-        timerDisplay.innerText = `${minutes}m : ${seconds < 10 ? "0" : ""}${seconds}s`;
-
-        if (timeLeft <= 0) {
+        if (timeLeft > 0) {
+            // Show countdown
+            timerDisplay.innerText = `${minutes}m : ${seconds < 10 ? "0" : ""}${seconds}s`;
+        } else {
             clearInterval(countdown);
+
+            // Replace with "OTP expired"
             timerDisplay.innerText = "OTP expired";
 
             // Disable OTP input fields
@@ -154,11 +156,12 @@ function startOTPTimer(duration) {
 
             // Enable resend OTP link
             resendLink.style.pointerEvents = "auto";
-            resendLink.style.color = " #27ee55";
+            resendLink.style.color = "#27ee55";
         }
         timeLeft--;
     }, 1000);
 }
+
 
 function resendOTP() {
     let resendLink = document.getElementById("resend-link");

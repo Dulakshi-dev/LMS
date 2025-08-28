@@ -16,7 +16,6 @@ require_once Config::getControllerPath("staff","paymentController.php");
 require_once Config::getControllerPath("staff","notificationController.php");
 require_once Config::getControllerPath("staff","reportController.php");
 
-
 // Initialize the Router
 $router = new Router();
 

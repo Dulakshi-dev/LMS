@@ -129,7 +129,7 @@ require_once Config::getViewPath("common", "head.php");
                     <input type="text" class="d-none" id="name" name="name">
                     <input type="text" class="d-none" id="title" name="title">
                     <input type="text" class="d-none" id="email" name="email">
-
+                    <p id="finerate" name="finerate" class="d-none"><?= $fine ?></p>
 
                     <div class="mb-3 row align-items-center">
                         <label for="dueDate" class="col-sm-4 col-form-label">Due Date</label>
@@ -142,7 +142,7 @@ require_once Config::getViewPath("common", "head.php");
                     <div class="mb-3 row align-items-center">
                         <label for="returnDate" class="col-sm-4 col-form-label">Return Date</label>
                         <div class="col-sm-8">
-                            <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Enter return date" onchange="generateFine(<?= $fine ?>);">
+                            <input type="date" class="form-control" id="returnDate" name="returnDate" placeholder="Enter return date" onchange="generateFineFromDOM();">
                         </div>
                         <span id="returndateerror" class="text-danger"></span>
 

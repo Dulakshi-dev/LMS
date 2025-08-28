@@ -135,7 +135,7 @@ require_once Config::getViewPath("common","head.php");
                         <div class="row">
                             <div class="col-lg-6 col-sm-12 mb-3">
                                 <label for="isbn" class="form-label">ISBN</label>
-                                <input id="isbn_no" class="form-control" type="text" placeholder="Enter ISBN" />
+                                <input id="isbn_no" class="form-control" type="text" disabled/>
                                 <span id="isbn_error" class="text-danger"></span> <!-- Error message span -->
                             </div>
                             <div class="col-lg-6 col-sm-12 mb-3">

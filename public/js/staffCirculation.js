@@ -35,7 +35,7 @@ function loadIssuedBooks(page = 1) {
 
                     if (issuebook.return_date) {
                         returnOrDueDate = `<span class="text-success">Return: ${issuebook.return_date}</span>`;
-                        fines = issuebook.amount;
+                        fines = issuebook.amount ? parseFloat(issuebook.amount).toFixed(2) : "0.00";
                     } else {
                         let dueDate = new Date(issuebook.due_date);
                         let today = new Date();
@@ -110,6 +110,8 @@ document.addEventListener("DOMContentLoaded", function () {
             returnButtonClick(button);
         }
     });
+
+
 });
 
 
@@ -117,15 +119,15 @@ function returnButtonClick(button) {
     const dueDate = button.getAttribute("data-due-date");
     const borrow_id = button.getAttribute("data-borrow-id");
     const book_id = button.getAttribute("data-book-id");
-    const memberId = button.getAttribute("data-member-id"); 
-    const memberName = button.getAttribute("data-member-name"); 
-    const bookTitle = button.getAttribute("data-book-title"); 
-    const email = button.getAttribute("data-book-email"); 
-
+    const memberId = button.getAttribute("data-member-id");
+    const memberName = button.getAttribute("data-member-name");
+    const bookTitle = button.getAttribute("data-book-title");
+    const email = button.getAttribute("data-book-email");
 
     let updateModal = new bootstrap.Modal(document.getElementById("borrowBookAction"));
     updateModal.show();
 
+    // fill form values
     document.getElementById("dueDate").value = dueDate;
     document.getElementById("borrowId").value = borrow_id;
     document.getElementById("bookId").value = book_id;
@@ -134,7 +136,10 @@ function returnButtonClick(button) {
     document.getElementById("title").value = bookTitle;
     document.getElementById("email").value = email;
 
+    let today = new Date().toISOString().split("T")[0]; // yyyy-mm-dd
+    document.getElementById("returnDate").value = today;
 
+    generateFineFromDOM();
 }
 
 
@@ -304,30 +309,31 @@ function issueBook() {
 }
 
 
-function generateFine(finePerDay) {
-
+function generateFineFromDOM() {
     var dueDate = document.getElementById("dueDate").value;
     var returnDate = document.getElementById("returnDate").value;
+
+    let fineRate = parseFloat(document.getElementById("finerate").innerText.trim()) || 0;
+
+    if (!dueDate || !returnDate) {
+        document.getElementById("fines").value = 0;
+        return 0;
+    }
 
     let due = new Date(dueDate);
     let returned = new Date(returnDate);
 
-    // Calculate difference in days
+    // difference in days
     let timeDiff = returned - due;
-    let daysLate = Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+    let daysLate = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
 
-    let fine = Math.max(daysLate * finePerDay, 0);
+    let fine = Math.max(daysLate * fineRate, 0);
 
-    // Show alert based on fine amount
-    if (fine > 0) {
-        document.getElementById("fines").value = fine;
-    } else {
-        document.getElementById("fines").value = 0;
-    }
+    document.getElementById("fines").value = fine;
 
     return fine;
-
 }
+
 
 function returnBook() {
     const button = document.getElementById("btn");
@@ -367,7 +373,7 @@ function returnBook() {
                     location.reload();
                 });
             } else {
-                showAlert("Error", resp.message, "error").then(()=>{
+                showAlert("Error", resp.message, "error").then(() => {
                     resetButtonUI(button, btnText, spinner);
 
                 })

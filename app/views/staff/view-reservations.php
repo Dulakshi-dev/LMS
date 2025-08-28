@@ -43,7 +43,7 @@ require_once Config::getViewPath("common","head.php");
             <div class="row">
                 <nav class="navbar p-md-4 navbar-light bg-light w-100">
                     <div class="d-flex align-items-center w-100 justify-content-between">
-                        <span class="mb-0 h5">Issued Books</span>
+                        <span class="mb-0 h5">Reserved Books</span>
 
                         <div class="d-flex align-items-center">
                             <button id="generateReport" class="btn btn-outline-dark me-3" onclick="generateReservedBookReport();">

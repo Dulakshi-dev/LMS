@@ -1,22 +1,27 @@
 <?php
 
+// Include the main configuration and base setup
 require_once __DIR__ . '/../../../main.php';
 
+// This controller handles settings related to the library (hours, info, news, emails, logo, etc.)
 class LibrarySetupController extends Controller
 {
     private $librarySetupModel;
 
     public function __construct()
     {
+        // Load the LibrarySetupModel file (staff side)
         require_once Config::getModelPath('staff', 'librarysetupmodel.php');
         $this->librarySetupModel = new LibrarySetupModel();
     }
 
+    // Change library opening hours (weekday, weekend, holiday)
     public function changeOpeningHours()
     {
         if ($this->isPost()) {
             Logger::info("Request to change opening hours received.");
 
+            // Get opening hours from POST request
             $weekdaysfrom = $this->getPost('weekdayfrom');
             $weekdaysto = $this->getPost('weekdayto');
             $weekendsfrom = $this->getPost('weekendfrom');
@@ -24,8 +29,10 @@ class LibrarySetupController extends Controller
             $holidaysfrom = $this->getPost('holidayfrom');
             $holidaysto = $this->getPost('holidayto');
 
+            // Update opening hours in database
             $result = LibrarySetupModel::changeOpeningHours($weekdaysfrom, $weekdaysto, $weekendsfrom, $weekendsto, $holidaysfrom, $holidaysto);
 
+            // Log result and send response
             if ($result) {
                 Logger::info("Opening hours changed successfully.");
             } else {
@@ -36,21 +43,24 @@ class LibrarySetupController extends Controller
         }
     }
 
+    // Change news updates on the system (with image upload)
     public function changeNewsUpdates()
     {
         if ($this->isPost()) {
             Logger::info("Request to change news updates received.");
 
-            $boxSelection = $this->getPost('boxSelection');
+            // Collect data from request
+            $boxSelection = $this->getPost('boxSelection'); // which box (1,2,3)
             $title = $this->getPost('title');
             $date = $this->getPost('date');
             $description = $this->getPost('description');
-            $receipt = $_FILES['image'];
+            $receipt = $_FILES['image']; // uploaded image file
             $targetDir = Config::getNewsImagePath(); 
 
             $boxId = 0;
             $fileName = '';
 
+            // Decide which box is being updated and prepare filename
             if ($boxSelection === 'box1') {
                 $boxId = 1;
                 $fileName = "box1." . pathinfo($receipt["name"], PATHINFO_EXTENSION);
@@ -64,14 +74,17 @@ class LibrarySetupController extends Controller
 
             $targetFilePath = $targetDir . $fileName;
 
+            // If old image exists, delete it first
             if (file_exists($targetFilePath)) {
                 unlink($targetFilePath);
                 Logger::info("Deleted existing news image: $fileName");
             }
 
+            // Save new image to target location
             if (move_uploaded_file($receipt["tmp_name"], $targetFilePath)) {
                 Logger::info("Uploaded new news image: $fileName");
 
+                // Save news update details into database
                 $result = LibrarySetupModel::changeNewsUpdates($boxId, $title, $date, $description, $fileName);
 
                 if ($result) {
@@ -82,17 +95,20 @@ class LibrarySetupController extends Controller
 
                 $this->jsonResponse(["message" => $result ? "News Updated" : "Failed to update news"], $result);
             } else {
+                // Image upload failed
                 Logger::error("Failed to upload news image.");
                 $this->jsonResponse(["message" => "Image upload failed"], false);
             }
         }
     }
 
+    // Change general library information (name, address, email, phone, fee, fine, logo)
     public function changeLibraryInfo()
     {
         if ($this->isPost()) {
             Logger::info("Request to change library information received.");
 
+            // Get details from POST request
             $name = $this->getPost('name');
             $address = $this->getPost('address');
             $email = $this->getPost('email');
@@ -103,17 +119,20 @@ class LibrarySetupController extends Controller
 
             $targetDir = Config::getLogoPath();
 
+            // If new logo uploaded, replace old logo
             if (!empty($_FILES['logo']['name'])) {
                 $logo = $_FILES['logo'];
                 $fileExtension = pathinfo($logo["name"], PATHINFO_EXTENSION);
                 $fileName = "logo." . $fileExtension;
                 $targetFilePath = $targetDir . $fileName;
 
+                // Delete existing logo file if any
                 foreach (glob($targetDir . "logo.*") as $existingFile) {
                     unlink($existingFile);
                     Logger::info("Deleted existing logo file: " . basename($existingFile));
                 }
 
+                // Save new logo
                 if (!move_uploaded_file($logo["tmp_name"], $targetFilePath)) {
                     Logger::error("Failed to upload new logo.");
                     $this->jsonResponse(["message" => "Failed to upload new logo."], false);
@@ -121,10 +140,12 @@ class LibrarySetupController extends Controller
                 }
                 Logger::info("New logo uploaded: $fileName");
             } else {
+                // No new logo, keep existing one
                 $fileName = $this->getPost('currentLogo');
                 Logger::info("No new logo uploaded, keeping existing logo: $fileName");
             }
 
+            // Update library info in database
             $result = LibrarySetupModel::changeLibraryInfo($name, $address, $email, $phone, $fee, $fileName, $fine);
 
             if ($result) {
@@ -137,14 +158,17 @@ class LibrarySetupController extends Controller
         }
     }
 
+    // Send email messages to all staff members
     public function sendMailsToAllStaff()
     {
         if ($this->isPost()) {
             Logger::info("Request to send emails to all staff.");
 
+            // Get email subject and message
             $subject = $this->getPost('subject');
             $specificMessage = $this->getPost('message');
 
+            // Get all active staff members from database
             $result = LibrarySetupModel::getAllActiveStaff();
 
             if ($result) {
@@ -153,6 +177,7 @@ class LibrarySetupController extends Controller
 
                 $failures = 0;
 
+                // Send email to each staff member
                 while ($row = $result->fetch_assoc()) {
                     $email = $row['email'];
                     $body = $emailTemplate->getEmailBody("Staff Member", $specificMessage);
@@ -165,6 +190,7 @@ class LibrarySetupController extends Controller
                     }
                 }
 
+                // Check if all emails sent successfully
                 if ($failures === 0) {
                     Logger::info("All staff emails sent successfully.");
                     $this->jsonResponse(["message" => "Emails sent successfully to all staff members."], true);
@@ -182,14 +208,17 @@ class LibrarySetupController extends Controller
         }
     }
 
+    // Send email messages to all members
     public function sendMailsToAllMembers()
     {
         if ($this->isPost()) {
             Logger::info("Request to send emails to all members.");
 
+            // Get email subject and message
             $subject = $this->getPost('subject');
             $specificMessage = $this->getPost('message');
 
+            // Get all active members from database
             $result = LibrarySetupModel::getAllActiveMembers();
 
             if ($result) {
@@ -198,6 +227,7 @@ class LibrarySetupController extends Controller
 
                 $failures = 0;
 
+                // Send email to each member
                 while ($row = $result->fetch_assoc()) {
                     $email = $row['email'];
                     $body = $emailTemplate->getEmailBody("Member", $specificMessage);
@@ -210,6 +240,7 @@ class LibrarySetupController extends Controller
                     }
                 }
 
+                // Check if all emails sent successfully
                 if ($failures === 0) {
                     Logger::info("All member emails sent successfully.");
                     $this->jsonResponse(["message" => "Emails sent successfully to all members."], true);
@@ -227,6 +258,7 @@ class LibrarySetupController extends Controller
         }
     }
 
+    // Load opening hours from database
     public function loadOpeningHours()
     {
         if ($this->isPost()) {
@@ -244,6 +276,7 @@ class LibrarySetupController extends Controller
         }
     }
 
+    // Load library information from database
     public function getLibraryInfo()
     {
         if ($this->isPost()) {
@@ -261,12 +294,14 @@ class LibrarySetupController extends Controller
         }
     }
 
+    // Serve (display) the library logo image when requested
     public function serveLogo()
     {
-        $imageName = $this->getGet('image', '');
-        $basePath = Config::getLogoPath();
+        $imageName = $this->getGet('image', ''); // get image name from request
+        $basePath = Config::getLogoPath(); // path where logos are stored
         $filePath = realpath($basePath . basename($imageName));
 
+        // Check if image exists inside logo directory
         if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
             Logger::info("Serving logo image: $imageName");
             header('Content-Type: ' . mime_content_type($filePath));
@@ -274,6 +309,7 @@ class LibrarySetupController extends Controller
             exit;
         }
 
+        // If image not found, return 404
         Logger::error("Logo image not found: $imageName");
         http_response_code(404);
         echo "Image not found.";

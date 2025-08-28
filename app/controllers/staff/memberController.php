@@ -3,6 +3,9 @@
 require_once __DIR__ . '/../../../main.php';
 require_once Config::getControllerPath('staff','notificationController.php');
 
+// This controller handles all member-related actions
+// like approving, rejecting, activating, deactivating,
+// updating details, sending emails, etc.
 class MemberController extends Controller
 {
     private $memberModel;
@@ -13,7 +16,8 @@ class MemberController extends Controller
         $this->memberModel = new MemberModel();
     }
 
-    public function getAllMembers()
+
+    public function getAllMembers() // Default number of results per page
     {
         $resultsPerPage = 10;
         if ($this->isPost()) {
@@ -45,7 +49,7 @@ class MemberController extends Controller
         }
     }
 
-    public function getMemberRequests()
+    public function getMemberRequests() // Similar logic but for membership requests
     {
         $resultsPerPage = 10;
         if ($this->isPost()) {
@@ -78,12 +82,12 @@ class MemberController extends Controller
 
     public function approveMembership()
     {
-        if ($this->isPost()) {
+        if ($this->isPost()) { // Approve a new member's request
             $id = $this->getPost('id');
             $name = $this->getPost('name');
             $email = $this->getPost('email');
 
-            $memberID = MemberModel::generateMemberID();
+            $memberID = MemberModel::generateMemberID();  // Generate member ID and password
             $password = MemberModel::generatePassword();
             $result = MemberModel::approveMembership($id, $memberID, $password);
 
@@ -101,7 +105,7 @@ class MemberController extends Controller
         }
     }
 
-    public function sendRequestApprovedEmail($id, $name, $email, $memberID, $password)
+    public function sendRequestApprovedEmail($id, $name, $email, $memberID, $password) // Send approval email with credentials and reset password link
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -134,7 +138,7 @@ class MemberController extends Controller
         $notification = $notificationController->insertNotification($email, "Welcome to our Library Management System");
     }
 
-    public function deactivateMember()
+    public function deactivateMember()   // Deactivate an existing member
     {
         if ($this->isPost()) {
             $id = $this->getPost('id');
@@ -157,7 +161,7 @@ class MemberController extends Controller
         }
     }
 
-    public function sendDeactivateMemberEmail($name, $email)
+    public function sendDeactivateMemberEmail($name, $email) // Send email to user after deactivation
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -178,7 +182,7 @@ class MemberController extends Controller
         }
     }
 
-    public function rejectMember()
+    public function rejectMember() // Reject a membership request
     {
         if ($this->isPost()) {
             $id = $this->getPost('id');
@@ -201,7 +205,7 @@ class MemberController extends Controller
         }
     }
 
-    public function sendRejectMemberEmail($name, $email)
+    public function sendRejectMemberEmail($name, $email)  // Send rejection email to member
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -224,7 +228,7 @@ class MemberController extends Controller
 
     public function loadMemberDetails()
     {
-        if ($this->isPost()) {
+        if ($this->isPost()) {  // Load member details by ID
             $member_id = $this->getPost('member_id');
 
             $result = MemberModel::loadMemberDetails($member_id);
@@ -250,7 +254,7 @@ class MemberController extends Controller
         }
     }
 
-    public function UpdateMemberDetails()
+    public function UpdateMemberDetails() // Update member details
     {
         if ($this->isPost()) {
             $member_id = $this->getPost('userId');
@@ -280,7 +284,7 @@ class MemberController extends Controller
         }
     }
 
-    public function loadMailData()
+    public function loadMailData()  // Load mail details of a membe
     {
         if ($this->isPost()) {
             $member_id = $this->getPost('member_id');
@@ -303,7 +307,7 @@ class MemberController extends Controller
         }
     }
 
-    public function sendMail()
+    public function sendMail()  // Send email to a specific member
     {
         if ($this->isPost()) {
 
@@ -330,7 +334,7 @@ class MemberController extends Controller
         }
     }
 
-    public function activateMember()
+    public function activateMember() // Activate a member again
     {
         if ($this->isPost()) {
             $id = $this->getPost('id');
@@ -353,7 +357,7 @@ class MemberController extends Controller
         }
     }
 
-    public function sendActivateMemberEmail( $name, $email)
+    public function sendActivateMemberEmail( $name, $email)   // Send activation email
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -374,7 +378,7 @@ class MemberController extends Controller
         }
     }
 
-    public function activateRequest()
+    public function activateRequest() // Reactivate a membership request
     {
         if ($this->isPost()) {
             $id = $this->getPost('id');

@@ -1,5 +1,6 @@
 <?php
 
+// ReportController handles generation of PDF reports for the library system
 require_once __DIR__ . '/../../../main.php';
 require_once __DIR__ . '/../../../vendor/autoload.php';
 require_once Config::getModelPath('staff', 'librarysetupmodel.php');
@@ -12,26 +13,31 @@ class ReportController extends Controller
 
     public function __construct()
     {
+        // Load the LibrarySetup model for retrieving library info like logo
         require_once Config::getModelPath('staff', 'librarysetupmodel.php');
         $this->librarySetupModel = new LibrarySetupModel();
     }
 
+    // Generate and serve PDF report
     public function generateReport()
     {
+        // Log the report generation request
         Logger::info("Report generation requested", [
             'title' => $_POST['title'] ?? null,
             'filename' => $_POST['filename'] ?? null,
         ]);
 
+        // Get report details from POST, set defaults if missing
         $reportTitle = $_POST['title'] ?? 'Library Report';
         $fileName = $_POST['filename'] ?? 'report.pdf';
         $tableHtml = $_POST['table_html'] ?? '<p>No data available</p>';
 
+        // Get library logo in base64 format to embed in PDF
         $logoPath = $this->getLogoBase64();
 
         $currentDate = date('Y-m-d');
 
-        // Build full HTML
+        // Build full HTML content for the PDF
         $html = "
         <html>
         <head>
@@ -66,13 +72,16 @@ class ReportController extends Controller
     ";
 
         try {
+            // Initialize Dompdf and render PDF
             $dompdf = new Dompdf();
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'landscape');
             $dompdf->render();
+            // Stream PDF to browser without forcing download
             $dompdf->stream($fileName, ["Attachment" => false]);
             exit;
         } catch (\Exception $e) {
+            // Log error if PDF generation fails
             Logger::error("Failed to generate report PDF", [
                 'message' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
@@ -83,6 +92,7 @@ class ReportController extends Controller
         }
     }
 
+    // Retrieve library logo as base64 to embed in PDF
     private function getLogoBase64()
     {
         $libraryData = LibrarySetupModel::getLibraryInfo();
@@ -91,14 +101,15 @@ class ReportController extends Controller
         $path = Config::getLogoPath() . $logo;
 
         if (file_exists($path)) {
+            // Convert logo file to base64 format
             $imageData = file_get_contents($path);
             $mimeType = mime_content_type($path); // e.g., image/png or image/jpeg
             $base64 = 'data:' . $mimeType . ';base64,' . base64_encode($imageData);
             return $base64;
         }
 
+        // Fallback if logo file is missing
         Logger::warning("Library logo not found, using fallback", ['path' => $path]);
-        // fallback image (1x1 transparent PNG)
         return 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQIHWP4//8/AwAI/AL+KDVaWQAAAABJRU5ErkJggg==';
     }
 }

@@ -167,7 +167,7 @@ class MemberModel
     private static function getTotalRequests($statusId)
     {
 
-        $query = "SELECT COUNT(*) AS total FROM `member` WHERE `status_id`='$statusId';";
+        $query = "SELECT COUNT(*) AS total FROM `member` WHERE `status_id`=?;";
         $params = [$statusId];
         $types = "i";
         $result = Database::search($query, $params, $types);

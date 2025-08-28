@@ -46,7 +46,7 @@ class BookController extends Controller
         }
     }
 
-    public function getDashboardBooks()// Function to get books for dashboard (recommended, latest, top)
+    public function getDashboardBooks() // Function to get books for dashboard (recommended, latest, top)
     {
         $data = [];
 
@@ -93,13 +93,13 @@ class BookController extends Controller
         ]);
     }
 
-        // Function to serve book cover image file
+    // Function to serve book cover image file
     public function serveBookCover()
     {
-        $imageName = $this->getGet('image');// Get image name from URL parameter
+        $imageName = $this->getGet('image'); // Get image name from URL parameter
 
         $basePath = Config::getBookCoverPath(); // Base folder where images are stored
-        $filePath = realpath($basePath . basename($imageName));// Full path to file
+        $filePath = realpath($basePath . basename($imageName)); // Full path to file
         // Check if file exists inside correct folder
         if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
             header('Content-Type: ' . mime_content_type($filePath)); // Set correct content type
@@ -112,6 +112,25 @@ class BookController extends Controller
         echo "Image not found.";
         exit;
     }
+
+    //     public function serveBookCover()
+    // {
+    //     $imageName = $_GET['image'] ?? '';
+    //     $basePath = Config::getBookCoverPath();
+    //     $filePath = realpath($basePath . basename($imageName));
+
+    //     if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
+    //         header('Content-Type: ' . mime_content_type($filePath));
+    //         readfile($filePath);
+    //         exit;
+    //     }
+
+    //     Logger::warning("Book cover image not found", ['image' => $imageName]);
+    //     http_response_code(404);
+    //     echo "Image not found.";
+    //     exit;
+    // }
+
     // Function to get all book categories
     public function getAllCategories()
     {
@@ -155,7 +174,7 @@ class BookController extends Controller
 
             $bookData = $this->bookModel->searchBookByTitle($title);
             $books = $bookData['results'] ?? [];
-            
+
             $this->jsonResponse([ // Return matching books as JSON
                 "books" => $books
             ]);

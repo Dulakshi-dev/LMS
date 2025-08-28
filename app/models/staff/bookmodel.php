@@ -2,14 +2,15 @@
     require_once config::getdbPath();
 
     /**
- * BookModel
- * Handles all operations related to books, categories, and languages.
- */
+     * BookModel
+     * Handles all operations related to books, categories, and languages.
+     */
 
     class BookModel
-    {     /**
-     * Get all books with pagination.
-     */
+    {
+        /**
+         * Get all books with pagination.
+         */
 
         public static function getAllBooks($page, $resultsPerPage, $status = 'Active')
         {
@@ -53,7 +54,7 @@
             $row = $result->fetch_assoc();
             return $row['total'] ?? 0;
         }
-        
+
 
         public static function searchBooks($bookid, $title, $isbn, $category_id, $language_id, $status = 'Active', $page, $resultsPerPage)
         {
@@ -259,14 +260,17 @@
 
         public static function isbnExists($isbn)
         {
-
             $query = "SELECT * FROM `book` WHERE `isbn` = ?";
             $params = [$isbn];
             $types = "s";
             $result = Database::search($query, $params, $types);
 
-            return $result !== null;
+            if ($result && $result->num_rows > 0) {
+                return true; // ISBN exists
+            }
+            return false; // ISBN does not exist
         }
+
 
 
         public static function addBook($isbn, $author, $title, $category, $language, $pub, $qty, $des, $coverpage)

@@ -13,26 +13,42 @@ class ProfileController extends Controller
     }
 
     // Serve profile image to the browser
-    public function serveProfileImage()
-    {
-        // Get image name from request
-        $imageName = $this->getGet('image', '');
-        $basePath = Config::getStaffProfileImagePath();
-        $filePath = realpath($basePath . basename($imageName));
-
-        // Validate file path to prevent path traversal attacks & check if file exists
-        if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
-            
-            // Set correct content type and output the image
-            header('Content-Type: ' . mime_content_type($filePath));
-            readfile($filePath);
-            exit;
-        }
-
-        // If image not found, log a warning and return JSON error
-        Logger::warning("Profile image not found", ['image' => $imageName, 'filePath' => $filePath]);
-        $this->jsonResponse(["message" => "Image not found."], false, 404);
+public function serveProfileImage()
+{
+    // CLEAR ALL OUTPUT BUFFERS FIRST
+    while (ob_get_level()) {
+        ob_end_clean();
     }
+    
+    error_log("serveProfileImage() called");
+    $imageName = $this->getGet('image', '');
+    error_log("Requested image: " . $imageName);
+    
+    $basePath = Config::getStaffProfileImagePath();
+    error_log("Base path: " . $basePath);
+    
+    $filePath = realpath($basePath . basename($imageName));
+    error_log("Full file path: " . $filePath);
+    
+    // Check if file exists and is within the allowed directory
+    if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
+        error_log("Image found, serving...");
+        error_log("MIME type: " . mime_content_type($filePath));
+        error_log("File size: " . filesize($filePath));
+        
+        header('Content-Type: ' . mime_content_type($filePath));
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
+        exit;
+    } else {
+        error_log("Image NOT found or access denied");
+        error_log("File exists: " . (file_exists($filePath) ? 'yes' : 'no'));
+        error_log("Path check: " . (strpos($filePath, realpath($basePath)) === 0 ? 'passed' : 'failed'));
+    }
+
+    Logger::warning("Profile image not found", ['image' => $imageName, 'filePath' => $filePath]);
+    $this->jsonResponse(["message" => "Image not found."], false, 404);
+}
 
 
     // Update staff profile (details and optional profile image)

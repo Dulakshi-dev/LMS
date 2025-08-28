@@ -194,7 +194,7 @@ class BookController extends Controller
     }
 
 
-    public function addCategory()// Add a new category into system
+    public function addCategory() // Add a new category into system
     {
         if ($this->isPost()) {
             $category = $this->sanitize($this->getPost('category'));
@@ -216,6 +216,10 @@ class BookController extends Controller
 
     public function serveBookCover() // Show book cover image file directly in browser
     {
+        while (ob_get_level()) {
+            ob_end_clean();
+        }
+
         $imageName = $_GET['image'] ?? '';
         $basePath = Config::getBookCoverPath();
         $filePath = realpath($basePath . basename($imageName));
@@ -251,7 +255,7 @@ class BookController extends Controller
         }
     }
 
-    public function activateBook()// Reactivate a book
+    public function activateBook() // Reactivate a book
     {
         if ($this->isPost()) {
             $book_id = $this->getPost('book_id');

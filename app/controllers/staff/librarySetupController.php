@@ -295,24 +295,26 @@ class LibrarySetupController extends Controller
     }
 
     // Serve (display) the library logo image when requested
-    public function serveLogo()
-    {
-        $imageName = $this->getGet('image', ''); // get image name from request
-        $basePath = Config::getLogoPath(); // path where logos are stored
-        $filePath = realpath($basePath . basename($imageName));
-
-        // Check if image exists inside logo directory
-        if ($filePath && strpos($filePath, realpath($basePath)) === 0 && file_exists($filePath)) {
-            Logger::info("Serving logo image: $imageName");
-            header('Content-Type: ' . mime_content_type($filePath));
-            readfile($filePath);
-            exit;
-        }
-
-        // If image not found, return 404
-        Logger::error("Logo image not found: $imageName");
-        http_response_code(404);
-        echo "Image not found.";
+// In serveLogo(), serveBookCover(), serveProfileImage(), etc.
+public function serveLogo() {
+    // CLEAR ALL OUTPUT BUFFERS FIRST
+    while (ob_get_level()) {
+        ob_end_clean();
+    }
+    
+    $imageName = $this->getGet('image', '');
+    $basePath = Config::getLogoPath();
+    $filePath = realpath($basePath . basename($imageName));
+    
+    if ($filePath && file_exists($filePath)) {
+        header('Content-Type: ' . mime_content_type($filePath));
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
         exit;
     }
+    
+    http_response_code(404);
+    echo "Image not found.";
+    exit;
+}
 }

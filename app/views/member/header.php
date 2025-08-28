@@ -67,8 +67,6 @@ $fine = $libraryData['fine_amount'];
     background-color: rgb(255, 255, 255);
   }
 
-
-
   .nav-link {
     color: white !important;
   }
@@ -78,7 +76,6 @@ $fine = $libraryData['fine_amount'];
     text-underline-offset: 4px;
     text-decoration-thickness: 2px;
   }
-
 
   .navbar-toggler {
     border-color: rgba(255, 255, 255, 0.1);

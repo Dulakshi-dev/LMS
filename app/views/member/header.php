@@ -164,8 +164,8 @@ $fine = $libraryData['fine_amount'];
 
         <!-- LMS -->
         <div>
-          <a class="nav-link text-danger <?= (isset($_GET['action']) && $_GET['action'] == 'dashboard') ? 'bgcolor px-2 mx-2 px-md-3 rounded py-1' : '' ?>" href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
-
+          <a class="nav-link text-danger pe-2 <?= (isset($_GET['action']) && $_GET['action'] == 'dashboard') ? 'bgcolor px-2 mx-2 px-md-3 rounded py-1' : '' ?>"
+           href="<?= Config::indexPathMember() ?>?action=dashboard">LMS</a>
         </div>
       </div>
     </div>

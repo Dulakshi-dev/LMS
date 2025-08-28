@@ -47,7 +47,6 @@ require_once Config::getViewPath("common","head.php");
                 <div class="row">
                     <nav class="navbar p-md-4 navbar-light bg-light">
                         <span class="h5 mb-0 ">Circulation Management</span>
-                        <a href="#" class="text-decoration-none h5"><i class="fa fa-home"></i></a>
                     </nav>
                 </div>
 

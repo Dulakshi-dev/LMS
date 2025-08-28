@@ -1,9 +1,18 @@
 <?php
 
 require_once config::getdbPath();
-
+    /**
+ * ReservationModel
+ * Handles retrieval and search of book reservations.
+ */
 class ReservationModel
-{
+{       /**
+     * Get all reservations with pagination.
+     *
+     * @param int $page
+     * @param int $resultsPerPage
+     * @return array
+     */
     public static function getAllReservations($page, $resultsPerPage)
     {
         $offset = ($page - 1) * $resultsPerPage;
@@ -32,6 +41,7 @@ class ReservationModel
             'results' => $reservations
         ];
     }
+
 
     private static function getTotalReservations()
     {
@@ -103,6 +113,15 @@ class ReservationModel
 
         return ['results' => $reservations, 'total' => $total];
     }
+        /**
+     * Get total number of reservations matching search filters.
+     *
+     * @param string $memberId
+     * @param string $bookId
+     * @param string $title
+     * @param string $status
+     * @return int
+     */
 
     private static function getTotalSearchResults($memberid, $bookid, $title, $status)
     {

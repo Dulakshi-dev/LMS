@@ -2,7 +2,10 @@
 
 require_once config::getdbPath();
 
-
+/**
+ * PaymentModel
+ * Handles all payment-related operations including fines and membership payments.
+ */
 
 class PaymentModel
 {
@@ -13,6 +16,13 @@ class PaymentModel
     {
         $this->db = new Database();
     }
+        /**
+     * Get all payments with pagination.
+     *
+     * @param int $page
+     * @param int $resultsPerPage
+     * @return array
+     */
 
     public static function getAllPayments($page, $resultsPerPage)
     {
@@ -165,7 +175,14 @@ class PaymentModel
         return ['results' => $payments, 'total' => $total, 'totalAmount' => $totalAmount];
     }
 
-
+    /**
+     * Get total count of payments based on search filters.
+     *
+     * @param string|null $memberId
+     * @param string|null $transactionId
+     * @param string|null $paymentType
+     * @return int
+     */
     private static function getTotalSearchResults($memberId, $transactionid, $paymentType)
     {
         $params = [];

@@ -3,7 +3,11 @@
 require_once config::getdbPath();
 
 class HomeModel
-{
+{   /**
+ * HomeModel
+ * Handles data retrieval for the home page such as opening hours, news updates,
+ * library info, top books, and latest arrivals.
+ */
 
     private $db;
 
@@ -46,6 +50,12 @@ class HomeModel
 
         return false; // If no results are found, return false
     }
+
+        /**
+     * getNewsUpdates
+     * Fetches news updates from the database.
+     * @return array|false Returns an array of news results or false if no news found.
+     */
 
     public static function getNewsUpdates()
     {

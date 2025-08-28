@@ -1,7 +1,10 @@
 <?php
 
 require_once config::getdbPath();
-
+/**
+ * LibrarySetupModel
+ * Handles library settings such as opening hours, news, library info, staff, and members.
+ */
 class LibrarySetupModel
 {
 

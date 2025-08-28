@@ -1,7 +1,7 @@
 <?php
 
 
-class PaymentController extends Controller
+class PaymentController extends Controller  // Controller that manages payment-related actions
 {
     private $paymentModel;
 
@@ -11,7 +11,7 @@ class PaymentController extends Controller
         $this->paymentModel = new PaymentModel();
     }
 
-public function getAllPayments()
+public function getAllPayments() // Get all payments (with search + pagination support)
 {
     $resultsPerPage = 10;
     if ($this->isPost()) {
@@ -43,7 +43,7 @@ public function getAllPayments()
             $totalAmount += floatval($payment['amount']);
         }
 
-        $this->jsonResponse([
+        $this->jsonResponse([ // Send response back as JSON
             "payments" => $payments,
             "total" => $total,
             "totalAmount" => $totalAmount, 

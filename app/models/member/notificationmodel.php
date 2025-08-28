@@ -1,6 +1,10 @@
 <?php
 
 require_once config::getdbPath();
+/**
+ * NotificationModel
+ * Handles notifications for members including fetching, marking as read, and counting unread notifications.
+ */
 
 class NotificationModel
 {
@@ -31,7 +35,12 @@ class NotificationModel
 
         return true;
     }
-
+    /**
+     * getUnreadNotificationCount
+     * Counts all unread notifications for a member.
+     * @param string $member_id Member ID
+     * @return int Returns the number of unread notifications
+     */
     public static function getUnreadNotificationCount($member_id) {
         
         

@@ -2,8 +2,18 @@
 
 require_once config::getdbPath();
 
+/**
+ * ProfileModel
+ * Handles all member profile-related functionalities such as loading details, updating profile, and password management.
+ */
+
 class ProfileModel
-{
+{       /**
+     * loadMemberDetails
+     * Loads all member details for a given member ID.
+     * @param string $id Member login ID
+     * @return mysqli_result Result set containing member details
+     */
     public static function loadMemberDetails($id)
     {
         $query = "SELECT `id`,`member_id`,`nic`,`fname`,`lname`,`address`,`mobile`,`email`,`profile_img` FROM `member` INNER JOIN `member_login` ON `member`.`id` = `member_login`.`memberId` WHERE `member_id` = ?";
@@ -13,7 +23,18 @@ class ProfileModel
 
         return $rs;
     }
-
+     
+        /**
+     * updateMemberDetails
+     * Updates member details including a new profile image.
+     * @param string $nic Member NIC
+     * @param string $fname First name
+     * @param string $lname Last name
+     * @param string $address Member address
+     * @param string $mobile Mobile number
+     * @param string $fileName Profile image filename
+     * @return bool True on successful update
+     */
     public static function updateMemberDetails($nic, $fname, $lname, $address, $mobile, $fileName)
     {
         $query = "UPDATE `member` SET `fname`=?,`lname`=?,`address`=?, `mobile`=?, `profile_img`=? WHERE `nic` = ?";
@@ -23,7 +44,16 @@ class ProfileModel
 
         return true;
     }
-
+    /**
+     * updateMemberDetailsWithoutImage
+     * Updates member details without changing the profile image.
+     * @param string $nic Member NIC
+     * @param string $fname First name
+     * @param string $lname Last name
+     * @param string $address Address
+     * @param string $mobile Mobile number
+     * @return bool True on successful update
+     */
     public static function updateMemberDetailsWithoutImage($nic, $fname, $lname, $address, $mobile)
     {
         $query = "UPDATE `member` SET `fname`=?,`lname`=?,`address`=?, `mobile`=? WHERE `nic` = ?";
@@ -47,6 +77,13 @@ class ProfileModel
         return null;
     }
 
+        /**
+     * validateCurrentPassword
+     * Validates if the provided password matches the current password for a member.
+     * @param string $memid Member login ID
+     * @param string $password Plain text password
+     * @return bool True if password is correct, false otherwise
+     */
     public static function validateCurrentPassword($memid, $password)
     {
         $query = "SELECT * from `member_login` WHERE `member_id`=?";

@@ -2,9 +2,19 @@
 
 
 require_once config::getdbPath();
+/**
+ * BookModel
+ * Handles all database operations related to books, categories, and languages.
+ */
 
 class BookModel
-{
+{       /**
+     * getAllBooks
+     * Retrieves a paginated list of all available books.
+     * @param int $page Current page number
+     * @param int $resultsPerPage Number of results per page
+     * @return array Returns an array with total books and results
+     */
 
     public static function getAllBooks($page, $resultsPerPage)
     {
@@ -95,7 +105,10 @@ class BookModel
         return ['results' => $books, 'total' => $totalSearch];
     }
 
-
+     /**
+     * getTotalSearchResults
+     * Counts total number of books matching search criteria.
+     */
     private static function getTotalSearchResults($title, $category_id, $language_id)
     {
         $query = "SELECT COUNT(*) as total FROM `book`
@@ -190,6 +203,10 @@ class BookModel
         ];
     }
 
+        /**
+     * getLatestArrivalBooks
+     * Retrieves the latest added books.
+     */
 
     public static function getLatestArrivalBooks()
     {
@@ -266,6 +283,10 @@ class BookModel
         return $languages;
     }
 
+        /**
+     * searchBookByTitle
+     * Searches books based on a partial title.
+     */
     public static function searchBookByTitle($title)
     {
         $query = "SELECT * FROM `book` WHERE `title` LIKE CONCAT('%', ?, '%')";

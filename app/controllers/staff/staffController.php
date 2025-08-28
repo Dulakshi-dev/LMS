@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../../../main.php';
 
-class StaffController extends Controller
+class StaffController extends Controller // StaffController handles all operations related to library staff management
 {
     private $staffModel;
 
@@ -12,7 +12,7 @@ class StaffController extends Controller
         $this->staffModel = new StaffModel();
     }
 
-    public function loadStaff()
+    public function loadStaff()  // Load staff members with optional filters and pagination
     {
         $resultsPerPage = 10;
 
@@ -45,7 +45,7 @@ class StaffController extends Controller
         }
     }
 
-    public function loadStaffDetails()
+    public function loadStaffDetails()  // Load detailed info for a specific staff member
     {
         if ($this->isPost()) {
             $user_id = $this->getPost('staff_id');
@@ -81,7 +81,7 @@ class StaffController extends Controller
         }
     }
 
-    public function updateStaffDetails()
+    public function updateStaffDetails()  // Update staff details
     {
         if ($this->isPost()) {
             $user_id = $this->getPost('staffId');
@@ -110,7 +110,7 @@ class StaffController extends Controller
         }
     }
 
-    public function loadMailData()
+    public function loadMailData()   // Load email-related data for a staff member
     {
 
         if ($this->isPost()) {
@@ -134,7 +134,7 @@ class StaffController extends Controller
         }
     }
 
-    public function sendMail()
+    public function sendMail()  // Send an email to a staff member
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -174,7 +174,7 @@ class StaffController extends Controller
         }
     }
 
-    public function deactivateStaff()
+    public function deactivateStaff()  // Deactivate a staff account
     {
 
         if ($this->isPost()) {
@@ -198,7 +198,7 @@ class StaffController extends Controller
         }
     }
 
-    public function sendDeactivateStaffEmail($name, $email)
+    public function sendDeactivateStaffEmail($name, $email)  // Send email notification when staff is deactivated 
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -220,7 +220,7 @@ class StaffController extends Controller
         }
     }
 
-    public function activateStaff()
+    public function activateStaff()  // Activate a staff account
     {
 
         if ($this->isPost()) {
@@ -246,7 +246,7 @@ class StaffController extends Controller
         }
     }
 
-    public function sendActivateStaffEmail($name, $email)
+    public function sendActivateStaffEmail($name, $email) // Send email notification when staff is activated
     {
         require_once Config::getServicePath('emailService.php');
 
@@ -268,7 +268,7 @@ class StaffController extends Controller
         }
     }
 
-    public function sendEnrollmentKey()
+    public function sendEnrollmentKey()  // Send enrollment key to staff member
     {
         require_once Config::getServicePath('emailService.php');
 

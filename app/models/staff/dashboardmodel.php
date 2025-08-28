@@ -2,6 +2,10 @@
 
 require_once config::getdbPath();
 
+/**
+ * DashboardModel
+ * Handles fetching aggregated data for dashboard statistics.
+ */
 class DashboardModel
 {
 

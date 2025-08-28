@@ -1,6 +1,10 @@
 <?php
 
 require_once config::getdbPath();
+/**
+ * PaymentModel
+ * Handles all payment-related functionalities including registration, renewal, reminders, and overdue checks.
+ */
 
 class PaymentModel
 {
@@ -16,7 +20,14 @@ class PaymentModel
         return true;
     }
 
-
+        /**
+     * renewPayment
+     * Renews membership payment by adding one year to the latest payment due date.
+     * @param string $transaction_id Transaction ID
+     * @param string $member_id Member login ID
+     * @param float $fee Payment amount
+     * @return bool Returns true if renewal is successful, false otherwise
+     */
     public static function renewPayment($transaction_id, $member_id, $fee)
     {
         $query = "SELECT `id` FROM `member` INNER JOIN `member_login` ON `member`.`id`=`member_login`.`memberId` WHERE `member_id` = ?";
@@ -71,6 +82,14 @@ class PaymentModel
             self::sendExpirationReminderEmail($email, $expirationDate, $name, $member_id);
         }
     }
+        /**
+     * sendExpirationReminderEmail
+     * Sends an email and notification to remind member about upcoming membership expiration.
+     * @param string $email Member email
+     * @param string $expirationDate Expiration date
+     * @param string $name Member full name
+     * @param int $member_id Member ID
+     */
 
     public static function sendExpirationReminderEmail($email, $expirationDate, $name, $member_id)
     {
@@ -134,6 +153,13 @@ class PaymentModel
         $types = "i";
         Database::ud($query, $params, $types);
     }
+        /**
+     * sendMembershipExpiredMail
+     * Sends email to members whose membership has expired.
+     * @param string $email Member email
+     * @param string $name Member full name
+     * @param int $id Member ID
+     */
 
     private static function sendMembershipExpiredMail($email, $name, $id)
     {

@@ -1,9 +1,19 @@
 <?php
 
 require_once config::getdbPath();
-
+    /**
+ * MyLibraryModel
+ * Handles member's saved books including fetching, searching, saving, and unsaving books.
+ */
 class MyLibraryModel
-{
+{     /**
+     * getSavedBooks
+     * Retrieves all books saved by a member with pagination.
+     * @param int $id Member ID
+     * @param int $page Current page number
+     * @param int $resultsPerPage Number of results per page
+     * @return array Returns total count and list of saved books
+     */
 
     public static function getSavedBooks($id, $page, $resultsPerPage)
     {
@@ -93,7 +103,10 @@ class MyLibraryModel
 
         return ['results' => $books, 'total' => $totalSearch];
     }
-
+        /**
+     * getTotalSearchResults
+     * Counts total search results for member's saved books.
+     */
 
     private static function getTotalSearchResults($id, $title, $category, $bookid)
     {

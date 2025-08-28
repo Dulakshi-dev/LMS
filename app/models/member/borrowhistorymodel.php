@@ -1,9 +1,20 @@
 <?php
 
 require_once config::getdbPath();
+/**
+ * BorrowHistoryModel
+ * Handles all database operations related to a member's borrowed books and search history.
+ */
 
 class BorrowHistoryModel
-{
+{       /**
+     * getBorrowBooks
+     * Retrieves a paginated list of books borrowed by a member.
+     * @param int $id Member ID
+     * @param int $page Current page number
+     * @param int $resultsPerPage Number of results per page
+     * @return array Returns total borrowed books and results array
+     */
     public static function getBorrowBooks($id, $page, $resultsPerPage)
     {
         $pageResults = ($page - 1) * $resultsPerPage;
@@ -40,6 +51,17 @@ class BorrowHistoryModel
         return $row['total'] ?? 0;
     }
 
+        /**
+     * searchBorrowBooks
+     * Searches borrowed books based on book ID, title, and category with pagination.
+     * @param int $id Member ID
+     * @param string $bookid Book ID filter
+     * @param string $title Book title filter
+     * @param string $category Book category filter
+     * @param int $page Current page number
+     * @param int $resultsPerPage Number of results per page
+     * @return array Returns search results and total count
+     */
     public static function searchBorrowBooks($id, $bookid, $title, $category, $page, $resultsPerPage)
     {
         $pageResults = ($page - 1) * $resultsPerPage;
@@ -85,6 +107,15 @@ class BorrowHistoryModel
         return ['results' => $books, 'total' => $totalSearch];
     }
 
+        /**
+     * getTotalSearchResults
+     * Counts total borrowed books matching search criteria.
+     * @param int $id Member ID
+     * @param string $title Book title filter
+     * @param string $category Book category filter
+     * @param string $bookid Book ID filter
+     * @return int Total matched books
+     */
 
     private static function getTotalSearchResults($id, $title, $category, $bookid)
     {

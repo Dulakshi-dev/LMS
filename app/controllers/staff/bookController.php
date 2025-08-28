@@ -6,12 +6,12 @@ class BookController extends Controller
     private $bookModel;
 
     public function __construct()
-    {
+    {   // Load the Book model so we can use database functions related to books
         require_once Config::getModelPath('staff', 'bookmodel.php');
         $this->bookModel = new BookModel();
     }
 
-    public function getAllBooks()
+    public function getAllBooks()  // Show books list with search, pagination, and filters
     {
         $resultsPerPage = 10;
 
@@ -46,7 +46,7 @@ class BookController extends Controller
         }
     }
 
-    public function loadBookDetails()
+    public function loadBookDetails()  // Get details of a single book by ID
     {
         if ($this->isPost()) {
             $book_id = $this->getPost('book_id');
@@ -76,7 +76,7 @@ class BookController extends Controller
         }
     }
 
-    public static function getAllCategories()
+    public static function getAllCategories() // Fetch all book categories
     {
         $categories = BookModel::getAllCategories();
 
@@ -94,7 +94,7 @@ class BookController extends Controller
         }
     }
 
-    public static function getLanguages()
+    public static function getLanguages() // Fetch all available book languages
     {
         $languages = BookModel::getLanguages();
 
@@ -112,7 +112,7 @@ class BookController extends Controller
         }
     }
 
-    public function updateBookDetails()
+    public function updateBookDetails() // Update book details in database
     {
         if ($this->isPost()) {
             $book_id = $this->getPost('book_id');
@@ -194,7 +194,7 @@ class BookController extends Controller
     }
 
 
-    public function addCategory()
+    public function addCategory()// Add a new category into system
     {
         if ($this->isPost()) {
             $category = $this->sanitize($this->getPost('category'));
@@ -213,7 +213,8 @@ class BookController extends Controller
         }
     }
 
-    public function serveBookCover()
+
+    public function serveBookCover() // Show book cover image file directly in browser
     {
         $imageName = $_GET['image'] ?? '';
         $basePath = Config::getBookCoverPath();
@@ -231,7 +232,7 @@ class BookController extends Controller
         exit;
     }
 
-    public function deactivateBook()
+    public function deactivateBook()   // Mark book as inactive
     {
         if ($this->isPost()) {
             $book_id = $this->getPost('book_id');
@@ -250,7 +251,7 @@ class BookController extends Controller
         }
     }
 
-    public function activateBook()
+    public function activateBook()// Reactivate a book
     {
         if ($this->isPost()) {
             $book_id = $this->getPost('book_id');
@@ -269,7 +270,7 @@ class BookController extends Controller
         }
     }
 
-    public function deleteCategory()
+    public function deleteCategory()  // Delete a category
     {
         if ($this->isPost()) {
             $category_id = $this->getPost('category_id');

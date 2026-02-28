@@ -191,7 +191,7 @@ class BookModel
         AND b.book_id NOT IN (
             SELECT borrow_book_id FROM borrow WHERE borrow_member_id = ?
         )
-        LIMIT 10";
+        LIMIT 4";
 
         $params = [$id, $id, $id, $id, $id, $id, $id];
         $types = str_repeat("i", count($params));

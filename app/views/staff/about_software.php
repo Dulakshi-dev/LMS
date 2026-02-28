@@ -79,7 +79,7 @@ require_once Config::getViewPath("common","head.php");
                     </ul>
 
                     <h4>Support & Troubleshooting:</h4>
-                    <p>If you need assistance, contact the IT support team at <a href="mailto:support@example.com">support@example.com</a> or call +94-XXX-XXXXXX.</p>
+                    <p>If you need assistance, contact the IT support team at <a href="mailto:shelfloomgp13@gmail.com">support@example.com</a> or call +94-XXX-XXXXXX.</p>
                 </div>
             </div>
         </div>

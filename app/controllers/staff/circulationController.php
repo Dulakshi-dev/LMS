@@ -148,7 +148,7 @@ class CirculationController extends Controller
         require_once Config::getServicePath('emailService.php');
 
         $subject = 'Book Issued';
-        $specificMessage = '<h4>This is to confirm that the book ' . $title . '('.$book_id.') has been successfully issued to your account on ' . $issue_date . '.
+        $specificMessage = '<h4>This is to confirm that the book ' . $title . '(' . $book_id . ') has been successfully issued to your account on ' . $issue_date . '.
                             <br><br>Please return the book before ' . $due_date . ' to avoid any late fees.</h4>';
 
         // Build email template
@@ -178,7 +178,7 @@ class CirculationController extends Controller
             $book_id = $this->getPost('bookId');
             $memberId = $this->getPost('memberId');
             $return_date = $this->getPost('returnDate');
-            $fines = $this->getPost('fines');
+            $fines = (float)$this->getPost('fines'); // ensures fines is a number
             $name = $this->getPost('name');
             $title = $this->getPost('title');
             $email = $this->getPost('email');
@@ -218,7 +218,7 @@ class CirculationController extends Controller
         require_once Config::getServicePath('emailService.php');
 
         $subject = 'Book Returned';
-        $specificMessage = '<h4>This is to confirm that the book ' . $title . '('.$book_id.') has been successfully returned on ' . $return_date . '.';
+        $specificMessage = '<h4>This is to confirm that the book ' . $title . '(' . $book_id . ') has been successfully returned on ' . $return_date . '.';
 
         // Build email template
         $emailTemplate = new EmailTemplate();

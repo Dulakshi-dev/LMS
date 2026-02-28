@@ -59,7 +59,7 @@ class ReservationModel
     public static function addToWaitlist($book_id, $member_id)
     {
         // Check if the member has already reserved this book
-        $query = "SELECT * FROM `reservation` WHERE `reservation_member_id` ='$member_id' AND `reservation_book_id` = '$book_id'";
+        $query = "SELECT * FROM `reservation` WHERE `reservation_member_id` =? AND `reservation_book_id` = ?";
         $params = [$member_id, $book_id];
         $types = "is";
         $rs = Database::search($query, $params, $types);

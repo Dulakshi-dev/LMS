@@ -29,7 +29,6 @@ require_once Config::getViewPath("common","head.php");
         <!-- Button to show the input div -->
         <button class="btn btn-primary text-white rounded-pill w-50 mt-3 proceedbtn" id="proceedbtn" onclick="showMembershipInput()">Proceed to Payment</button>
     </div>
-    <?php require_once Config::getViewPath("common", "footer.php"); ?>
 
 
     <script>
@@ -46,7 +45,7 @@ require_once Config::getViewPath("common","head.php");
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.payhere.lk/lib/payhere.js"></script>
-    <script src="<?php echo Config::getJsPath("payment.js"); ?>"></script>
+    <script src="<?php echo Config::getJsPath("memberPayment.js"); ?>"></script>
 </body>
 
 

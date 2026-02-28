@@ -276,67 +276,66 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`";
         return ["success" => true, "message" => "Book issued successfully."];
     }
 
-    public static function generateFineID()
-    {
-        // get the latest fine_id
-        $query = "SELECT fine_id FROM `fines` ORDER BY fine_id DESC LIMIT 1";
-        $result = Database::search($query);
+public static function generateFineID()
+{
+    // get the latest fine_id
+    $query = "SELECT fine_id FROM `fines` ORDER BY fine_id DESC LIMIT 1";
+    $result = Database::search($query);
 
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $lastFineID = (int)$row['fine_id'];
-
-            $newNumber = $lastFineID + 1;
-        } else {
-            $newNumber = 1;
-        }
-
-        // Format as F000001
-        $newFineID = "F" . str_pad($newNumber, 6, "0", STR_PAD_LEFT);
-        return $newFineID;
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $lastFineID = (int)$row['fine_id'];
+        $newNumber = $lastFineID + 1;
+    } else {
+        $newNumber = 1;
     }
 
+    // Format as F000001
+    $newFineID = "F" . str_pad($newNumber, 6, "0", STR_PAD_LEFT);
+    return $newFineID;
+}
 
-    public static function returnBook($borrow_id, $return_date, $book_id, $fines, $memberId)
-    {
-        // Update the borrow record with the return date
-        $query = "UPDATE `borrow` SET `return_date` = ? WHERE `borrow_id` = ?";
-        $params = [$return_date, $borrow_id];
-        $types = "si";
-        Database::ud($query, $params, $types);
+public static function returnBook($borrow_id, $return_date, $book_id, $fines, $memberId)
+{
+    $fines = (float)$fines; // ensure numeric
+    error_log("return book fines: " . $fines);
 
+    // 1. Update borrow return date
+    Database::ud(
+        "UPDATE `borrow` SET `return_date` = ? WHERE `borrow_id` = ?",
+        [$return_date, $borrow_id],
+        "si"
+    );
 
+    // 2. Insert fine if exists
+    if ($fines > 0) {
         $fineID = self::generateFineID();
+        $today = date("Y-m-d");
 
-        // If there is a fine, insert the fine record into the database
-        if ($fines > 0) {
-            $today = date("Y-m-d");
+        $res = Database::insert(
+            "INSERT INTO `fines`(`fine_id`, `amount`, `fine_borrow_id`, `payed_on`) VALUES (?, ?, ?, ?)",
+            [$fineID, $fines, $borrow_id, $today],
+            "sdsi" // string, double, integer, string
+        );
 
-            $query = "INSERT INTO `fines`(`fine_id`, `amount`, `fine_borrow_id`, `payed_on`) 
-        VALUES(?, ?, ?, ?)";
-            $params = [$fineID, $fines, $borrow_id, $today];
-            $types = "sdis";
-            Database::search($query, $params, $types);
+        if ($res) {
+            error_log("Fine inserted successfully: $fineID");
+        } else {
+            error_log("Fine insertion failed for borrow_id $borrow_id, fines $fines");
         }
-
-
-        // Get the current available quantity of the book
-
-        $query = "SELECT `available_qty` FROM `book` WHERE `book_id` = ?";
-        $params = [$book_id];
-        $types = "s";
-        $result = Database::search($query, $params, $types);
-
-        $data = $result->fetch_assoc();
-        $available_qty = $data["available_qty"];
-
-        // Increase the available quantity of the returned book
-        $query = "UPDATE `book` SET `available_qty` = ? + 1 WHERE `book_id` = ?";
-        $params = [$available_qty, $book_id];
-        $types = "is";
-        Database::ud($query, $params, $types);
-        return true;
     }
+
+    // 3. Increase book quantity
+    Database::ud(
+        "UPDATE `book` SET `available_qty` = available_qty + 1 WHERE `book_id` = ?",
+        [$book_id],
+        "i"
+    );
+
+    return true;
+}
+
+
 
     public static function notifyNextWaitlistMember($book_id)
     {
@@ -389,7 +388,7 @@ LEFT JOIN `fines` ON `borrow`.`borrow_id` = `fines`.`fine_borrow_id`";
 
         return ["success" => false, "message" => "No waitlisted reservations found."];
     }
-  /**
+    /**
      * Send reservation email.
      */
     private static function sendReservationEmail($book_id, $member_id, $title)

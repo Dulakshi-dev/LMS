@@ -360,7 +360,6 @@ function returnBook() {
     formData.append("title", document.getElementById("title").value);
     formData.append("email", document.getElementById("email").value);
 
-
     // Send data to the backend using Fetch API
     fetch("index.php?action=returnbook", {
         method: "POST",

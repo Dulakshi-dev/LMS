@@ -81,7 +81,7 @@ This project follows the **MVC (Model-View-Controller)** architecture:
 
 ## Project Demo
 
-[Insert video link here]
+Drive link - https://drive.google.com/file/d/1rEXXjObN79GJ0wBBVMxAMHHWXSayUxVu/view?usp=sharing
 
 ---
 

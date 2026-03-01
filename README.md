@@ -20,7 +20,7 @@ This system was built using MVC architecture and implements Role-Based Access Co
 
 ## Team & Roles
 
-- **Dulakshi Gammanpila** – Project Manager & Backend Developer  
+- **Dulakshi Gammanpila** – Project Manager  
 - **Janith Nanayakkara** – UI/UX Designer (Figma)  
 - **Yehan Wickramasingha** – Database Administrator (MySQL Workbench)  
 - **Arulaiah Kajanthan** – Frontend Developer  

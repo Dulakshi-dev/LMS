@@ -20,12 +20,12 @@ This system was built using MVC architecture and implements Role-Based Access Co
 
 ## Team & Roles
 
-- **[Your Name]** – Project Manager & Backend Developer  
-- **[Name]** – UI/UX Designer (Figma)  
-- **[Name]** – Database Administrator (MySQL Workbench)  
-- **[Name]** – Frontend Developer  
-- **[Name]** – Backend Developer  
-- **[Name]** – Tester  
+- **Dulakshi Gammanpila** – Project Manager & Backend Developer  
+- **Janith Nanayakkara** – UI/UX Designer (Figma)  
+- **Yehan Wickramasingha** – Database Administrator (MySQL Workbench)  
+- **Arulaiah Kajanthan** – Frontend Developer  
+- **Malanka Tharula** – Backend Developer  
+- **Mohammad Shimas** – Tester  
 
 ---
 

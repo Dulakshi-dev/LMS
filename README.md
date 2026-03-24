@@ -97,7 +97,7 @@ Drive link - https://drive.google.com/file/d/1rEXXjObN79GJ0wBBVMxAMHHWXSayUxVu/v
 
 ## GitHub Repository
 
-[Your repo link]
+[(https://github.com/Dulakshi-dev/LMS.git)]
 
 ---
 
